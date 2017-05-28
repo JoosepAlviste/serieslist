@@ -14,3 +14,10 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('series', 'SeriesController@index');
+Route::get('series/{series}', 'SeriesController@show');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
