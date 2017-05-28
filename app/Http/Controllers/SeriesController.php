@@ -17,4 +17,16 @@ class SeriesController extends Controller
         $series = Series::all();
         return view('series.index', compact('series'));
     }
+
+    public function store()
+    {
+        Series::create([
+            'title' => request()->title,
+            'description' => request()->description,
+            'start_year' => request()->start_year,
+            'end_year' => request()->end_year,
+        ]);
+
+        return back();
+    }
 }
