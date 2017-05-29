@@ -3,15 +3,27 @@
 @import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600)
 
 // Variables
-@import "variables"
+@import "includes/variables"
 
 // Bulma
 @import "~bulma"
 
+// Page
+.site
+  /* Sticky footer */
+  display: flex
+  min-height: 100vh
+  flex-direction: column
+
+  .site-content
+    flex: 1
+
+// Form
 .label.is-required
   &::after
-    color: $red
+    color: $danger
     content: " *"
 
+// Layouts
 .form-card
   margin-top: 20px

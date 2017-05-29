@@ -15,10 +15,14 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
-    <div id="app">
+    <div id="app" class="site">
         @include('layouts.navigation')
 
-        @yield('content')
+        <div class="site-content">
+            @yield('content')
+        </div>
+
+        @include('layouts.footer')
     </div>
 
     <!-- Scripts -->
