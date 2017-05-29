@@ -18,6 +18,10 @@
                         </li>
                     @endforeach
                 </ul>
+
+                <a href="/series/create" class="button is-primary">
+                    Add a new series
+                </a>
             </div>
 
         </div>

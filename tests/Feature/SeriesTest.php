@@ -13,7 +13,7 @@ class SeriesTest extends TestCase
     /** @test */
     public function a_user_can_browse_all_series()
     {
-        $series = factory(Series::class, 2)->create();
+        $series = create(Series::class, [],  2);
 
         $this->get('/series')
              ->assertSee($series[0]->title)
@@ -23,7 +23,7 @@ class SeriesTest extends TestCase
     /** @test */
     public function a_user_can_see_info_about_one_series()
     {
-        $series = factory(Series::class)->create();
+        $series = create(Series::class);
 
         $this->get("/series/{$series->id}")
              ->assertSee($series->title)

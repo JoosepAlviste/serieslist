@@ -15,7 +15,7 @@ class AdministrateSeriesTest extends TestCase
     {
         $this->signInAdmin();
 
-        $series = factory(Series::class)->make();
+        $series = make(Series::class);
         $this->post('/series', $series->toArray());
 
         $this->assertDatabaseHas('series', $series->toArray());
@@ -27,7 +27,7 @@ class AdministrateSeriesTest extends TestCase
         $this->withExceptionHandling()
              ->signIn();
 
-        $series = factory(Series::class)->make();
+        $series = make(Series::class);
         $this->post('/series', $series->toArray())
              ->assertStatus(403);
 
