@@ -16,7 +16,7 @@ Route::get('/', function () {
 });
 
 Route::get('series', 'SeriesController@index');
-Route::post('series', 'SeriesController@store');
+Route::post('series', 'SeriesController@store')->middleware('can:create,App\Models\Series');
 Route::get('series/{series}', 'SeriesController@show');
 
 Auth::routes();

@@ -4,8 +4,8 @@ namespace Tests\Feature;
 
 use App\Models\Series;
 use App\Models\User;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\TestCase;
 
 class AdministrateSeriesTest extends TestCase
 {
@@ -24,17 +24,17 @@ class AdministrateSeriesTest extends TestCase
         $this->assertDatabaseHas('series', $series->toArray());
     }
 
-    /** @test **/
+    /** @test */
     public function a_user_who_is_not_an_admin_may_not_create_a_series()
     {
-        // Given a user is logged in who is not an admin
-        $this->signIn();
+        $this->withExceptionHandling()
+             ->signIn();
 
-        // If a store request is submitted
+        $series = factory(Series::class)->make();
+        $this->post('/series', $series->toArray())
+             ->assertStatus(403);
 
-        // The user should be redirected to /login
-
-        // There should not be a series in the database
+        $this->assertDatabaseMissing('series', $series->toArray());
     }
 }
 
