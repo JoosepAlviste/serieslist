@@ -20,6 +20,13 @@ class SeriesController extends Controller
 
     public function store()
     {
+        $this->validate(request(), [
+            'title' => 'required',
+            'description' => 'required',
+            'start_year' => 'required|numeric',
+            'end_year' => 'numeric',
+        ]);
+
         $series = Series::create([
             'title' => request()->title,
             'description' => request()->description,
