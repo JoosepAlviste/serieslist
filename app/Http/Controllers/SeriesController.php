@@ -20,13 +20,18 @@ class SeriesController extends Controller
 
     public function store()
     {
-        Series::create([
+        $series = Series::create([
             'title' => request()->title,
             'description' => request()->description,
             'start_year' => request()->start_year,
             'end_year' => request()->end_year,
         ]);
 
-        return back();
+        return redirect("/series/{$series->id}");
+    }
+
+    public function create()
+    {
+        return view('series.admin.create');
     }
 }

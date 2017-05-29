@@ -50,4 +50,13 @@ abstract class TestCase extends BaseTestCase
 
         return $this;
     }
+
+    protected function signInAdmin($user = null)
+    {
+        $user = $user ?: factory(User::class)->create([
+            'is_admin' => true,
+        ]);
+
+        $this->signIn($user);
+    }
 }

@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Models\Series;
-use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
@@ -14,9 +13,7 @@ class AdministrateSeriesTest extends TestCase
     /** @test */
     public function an_admin_user_can_create_a_series()
     {
-        $this->signIn(factory(User::class)->create([
-            'is_admin' => true,
-        ]));
+        $this->signInAdmin();
 
         $series = factory(Series::class)->make();
         $this->post('/series', $series->toArray());
@@ -35,6 +32,27 @@ class AdministrateSeriesTest extends TestCase
              ->assertStatus(403);
 
         $this->assertDatabaseMissing('series', $series->toArray());
+    }
+
+    /** @test * */
+    public function an_admin_user_can_see_series_create_form()
+    {
+        $this->signInAdmin();
+
+        $status = $this->get('/series/create');
+
+        $status->assertStatus(200)
+               ->assertSee('Create a new series');
+    }
+
+    /** @test * */
+    public function a_user_who_is_not_an_admin_may_not_see_the_create_series_form()
+    {
+        $this->withExceptionHandling()
+             ->signIn();
+
+        $this->get('/series/create')
+             ->assertStatus(403);
     }
 }
 
