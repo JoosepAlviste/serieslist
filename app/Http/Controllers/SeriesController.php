@@ -24,7 +24,7 @@ class SeriesController extends Controller
             'title' => 'required',
             'description' => 'required',
             'start_year' => 'required|numeric',
-            'end_year' => 'numeric',
+            'end_year' => 'nullable|numeric',
         ]);
 
         $series = Series::create([

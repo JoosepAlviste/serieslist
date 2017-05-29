@@ -8,5 +8,10 @@
 // Bulma
 @import "~bulma"
 
+.label.is-required
+  &::after
+    color: $red
+    content: " *"
+
 .form-card
   margin-top: 20px
