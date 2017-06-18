@@ -11,14 +11,30 @@
 |
 */
 
-Route::get('/', function () {
-    return view('pages.welcome');
-});
+
+/*
+|--------------------------------------------------------------------------
+| Series
+|--------------------------------------------------------------------------
+*/
 
 Route::get('series', 'SeriesController@index');
 Route::post('series', 'SeriesController@store')->middleware('can:create,App\Models\Series');
 Route::get('series/create', 'SeriesController@create')->middleware('can:create,App\Models\Series');
 Route::get('series/{series}', 'SeriesController@show');
+Route::put('series/{series}', 'SeriesController@update')->middleware('can:update,series');
+Route::get('series/{series}/edit', 'SeriesController@edit')->middleware('can:update,series');
+
+
+/*
+|--------------------------------------------------------------------------
+| Pages
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/', function () {
+    return view('pages.welcome');
+});
 
 Auth::routes();
 

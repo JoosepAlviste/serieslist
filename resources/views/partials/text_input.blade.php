@@ -6,7 +6,7 @@
     <input type="text"
            class="input {{ $errors->has($name) ? 'is-danger' : '' }}"
            id="{{ $name }}"
-           value="{{ old($name) ?: '' }}"
+           value="{{ isset($value) ? $value : (old($name) ?: '') }}"
            name="{{ $name }}"
             {{ $required ? 'required' : '' }}>
 

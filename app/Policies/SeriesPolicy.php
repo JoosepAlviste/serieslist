@@ -51,7 +51,7 @@ class SeriesPolicy
      */
     public function update(User $user, Series $series)
     {
-        //
+        return $user->is_admin;
     }
 
     /**

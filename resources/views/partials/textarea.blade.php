@@ -7,6 +7,8 @@
               id="{{ $name }}"
               name="{{ $name }}"
               rows="{{ isset($rows) ? $rows: 6 }}"
-              {{ $required ? 'required' : '' }}>{{ old($name) ?: '' }}</textarea>
+              {{ $required ? 'required' : '' }}>
+        {{ isset($value) ? $value : (old($name) ?: '') }}
+    </textarea>
 
 @endcomponent

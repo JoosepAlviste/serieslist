@@ -11,6 +11,13 @@
 
             <div class="content">
                 <p>{{ $series->description }}</p>
+
+                @can('update', $series)
+                    <a href="/series/{{ $series->id }}/edit" class="button is-default">
+                        Edit
+                    </a>
+                @endcan
+
             </div>
 
         </div>

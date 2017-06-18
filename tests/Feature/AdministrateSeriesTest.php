@@ -86,6 +86,73 @@ class AdministrateSeriesTest extends TestCase
              ->assertSessionHasErrors('end_year');
     }
 
+    /** @test */
+    function an_admin_user_can_update_a_series()
+    {
+        $this->signInAdmin();
+
+        $savedSeries = create(Series::class);
+
+        $updatedSeries = make(Series::class, [
+            'title' => 'Test title',
+            'description' => 'Test description',
+        ]);
+
+        $response = $this->put("/series/{$savedSeries->id}", $updatedSeries->toArray());
+
+        $this->assertEquals('Test title', $savedSeries->fresh()->title);
+        $this->assertEquals('Test description', $savedSeries->fresh()->description);
+    }
+
+    /** @test */
+    function a_user_who_is_not_an_admin_may_not_update_a_series()
+    {
+        $this->withExceptionHandling()
+             ->signIn();
+
+        $savedSeries = create(Series::class, [
+            'title' => 'Actual title',
+            'description' => 'Actual description',
+        ]);
+
+        $updatedSeries = make(Series::class, [
+            'title' => 'Test title',
+            'description' => 'Test description',
+        ]);
+
+        $this->put("/series/{$savedSeries->id}", $updatedSeries->toArray())
+             ->assertStatus(403);
+
+        $this->assertEquals('Actual title', $savedSeries->fresh()->title);
+        $this->assertEquals('Actual description', $savedSeries->fresh()->description);
+    }
+
+    /** @test */
+    function an_admin_user_can_see_the_series_edit_form()
+    {
+        $this->signInAdmin();
+
+        $series = create(Series::class);
+
+        $response = $this->get("/series/{$series->id}/edit");
+
+        $response->assertStatus(200);
+        $response->assertSee($series->title);
+        $response->assertSee($series->description);
+    }
+
+    /** @test * */
+    function a_user_who_is_not_an_admin_may_not_see_the_edit_series_form()
+    {
+        $this->withExceptionHandling()
+             ->signIn();
+
+        $series = create(Series::class);
+
+        $this->get("/series/{$series->id}/edit")
+             ->assertStatus(403);
+    }
+
     protected function createSeries($overrides = [])
     {
         $this->withExceptionHandling()

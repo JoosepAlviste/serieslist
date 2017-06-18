@@ -11,7 +11,7 @@
     <input type="number"
            class="input {{ $errors->has($name) ? 'is-danger' : '' }}"
            id="{{ $name }}"
-           value="{{ old($name) ?: '' }}"
+           value="{{ isset($value) ? $value : (old($name) ?: '') }}"
            name="{{ $name }}"
            step="{{ isset($step) ? $step : 1 }}"
             {{ $required ? 'required' : '' }}>

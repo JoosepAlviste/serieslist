@@ -19,9 +19,11 @@
                     @endforeach
                 </ul>
 
-                <a href="/series/create" class="button is-primary">
-                    Add a new series
-                </a>
+                @can('create', \App\Models\Series::class)
+                    <a href="/series/create" class="button is-primary">
+                        Add a new series
+                    </a>
+                @endcan
             </div>
 
         </div>
