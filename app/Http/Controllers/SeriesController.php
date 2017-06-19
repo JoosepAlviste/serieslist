@@ -51,6 +51,14 @@ class SeriesController extends Controller
             'end_year' => request()->end_year,
         ]);
 
+        if (request()->has('seasons')) {
+            foreach (request()->seasons as $season) {
+                $series->seasons()->create([
+                    'number' => $season['number'],
+                ]);
+            }
+        }
+
         return redirect("/series/{$series->id}");
     }
 

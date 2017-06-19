@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Season;
 use App\Models\Series;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
@@ -13,7 +14,7 @@ class SeriesTest extends TestCase
     /** @test */
     public function a_user_can_browse_all_series()
     {
-        $series = create(Series::class, [],  2);
+        $series = create(Series::class, [], 2);
 
         $this->get('/series')
              ->assertSee($series[0]->title)

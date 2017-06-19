@@ -23,4 +23,28 @@
         </div>
     </div>
 
+    @if(!$series->seasons->isEmpty())
+
+        <div class="section">
+            <div class="container">
+                <h1 class="title">Seasons</h1>
+                <h2 class="subtitle">{{ $series->seasons->count() }} seasons</h2>
+                <hr>
+
+                <div class="content">
+                    <ul>
+                        @foreach($series->seasons as $season)
+                            <li>
+                                <a href="/series/{{ $series->id }}/seasons/{{ $season->number }}">
+                                    Season {{ $season->number }}
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    @endif
+
 @endsection

@@ -16,18 +16,27 @@ $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
     static $password;
 
     return [
-        'name' => $faker->name,
-        'email' => $faker->unique()->safeEmail,
-        'password' => $password ?: $password = bcrypt('secret'),
+        'name'           => $faker->name,
+        'email'          => $faker->unique()->safeEmail,
+        'password'       => $password ?: $password = bcrypt('secret'),
         'remember_token' => str_random(10),
     ];
 });
 
 $factory->define(App\Models\Series::class, function (Faker\Generator $faker) {
     return [
-        'title' => $faker->sentence,
+        'title'       => $faker->sentence,
         'description' => $faker->paragraph,
-        'start_year' => $faker->year,
-        'end_year' => $faker->year,
+        'start_year'  => $faker->year,
+        'end_year'    => $faker->year,
+    ];
+});
+
+$factory->define(App\Models\Season::class, function (Faker\Generator $faker) {
+    return [
+        'number'    => $faker->numberBetween(1, 10),
+        'series_id' => function () {
+            return factory(\App\Models\Series::class)->create()->id;
+        },
     ];
 });

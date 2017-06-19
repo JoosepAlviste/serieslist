@@ -26,7 +26,7 @@
 
             <div class="content">
                 <a href="{{ url('series') }}">All Series</a><br>
-                <a href="{{ url('admin/series/create') }}">Add a new Series</a>
+                <a href="{{ url('series/create') }}">Add a new Series</a>
             </div>
 
         </div>

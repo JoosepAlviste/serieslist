@@ -31,6 +31,8 @@
 
         </div>
 
+        <seasons-list></seasons-list>
+
         <div class="field is-grouped">
             <p class="control">
                 <button type="submit" class="button is-primary">
@@ -45,4 +47,8 @@
         </div>
     </form>
 
+@endsection
+
+@section('scripts')
+    <script src="{{ asset('js/series_create.js') }}"></script>
 @endsection

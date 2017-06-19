@@ -12,7 +12,7 @@
                 <ul>
                     @foreach ($series as $oneSeries)
                         <li>
-                            <a href="/series/{{ $oneSeries->id }}">
+                            <a href="{{ $oneSeries->path() }}">
                                 {{ $oneSeries->title }}
                             </a>
                         </li>
