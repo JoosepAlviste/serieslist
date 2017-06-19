@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Season;
 use App\Models\Series;
 use Illuminate\Http\Request;
 
@@ -44,6 +45,7 @@ class SeriesController extends Controller
             'end_year' => 'nullable|numeric',
         ]);
 
+        /** @var Series $series */
         $series = Series::create([
             'title' => request()->title,
             'description' => request()->description,
@@ -53,9 +55,12 @@ class SeriesController extends Controller
 
         if (request()->has('seasons')) {
             foreach (request()->seasons as $season) {
-                $series->seasons()->create([
-                    'number' => $season['number'],
-                ]);
+                $savedSeason = $series->addSeason($season);
+                if (array_key_exists('episodes', $season)) {
+                    foreach ($season['episodes'] as $episode) {
+                        $savedSeason->addEpisode($episode);
+                    }
+                }
             }
         }
 

@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int number
  * @property int series_id
  * @property Series series
+ * @property Episode[] episodes
  *
  * @package App\Models
  */
@@ -19,7 +20,29 @@ class Season extends Model
     protected $fillable = ['number'];
 
     /**
-     * Many to one relationship where a series has many seasons..
+     * Construct a string path for a season.
+     *
+     * @return string
+     */
+    public function path()
+    {
+        return "/series/{$this->series->id}/seasons/{$this->number}";
+    }
+
+    /**
+     * Add an episode to this season.
+     *
+     * @param array $episode
+     *
+     * @return Episode
+     */
+    public function addEpisode($episode)
+    {
+        return $this->episodes()->create($episode);
+    }
+
+    /**
+     * Many to one relationship where a series has many seasons.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -28,8 +51,13 @@ class Season extends Model
         return $this->belongsTo(Series::class);
     }
 
-    public function path()
+    /**
+     * One to many relationship where a season consists of many episodes.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function episodes()
     {
-        return "/series/{$this->series->id}/seasons/{$this->number}";
+        return $this->hasMany(Episode::class);
     }
 }

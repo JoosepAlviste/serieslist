@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Models\Episode;
 use App\Models\Season;
 use App\Models\Series;
 use Tests\TestCase;
@@ -29,5 +30,31 @@ class SeasonTest extends TestCase
             $season->path()
         );
     }
-}
 
+    /** @test */
+    function a_season_consists_of_episodes()
+    {
+        $season = create(Season::class);
+        $episode = create(Episode::class, [
+            'season_id' => $season->id
+        ]);
+
+        $this->assertTrue($season->episodes->contains($episode));
+    }
+
+    /** @test */
+    function a_season_can_add_an_episode()
+    {
+        $season = create(Season::class);
+        $episode = make(Episode::class, [
+            'season_id' => null
+        ]);
+
+        $season->addEpisode($episode->toArray());
+
+        $this->assertDatabaseHas('episodes', [
+            'season_id' => $season->id,
+            'title' => $episode->title,
+        ]);
+    }
+}

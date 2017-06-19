@@ -22,7 +22,7 @@ class SeriesTest extends TestCase
     }
 
     /** @test */
-    public function a_user_can_see_info_about_one_series()
+    function a_user_can_see_info_about_one_series()
     {
         $series = create(Series::class);
 
