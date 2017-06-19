@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Season;
+use App\Http\Requests\StoreSeries;
 use App\Models\Series;
-use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 class SeriesController extends Controller
 {
@@ -34,27 +34,22 @@ class SeriesController extends Controller
     /**
      * Save a series from the request.
      *
+     * @param StoreSeries $request
+     *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function store()
+    public function store(StoreSeries $request)
     {
-        $this->validate(request(), [
-            'title' => 'required',
-            'description' => 'required',
-            'start_year' => 'required|numeric',
-            'end_year' => 'nullable|numeric',
-        ]);
+        $series = new Series;
+        $series->title = $request->get('title');
+        $series->description = $request->get('description');
+        $series->start_year = $request->get('start_year');
+        $series->end_year = $request->get('end_year');
 
-        /** @var Series $series */
-        $series = Series::create([
-            'title' => request()->title,
-            'description' => request()->description,
-            'start_year' => request()->start_year,
-            'end_year' => request()->end_year,
-        ]);
+        $series->save();
 
-        if (request()->has('seasons')) {
-            foreach (request()->seasons as $season) {
+        if ($request->has('seasons')) {
+            foreach ($request->get('seasons') as $season) {
                 $savedSeason = $series->addSeason($season);
                 if (array_key_exists('episodes', $season)) {
                     foreach ($season['episodes'] as $episode) {
@@ -80,25 +75,33 @@ class SeriesController extends Controller
     /**
      * Update the given series with parameters from the request.
      *
+     * @param StoreSeries $request
      * @param Series $series
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Series $series)
+    public function update(StoreSeries $request, Series $series)
     {
-        $this->validate(request(), [
-            'title' => 'required',
-            'description' => 'required',
-            'start_year' => 'required|numeric',
-            'end_year' => 'nullable|numeric',
-        ]);
-
-        $series->title = request()->title;
-        $series->description = request()->description;
-        $series->start_year = request()->start_year;
-        $series->end_year = request()->end_year;
+        $series->title = $request->get('title');
+        $series->description = $request->get('description');
+        $series->start_year = $request->get('start_year');
+        $series->end_year = $request->get('end_year');
 
         $series->save();
+
+        $series->seasons->each(function ($season) {
+            $season->delete();
+        });
+
+        $seasons = $request->get('seasons') ?: new Collection;
+        foreach ($seasons as $season) {
+            $savedSeason = $series->addSeason($season);
+            if (array_key_exists('episodes', $season)) {
+                foreach ($season['episodes'] as $episode) {
+                    $savedSeason->addEpisode($episode);
+                }
+            }
+        }
 
         return redirect("/series/{$series->id}");
     }

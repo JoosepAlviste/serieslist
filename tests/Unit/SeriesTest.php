@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Models\Episode;
 use App\Models\Season;
 use App\Models\Series;
 use Tests\TestCase;
@@ -49,5 +50,33 @@ class SeriesTest extends TestCase
             'number' => $season['number'],
         ]);
     }
-}
 
+    /** @test */
+    function it_deletes_all_its_seasons_on_deletion()
+    {
+        create(Season::class, ['series_id' => $this->series->id], 5);
+
+        $this->series->delete();
+
+        $this->assertDatabaseMissing('seasons', [
+            'series_id' => $this->series->id,
+        ]);
+    }
+
+    /** @test */
+    function it_deletes_all_its_episodes_on_deletion()
+    {
+        $seasons = create(Season::class, ['series_id' => $this->series->id], 3);
+        $seasons->each(function ($season) {
+            create(Episode::class, ['season_id' => $season->id], 3);
+        });
+
+        $this->series->delete();
+
+        $seasons->each(function ($season) {
+            $this->assertDatabaseMissing('episodes', [
+                'season_id' => $season->id,
+            ]);
+        });
+    }
+}

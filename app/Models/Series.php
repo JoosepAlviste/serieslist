@@ -22,6 +22,18 @@ class Series extends Model
     protected $fillable = ['title', 'description', 'start_year', 'end_year'];
 
     /**
+     * Register model event listeners.
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($series) {
+            $series->seasons->each->delete();
+        });
+    }
+
+    /**
      * Get a string path which points to this series.
      *
      * @return string

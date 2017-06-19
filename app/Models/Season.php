@@ -21,6 +21,19 @@ class Season extends Model
     protected $fillable = ['number'];
 
     /**
+     * Register model event listeners.
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($season) {
+            Episode::where('season_id', $season->id)
+                ->delete();
+        });
+    }
+
+    /**
      * Construct a string path for a season.
      *
      * @return string

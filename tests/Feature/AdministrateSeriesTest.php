@@ -94,7 +94,7 @@ class AdministrateSeriesTest extends TestCase
         $savedSeries = create(Series::class);
 
         $updatedSeries = make(Series::class, [
-            'title' => 'Test title',
+            'title'       => 'Test title',
             'description' => 'Test description',
         ]);
 
@@ -111,7 +111,7 @@ class AdministrateSeriesTest extends TestCase
              ->signIn();
 
         $savedSeries = create(Series::class, [
-            'title' => 'Actual title',
+            'title'       => 'Actual title',
             'description' => 'Actual description',
         ]);
 

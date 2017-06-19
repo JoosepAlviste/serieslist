@@ -62,4 +62,16 @@ class SeasonTest extends TestCase
             'number' => $episode->number,
         ]);
     }
+
+    /** @test */
+    function it_deletes_all_its_episodes_on_deletion()
+    {
+        create(Episode::class, ['season_id' => $this->season->id], 5);
+
+        $this->season->delete();
+
+        $this->assertDatabaseMissing('episodes', [
+            'season_id' => $this->season->id,
+        ]);
+    }
 }
