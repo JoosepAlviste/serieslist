@@ -1,6 +1,6 @@
 <template>
-    <li class="season-element">
-        <div class="season-container">
+    <li class="season-element" :class="[ episodesOpenClass ]">
+        <div class="season-container" @click="toggleEpisodesOpen">
             <span class="season-number">
 
                 <span class="dropdown-arrow">
@@ -20,7 +20,8 @@
             </span>
         </div>
 
-        <episodes-list :episodes="season.episodes"
+        <episodes-list v-show="episodesOpen"
+                       :episodes="season.episodes"
                        :season-number="seasonNumber"
                        @add-episode-clicked="$emit('add-episode-was-clicked')">
         </episodes-list>
@@ -46,17 +47,50 @@
                 required: true,
             },
         },
+
+        data() {
+            return {
+                episodesOpen: true,
+            }
+        },
+
+        computed: {
+            episodesOpenClass() {
+                return this.episodesOpen ? 'is-open' : 'is-closed'
+            },
+        },
+
+        methods: {
+            toggleEpisodesOpen() {
+                this.episodesOpen = !this.episodesOpen
+            },
+        },
     }
 </script>
 
 <style lang="sass">
 
     @import '../../../../sass/includes/variables'
+    @import '../../../../sass/includes/mixins'
 
     .season-element
 
         &:not(:first-child) .season-container
             border-top: 0
+
+        .dropdown-arrow svg
+            +transition(transform .2s ease-in)
+
+        &.is-open
+            .season-container
+                +box-shadow(0px 2px 2px -2px rgba(0,0,0,0.2))
+
+            .dropdown-arrow svg
+                +transform(rotate(90deg))
+
+        &.is-closed .dropdown-arrow svg
+            +transform(rotate(0))
+
 
     .season-container
         display: flex
@@ -65,8 +99,13 @@
         padding: 5px 5px 5px 15px
         border: 1px solid #e3e1e4
 
+        &:hover
+            cursor: pointer
+
+
     .season-number
         display: flex
+        user-select: none
 
         .dropdown-arrow
             height: 1.5em

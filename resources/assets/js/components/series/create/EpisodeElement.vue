@@ -54,8 +54,6 @@
 
         watch: {
             episodeData() {
-                console.log('something here!!!!????')
-
                 this.$emit('episode-was-changed', this.episodeData, this.episodeNumber)
             },
 

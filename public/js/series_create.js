@@ -10137,6 +10137,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -10152,6 +10153,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         seasonNumber: {
             type: Number,
             required: true
+        }
+    },
+
+    data: function data() {
+        return {
+            episodesOpen: true
+        };
+    },
+
+
+    computed: {
+        episodesOpenClass: function episodesOpenClass() {
+            return this.episodesOpen ? 'is-open' : 'is-closed';
+        }
+    },
+
+    methods: {
+        toggleEpisodesOpen: function toggleEpisodesOpen() {
+            this.episodesOpen = !this.episodesOpen;
         }
     }
 });
@@ -10200,9 +10220,13 @@ module.exports = Component.exports
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('li', {
-    staticClass: "season-element"
+    staticClass: "season-element",
+    class: [_vm.episodesOpenClass]
   }, [_c('div', {
-    staticClass: "season-container"
+    staticClass: "season-container",
+    on: {
+      "click": _vm.toggleEpisodesOpen
+    }
   }, [_c('span', {
     staticClass: "season-number"
   }, [_c('span', {
@@ -10229,6 +10253,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }
   }, [_vm._v("\n            Remove\n        ")])]), _vm._v(" "), _c('episodes-list', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.episodesOpen),
+      expression: "episodesOpen"
+    }],
     attrs: {
       "episodes": _vm.season.episodes,
       "season-number": _vm.seasonNumber
@@ -10261,7 +10291,7 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(42)();
-exports.push([module.i, "\n.season-element:not(:first-child) .season-container {\n  border-top: 0;\n}\n.season-container {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n  padding: 5px 5px 5px 15px;\n  border: 1px solid #e3e1e4;\n}\n.season-number {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n}\n.season-number .dropdown-arrow {\n    height: 1.5em;\n    width: 1.5em;\n    margin-right: .4em;\n    padding: .2em;\n}\n", ""]);
+exports.push([module.i, "\n.season-element:not(:first-child) .season-container {\n  border-top: 0;\n}\n.season-element .dropdown-arrow svg {\n  transition: -webkit-transform 0.2s ease-in;\n  transition: transform 0.2s ease-in;\n  transition: transform 0.2s ease-in, -webkit-transform 0.2s ease-in;\n}\n.season-element.is-open .season-container {\n  box-shadow: 0px 2px 2px -2px rgba(0, 0, 0, 0.2);\n}\n.season-element.is-open .dropdown-arrow svg {\n  -webkit-transform: rotate(90deg);\n  transform: rotate(90deg);\n}\n.season-element.is-closed .dropdown-arrow svg {\n  -webkit-transform: rotate(0);\n  transform: rotate(0);\n}\n.season-container {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n  padding: 5px 5px 5px 15px;\n  border: 1px solid #e3e1e4;\n}\n.season-container:hover {\n    cursor: pointer;\n}\n.season-number {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n.season-number .dropdown-arrow {\n    height: 1.5em;\n    width: 1.5em;\n    margin-right: .4em;\n    padding: .2em;\n}\n", ""]);
 
 /***/ }),
 /* 48 */
@@ -10816,8 +10846,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     watch: {
         episodeData: function episodeData() {
-            console.log('something here!!!!????');
-
             this.$emit('episode-was-changed', this.episodeData, this.episodeNumber);
         },
         episode: function episode() {
