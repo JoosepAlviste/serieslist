@@ -1,6 +1,8 @@
 <template>
     <div class="seasons-list">
-        <ul>
+        <h3 class="subtitle">Seasons</h3>
+
+        <ul class="seasons-list-list">
             <season-element v-for="(season, index) in seasons"
                             :key="index"
                             :season="season"
@@ -10,7 +12,7 @@
         </ul>
 
         <button class="button is-primary" @click="addSeason" type="button">
-            +
+            Add a season
         </button>
     </div>
 </template>
@@ -38,3 +40,16 @@
         },
     }
 </script>
+
+<style lang="sass" scoped>
+
+    @import '../../../../sass/includes/mixins'
+
+    .seasons-list
+        margin-bottom: 20px
+
+    .seasons-list-list
+        margin-bottom: 20px
+        +box-shadow(0 2px 7px -3px rgba(0, 0, 0, 0.2))
+
+</style>
