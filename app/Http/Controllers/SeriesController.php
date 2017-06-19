@@ -38,6 +38,8 @@ class SeriesController extends Controller
      */
     public function store()
     {
+//        dd(request()->all());
+
         $this->validate(request(), [
             'title' => 'required',
             'description' => 'required',

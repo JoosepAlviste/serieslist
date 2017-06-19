@@ -51,7 +51,7 @@ class SeasonTest extends TestCase
     function a_season_can_add_an_episode()
     {
         $episode = make(Episode::class, [
-            'season_id' => null
+            'season_id' => null,
         ]);
 
         $this->season->addEpisode($episode->toArray());
@@ -59,6 +59,7 @@ class SeasonTest extends TestCase
         $this->assertDatabaseHas('episodes', [
             'season_id' => $this->season->id,
             'title' => $episode->title,
+            'number' => $episode->number,
         ]);
     }
 }

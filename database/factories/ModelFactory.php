@@ -43,9 +43,10 @@ $factory->define(App\Models\Season::class, function (Faker\Generator $faker) {
 
 $factory->define(App\Models\Episode::class, function (Faker\Generator $faker) {
     return [
+        'number'    => $faker->numberBetween(1, 10),
+        'title' => $faker->words(4, true),
         'season_id' => function () {
             return create(\App\Models\Season::class)->id;
         },
-        'title' => $faker->words(4, true),
     ];
 });

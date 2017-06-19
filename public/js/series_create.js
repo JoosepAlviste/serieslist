@@ -9921,6 +9921,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -9936,7 +9937,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         addSeason: function addSeason() {
-            this.seasons.push({});
+            this.seasons.push({
+                episodes: []
+            });
         },
         handleSeasonRemoved: function handleSeasonRemoved(seasonNumber) {
             this.seasons.splice(seasonNumber - 1, 1);
@@ -10004,7 +10007,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "season-number": index + 1
       },
       on: {
-        "removed": _vm.handleSeasonRemoved
+        "removed": _vm.handleSeasonRemoved,
+        "add-episode-was-clicked": function($event) {
+          _vm.handleAddEpisodeClicked(season)
+        }
       }
     })
   })), _vm._v(" "), _c('button', {
@@ -10098,6 +10104,25 @@ module.exports = function() {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__EpisodesList_vue__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__EpisodesList_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__EpisodesList_vue__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -10113,7 +10138,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+
+    components: { EpisodesList: __WEBPACK_IMPORTED_MODULE_0__EpisodesList_vue___default.a },
+
     props: {
         season: {
             type: Object,
@@ -10171,24 +10201,52 @@ module.exports = Component.exports
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('li', {
     staticClass: "season-element"
+  }, [_c('div', {
+    staticClass: "season-container"
   }, [_c('span', {
     staticClass: "season-number"
-  }, [_vm._v("\n        Season " + _vm._s(_vm.seasonNumber) + "\n    ")]), _vm._v(" "), _c('span', {
+  }, [_c('span', {
+    staticClass: "dropdown-arrow"
+  }, [_c('svg', {
+    staticStyle: {
+      "enable-background": "new 0 0 477.175 477.175"
+    },
+    attrs: {
+      "x": "0px",
+      "y": "0px",
+      "viewBox": "0 0 477.175 477.175",
+      "xml:space": "preserve"
+    }
+  }, [_c('path', {
+    attrs: {
+      "d": "M360.731,229.075l-225.1-225.1c-5.3-5.3-13.8-5.3-19.1,0s-5.3,13.8,0,19.1l215.5,215.5l-215.5,215.5 c-5.3,5.3-5.3,13.8,0,19.1c2.6,2.6,6.1,4,9.5,4c3.4,0,6.9-1.3,9.5-4l225.1-225.1C365.931,242.875,365.931,234.275,360.731,229.075z"
+    }
+  })])]), _vm._v(" "), _c('span', [_vm._v("\n                Season " + _vm._s(_vm.seasonNumber) + "\n            ")])]), _vm._v(" "), _c('span', {
     staticClass: "button is-default",
     on: {
       "click": function($event) {
         _vm.$emit('removed', _vm.seasonNumber)
       }
     }
-  }, [_vm._v("\n        Remove\n    ")]), _vm._v(" "), _c('input', {
+  }, [_vm._v("\n            Remove\n        ")])]), _vm._v(" "), _c('episodes-list', {
+    attrs: {
+      "episodes": _vm.season.episodes,
+      "season-number": _vm.seasonNumber
+    },
+    on: {
+      "add-episode-clicked": function($event) {
+        _vm.$emit('add-episode-was-clicked')
+      }
+    }
+  }), _vm._v(" "), _c('input', {
     attrs: {
       "type": "hidden",
-      "name": 'seasons[][number]'
+      "name": 'seasons[' + _vm.seasonNumber + '][number]'
     },
     domProps: {
       "value": _vm.seasonNumber
     }
-  })])
+  })], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -10203,7 +10261,7 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(42)();
-exports.push([module.i, "\n.season-element {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n  padding: 5px 5px 5px 15px;\n  border: 1px solid #e3e1e4;\n}\n.season-element:not(:first-child) {\n    border-top: 0;\n}\n", ""]);
+exports.push([module.i, "\n.season-element:not(:first-child) .season-container {\n  border-top: 0;\n}\n.season-container {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n  padding: 5px 5px 5px 15px;\n  border: 1px solid #e3e1e4;\n}\n.season-number {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n}\n.season-number .dropdown-arrow {\n    height: 1.5em;\n    width: 1.5em;\n    margin-right: .4em;\n    padding: .2em;\n}\n", ""]);
 
 /***/ }),
 /* 48 */
@@ -10516,6 +10574,359 @@ if(false) {
  }
  // When the module is disposed, remove the <style> tags
  module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 53 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__EpisodeElement_vue__ = __webpack_require__(61);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__EpisodeElement_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__EpisodeElement_vue__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+
+    components: { EpisodeElement: __WEBPACK_IMPORTED_MODULE_0__EpisodeElement_vue___default.a },
+
+    props: {
+        seasonNumber: {
+            type: Number,
+            required: true
+        }
+    },
+
+    data: function data() {
+        return {
+            episodes: []
+        };
+    },
+
+
+    methods: {
+        handleAddEpisodeClicked: function handleAddEpisodeClicked() {
+            this.episodes.push({
+                title: ''
+            });
+        },
+        handleRemoveEpisodeClicked: function handleRemoveEpisodeClicked(episodeNumber) {
+            this.episodes.splice(episodeNumber - 1, 1);
+        },
+        handleEpisodeChanged: function handleEpisodeChanged(episode, episodeNumber) {
+            this.episodes[episodeNumber - 1] = episode;
+        }
+    }
+});
+
+/***/ }),
+/* 54 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+/* styles */
+__webpack_require__(59)
+
+var Component = __webpack_require__(2)(
+  /* script */
+  __webpack_require__(53),
+  /* template */
+  __webpack_require__(55),
+  /* scopeId */
+  "data-v-6c03b54c",
+  /* cssModules */
+  null
+)
+Component.options.__file = "/Users/joosep/Code/serieslist/resources/assets/js/components/series/create/EpisodesList.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] EpisodesList.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-6c03b54c", Component.options)
+  } else {
+    hotAPI.reload("data-v-6c03b54c", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 55 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "episodes-list"
+  }, [_c('h2', {
+    staticClass: "subtitle"
+  }, [_vm._v("Season " + _vm._s(_vm.seasonNumber) + " episodes")]), _vm._v(" "), _c('ul', _vm._l((_vm.episodes), function(episode, index) {
+    return _c('li', [_c('episode-element', {
+      attrs: {
+        "episode": episode,
+        "episodeNumber": index + 1,
+        "seasonNumber": _vm.seasonNumber
+      },
+      on: {
+        "episode-was-changed": _vm.handleEpisodeChanged,
+        "remove-episode-was-clicked": _vm.handleRemoveEpisodeClicked
+      }
+    })], 1)
+  })), _vm._v(" "), _c('button', {
+    staticClass: "button is-primary mt-1",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": _vm.handleAddEpisodeClicked
+    }
+  }, [_vm._v("\n        Add an episode\n    ")])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-6c03b54c", module.exports)
+  }
+}
+
+/***/ }),
+/* 56 */,
+/* 57 */,
+/* 58 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(42)();
+exports.push([module.i, "\n.episodes-list[data-v-6c03b54c] {\n  padding: 10px 15px;\n  border: 1px solid #e3e1e4;\n  border-top: 0;\n}\n", ""]);
+
+/***/ }),
+/* 59 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(58);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(49)("629ec0d7", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-6c03b54c\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./EpisodesList.vue", function() {
+     var newContent = require("!!../../../../../../node_modules/css-loader/index.js!../../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-6c03b54c\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../../node_modules/sass-loader/lib/loader.js?indentedSyntax!../../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./EpisodesList.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 60 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: {
+        episode: {
+            type: Object,
+            required: true
+        },
+        episodeNumber: {
+            type: Number,
+            required: true
+        },
+        seasonNumber: {
+            type: Number,
+            required: true
+        }
+    },
+
+    data: function data() {
+        return {
+            episodeData: this.episode
+        };
+    },
+
+
+    watch: {
+        episodeData: function episodeData() {
+            console.log('something here!!!!????');
+
+            this.$emit('episode-was-changed', this.episodeData, this.episodeNumber);
+        },
+        episode: function episode() {
+            this.episodeData = this.episode;
+        }
+    },
+
+    mounted: function mounted() {
+        this.episodeData = this.episode;
+    }
+});
+
+/***/ }),
+/* 61 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(2)(
+  /* script */
+  __webpack_require__(60),
+  /* template */
+  __webpack_require__(62),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/Users/joosep/Code/serieslist/resources/assets/js/components/series/create/EpisodeElement.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] EpisodeElement.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-c3780a76", Component.options)
+  } else {
+    hotAPI.reload("data-v-c3780a76", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 62 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [(_vm.episodeNumber !== 1) ? _c('hr') : _vm._e(), _vm._v(" "), _c('div', {
+    staticClass: "field"
+  }, [_c('label', {
+    staticClass: "label",
+    attrs: {
+      "for": 'seasons[' + _vm.seasonNumber + '][episodes][' + _vm.episodeNumber + '][title]'
+    }
+  }, [_vm._v("\n            Episode " + _vm._s(_vm.episodeNumber) + " title:\n        ")]), _vm._v(" "), _c('p', {
+    staticClass: "control"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.episode.title),
+      expression: "episode.title"
+    }],
+    staticClass: "input",
+    attrs: {
+      "type": "text",
+      "id": 'seasons[' + _vm.seasonNumber + '][episodes][' + _vm.episodeNumber + '][title]',
+      "name": 'seasons[' + _vm.seasonNumber + '][episodes][' + _vm.episodeNumber + '][title]'
+    },
+    domProps: {
+      "value": (_vm.episode.title)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.episode.title = $event.target.value
+      }
+    }
+  })])]), _vm._v(" "), _c('button', {
+    staticClass: "button is-default",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        _vm.$emit('remove-episode-was-clicked', _vm.episodeNumber)
+      }
+    }
+  }, [_vm._v("\n        Remove episode\n    ")]), _vm._v(" "), _c('input', {
+    attrs: {
+      "type": "hidden",
+      "id": 'seasons[' + _vm.seasonNumber + '][episodes][' + _vm.episodeNumber + '][number]',
+      "name": 'seasons[' + _vm.seasonNumber + '][episodes][' + _vm.episodeNumber + '][number]'
+    },
+    domProps: {
+      "value": _vm.episodeNumber
+    }
+  })])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-c3780a76", module.exports)
+  }
 }
 
 /***/ })

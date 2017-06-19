@@ -21,7 +21,7 @@ class AdministrateEpisodesTest extends TestCase
         $series['seasons'] = [[
             'number' => 1,
             'episodes' => [
-                [ 'title' => 'Test title' ],
+                [ 'title' => 'Test title', 'number' => 1 ],
             ],
         ]];
 
@@ -32,6 +32,7 @@ class AdministrateEpisodesTest extends TestCase
         $this->assertDatabaseHas('episodes', [
             'season_id' => Series::first()->seasons->first()->id,
             'title' => 'Test title',
+            'number' => 1,
         ]);
     }
 }

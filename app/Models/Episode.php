@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Episode extends Model
 {
-    protected $fillable = ['title'];
+    protected $fillable = ['title', 'number'];
 
     /**
      * Make a string path which points to this episode.

@@ -7,7 +7,8 @@
                             :key="index"
                             :season="season"
                             :season-number="index + 1"
-                            @removed="handleSeasonRemoved">
+                            @removed="handleSeasonRemoved"
+                            @add-episode-was-clicked="handleAddEpisodeClicked(season)">
             </season-element>
         </ul>
 
@@ -31,7 +32,9 @@
 
         methods: {
             addSeason() {
-                this.seasons.push({ })
+                this.seasons.push({
+                    episodes: [],
+                })
             },
 
             handleSeasonRemoved(seasonNumber) {
