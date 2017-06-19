@@ -12,48 +12,52 @@ class SeasonTest extends TestCase
 {
     use DatabaseMigrations;
 
+    /** @var Season */
+    protected $season;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->season = create(Season::class);
+    }
+
     /** @test */
     function a_season_belongs_to_a_series()
     {
-        $season = create(Season::class);
-
-        $this->assertInstanceOf(Series::class, $season->series);
+        $this->assertInstanceOf(Series::class, $this->season->series);
     }
 
     /** @test */
     function a_season_can_make_a_string_path()
     {
-        $season = create(Season::class);
-
         $this->assertEquals(
-            "/series/{$season->series->id}/seasons/{$season->number}",
-            $season->path()
+            "/series/{$this->season->series->id}/seasons/{$this->season->number}",
+            $this->season->path()
         );
     }
 
     /** @test */
     function a_season_consists_of_episodes()
     {
-        $season = create(Season::class);
         $episode = create(Episode::class, [
-            'season_id' => $season->id
+            'season_id' => $this->season->id
         ]);
 
-        $this->assertTrue($season->episodes->contains($episode));
+        $this->assertTrue($this->season->episodes->contains($episode));
     }
 
     /** @test */
     function a_season_can_add_an_episode()
     {
-        $season = create(Season::class);
         $episode = make(Episode::class, [
             'season_id' => null
         ]);
 
-        $season->addEpisode($episode->toArray());
+        $this->season->addEpisode($episode->toArray());
 
         $this->assertDatabaseHas('episodes', [
-            'season_id' => $season->id,
+            'season_id' => $this->season->id,
             'title' => $episode->title,
         ]);
     }

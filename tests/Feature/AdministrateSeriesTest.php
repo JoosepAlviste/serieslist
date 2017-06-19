@@ -98,7 +98,7 @@ class AdministrateSeriesTest extends TestCase
             'description' => 'Test description',
         ]);
 
-        $response = $this->put("/series/{$savedSeries->id}", $updatedSeries->toArray());
+        $this->put("/series/{$savedSeries->id}", $updatedSeries->toArray());
 
         $this->assertEquals('Test title', $savedSeries->fresh()->title);
         $this->assertEquals('Test description', $savedSeries->fresh()->description);
@@ -115,10 +115,7 @@ class AdministrateSeriesTest extends TestCase
             'description' => 'Actual description',
         ]);
 
-        $updatedSeries = make(Series::class, [
-            'title' => 'Test title',
-            'description' => 'Test description',
-        ]);
+        $updatedSeries = make(Series::class);
 
         $this->put("/series/{$savedSeries->id}", $updatedSeries->toArray())
              ->assertStatus(403);

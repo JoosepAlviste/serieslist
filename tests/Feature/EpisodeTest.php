@@ -12,7 +12,7 @@ class EpisodeTest extends TestCase
     use DatabaseMigrations;
 
     /** @test */
-    function a_user_can_view_info_about_episodes()
+    function a_visitor_can_view_info_about_episodes()
     {
         $episode = create(Episode::class);
 
@@ -22,7 +22,7 @@ class EpisodeTest extends TestCase
     }
 
     /** @test */
-    function a_user_can_see_all_episodes_of_one_season()
+    function a_visitor_can_see_all_episodes_of_one_season()
     {
         $season = create(Season::class);
         $episodes = create(Episode::class, [

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 /**
  * Class Series.
@@ -12,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string description
  * @property int start_year
  * @property int end_year
- * @property Season[] seasons
+ * @property Season[]|Collection seasons
  *
  * @package App\Models
  */

@@ -11,35 +11,41 @@ class SeriesTest extends TestCase
 {
     use DatabaseMigrations;
 
+    /** @var Series */
+    protected $series;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->series = create(Series::class);
+    }
+
     /** @test */
     function a_series_has_seasons()
     {
-        $series = create(Series::class);
-        $season = create(Season::class, ['series_id' => $series->id]);
+        $season = create(Season::class, ['series_id' => $this->series->id]);
 
-        $this->assertTrue($series->seasons->contains($season));
+        $this->assertTrue($this->series->seasons->contains($season));
     }
 
     /** @test */
     function a_series_can_make_a_string_path()
     {
-        $series = create(Series::class);
-
-        $this->assertEquals("/series/{$series->id}", $series->path());
+        $this->assertEquals("/series/{$this->series->id}", $this->series->path());
     }
 
     /** @test */
     function a_series_can_add_a_season()
     {
-        $series = create(Series::class);
         $season = make(Season::class, [
             'series_id' => null,
         ])->toArray();
 
-        $series->addSeason($season);
+        $this->series->addSeason($season);
 
         $this->assertDatabaseHas('seasons', [
-            'series_id' => $series->id,
+            'series_id' => $this->series->id,
             'number' => $season['number'],
         ]);
     }

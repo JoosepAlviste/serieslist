@@ -12,7 +12,7 @@ class SeriesTest extends TestCase
     use DatabaseMigrations;
 
     /** @test */
-    public function a_user_can_browse_all_series()
+    public function a_visitor_can_browse_all_series()
     {
         $series = create(Series::class, [], 2);
 
@@ -22,7 +22,7 @@ class SeriesTest extends TestCase
     }
 
     /** @test */
-    function a_user_can_see_info_about_one_series()
+    function a_visitor_can_see_info_about_one_series()
     {
         $series = create(Series::class);
 

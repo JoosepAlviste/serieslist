@@ -11,22 +11,28 @@ class EpisodeTest extends TestCase
 {
     use DatabaseMigrations;
 
+    /** @var Episode */
+    protected $episode;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->episode = create(Episode::class);
+    }
+
     /** @test */
     function an_episode_belongs_to_a_season()
     {
-        $episode = create(Episode::class);
-
-        $this->assertInstanceOf(Season::class, $episode->season);
+        $this->assertInstanceOf(Season::class, $this->episode->season);
     }
 
     /** @test */
     function an_episode_can_make_a_string_path()
     {
-        $episode = create(Episode::class);
-
         $this->assertEquals(
-            "/series/{$episode->season->series->id}/episodes/{$episode->id}",
-            $episode->path()
+            "/series/{$this->episode->season->series->id}/episodes/{$this->episode->id}",
+            $this->episode->path()
         );
     }
 }
