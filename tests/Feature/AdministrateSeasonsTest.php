@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Episode;
 use App\Models\Season;
 use App\Models\Series;
 use Tests\TestCase;
@@ -39,7 +40,6 @@ class AdministrateSeasonsTest extends TestCase
     {
         $this->signInAdmin();
 
-        // Given we have a saved series with some seasons
         $series = create(Series::class);
         $season = create(Season::class, ['series_id' => $series->id]);
 
@@ -49,10 +49,8 @@ class AdministrateSeasonsTest extends TestCase
             ['number' => 2],
         ];
 
-        // If we send a request to update the series with new seasons
         $this->put($series->path(), $seriesArray);
 
-        // The database should now contain the new seasons
         $this->assertDatabaseHas('seasons', [
             'series_id' => $series->id,
             'number' => 1,
@@ -60,6 +58,26 @@ class AdministrateSeasonsTest extends TestCase
         $this->assertDatabaseHas('seasons', [
             'series_id' => $series->id,
             'number' => 2,
+        ]);
+    }
+
+    /** @test */
+    function when_a_season_is_updated_its_episodes_are_not_deleted()
+    {
+        $this->signInAdmin();
+
+        $season = create(Season::class, ['number' => 1]);
+        $episode = create(Episode::class, ['season_id' => $season->id]);
+
+        $params = $season->series->toArray();
+        $params['seasons'] = [
+            ['number' => 1, 'episodes' => [$episode->toArray()]],
+        ];
+
+        $this->put($season->series->path(), $params);
+
+        $this->assertDatabaseHas('episodes', [
+            'id' => $episode->id,
         ]);
     }
 }

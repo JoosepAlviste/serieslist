@@ -95,12 +95,7 @@ class SeriesController extends Controller
 
         $seasons = $request->get('seasons') ?: new Collection;
         foreach ($seasons as $season) {
-            $savedSeason = $series->addSeason($season);
-            if (array_key_exists('episodes', $season)) {
-                foreach ($season['episodes'] as $episode) {
-                    $savedSeason->addEpisode($episode);
-                }
-            }
+            $series->addSeason($season);
         }
 
         return redirect("/series/{$series->id}");
