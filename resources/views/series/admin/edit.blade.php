@@ -51,15 +51,15 @@
                 </button>
             </p>
             <p class="control">
-                <a class="button is-link" href="/series/{{ $series->id }}">
-                    Cancel
-                </a>
-            </p>
-            <p class="control">
                 <a class="button is-danger" href="/series/{{ $series->id }}/delete"
                    onclick="event.preventDefault();
                             document.getElementById('delete-series-form').submit()">
                     Delete
+                </a>
+            </p>
+            <p class="control">
+                <a class="button is-link" href="/series/{{ $series->id }}">
+                    Cancel
                 </a>
             </p>
         </div>
