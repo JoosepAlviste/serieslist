@@ -1,6 +1,6 @@
 # Serieslist
 
-![travis](https://api.travis-ci.org/Zeizig/serieslist.svg)
+[![travis](https://api.travis-ci.org/Zeizig/serieslist.svg)](https://travis-ci.org/Zeizig/serieslist)
 [![codecov](https://codecov.io/gh/Zeizig/serieslist/branch/master/graph/badge.svg)](https://codecov.io/gh/Zeizig/serieslist)
 
 Keep track of series' seen episodes. Very work in progress!
