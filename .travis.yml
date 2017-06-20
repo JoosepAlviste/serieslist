@@ -28,6 +28,4 @@ deploy:
   on:
     repo: Zeizig/serieslist
   run:
-   - "touch database/database.sqlite"
    - "php artisan migrate --force"
-   - "ls -la database"
