@@ -20,7 +20,7 @@ deploy:
   app: serieslist
   on:
     repo: Zeizig/serieslist
-
-after_deploy:
-  - touch database/database.sqlite
-  - php artisan migrate
+  run:
+   - "touch database/database.sqlite"
+   - "php artisan migrate"
+   - "ls -la database"
