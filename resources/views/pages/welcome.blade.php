@@ -79,7 +79,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Serieslist changed
+                    Serieslist
                 </div>
             </div>
         </div>

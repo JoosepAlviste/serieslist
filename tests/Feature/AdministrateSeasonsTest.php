@@ -41,7 +41,7 @@ class AdministrateSeasonsTest extends TestCase
         $this->signInAdmin();
 
         $series = create(Series::class);
-        $season = create(Season::class, ['series_id' => $series->id]);
+        $season = create(Season::class, ['series_id' => $series->id, 'number' => 1]);
 
         $seriesArray = $series->toArray();
         $seriesArray['seasons'] = [
@@ -76,8 +76,8 @@ class AdministrateSeasonsTest extends TestCase
 
         $this->put($season->series->path(), $params);
 
-//        $this->assertDatabaseHas('episodes', [
-//            'id' => $episode->id,
-//        ]);
+        $this->assertDatabaseHas('episodes', [
+            'id' => $episode->id,
+        ]);
     }
 }

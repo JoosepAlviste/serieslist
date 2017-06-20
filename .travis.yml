@@ -1,5 +1,8 @@
 language: php
 
+git:
+  depth: 1
+
 php:
   - 7.0
 
@@ -9,9 +12,13 @@ before_script:
   - composer self-update
   - composer install --no-interaction
   - php artisan key:generate
+  - mkdir -p build/logs
 
 script:
-  - vendor/bin/phpunit
+  - vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
 
 deploy:
   provider: heroku

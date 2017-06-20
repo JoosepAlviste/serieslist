@@ -89,13 +89,30 @@ class SeriesController extends Controller
 
         $series->save();
 
-        $series->seasons->each(function ($season) {
-            $season->delete();
-        });
+        $oldSeasons = $series->seasons;
+        $newSeasons = $request->get('seasons') ?: new Collection;
+        $addedSeasons = new Collection;
 
-        $seasons = $request->get('seasons') ?: new Collection;
-        foreach ($seasons as $season) {
-            $series->addSeason($season);
+        foreach ($oldSeasons as $oldSeason) {
+            $shouldDelete = true;
+            foreach ($newSeasons as $newSeason) {
+                if ($oldSeason->number === $newSeason['number']) {
+                    // TODO: Update episodes?
+                    $shouldDelete = false;
+                    $addedSeasons->push($oldSeason->number);
+                    break;
+                }
+            }
+
+            if ($shouldDelete) {
+                $oldSeason->delete();
+            }
+        }
+
+        foreach ($newSeasons as $newSeason) {
+            if (!$addedSeasons->contains($newSeason['number'])) {
+                $series->addSeason($newSeason);
+            }
         }
 
         return redirect("/series/{$series->id}");
