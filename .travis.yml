@@ -12,3 +12,11 @@ before_script:
 
 script:
   - vendor/bin/phpunit
+
+deploy:
+  provider: heroku
+  api_key:
+    secure: RMLjWo+zi5gOHIqQvorVwRJbHmg+UEpNqfdUOAvIUTcQcCaNYHAQUOSV+p3702fwLJM6iGghWs+3D9yiJ2m0C68eQdS/breB+Wni97kVKM2mzf38+BwepakZLjcYSNSE2+YBxYpY/fkqIoEiS9c4SxvaBI7Qvzg8Es0Ebe/pJK5WcnRl70kQBY1M0gs5WIgh7mB8heB4AEoI1dvejkTk0mJnKBrGegEAlR169z2C2w1MGWggJxejU9pfdPIxsDqxVYfKnxvkNlS2i854i5xzLjCCW0VtORMCuHDPRKvyzqaNv1UzkMw/0Ls3xvwOYV4HJ6YCmJaj5bCy+oBM+KJrHaZBNUeEUMyf7PG8IMrV+cPEmYoSpRDMTEE4n4huj1yahF3Ljfebvx0c5pMnD4wrWVcK+FC42eY2QUkRlKW0a0nW0leWHdVWPhbX0elsaG3aOTpoa+6RHRp0zVSOcx/Rss21opoFRPt6ulIV1V6cDVzvKjpMS2yKGkb2e5ywPxipwXql25WrR1tUAhF5PgwmP5YjGVsULknCcT8Q/o19lmTpcEFYAaMgYLMG/7HkwmiETGwvX/K4TqPg7WU7914d9bQkt7X6cFtUV1KLSovsA1XaEO40ZmgU7e1UJLOkOCgxaV87b2JLtPrT+A1VmNBj4ezX4TkpR1uvbOWuz3YQMf4=
+  app: serieslist
+  on:
+    repo: Zeizig/serieslist
