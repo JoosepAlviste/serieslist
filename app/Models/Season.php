@@ -55,6 +55,38 @@ class Season extends Model
         return $this->episodes()->create($episode);
     }
 
+    public function updateEpisodes($episodes)
+    {
+        $oldEpisodes = $this->episodes;
+        $updatedEpisodes = new Collection;
+
+        foreach ($oldEpisodes as $oldEpisode) {
+            $shouldDelete = true;
+            foreach ($episodes as $newEpisode) {
+                if ($oldEpisode->number === $newEpisode['number']) {
+
+                    $oldEpisode->title = $newEpisode['title'];
+
+                    $oldEpisode->save();
+
+                    $updatedEpisodes->push($oldEpisode->number);
+                    $shouldDelete = false;
+                    break;
+                }
+            }
+
+            if ($shouldDelete) {
+                $oldEpisode->delete();
+            }
+        }
+
+        foreach ($episodes as $episode) {
+            if (!$updatedEpisodes->contains($episode['number'])) {
+                $this->addEpisode($episode);
+            }
+        }
+    }
+
     /**
      * Many to one relationship where a series has many seasons.
      *

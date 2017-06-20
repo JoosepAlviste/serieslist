@@ -74,4 +74,22 @@ class SeasonTest extends TestCase
             'season_id' => $this->season->id,
         ]);
     }
+
+    /** @test */
+    function it_can_update_its_episodes()
+    {
+        /** @var Season $season */
+        $season = create(Season::class);
+        $oldEpisodes = create(Episode::class, ['season_id' => $season->id], 2);
+
+        $episodes = $season->episodes->toArray();
+        $episodes[0]['title'] = 'Test title';
+
+        $season->updateEpisodes($episodes);
+
+        $this->assertDatabaseHas('episodes', [
+            'id' => $oldEpisodes[0]->id,
+            'title' => 'Test title',
+        ]);
+    }
 }

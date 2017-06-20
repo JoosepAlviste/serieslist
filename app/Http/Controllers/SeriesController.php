@@ -93,11 +93,15 @@ class SeriesController extends Controller
         $newSeasons = $request->get('seasons') ?: new Collection;
         $addedSeasons = new Collection;
 
+        // TODO: Move to Series model?
         foreach ($oldSeasons as $oldSeason) {
             $shouldDelete = true;
             foreach ($newSeasons as $newSeason) {
                 if ($oldSeason->number === $newSeason['number']) {
-                    // TODO: Update episodes?
+                    $oldSeason->updateEpisodes(
+                        array_key_exists('episodes', $newSeason) ? $newSeason['episodes'] : []
+                    );
+
                     $shouldDelete = false;
                     $addedSeasons->push($oldSeason->number);
                     break;

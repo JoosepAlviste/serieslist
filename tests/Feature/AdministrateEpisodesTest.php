@@ -35,5 +35,47 @@ class AdministrateEpisodesTest extends TestCase
             'number' => 1,
         ]);
     }
-}
 
+    /** @test */
+    function an_admin_user_can_update_existing_episodes()
+    {
+        $this->signInAdmin();
+
+        /** @var Episode $episode */
+        $episode = create(Episode::class);
+        $params = $episode->season->series->toArray();
+        $params['seasons'] = [$episode->season->makeHidden('series')->load('episodes')->toArray()];
+
+        $params['seasons'][0]['episodes'][0]['title'] = 'Test title';
+
+        $this->put($episode->season->series->path(), $params);
+
+        $this->assertDatabaseHas('episodes', [
+            'title' => 'Test title',
+        ]);
+    }
+
+    /** @test */
+    function an_admin_user_can_add_new_episodes_while_updating()
+    {
+        $this->signInAdmin();
+
+        /** @var Episode $episode */
+        $episode = create(Episode::class, ['number' => 1]);
+        $params = $episode->season->series->toArray();
+        $params['seasons'] = [$episode->season->makeHidden('series')->load('episodes')->toArray()];
+
+        $params['seasons'][0]['episodes'][0]['title'] = 'Test title';
+        $params['seasons'][0]['episodes'][] = [ 'title' => 'New episode', 'number' => 2 ];
+
+        $this->put($episode->season->series->path(), $params);
+
+        $this->assertDatabaseHas('episodes', [
+            'id' => $episode->id,
+            'title' => 'Test title',
+        ]);
+        $this->assertDatabaseHas('episodes', [
+            'title' => 'New episode',
+        ]);
+    }
+}
