@@ -11,7 +11,7 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        create(\App\Models\User::class, [
+        \App\Models\User::create([
             'email' => 'admin@email.ee',
             'name' => 'Admin',
             'is_admin' => true,
