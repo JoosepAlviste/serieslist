@@ -65,6 +65,12 @@
                 this.episodesOpen = !this.episodesOpen
             },
         },
+
+        mounted() {
+            if (window.series) {
+                this.episodesOpen = false
+            }
+        },
     }
 </script>
 

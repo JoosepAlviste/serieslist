@@ -150,6 +150,33 @@ class AdministrateSeriesTest extends TestCase
              ->assertStatus(403);
     }
 
+    /** @test */
+    function an_admin_user_can_delete_a_series()
+    {
+        $this->signInAdmin();
+
+        $series = create(Series::class);
+
+        $this->delete($series->path())
+             ->assertRedirect('/series');
+
+        $this->assertDatabaseMissing('series', ['id' => $series->id]);
+    }
+
+    /** @test */
+    function a_user_who_is_not_an_admin_may_not_delete_a_series()
+    {
+        $this->signIn()
+             ->withExceptionHandling();
+
+        $series = create(Series::class);
+
+        $this->delete($series->path())
+             ->assertStatus(403);
+
+        $this->assertDatabaseHas('series', ['id' => $series->id]);
+    }
+
     protected function createSeries($overrides = [])
     {
         $this->withExceptionHandling()

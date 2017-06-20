@@ -63,6 +63,6 @@ class SeriesPolicy
      */
     public function delete(User $user, Series $series)
     {
-        //
+        return $user->is_admin;
     }
 }

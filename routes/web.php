@@ -24,6 +24,7 @@ Route::get('series/create', 'SeriesController@create')->middleware('can:create,A
 Route::get('series/{series}', 'SeriesController@show');
 Route::put('series/{series}', 'SeriesController@update')->middleware('can:update,series');
 Route::get('series/{series}/edit', 'SeriesController@edit')->middleware('can:update,series');
+Route::delete('series/{series}', 'SeriesController@destroy')->middleware('can:delete,series');
 
 
 /*

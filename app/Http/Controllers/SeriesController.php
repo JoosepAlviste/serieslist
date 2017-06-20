@@ -97,7 +97,7 @@ class SeriesController extends Controller
         foreach ($oldSeasons as $oldSeason) {
             $shouldDelete = true;
             foreach ($newSeasons as $newSeason) {
-                if ($oldSeason->number === $newSeason['number']) {
+                if ($oldSeason->number == $newSeason['number']) {
                     $oldSeason->updateEpisodes(
                         array_key_exists('episodes', $newSeason) ? $newSeason['episodes'] : []
                     );
@@ -132,5 +132,19 @@ class SeriesController extends Controller
     public function edit(Series $series)
     {
         return view('series.admin.edit', compact('series'));
+    }
+
+    /**
+     * Delete a series.
+     *
+     * @param Series $series
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function destroy(Series $series)
+    {
+        $series->delete();
+
+        return redirect('/series');
     }
 }

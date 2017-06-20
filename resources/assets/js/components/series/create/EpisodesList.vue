@@ -31,27 +31,23 @@
                 type: Number,
                 required: true,
             },
-        },
-
-        data() {
-            return {
-                episodes: [],
-            }
+            episodes: {
+                type: Array,
+                required: true,
+            },
         },
 
         methods: {
             handleAddEpisodeClicked() {
-                this.episodes.push({
-                    title: '',
-                })
+                window.Events.$emit('episode-added-to-season', this.seasonNumber)
             },
 
             handleRemoveEpisodeClicked(episodeNumber) {
-                this.episodes.splice(episodeNumber - 1, 1)
+                window.Events.$emit('episode-was-removed', this.seasonNumber, episodeNumber)
             },
 
             handleEpisodeChanged(episode, episodeNumber) {
-                this.episodes[episodeNumber - 1] = episode
+                window.Events.$emit('episode-was-changed', episode, episodeNumber, this.seasonNumber)
             },
         },
     }

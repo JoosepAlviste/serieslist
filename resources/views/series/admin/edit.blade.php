@@ -42,6 +42,8 @@
 
         </div>
 
+        <seasons-list :initial-seasons="initialSeasons"></seasons-list>
+
         <div class="field is-grouped">
             <p class="control">
                 <button type="submit" class="button is-primary">
@@ -53,7 +55,28 @@
                     Cancel
                 </a>
             </p>
+            <p class="control">
+                <a class="button is-danger" href="/series/{{ $series->id }}/delete"
+                   onclick="event.preventDefault();
+                            document.getElementById('delete-series-form').submit()">
+                    Delete
+                </a>
+            </p>
         </div>
     </form>
 
+    <form action="{{ $series->path() }}" method="POST" style="display: none;" id="delete-series-form">
+        {{ csrf_field() }}
+        {{ method_field('DELETE') }}
+    </form>
+
+@endsection
+
+@section('scripts')
+
+    <script>
+        window.series = {!! $series->load(['seasons', 'seasons.episodes'])->toJson() !!};
+    </script>
+
+    <script src="{{ asset('js/series_create.js') }}"></script>
 @endsection

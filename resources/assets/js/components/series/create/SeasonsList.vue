@@ -24,6 +24,13 @@
     export default {
         components: { SeasonElement },
 
+        props: {
+            initialSeasons: {
+                type: Array,
+                default() { return [] },
+            },
+        },
+
         data() {
             return {
                 seasons: [],
@@ -40,6 +47,22 @@
             handleSeasonRemoved(seasonNumber) {
                 this.seasons.splice(seasonNumber - 1, 1)
             },
+        },
+
+        mounted() {
+            this.seasons = this.initialSeasons
+
+            window.Events.$on('episode-added-to-season', seasonNumber => {
+                this.seasons[seasonNumber - 1].episodes.push({
+                    title: '',
+                })
+            })
+            window.Events.$on('episode-was-removed', (seasonNumber, episodeNumber) => {
+                this.seasons[seasonNumber - 1].episodes.splice(episodeNumber - 1, 1)
+            })
+            window.Events.$on('episode-was-changed', (episode, episodeNumber, seasonNumber) => {
+                this.seasons[seasonNumber - 1].episodes[episodeNumber - 1] = episode
+            })
         },
     }
 </script>
