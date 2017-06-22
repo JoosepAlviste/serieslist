@@ -50,9 +50,9 @@ class Episode extends Model
     {
         $userId = $userId ?: auth()->id();
 
-        return !! SeenEpisode::where('user_id', $userId)
-            ->where('episode_id', $this->id)
-            ->first();
+        return ! ! SeenEpisode::where('user_id', $userId)
+                              ->where('episode_id', $this->id)
+                              ->first();
     }
 
     /**
@@ -67,10 +67,17 @@ class Episode extends Model
     {
         $userId = $userId ?: auth()->id();
 
-        $seen = new SeenEpisode;
-        $seen->user_id = $userId;
-        $seen->episode_id = $this->id;
-        $seen->save();
+        if ( ! $this->isSeen($userId)) {
+            $seen             = new SeenEpisode;
+            $seen->user_id    = $userId;
+            $seen->episode_id = $this->id;
+            $seen->save();
+        } else {
+            $seen = SeenEpisode::where('user_id', $userId)
+                               ->where('episode_id', $this->id)
+                               ->first();
+            $seen->delete();
+        }
 
         return $this;
     }
