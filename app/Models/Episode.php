@@ -36,4 +36,42 @@ class Episode extends Model
     {
         return $this->belongsTo(Season::class);
     }
+
+    /**
+     * Check if this episode is seen by the user with the
+     * given ID.
+     * If no ID is given, use authenticated user ID instead.
+     *
+     * @param int|null $userId
+     *
+     * @return bool
+     */
+    public function isSeen($userId = null)
+    {
+        $userId = $userId ?: auth()->id();
+
+        return !! SeenEpisode::where('user_id', $userId)
+            ->where('episode_id', $this->id)
+            ->first();
+    }
+
+    /**
+     * Toggle this episode's seen status for the user with the given id.
+     * If no user id is given, use authenticated user instead.
+     *
+     * @param int|null $userId
+     *
+     * @return $this
+     */
+    public function toggleSeen($userId = null)
+    {
+        $userId = $userId ?: auth()->id();
+
+        $seen = new SeenEpisode;
+        $seen->user_id = $userId;
+        $seen->episode_id = $this->id;
+        $seen->save();
+
+        return $this;
+    }
 }

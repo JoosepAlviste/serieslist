@@ -50,3 +50,14 @@ $factory->define(App\Models\Episode::class, function (Faker\Generator $faker) {
         },
     ];
 });
+
+$factory->define(App\Models\SeenEpisode::class, function (Faker\Generator $faker) {
+    return [
+        'user_id' => function () {
+            return create(\App\Models\User::class)->id;
+        },
+        'episode_id' => function () {
+            return create(\App\Models\Episode::class)->id;
+        },
+    ];
+});
