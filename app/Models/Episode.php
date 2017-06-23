@@ -10,12 +10,17 @@ use Illuminate\Database\Eloquent\Model;
  * @property int id
  * @property string title
  * @property Season season
+ * @property bool isSeen
  *
  * @package App\Models
  */
 class Episode extends Model
 {
     protected $fillable = ['title', 'number'];
+
+    protected $with = ['season', 'season.series'];
+
+    protected $appends = ['isSeen'];
 
     /**
      * Make a string path which points to this episode.
@@ -37,6 +42,11 @@ class Episode extends Model
         return $this->belongsTo(Season::class);
     }
 
+    public function seenEpisodes()
+    {
+        return $this->hasMany(SeenEpisode::class);
+    }
+
     /**
      * Check if this episode is seen by the user with the
      * given ID.
@@ -46,13 +56,12 @@ class Episode extends Model
      *
      * @return bool
      */
-    public function isSeen($userId = null)
+    public function getIsSeenAttribute($userId = null)
     {
         $userId = $userId ?: auth()->id();
 
-        return ! ! SeenEpisode::where('user_id', $userId)
-                              ->where('episode_id', $this->id)
-                              ->first();
+        return $this->seenEpisodes
+                    ->where('user_id', $userId)->first();
     }
 
     /**

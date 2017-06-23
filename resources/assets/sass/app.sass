@@ -29,7 +29,27 @@
 .form-card
   margin-top: 20px
 
+.title.has-tag
+  display: flex
+  align-items: center
+
+  .tag
+    .delete
+      display: none
+
+    &:hover .delete
+      display: block
+
+.tag.has-hover
+  &.is-default:hover
+    background: $white-bis
+
+  &.is-primary:hover
+    background: darken($primary, 5%)
 
 // Utilities
 .mt-1
   margin-top: 1em
+
+.ml-1
+  margin-left: 1em

@@ -19,6 +19,11 @@
                         <li>
                             <a href="{{ $episode->path() }}">
                                 {{ $episode->title }}
+                                @if ($episode->isSeen)
+                                    <span class="tag is-small is-primary">
+                                        Seen
+                                    </span>
+                                @endif
                             </a>
                         </li>
                     @endforeach

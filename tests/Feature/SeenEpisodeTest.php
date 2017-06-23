@@ -17,11 +17,11 @@ class SeenEpisodeTest extends TestCase
         $this->signIn();
         $episode = create(Episode::class);
 
-        $this->assertFalse($episode->isSeen());
+        $this->assertFalse($episode->isSeen);
 
         $this->markEpisodeSeen($episode);
 
-        $this->assertTrue($episode->isSeen());
+        $this->assertTrue($episode->isSeen);
     }
 
     /** @test */
@@ -29,15 +29,15 @@ class SeenEpisodeTest extends TestCase
     {
         $episode = $this->markEpisodeSeen();
 
-        $this->assertTrue($episode->isSeen());
+        $this->assertTrue($episode->isSeen);
 
         $episode = $this->markEpisodeSeen($episode);
 
-        $this->assertFalse($episode->fresh()->isSeen());
+        $this->assertFalse($episode->fresh()->isSeen);
 
         $episode = $this->markEpisodeSeen($episode);
 
-        $this->assertTrue($episode->fresh()->isSeen());
+        $this->assertTrue($episode->fresh()->isSeen);
     }
 
     protected function markEpisodeSeen($episode = null)

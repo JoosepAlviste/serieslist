@@ -55,10 +55,10 @@ class EpisodeTest extends TestCase
     {
         $this->signIn();
 
-        $this->assertFalse($this->episode->isSeen());
+        $this->assertFalse($this->episode->isSeen);
 
         create(SeenEpisode::class, ['user_id' => auth()->id(), 'episode_id' => $this->episode->id]);
 
-        $this->assertTrue($this->episode->isSeen());
+        $this->assertTrue($this->episode->isSeen);
     }
 }
