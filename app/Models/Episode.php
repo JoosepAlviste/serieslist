@@ -52,16 +52,20 @@ class Episode extends Model
      * given ID.
      * If no ID is given, use authenticated user ID instead.
      *
-     * @param int|null $userId
-     *
      * @return bool
      */
-    public function getIsSeenAttribute($userId = null)
+    public function getIsSeenAttribute()
+    {
+        return $this->isSeen();
+    }
+
+    public function isSeen($userId = null)
     {
         $userId = $userId ?: auth()->id();
 
-        return $this->seenEpisodes
-                    ->where('user_id', $userId)->first();
+        return ! ! $this->seenEpisodes
+            ->where('user_id', $userId)
+            ->first();
     }
 
     /**
@@ -76,7 +80,7 @@ class Episode extends Model
     {
         $userId = $userId ?: auth()->id();
 
-        if ( ! $this->isSeen($userId)) {
+        if ( ! $this->isSeen) {
             $seen             = new SeenEpisode;
             $seen->user_id    = $userId;
             $seen->episode_id = $this->id;

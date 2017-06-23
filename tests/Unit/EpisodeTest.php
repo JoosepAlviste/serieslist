@@ -59,6 +59,6 @@ class EpisodeTest extends TestCase
 
         create(SeenEpisode::class, ['user_id' => auth()->id(), 'episode_id' => $this->episode->id]);
 
-        $this->assertTrue($this->episode->isSeen);
+        $this->assertTrue($this->episode->fresh()->isSeen);
     }
 }

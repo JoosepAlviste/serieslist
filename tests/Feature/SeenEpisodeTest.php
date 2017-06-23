@@ -21,7 +21,7 @@ class SeenEpisodeTest extends TestCase
 
         $this->markEpisodeSeen($episode);
 
-        $this->assertTrue($episode->isSeen);
+        $this->assertTrue($episode->fresh()->isSeen);
     }
 
     /** @test */
