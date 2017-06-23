@@ -61,4 +61,18 @@ class EpisodeTest extends TestCase
 
         $this->assertTrue($this->episode->fresh()->isSeen);
     }
+
+    /** @test */
+    function it_can_make_a_string_slug()
+    {
+        $episode = create(Episode::class, [
+            'season_id' => create(Season::class, ['number' => 2]),
+            'number' => 4
+        ]);
+
+        $this->assertEquals(
+            "S02E04",
+            $episode->slug()
+        );
+    }
 }

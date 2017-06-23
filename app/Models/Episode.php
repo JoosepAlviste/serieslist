@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int id
  * @property string title
+ * @property int number
  * @property Season season
  * @property bool isSeen
  *
@@ -93,5 +94,24 @@ class Episode extends Model
         }
 
         return $this;
+    }
+
+    public function slug()
+    {
+        $result = "S";
+
+        if ($this->season->number < 10) {
+            $result .= "0{$this->season->number}E";
+        } else {
+            $result .= $this->season->number . "E";
+        }
+
+        if ($this->number < 10) {
+            $result .= "0{$this->number}";
+        } else {
+            $result .= $this->number;
+        }
+
+        return $result;
     }
 }
