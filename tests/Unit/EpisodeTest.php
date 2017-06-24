@@ -63,7 +63,7 @@ class EpisodeTest extends TestCase
     }
 
     /** @test */
-    function it_can_make_a_string_slug()
+    function it_can_make_a_string_short_slug()
     {
         $episode = create(Episode::class, [
             'season_id' => create(Season::class, ['number' => 2]),
@@ -72,7 +72,7 @@ class EpisodeTest extends TestCase
 
         $this->assertEquals(
             "S02E04",
-            $episode->slug()
+            $episode->shortSlug()
         );
     }
 }

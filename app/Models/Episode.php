@@ -96,22 +96,8 @@ class Episode extends Model
         return $this;
     }
 
-    public function slug()
+    public function shortSlug()
     {
-        $result = "S";
-
-        if ($this->season->number < 10) {
-            $result .= "0{$this->season->number}E";
-        } else {
-            $result .= $this->season->number . "E";
-        }
-
-        if ($this->number < 10) {
-            $result .= "0{$this->number}";
-        } else {
-            $result .= $this->number;
-        }
-
-        return $result;
+        return sprintf("S%02dE%02d", $this->season->number, $this->number);
     }
 }
