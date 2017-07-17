@@ -52,10 +52,14 @@
         mounted() {
             this.seasons = this.initialSeasons
 
-            window.Events.$on('episode-added-to-season', seasonNumber => {
-                this.seasons[seasonNumber - 1].episodes.push({
-                    title: '',
-                })
+            window.Events.$on('episode-added-to-season', (seasonNumber, episode = null) => {
+                if (!episode) {
+                    this.seasons[seasonNumber - 1].episodes.push({
+                        title: '',
+                    })
+                } else {
+                    this.seasons[seasonNumber - 1].episodes.push(episode)
+                }
             })
             window.Events.$on('episode-was-removed', (seasonNumber, episodeNumber) => {
                 this.seasons[seasonNumber - 1].episodes.splice(episodeNumber - 1, 1)

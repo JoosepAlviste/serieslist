@@ -13,18 +13,25 @@
             </li>
         </ul>
 
-        <button class="button is-primary mt-1" type="button" @click="handleAddEpisodeClicked">
-            Add an episode
-        </button>
+        <div class="level mt-1">
+            <button class="button is-primary" type="button" @click="handleAddEpisodeClicked">
+                Add an episode
+            </button>
+
+            <add-multiple-episodes-element @episodes-were-added="handleMultipleEpisodesAdded">
+            </add-multiple-episodes-element>
+        </div>
+
     </div>
 </template>
 
 <script>
-    import EpisodeElement from './EpisodeElement.vue'
+    import EpisodeElement from './EpisodeElement'
+    import AddMultipleEpisodesElement from './AddMultipleEpisodesElement'
 
     export default {
 
-        components: { EpisodeElement },
+        components: { EpisodeElement, AddMultipleEpisodesElement },
 
         props: {
             seasonNumber: {
@@ -48,6 +55,18 @@
 
             handleEpisodeChanged(episode, episodeNumber) {
                 window.Events.$emit('episode-was-changed', episode, episodeNumber, this.seasonNumber)
+            },
+
+            handleMultipleEpisodesAdded(numberOfEpisodes) {
+                for (let i = 1; i <= numberOfEpisodes; i++) {
+                    window.Events.$emit(
+                        'episode-added-to-season',
+                        this.seasonNumber,
+                        {
+                            title: "Episode " + (this.episodes.length + 1)
+                        }
+                    )
+                }
             },
         },
     }
