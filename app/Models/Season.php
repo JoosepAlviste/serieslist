@@ -63,7 +63,7 @@ class Season extends Model
         foreach ($oldEpisodes as $oldEpisode) {
             $shouldDelete = true;
             foreach ($episodes as $newEpisode) {
-                if ($oldEpisode->number === $newEpisode['number']) {
+                if ($oldEpisode->number == $newEpisode['number']) {
 
                     $oldEpisode->title = $newEpisode['title'];
 

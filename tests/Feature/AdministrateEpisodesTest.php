@@ -48,6 +48,7 @@ class AdministrateEpisodesTest extends TestCase
         $this->put("/series/{$params['id']}", $params);
 
         $this->assertDatabaseHas('episodes', [
+            'id' => $params['seasons'][0]['episodes'][0]['id'],
             'title' => 'Test title',
         ]);
     }

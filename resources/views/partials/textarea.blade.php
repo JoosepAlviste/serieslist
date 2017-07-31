@@ -3,7 +3,7 @@
         {{ $slot }}
     @endslot
 
-    <textarea class="input {{ $errors->has($name) ? 'is-danger' : '' }}"
+    <textarea class="textarea {{ $errors->has($name) ? 'is-danger' : '' }}"
               id="{{ $name }}"
               name="{{ $name }}"
               rows="{{ isset($rows) ? $rows: 6 }}"
