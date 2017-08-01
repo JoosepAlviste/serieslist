@@ -22,9 +22,11 @@ class SeasonsController extends Controller
                             $query->where('user_id', auth()->id());
                         }])
                         ->first();
+        $nextSeason = $season->nextSeason;
 
         return view('seasons.show', [
             'season' => $season,
+            'nextSeason' => $nextSeason,
         ]);
     }
 }

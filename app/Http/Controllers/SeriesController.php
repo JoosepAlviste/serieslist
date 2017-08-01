@@ -28,6 +28,7 @@ class SeriesController extends Controller
     public function index()
     {
         $series = Series::all();
+
         return view('series.index', compact('series'));
     }
 
@@ -40,11 +41,11 @@ class SeriesController extends Controller
      */
     public function store(StoreSeries $request)
     {
-        $series = new Series;
-        $series->title = $request->get('title');
+        $series              = new Series;
+        $series->title       = $request->get('title');
         $series->description = $request->get('description');
-        $series->start_year = $request->get('start_year');
-        $series->end_year = $request->get('end_year');
+        $series->start_year  = $request->get('start_year');
+        $series->end_year    = $request->get('end_year');
 
         $series->save();
 
@@ -82,15 +83,15 @@ class SeriesController extends Controller
      */
     public function update(StoreSeries $request, Series $series)
     {
-        $series->title = $request->get('title');
+        $series->title       = $request->get('title');
         $series->description = $request->get('description');
-        $series->start_year = $request->get('start_year');
-        $series->end_year = $request->get('end_year');
+        $series->start_year  = $request->get('start_year');
+        $series->end_year    = $request->get('end_year');
 
         $series->save();
 
-        $oldSeasons = $series->seasons;
-        $newSeasons = $request->get('seasons') ?: new Collection;
+        $oldSeasons   = $series->seasons;
+        $newSeasons   = $request->get('seasons') ?: new Collection;
         $addedSeasons = new Collection;
 
         // TODO: Move to Series model?
@@ -114,7 +115,7 @@ class SeriesController extends Controller
         }
 
         foreach ($newSeasons as $newSeason) {
-            if (!$addedSeasons->contains($newSeason['number'])) {
+            if ( ! $addedSeasons->contains($newSeason['number'])) {
                 $series->addSeason($newSeason);
             }
         }
@@ -131,6 +132,11 @@ class SeriesController extends Controller
      */
     public function edit(Series $series)
     {
+        $series->load([
+            'seasons',
+            'seasons.episodes',
+        ]);
+
         return view('series.admin.edit', compact('series'));
     }
 

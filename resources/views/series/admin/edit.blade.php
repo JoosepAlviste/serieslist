@@ -75,7 +75,7 @@
 @section('scripts')
 
     <script>
-        window.series = {!! $series->load(['seasons', 'seasons.episodes'])->toJson() !!};
+        window.series = {!! $series->toJson() !!};
     </script>
 
     <script src="{{ asset('js/series_create.js') }}"></script>

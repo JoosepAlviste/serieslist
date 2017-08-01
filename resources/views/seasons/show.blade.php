@@ -29,6 +29,14 @@
                     @endforeach
                 </ul>
 
+                @if ($nextSeason)
+                    <div class="next-link__container">
+                        <a href="{{ $nextSeason->path() }}" class="button is-link">
+                            Next season →
+                        </a>
+                    </div>
+                @endif
+
             </div>
         </div>
     </div>

@@ -22,7 +22,7 @@ class Episode extends Model
 
     protected $with = ['season', 'season.series'];
 
-    protected $appends = ['isSeen'];
+    protected $appends = [];
 
     /**
      * Make a string path which points to this episode.
@@ -31,7 +31,7 @@ class Episode extends Model
      */
     public function path()
     {
-        return "/series/{$this->season->series->id}/episodes/{$this->id}";
+        return "/series/{$this->season->series_id}/episodes/{$this->id}";
     }
 
     /**

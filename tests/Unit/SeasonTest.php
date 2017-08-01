@@ -92,4 +92,18 @@ class SeasonTest extends TestCase
             'title' => 'Test title',
         ]);
     }
+
+    /** @test */
+    function it_knows_its_next_season()
+    {
+        $secondSeason = create(Season::class, [
+            'series_id' => $this->season->series_id,
+            'number' => $this->season->number + 1,
+        ]);
+
+        $this->assertEquals(
+            $secondSeason->id,
+            $this->season->nextSeason->id
+        );
+    }
 }

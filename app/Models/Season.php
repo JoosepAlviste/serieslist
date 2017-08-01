@@ -13,6 +13,7 @@ use Illuminate\Support\Collection;
  * @property int series_id
  * @property Series series
  * @property Episode[]|Collection episodes
+ * @property Season nextSeason
  *
  * @package App\Models
  */
@@ -40,7 +41,7 @@ class Season extends Model
      */
     public function path()
     {
-        return "/series/{$this->series->id}/seasons/{$this->number}";
+        return "/series/{$this->series_id}/seasons/{$this->number}";
     }
 
     /**
@@ -105,5 +106,17 @@ class Season extends Model
     public function episodes()
     {
         return $this->hasMany(Episode::class);
+    }
+
+    /**
+     * Find the next season for this season's series.
+     *
+     * @return Season
+     */
+    public function getNextSeasonAttribute()
+    {
+        return Season::where('series_id', $this->series_id)
+            ->where('number', $this->number + 1)
+            ->first();
     }
 }

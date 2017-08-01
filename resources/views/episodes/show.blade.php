@@ -36,7 +36,7 @@
                 <a href="{{ $episode->season->series->path() }}">{{ $episode->season->series->title }}</a>.
 
                 @if ($nextEpisode)
-                    <div class="next-episode__container">
+                    <div class="next-link__container">
                         <a href="{{ $nextEpisode->path() }}" class="button is-link">Next episode →</a>
                     </div>
                 @endif
