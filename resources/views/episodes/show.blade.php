@@ -35,9 +35,11 @@
                 An episode of
                 <a href="{{ $episode->season->series->path() }}">{{ $episode->season->series->title }}</a>.
 
-                <div class="next-episode__container">
-                    <a href="{{ $episode->nextEpisode()->path() }}" class="button is-link">Next episode →</a>
-                </div>
+                @if ($nextEpisode)
+                    <div class="next-episode__container">
+                        <a href="{{ $nextEpisode->path() }}" class="button is-link">Next episode →</a>
+                    </div>
+                @endif
 
             </div>
         </div>

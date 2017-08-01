@@ -128,17 +128,26 @@ class Episode extends Model
      */
     public function nextEpisode()
     {
-        $nextEpisode = Episode::where('season_id', $this->season_id)
-                              ->where('number', $this->number + 1)
-                              ->first();
+        $this->season;
+        $nextEpisode = $this->season
+                            ->episodes()
+                            ->where('number', $this->number + 1)
+                            ->setEagerLoads([])
+                            ->first();
+        if ($nextEpisode) {
+            // Improve performance (less SQL queries), with setEagerLoads([])
+            $nextEpisode->season = $this->season;
+        }
 
-        if (!$nextEpisode) {
+        if ( ! $nextEpisode) {
             $nextSeason = Season::where('number', $this->season->number + 1)
-                ->where('series_id', $this->season->series_id)
-                ->with(['episodes' => function ($query) {
-                    $query->where('number', 1);
-                }])
-                ->first();
+                                ->where('series_id', $this->season->series_id)
+                                ->with([
+                                    'episodes' => function ($query) {
+                                        $query->where('number', 1);
+                                    }
+                                ])
+                                ->first();
 
             if ($nextSeason) {
                 $nextEpisode = $nextSeason->episodes->first();
