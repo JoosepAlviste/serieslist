@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\Models\Episode;
 use App\Models\Season;
 use App\Models\SeenEpisode;
+use App\Models\Series;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
@@ -73,6 +74,51 @@ class EpisodeTest extends TestCase
         $this->assertEquals(
             "S02E04",
             $episode->shortSlug()
+        );
+    }
+
+    /** @test */
+    function it_knows_the_next_episode()
+    {
+        $season = create(Season::class);
+        $episode = create(Episode::class, [
+            'number' => 1,
+            'season_id' => $season->id,
+        ]);
+        $episodeTwo = create(Episode::class, [
+            'number' => 2,
+            'season_id' => $season->id,
+        ]);
+
+        $this->assertEquals(
+            $episodeTwo->id,
+            $episode->nextEpisode()->id
+        );
+    }
+
+    /** @test */
+    function it_knows_the_next_episode_if_its_in_the_next_season()
+    {
+        $series = create(Series::class);
+        $season = create(Season::class, [
+            'series_id' => $series->id,
+        ]);
+        $seasonTwo = create(Season::class, [
+            'number' => $season->number + 1,
+            'series_id' => $series->id,
+        ]);
+        $episode = create(Episode::class, [
+            'number' => 1,
+            'season_id' => $season->id,
+        ]);
+        $episodeTwo = create(Episode::class, [
+            'number' => 1,
+            'season_id' => $seasonTwo->id,
+        ]);
+
+        $this->assertEquals(
+            $episodeTwo->id,
+            $episode->nextEpisode()->id
         );
     }
 }

@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int id
  * @property string title
  * @property int number
+ * @property int season_id
  * @property Season season
  * @property bool isSeen
  *
@@ -43,6 +44,11 @@ class Episode extends Model
         return $this->belongsTo(Season::class);
     }
 
+    /**
+     * Set the many to one relationship where an episode can have a seen episode.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function seenEpisodes()
     {
         return $this->hasMany(SeenEpisode::class);
@@ -60,6 +66,14 @@ class Episode extends Model
         return $this->isSeen();
     }
 
+    /**
+     * Checks if this episode is seen by the given user or
+     * if no user is given, the authenticated user.
+     *
+     * @param int|null $userId
+     *
+     * @return bool
+     */
     public function isSeen($userId = null)
     {
         $userId = $userId ?: auth()->id();
@@ -96,8 +110,41 @@ class Episode extends Model
         return $this;
     }
 
+    /**
+     * Generates a short slug for this episode.
+     *
+     * @return string
+     */
     public function shortSlug()
     {
         return sprintf("S%02dE%02d", $this->season->number, $this->number);
+    }
+
+    /**
+     * Gets the next episode. If this is the last episode of the season
+     * get the first episode of the next season.
+     *
+     * @return Episode
+     */
+    public function nextEpisode()
+    {
+        $nextEpisode = Episode::where('season_id', $this->season_id)
+                              ->where('number', $this->number + 1)
+                              ->first();
+
+        if (!$nextEpisode) {
+            $nextSeason = Season::where('number', $this->season->number + 1)
+                ->where('series_id', $this->season->series_id)
+                ->with(['episodes' => function ($query) {
+                    $query->where('number', 1);
+                }])
+                ->first();
+
+            if ($nextSeason) {
+                $nextEpisode = $nextSeason->episodes->first();
+            }
+        }
+
+        return $nextEpisode;
     }
 }

@@ -1,4 +1,3 @@
-
 // Fonts
 @import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600)
 
@@ -9,7 +8,9 @@
 // Bulma
 @import "~bulma"
 
+
 // Page
+
 .site
   /* Sticky footer */
   display: flex
@@ -19,13 +20,17 @@
   .site-content
     flex: 1
 
+
 // Form
+
 .label.is-required
   &::after
     color: $danger
     content: " *"
 
+
 // Layouts
+
 .form-card
   margin-top: 20px
 
@@ -47,9 +52,18 @@
   &.is-primary:hover
     background: darken($primary, 5%)
 
+
 // Utilities
+
 .mt-1
   margin-top: 1em
 
 .ml-1
   margin-left: 1em
+
+
+// Show episode page
+
+.next-episode__container
+  display: flex
+  justify-content: flex-end
