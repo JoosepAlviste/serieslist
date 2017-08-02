@@ -1,6 +1,6 @@
 <template>
     <div>
-        <table class="table">
+        <table class="table series-list__table">
             <thead>
                 <tr>
                     <th>Title</th>
@@ -51,3 +51,12 @@
         },
     }
 </script>
+
+<style lang="sass">
+
+    .series-list__table
+        td
+            padding-top: .75em
+            padding-bottom: .75em
+
+</style>

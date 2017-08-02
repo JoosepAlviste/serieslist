@@ -10,10 +10,9 @@
                 <a :href="latestSeenEpisodeLink"
                    v-text="latestSeenEpisode">
                 </a>
-                <span class="series-list-element__mark-as-seen"
-                        v-if="series.latestSeenEpisode.nextEpisode"
+                <span class="fa fa-plus-circle series-list-element__mark-as-seen"
+                      v-if="series.latestSeenEpisode.nextEpisode"
                       @click="markNextEpisodeAsSeen">
-                    +
                 </span>
             </span>
             <span v-else v-text="latestSeenEpisode"></span>
@@ -72,5 +71,7 @@
     .series-list-element__mark-as-seen
         cursor: pointer
         color: $primary
+        font-size: 1.1em
+        vertical-align: baseline
 
 </style>
