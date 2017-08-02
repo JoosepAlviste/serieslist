@@ -17,6 +17,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class SeenEpisode extends Model
 {
+    protected $fillable = ['user_id', 'episode_id'];
+
     /**
      * Register the many to one relationship with episode.
      * The episode which has been seen by the user.

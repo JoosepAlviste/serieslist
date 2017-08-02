@@ -96,15 +96,9 @@ class Episode extends Model
         $userId = $userId ?: auth()->id();
 
         if ( ! $this->isSeen) {
-            $seen             = new SeenEpisode;
-            $seen->user_id    = $userId;
-            $seen->episode_id = $this->id;
-            $seen->save();
+            $this->markAsSeen($userId);
         } else {
-            $seen = SeenEpisode::where('user_id', $userId)
-                               ->where('episode_id', $this->id)
-                               ->first();
-            $seen->delete();
+            $this->markAsNotSeen($userId);
         }
 
         return $this;
@@ -140,14 +134,7 @@ class Episode extends Model
         }
 
         if ( ! $nextEpisode) {
-            $nextSeason = Season::where('number', $this->season->number + 1)
-                                ->where('series_id', $this->season->series_id)
-                                ->with([
-                                    'episodes' => function ($query) {
-                                        $query->where('number', 1);
-                                    }
-                                ])
-                                ->first();
+            $nextSeason = $this->season->nextSeason;
 
             if ($nextSeason) {
                 $nextEpisode = $nextSeason->episodes->first();
@@ -155,5 +142,40 @@ class Episode extends Model
         }
 
         return $nextEpisode;
+    }
+
+    /**
+     * Mark this episode as not seen.
+     *
+     * @param int|null $userId
+     *
+     * @return $this
+     */
+    public function markAsNotSeen($userId = null)
+    {
+        $userId = $userId ?: auth()->id();
+
+        SeenEpisode::where('user_id', $userId)
+            ->where('episode_id', $this->id)
+            ->delete();
+
+        return $this;
+    }
+
+    /**
+     * Mark this episode as seen by the given user.
+     *
+     * @param int|null $userId
+     *
+     * @return SeenEpisode
+     */
+    public function markAsSeen($userId = null)
+    {
+        $userId = $userId ?: auth()->id();
+
+        return SeenEpisode::firstOrCreate([
+            'user_id' => $userId,
+            'episode_id' => $this->id,
+        ]);
     }
 }

@@ -6,6 +6,7 @@ use App\Models\Episode;
 use App\Models\Season;
 use App\Models\SeenEpisode;
 use App\Models\Series;
+use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
@@ -41,11 +42,45 @@ class EpisodeTest extends TestCase
     /** @test */
     function it_can_be_marked_as_seen()
     {
+        $user = create(User::class);
+
+        $this->episode->markAsSeen($user->id);
+
+        $this->assertDatabaseHas('seen_episodes', [
+            'user_id' => $user->id,
+            'episode_id' => $this->episode->id,
+        ]);
+    }
+
+    /** @test */
+    function it_can_be_marked_as_not_seen()
+    {
+        /** @var SeenEpisode $seenEpisode */
+        $seenEpisode = create(SeenEpisode::class);
+
+        $seenEpisode->episode->markAsNotSeen($seenEpisode->user_id);
+
+        $this->assertDatabaseMissing('seen_episodes', [
+            'user_id' => $seenEpisode->user_id,
+            'episode_id' => $seenEpisode->episode_id,
+        ]);
+    }
+
+    /** @test */
+    function its_seen_status_can_be_toggled()
+    {
         $this->signIn();
 
         $this->episode->toggleSeen();
 
         $this->assertDatabaseHas('seen_episodes', [
+            'episode_id' => $this->episode->id,
+            'user_id' => auth()->id(),
+        ]);
+
+        $this->episode->fresh()->toggleSeen();
+
+        $this->assertDatabaseMissing('seen_episodes', [
             'episode_id' => $this->episode->id,
             'user_id' => auth()->id(),
         ]);
