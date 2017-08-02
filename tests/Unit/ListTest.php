@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Unit;
 
 use App\Models\Episode;
 use App\Models\SeenEpisode;
@@ -9,12 +9,12 @@ use App\Models\User;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
-class UserTest extends TestCase
+class ListTest extends TestCase
 {
     use DatabaseMigrations;
 
     /** @test */
-    function it_knows_its_in_progress_series()
+    function a_user_knows_its_in_progress_series()
     {
         $user = create(User::class);
         $seenEpisode = create(SeenEpisode::class, [

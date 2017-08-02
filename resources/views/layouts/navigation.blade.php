@@ -43,15 +43,13 @@
                 Series
             </a>
 
-            {{--@if (Auth::check())--}}
-                {{--<a href="{{ url('list') }}"--}}
-                   {{--class="nav-item is-hidden-tablet {{ Request::is('list') ? 'is-active' : '' }}">My List</a>--}}
-            {{--@endif--}}
-
             @if (Auth::guest())
                 <a class="nav-item {{ Request::is('login') ? 'is-active' : '' }}" href="{{ url('/login') }}">Login</a>
                 <a class="nav-item {{ Request::is('register') ? 'is-active' : '' }}" href="{{ url('/register') }}">Register</a>
             @else
+                <a href="{{ url('list') }}" class="nav-item">
+                    My List
+                </a>
                 <a class="nav-item">
                     {{ Auth::user()->name }}
                 </a>

@@ -47,11 +47,21 @@ Route::get('series/{series}/episodes/{episode}', 'EpisodesController@show');
 
 /*
 |--------------------------------------------------------------------------
-| Seens
+| Seen Episodes
 |--------------------------------------------------------------------------
 */
 
 Route::post('episodes/{episode}/seen-episodes', 'SeenEpisodesController@toggle');
+
+
+/*
+|--------------------------------------------------------------------------
+| Lists
+|--------------------------------------------------------------------------
+*/
+
+Route::get('list', 'ListController@index')->middleware('auth');
+Route::get('users/{user}/series', 'Api\SeriesController@inProgressSeries');
 
 
 /*
@@ -63,4 +73,4 @@ Route::post('episodes/{episode}/seen-episodes', 'SeenEpisodesController@toggle')
 Auth::routes();
 
 Route::get('/', 'PagesController@welcome');
-Route::get('/home', 'PagesController@home')->name('home')->middleware('auth');
+Route::get('home', 'PagesController@home')->name('home')->middleware('auth');

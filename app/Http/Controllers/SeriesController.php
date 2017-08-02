@@ -6,6 +6,11 @@ use App\Http\Requests\StoreSeries;
 use App\Models\Series;
 use Illuminate\Support\Collection;
 
+/**
+ * Class SeriesController.
+ *
+ * @package App\Http\Controllers
+ */
 class SeriesController extends Controller
 {
     /**
