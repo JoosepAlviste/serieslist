@@ -2,7 +2,8 @@
     <div class="container">
         <div class="content has-text-centered">
             <p>
-                <strong>Serieslist</strong> by Joosep Alviste. Created using Laravel, Vue and TDD.
+                <strong>Serieslist</strong> by Joosep Alviste. 
+                Created using <a href="https://laravel.com">Laravel</a>, <a href="https://vuejs.org">Vue</a> and TDD.
             </p>
             <p>
                 <a class="icon" href="https://github.com/Zeizig/serieslist">

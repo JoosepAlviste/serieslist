@@ -14,6 +14,7 @@ composer install
 
 cp .env.example .env
 # Fill .env file with your db info
+
 php artisan key:generate
 
 php artisan migrate
