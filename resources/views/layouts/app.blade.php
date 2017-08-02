@@ -16,7 +16,9 @@
 
     <script>
         window.App = {
-            user: {!! auth()->user()->toJson() !!} ,
+            @if (auth()->check())
+                user: {!! auth()->user()->toJson() !!},
+            @endif
         };
     </script>
 </head>
