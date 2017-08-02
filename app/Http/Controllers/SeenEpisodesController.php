@@ -11,11 +11,23 @@ class SeenEpisodesController extends Controller
      *
      * @param Episode $episode
      *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return Episode|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function toggle(Episode $episode)
     {
         $episode->toggleSeen(auth()->id());
+
+        if (request()->expectsJson()) {
+            $nextEpisode = $episode->nextEpisode();
+            if ($nextEpisode) {
+                $nextEpisode->shortSlug = $nextEpisode->shortSlug();
+            }
+
+            $episode->nextEpisode = $nextEpisode;
+            $episode->shortSlug = $episode->shortSlug();
+
+            return $episode;
+        }
 
         return redirect($episode->path());
     }

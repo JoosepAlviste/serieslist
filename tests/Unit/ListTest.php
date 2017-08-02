@@ -39,4 +39,3 @@ class ListTest extends TestCase
         }));
     }
 }
-

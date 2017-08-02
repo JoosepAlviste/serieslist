@@ -64,4 +64,39 @@ class Series extends Model
     {
         return $this->hasMany(Season::class);
     }
+
+    /**
+     * Get the latest episode of this series the given user
+     * has seen.
+     * Does not take into account seen episodes after skipped
+     * episodes.
+     *
+     * @param int|null $userId
+     *
+     * @return Episode
+     */
+    public function latestSeenEpisode($userId = null)
+    {
+        $userId = $userId ?: auth()->id();
+
+        $lastSeen = null;
+        $shouldBreak = false;
+
+        foreach ($this->seasons as $season) {
+            foreach ($season->episodes as $episode) {
+                if ($episode->isSeen($userId)) {
+                    $lastSeen = $episode;
+                } else {
+                    $shouldBreak = true;
+                    break;
+                }
+            }
+
+            if ($shouldBreak) {
+                break;
+            }
+        }
+
+        return $lastSeen;
+    }
 }

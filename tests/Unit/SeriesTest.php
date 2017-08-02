@@ -5,6 +5,8 @@ namespace Tests\Unit;
 use App\Models\Episode;
 use App\Models\Season;
 use App\Models\Series;
+use App\Models\User;
+use Illuminate\Support\Collection;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
@@ -78,5 +80,25 @@ class SeriesTest extends TestCase
                 'season_id' => $season->id,
             ]);
         });
+    }
+
+    /** @test */
+    function it_knows_the_newest_episode_a_user_has_watched()
+    {
+        $user = create(User::class);
+        $series = create(Series::class);
+        /** @var Collection|Episode[] $episodes */
+        $episodes = create(Episode::class, [
+            'season_id' => create(Season::class, ['series_id' => $series->id])
+        ], 5);
+        $episodes = $episodes->chunk(3);
+
+        $episodes->first()->each(function ($episode) use ($user) {
+            $episode->toggleSeen($user->id);
+        });
+
+        $latestSeen = $series->latestSeenEpisode($user->id);
+
+        $this->assertEquals($episodes->first()->last()->id, $latestSeen->id);
     }
 }

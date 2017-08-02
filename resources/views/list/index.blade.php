@@ -2,10 +2,22 @@
 
 @section('content')
 
-    <h1 class="title">My list</h1>
+    <section class="hero is-medium is-primary hero--bottom-padding">
+        <div class="hero-body">
+            <div class="container">
+                <h1 class="title">
+                    My series list
+                </h1>
+            </div>
+        </div>
+    </section>
 
-    <div id="app"></div>
+    <div class="container series-list__container card">
+        <series-list></series-list>
+    </div>
 
+@endsection
+
+@section('scripts')
     <script src="{{ asset('js/list.js') }}"></script>
-
 @endsection
