@@ -4,7 +4,7 @@
 
     <div class="columns">
         <div class="column is-one-third is-offset-one-third">
-            <div class="card form-card">
+            <div class="card form-card mb-1">
 
                 <header class="card-header">
                     <p class="card-header-title">
