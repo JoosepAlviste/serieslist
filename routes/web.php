@@ -51,7 +51,10 @@ Route::get('series/{series}/episodes/{episode}', 'EpisodesController@show');
 |--------------------------------------------------------------------------
 */
 
-Route::post('episodes/{episode}/seen-episodes', 'SeenEpisodesController@toggle');
+Route::middleware('auth')
+    ->post('episodes/{episode}/seen-episodes', 'SeenEpisodesController@toggle');
+Route::middleware('auth')
+    ->post('seasons/{season}/seen-episodes', 'SeenEpisodesController@markSeasonAsSeen');
 
 
 /*

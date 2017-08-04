@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Episode;
+use App\Models\Season;
 
 class SeenEpisodesController extends Controller
 {
@@ -30,5 +31,14 @@ class SeenEpisodesController extends Controller
         }
 
         return redirect($episode->path());
+    }
+
+    public function markSeasonAsSeen(Season $season)
+    {
+        foreach ($season->episodes as $episode) {
+            $episode->markAsSeen();
+        }
+
+        return redirect($season->path());
     }
 }
