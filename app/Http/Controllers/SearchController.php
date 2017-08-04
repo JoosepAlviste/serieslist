@@ -22,8 +22,8 @@ class SearchController extends Controller
     {
         $q = strtolower('%' . request()->input('q') . '%');
 
-        $series = Series::whereRaw('LOWER(`title`) like ?', [$q])
-            ->orWhereRaw('LOWER(`description`) like ?', [$q])
+        $series = Series::whereRaw('LOWER(title) like ?', [$q])
+            ->orWhereRaw('LOWER(description) like ?', [$q])
             ->get();
 
         $episodes = Episode::whereRaw('LOWER(title) like ?', [$q])
