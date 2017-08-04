@@ -9,6 +9,25 @@
                 <a href="{{ $season->series->path() }}">
                     {{ $season->series->title }}
                 </a>
+                @if ($isSeen)
+                    <span class="tag is-primary ml-1 is-medium">
+                            Seen
+                        </span>
+                @else
+                    <a href="/seasons/{{ $season->id }}/seen-episodes"
+                       onclick="event.preventDefault();
+                                document.getElementById('mark-as-seen-form').submit();">
+                        <span class="tag is-default ml-1 is-medium has-hover">
+                            Mark as seen
+                        </span>
+                    </a>
+
+                    <form id="mark-as-seen-form"
+                          method="POST"
+                          action="/seasons/{{ $season->id }}/seen-episodes">
+                        {{ csrf_field() }}
+                    </form>
+                @endif
             </h1>
             <hr>
 
@@ -20,9 +39,7 @@
                             <a href="{{ $episode->path() }}">
                                 {{ $episode->title }}
                                 @if ($episode->isSeen)
-                                    <span class="tag is-small is-primary">
-                                        Seen
-                                    </span>
+                                    <span class="fa fa-check"></span>
                                 @endif
                             </a>
                         </li>

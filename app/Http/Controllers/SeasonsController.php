@@ -24,9 +24,14 @@ class SeasonsController extends Controller
                         ->first();
         $nextSeason = $season->nextSeason;
 
+        $unseenEpisode = $season->episodes->first(function ($episode) {
+            return $episode->seenEpisodes->count() === 0;
+        });
+
         return view('seasons.show', [
             'season' => $season,
             'nextSeason' => $nextSeason,
+            'isSeen' => $unseenEpisode === null,
         ]);
     }
 }

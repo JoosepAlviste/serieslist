@@ -20,20 +20,30 @@
                         </span>
                     @endif
                 </a>
+
+                <form id="mark-as-seen-form"
+                      method="POST"
+                      action="/episodes/{{ $episode->id }}/seen-episodes">
+                    {{ csrf_field() }}
+                </form>
             </h1>
 
-            <form id="mark-as-seen-form"
-                  method="POST"
-                  action="/episodes/{{ $episode->id }}/seen-episodes">
-                {{ csrf_field() }}
-            </form>
+            <h2 class="subtitle">
+                In
+                <a href="{{ $episode->season->path() }}">
+                    season {{ $episode->season->number }}
+                </a>
+                of
+                <a href="{{ $episode->season->series->path() }}">
+                    {{ $episode->season->series->title }}
+                </a>.
+            </h2>
 
             <hr>
 
             <div class="content">
 
-                An episode of
-                <a href="{{ $episode->season->series->path() }}">{{ $episode->season->series->title }}</a>.
+                Ethical church-key raclette, portland vice viral meditation man bun. Squid poke tumblr intelligentsia kinfolk yr. Heirloom copper mug coloring book polaroid kitsch. Fam hexagon typewriter jean shorts readymade gentrify raw denim street art kogi normcore chartreuse authentic synth. Ramps hexagon tilde, bitters shaman biodiesel beard mumblecore vinyl irony. Snackwave art party pickled typewriter, jean shorts DIY kale chips letterpress wayfarers. Pabst pok pok biodiesel, fashion axe poutine schlitz cray bespoke wolf pork belly ethical tattooed stumptown hella tousled. Occupy hoodie distillery craft beer lomo. Blue bottle brooklyn meditation kickstarter, cold-pressed messenger bag crucifix marfa celiac raclette woke poke tofu heirloom try-hard. Poke four dollar toast man bun jean shorts neutra sriracha. Austin blog 8-bit dreamcatcher. Photo booth thundercats plaid glossier echo park sriracha mixtape schlitz yr single-origin coffee normcore cardigan. YOLO polaroid helvetica, vegan kombucha narwhal la croix letterpress brunch.
 
                 @if ($nextEpisode)
                     <div class="next-link__container">
