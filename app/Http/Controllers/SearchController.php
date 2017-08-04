@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Episode;
 use App\Models\Series;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class SearchController.
@@ -19,14 +20,19 @@ class SearchController extends Controller
      */
     public function index()
     {
-        $q = request()->input('q');
+        $q = strtolower('%' . request()->input('q') . '%');
 
-        $series = Series::where('title', 'LIKE', "%{$q}%")
-            ->orWhere('description', 'LIKE', "%{$q}%")
+        $series = Series::whereRaw('LOWER(`title`) like ?', [$q])
+            ->orWhereRaw('LOWER(`description`) like ?', [$q])
             ->get();
-        $episodes = Episode::where('title', 'LIKE', "%{$q}%")
+
+        $episodes = Episode::whereRaw('LOWER(title) like ?', [$q])
                         ->get();
 
-        return view('search.index', compact('series', 'episodes', 'q'));
+        return view('search.index', [
+            'series' => $series,
+            'episodes' => $episodes,
+            'q' => request()->input('q'),
+        ]);
     }
 }
