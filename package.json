@@ -11,9 +11,9 @@
   },
   "devDependencies": {
     "axios": "^0.15.3",
-    "bulma": "^0.4.2",
+    "bulma": "^0.5.0",
+    "cross-env": "^5.0.0",
     "laravel-mix": "0.*",
-    "vue": "^2.1.10",
-    "cross-env": "^5.0.0"
+    "vue": "^2.1.10"
   }
 }

@@ -14,7 +14,7 @@
 </head>
 <body>
 <section class="hero is-primary is-fullheight is-bold">
-    <!-- Hero header: will stick at the top -->
+
     <div class="hero-head">
         <header class="nav">
             <div class="container">
@@ -25,15 +25,16 @@
                     </a>
                 </div>
 
-                <span class="nav-toggle">
+                <span class="nav-toggle" data-target="navbar">
                     <span></span>
                     <span></span>
                     <span></span>
                 </span>
 
-                <div class="nav-right nav-menu">
+                <div class="nav-right nav-menu" id="navbar">
                     @if (Auth::check())
-                        <a class="nav-item" href="{{ url('/home') }}">Home</a>
+                        <a class="nav-item" href="{{ url('/list') }}">My list</a>
+                        <a class="nav-item" href="{{ url('/series') }}">Series</a>
                     @else
                         <a class="nav-item" href="{{ url('/login') }}">Login</a>
                         <a class="nav-item" href="{{ url('/register') }}">Register</a>
@@ -53,5 +54,8 @@
     </div>
 
 </section>
+
+<script src="{{ asset('/js/app.js') }}"></script>
+
 </body>
 </html>

@@ -55,6 +55,8 @@
 <style lang="sass">
 
     .series-list__table
+        width: 100%
+
         td
             padding-top: .75em
             padding-bottom: .75em
