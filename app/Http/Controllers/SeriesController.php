@@ -32,7 +32,7 @@ class SeriesController extends Controller
      */
     public function index()
     {
-        $series = Series::all();
+        $series = Series::orderBy('title')->get();
 
         return view('series.index', compact('series'));
     }
