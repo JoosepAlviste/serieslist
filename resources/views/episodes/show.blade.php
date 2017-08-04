@@ -35,7 +35,6 @@
                     Season {{ $episode->season->number }}
                 </a>
                 <span class="vertical-delimiter">|</span>
-                Series
                 <a href="{{ $episode->season->series->path() }}">
                     {{ $episode->season->series->title }}
                 </a>
