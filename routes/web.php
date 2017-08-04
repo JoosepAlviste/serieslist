@@ -77,3 +77,12 @@ Auth::routes();
 
 Route::get('/', 'PagesController@welcome');
 Route::get('home', 'PagesController@home')->name('home')->middleware('auth');
+
+
+/*
+|--------------------------------------------------------------------------
+| Search
+|--------------------------------------------------------------------------
+*/
+
+Route::get('search', 'SearchController@index');

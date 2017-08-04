@@ -58,7 +58,11 @@
         width: 100%
 
         td
-            padding-top: .75em
-            padding-bottom: .75em
+            padding-top: 1em
+            padding-bottom: 1em
+
+        th
+            padding-top: 1em
+            padding-bottom: 1em
 
 </style>

@@ -12268,7 +12268,7 @@ exports.push([module.i, "\n.series-list-element__mark-as-seen {\n  cursor: point
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)();
-exports.push([module.i, "\n.series-list__table {\n  width: 100%;\n}\n.series-list__table td {\n    padding-top: .75em;\n    padding-bottom: .75em;\n}\n", ""]);
+exports.push([module.i, "\n.series-list__table {\n  width: 100%;\n}\n.series-list__table td {\n    padding-top: 1em;\n    padding-bottom: 1em;\n}\n.series-list__table th {\n    padding-top: 1em;\n    padding-bottom: 1em;\n}\n", ""]);
 
 /***/ }),
 /* 48 */,

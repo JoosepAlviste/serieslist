@@ -14,6 +14,25 @@
         <div class="navbar-menu" id="navbar">
 
             <div class="navbar-end">
+                <div class="navbar-item">
+                    <form action="/search" method="get">
+                        <div class="field has-addons search__field">
+                            <div class="control">
+                                <input class="input search__input"
+                                       name="q"
+                                       type="text"
+                                       placeholder="Search..."
+                                       value="{{ request()->input('q', '') }}">
+                            </div>
+                            <div class="control">
+                                <button class="search__button">
+                                    <span class="fa fa-search"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
                 <a class="navbar-item {{ Request::is('series') ? 'is-active' : '' }}" href="{{ url('series') }}">
                     Series
                 </a>

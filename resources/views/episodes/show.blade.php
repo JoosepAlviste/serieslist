@@ -29,14 +29,16 @@
             </h1>
 
             <h2 class="subtitle">
-                In
+                Episode {{ $episode->number }}
+                <span class="vertical-delimiter">|</span>
                 <a href="{{ $episode->season->path() }}">
-                    season {{ $episode->season->number }}
+                    Season {{ $episode->season->number }}
                 </a>
-                of
+                <span class="vertical-delimiter">|</span>
+                Series:
                 <a href="{{ $episode->season->series->path() }}">
                     {{ $episode->season->series->title }}
-                </a>.
+                </a>
             </h2>
 
             <hr>
