@@ -6,7 +6,7 @@
 
 @section('form')
 
-    <form action="/series/{{ $series->id }}" method="POST">
+    <form action="/series/{{ $series->id }}" method="POST" enctype="multipart/form-data">
         {{ method_field('PUT') }}
         {{ csrf_field() }}
 
@@ -22,7 +22,7 @@
 
         @if ($series->poster)
             <div class="columns">
-                <div class="column">
+                <div class="column is-narrow">
                     <img src="{{ asset('uploads/images/' . $series->poster . '-poster-small.png') }}" alt="{{ $series->title }}">
                 </div>
 

@@ -99,6 +99,11 @@ class SeriesController extends Controller
         $series->start_year  = $request->get('start_year');
         $series->end_year    = $request->get('end_year');
 
+        if ($request->file('poster')) {
+            $filenames = app()->make(FileUploader::class)->storeSeriesPoster($request);
+            $series->poster = $filenames['filename'];
+        }
+
         $series->save();
 
         $oldSeasons   = $series->seasons;
