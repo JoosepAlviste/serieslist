@@ -22,8 +22,6 @@ after_success:
 
 deploy:
   provider: heroku
-  api_key:
-    secure: "DIer98RMrO1tbosH7+w6Ef25UcoyzDd+jj1LtlxrnilnDM53KSLEqUk+6sPojtH8HKZgN6wxiqteXEwjw5QhlfhOaGFnv5fTjr/sGEWVdWGtdklbpyNl22G7JXYBJ3FkQwAl3YJ1uJG11HfPGWF/ih+zTdhf53uFjk+/4WMtBOrIfA1LR7eNBFlyH8cN7nVXEQHFqlhLEebTw9A+PcuQgQPcfZvWsISTbFJaeG5iHdj4KNc9ktTTVRQOg6ett4qRtl5XeGxwCUNr9UXv2nT6XK5/AEkATd3lRGAnPaiO3GEAl0Z0ftAzZm+Fdc5PD+vg8FxRfP0N+wtHDFJBUvm5QsfvlfsgyTmS30NRt/7T+ypo+ocAPz4ZQpuVaQVJVyav8HipMQG0XceXPLGhSHAucwHaS5v4dLNjNXdt+q5Qm9MNJOubt1pNhA4BrLNKyV0OQuzxfaKpzCI6b6tdqTeyH4oYIpiP3W/VJhhRPuPsLzCY0Oa7TawBOy9RFmuE1WJ4M2moHKmQwUdoZAJVYyfkgeYrzuJY4KYBetwcFbN9FjwfU95nSn9sLBi0YCcRdJ5AUcxxY7THdJeHRqqT0kFE22C+FkItECBQCP8i/Qn0urkE+4AOl7AiJC4kvr8kh41+oh5TQTv+kvnlu6Rufff1F/7JelazXXxC0eBiIXdUaqQ="
   app: serieslist
   on:
     repo: Zeizig/serieslist
