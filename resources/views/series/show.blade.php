@@ -5,19 +5,31 @@
     <div class="section">
         <div class="container">
 
-            <h1 class="title">{{ $series->title }}</h1>
-            <h2 class="subtitle">{{ $series->start_year }} - {{ $series->end_year or '...' }}</h2>
-            <hr>
+            <div class="columns">
+                <div class="column is-narrow">
+                    @if ($series->poster)
+                        <img src="{{ asset('uploads/images/' . $series->poster . '-poster-small.png') }}" alt="">
+                    @else
+                        <img src="{{ asset('images/placeholder_poster_small.png') }}" alt="">
+                    @endif
+                </div>
 
-            <div class="content">
-                <p>{{ $series->description }}</p>
+                <div class="column">
+                    <h1 class="title">{{ $series->title }}</h1>
+                    <h2 class="subtitle">{{ $series->start_year }} - {{ $series->end_year or '...' }}</h2>
+                    <hr>
 
-                @can('update', $series)
-                    <a href="/series/{{ $series->id }}/edit" class="button is-default">
-                        Edit
-                    </a>
-                @endcan
+                    <div class="content">
+                        <p>{{ $series->description }}</p>
 
+                        @can('update', $series)
+                            <a href="/series/{{ $series->id }}/edit" class="button is-default">
+                                Edit
+                            </a>
+                        @endcan
+
+                    </div>
+                </div>
             </div>
 
         </div>

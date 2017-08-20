@@ -13,6 +13,7 @@ use Illuminate\Support\Collection;
  * @property string description
  * @property int start_year
  * @property int end_year
+ * @property string poster
  * @property Season[]|Collection seasons
  *
  * @package App\Models

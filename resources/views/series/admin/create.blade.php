@@ -6,7 +6,7 @@
 
 @section('form')
 
-    <form action="/series" method="POST">
+    <form action="/series" method="POST" enctype="multipart/form-data">
         {{ csrf_field() }}
 
         @component('partials.text_input', ['name' => 'title', 'required' => true])
@@ -16,6 +16,9 @@
         @component('partials.textarea', ['name' => 'description', 'required' => true])
             Description
         @endcomponent
+
+        <label class="label" for="poster">Poster</label>
+        <input class="mb-1" type="file" name="poster" id="poster">
 
         <div class="columns">
 

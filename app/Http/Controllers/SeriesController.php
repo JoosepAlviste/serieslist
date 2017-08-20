@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\FileUploader;
 use App\Http\Requests\StoreSeries;
 use App\Models\Series;
 use Illuminate\Support\Collection;
@@ -51,6 +52,11 @@ class SeriesController extends Controller
         $series->description = $request->get('description');
         $series->start_year  = $request->get('start_year');
         $series->end_year    = $request->get('end_year');
+
+        if ($request->file('poster')) {
+            $filenames = app()->make(FileUploader::class)->storeSeriesPoster($request);
+            $series->poster = $filenames['filename'];
+        }
 
         $series->save();
 
