@@ -20,6 +20,22 @@
             Description
         @endcomponent
 
+        @if ($series->poster)
+            <div class="columns">
+                <div class="column">
+                    <img src="{{ asset('uploads/images/' . $series->poster . '-poster-small.png') }}" alt="{{ $series->title }}">
+                </div>
+
+                <div class="column">
+                    <label class="label" for="poster">Poster</label>
+                    <input class="mb-1" type="file" name="poster" id="poster">
+                </div>
+            </div>
+        @else
+            <label class="label" for="poster">Poster</label>
+            <input class="mb-1" type="file" name="poster" id="poster">
+        @endif
+
         <div class="columns">
 
             @component('partials.number_input', [
