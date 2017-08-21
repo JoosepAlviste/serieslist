@@ -88,9 +88,10 @@ class SeriesTest extends TestCase
         $user = create(User::class);
         $series = create(Series::class);
         /** @var Collection|Episode[] $episodes */
-        $episodes = create(Episode::class, [
+        create(Episode::class, [
             'season_id' => create(Season::class, ['series_id' => $series->id])
         ], 5);
+        $episodes = Episode::all();
         $episodes = $episodes->chunk(3);
 
         $episodes->first()->each(function ($episode) use ($user) {

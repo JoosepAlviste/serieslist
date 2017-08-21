@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Class Episode.
@@ -22,7 +23,17 @@ class Episode extends Model
 
     protected $with = ['season', 'season.series'];
 
-    protected $appends = [];
+    /**
+     * Boot method used to add global scopes, etc. So whenever Episodes are
+     * queried, these scopes are automatically activated.
+     */
+    protected static function boot() {
+        parent::boot();
+
+        static::addGlobalScope('orderByNumber', function (Builder $builder) {
+            $builder->orderBy('number', 'asc');
+        });
+    }
 
     /**
      * Make a string path which points to this episode.

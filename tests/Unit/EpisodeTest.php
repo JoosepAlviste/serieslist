@@ -156,4 +156,24 @@ class EpisodeTest extends TestCase
             $episode->nextEpisode()->id
         );
     }
+
+    /** @test */
+    function episodes_are_ordered_by_their_number_by_default()
+    {
+        $episodeSecond = create(Episode::class, [
+            'number' => $this->episode->number - 1,
+            'season_id' => $this->episode->season_id,
+        ]);
+
+        $episodes = Episode::all();
+
+        $this->assertEquals(
+            $episodeSecond->id,
+            $episodes[0]->id
+        );
+        $this->assertEquals(
+            $this->episode->id,
+            $episodes[1]->id
+        );
+    }
 }
