@@ -82,6 +82,7 @@ class SeasonTest extends TestCase
         $season = create(Season::class);
         $oldEpisodes = create(Episode::class, ['season_id' => $season->id], 2);
 
+        $oldEpisodes = $season->episodes;
         $episodes = $season->episodes->toArray();
         $episodes[0]['title'] = 'Test title';
 
