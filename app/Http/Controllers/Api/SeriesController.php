@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Episode;
 use App\Models\Series;
 use App\Models\User;
+use App\Queries\LatestSeenEpisodesQuery;
 use Illuminate\Support\Collection;
 
 /**
@@ -25,16 +26,33 @@ class SeriesController extends Controller
      */
     public function inProgressSeries(User $user)
     {
-        return $user
-            ->inProgressSeries()
-            ->each(function ($series) {
-                /** @var Series $series */
-                $latestEpisode = $series->latestSeenEpisode();
-                if ($latestEpisode) {
-                    $latestEpisode->shortSlug = $latestEpisode->shortSlug();
-                    $latestEpisode->nextEpisode = $latestEpisode->nextEpisode();
-                }
-                $series->latestSeenEpisode = $latestEpisode;
-            });
+        $seenEpisodes = (new LatestSeenEpisodesQuery([$user->id]))
+            ->execute();
+
+        $lastSeenEpisodes = Episode::find(
+            $seenEpisodes->map(function ($seenEpisode) {
+                return $seenEpisode->episode_id;
+            })
+        );
+        $seenSeries       = Collection::make([]);
+
+        $lastSeenEpisodes->each(function ($episode) use ($seenSeries) {
+            $series = $episode->season->series->toArray();
+
+            $episodeArr = $episode->makeHidden('season')->toArray();
+
+            $nextEpisode = $episode->nextEpisode();
+            if ($nextEpisode) {
+                $episodeArr['nextEpisode'] = $nextEpisode->makeHidden('season')->toArray();
+            } else {
+                $episodeArr['nextEpisode'] = null;
+            }
+            $episodeArr['shortSlug'] = $episode->shortSlug();
+
+            $series['latestSeenEpisode'] = $episodeArr;
+            $seenSeries->push($series);
+        });
+
+        return $seenSeries;
     }
 }
