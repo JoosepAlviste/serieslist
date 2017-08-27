@@ -7,11 +7,7 @@
 
             <div class="columns">
                 <div class="column is-narrow">
-                    @if ($series->poster)
-                        <img src="{{ asset('uploads/images/' . $series->poster . '-poster-small.png') }}" alt="">
-                    @else
-                        <img src="{{ asset('images/placeholder_poster_small.png') }}" alt="">
-                    @endif
+                    @include('series.partials.poster-small')
                 </div>
 
                 <div class="column">

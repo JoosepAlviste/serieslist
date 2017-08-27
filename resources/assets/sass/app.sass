@@ -77,6 +77,19 @@
 .mb-1
   margin-bottom: 1em
 
+.image
+
+  &.is-103x150
+    height: 150px
+    width: 103px
+
+  &.is-182x268
+    height: 268px
+    width: 182px
+  //@each $dimension in $image-dimensions
+  //  &.is-#{$dimension}x#{$dimension}
+  //    height: $dimension * 1px
+  //    width: $dimension * 1px
 
 
 // Show episode page
@@ -93,8 +106,40 @@
     padding-bottom: 13rem
     padding-top: 5rem
 
+.series-list__page-title
+  display: flex
+  justify-content: space-between
+
 .series-list__container
   margin-top: -8em
+
+ul.series-list
+  list-style: none
+  margin-left: 0
+
+.series-list__element
+  padding: 15px 30px
+
+.series-list__element:not(:last-child)::after
+  display: block
+  content: ""
+  border-bottom: 1px solid lightgrey
+  width: 90%
+  margin: 30px auto 0 auto
+
+.series-list__element-container
+  display: flex
+
+.series-list__poster
+  img
+    height: 150px
+
+.series-list__content-container
+  padding-left: 15px
+
+.series-list
+  .series-list__title
+    margin-bottom: .5rem
 
 
 // Search
