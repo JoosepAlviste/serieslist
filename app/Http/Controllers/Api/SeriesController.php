@@ -53,6 +53,8 @@ class SeriesController extends Controller
             $seenSeries->push($series);
         });
 
-        return $seenSeries;
+        $seenSeries = $seenSeries->sortBy('title');
+
+        return $seenSeries->values()->all();
     }
 }

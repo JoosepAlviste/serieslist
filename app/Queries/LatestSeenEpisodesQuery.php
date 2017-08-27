@@ -94,7 +94,7 @@ class LatestSeenEpisodesQuery
 
               )
 
-            ORDER BY series_title
+            ORDER BY series.title ASC
               
             ;
 EOT;
