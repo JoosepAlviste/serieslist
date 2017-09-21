@@ -176,4 +176,23 @@ class EpisodeTest extends TestCase
             $episodes[1]->id
         );
     }
+
+    /** @test */
+    function it_can_be_searched_for_by_its_title()
+    {
+        $episode    = create(Episode::class, [
+            'title' => 'Test title',
+        ]);
+        $episodeTwo = create(Episode::class, [
+            'title' => 'Not searchable title',
+        ]);
+
+        $query = 'test t';
+
+        $foundEpisodes = Episode::search($query)
+                                ->get();
+
+        $this->assertTrue($foundEpisodes->contains('id', $episode->id));
+        $this->assertFalse($foundEpisodes->contains('id', $episodeTwo->id));
+    }
 }

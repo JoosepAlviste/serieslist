@@ -15,6 +15,8 @@ use Illuminate\Database\Eloquent\Builder;
  * @property Season season
  * @property bool isSeen
  *
+ * @method static Builder search(string $q)
+ *
  * @package App\Models
  */
 class Episode extends Model
@@ -43,26 +45,6 @@ class Episode extends Model
     public function path()
     {
         return "/series/{$this->season->series_id}/episodes/{$this->id}";
-    }
-
-    /**
-     * Set the one to many relationship where an episode belongs to a season.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function season()
-    {
-        return $this->belongsTo(Season::class);
-    }
-
-    /**
-     * Set the many to one relationship where an episode can have a seen episode.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function seenEpisodes()
-    {
-        return $this->hasMany(SeenEpisode::class);
     }
 
     /**
@@ -188,5 +170,39 @@ class Episode extends Model
             'user_id' => $userId,
             'episode_id' => $this->id,
         ]);
+    }
+
+    /**
+     * Set the one to many relationship where an episode belongs to a season.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function season()
+    {
+        return $this->belongsTo(Season::class);
+    }
+
+    /**
+     * Set the many to one relationship where an episode can have a seen episode.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function seenEpisodes()
+    {
+        return $this->hasMany(SeenEpisode::class);
+    }
+
+    /**
+     * Register the Search scope. Episodes can be searched for
+     * by their title.
+     *
+     * @param Builder $query
+     * @param string $q
+     *
+     * @return Builder
+     */
+    public function scopeSearch($query, $q)
+    {
+        return $query->whereRaw('LOWER(title) like ?', ["%{$q}%"]);
     }
 }

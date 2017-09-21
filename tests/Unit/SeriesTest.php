@@ -102,4 +102,23 @@ class SeriesTest extends TestCase
 
         $this->assertEquals($episodes->first()->last()->id, $latestSeen->id);
     }
+
+    /** @test */
+    function it_can_be_searched_for_by_its_title_or_description()
+    {
+        $series    = create(Series::class, [
+            'title' => 'Test title',
+        ]);
+        $seriesTwo = create(Series::class, [
+            'title' => 'Not searchable title',
+        ]);
+
+        $query = 'test t';
+
+        $foundSeries = Series::search($query)
+                             ->get();
+
+        $this->assertTrue($foundSeries->contains('id', $series->id));
+        $this->assertFalse($foundSeries->contains('id', $seriesTwo->id));
+    }
 }

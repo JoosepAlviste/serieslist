@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
 /**
@@ -15,6 +16,8 @@ use Illuminate\Support\Collection;
  * @property int end_year
  * @property string poster
  * @property Season[]|Collection seasons
+ *
+ * @method static Builder search(string $q)
  *
  * @package App\Models
  */
@@ -31,6 +34,10 @@ class Series extends Model
 
         static::deleting(function ($series) {
             $series->seasons->each->delete();
+        });
+
+        static::addGlobalScope('orderByTitle', function (Builder $builder) {
+            $builder->orderBy('title');
         });
     }
 
@@ -54,16 +61,6 @@ class Series extends Model
     public function addSeason($season)
     {
         return $this->seasons()->create($season);
-    }
-
-    /**
-     * Many to one relationship where a series has many seasons..
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function seasons()
-    {
-        return $this->hasMany(Season::class);
     }
 
     /**
@@ -99,5 +96,21 @@ class Series extends Model
         }
 
         return $lastSeen;
+    }
+
+    /**
+     * Many to one relationship where a series has many seasons..
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function seasons()
+    {
+        return $this->hasMany(Season::class);
+    }
+
+    public function scopeSearch($query, $q)
+    {
+        return $query->whereRaw('LOWER(title) like ?', ["%{$q}%"])
+            ->orWhereRaw('LOWER(description) like ?', ["%$q%"]);
     }
 }
