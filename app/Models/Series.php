@@ -108,6 +108,15 @@ class Series extends Model
         return $this->hasMany(Season::class);
     }
 
+    /**
+     * Register the Search scope. Series can be searched for
+     * by their title and description.
+     *
+     * @param Builder $query
+     * @param string $q
+     *
+     * @return Builder
+     */
     public function scopeSearch($query, $q)
     {
         return $query->whereRaw('LOWER(title) like ?', ["%{$q}%"])
