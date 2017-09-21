@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('pageTitle', $episode->title)
+
 @section('content')
 
     <div class="section">

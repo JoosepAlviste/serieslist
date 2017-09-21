@@ -1,8 +1,8 @@
 @extends('layouts.form_page')
 
-@section('title')
-    Reset Password
-@endsection
+@section('pageTitle', 'Reset password')
+
+@section('title', 'Reset password')
 
 @section('form')
 

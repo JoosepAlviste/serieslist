@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('pageTitle', 'Home')
+
 @section('content')
 
     <section class="hero is-primary">

@@ -1,8 +1,8 @@
 @extends('layouts.form_page')
 
-@section('title')
-    Edit {{ $series->title }}
-@endsection
+@section('pageTitle', 'Edit ' . $series->title)
+
+@section('title', 'Edit ' . $series->title)
 
 @section('form')
 

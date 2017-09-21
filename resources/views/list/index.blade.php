@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('pageTitle', 'My series list')
+
 @section('content')
 
     <section class="hero is-medium is-primary hero--bottom-padding">

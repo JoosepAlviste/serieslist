@@ -1,8 +1,8 @@
 @extends('layouts.form_page')
 
-@section('title')
-    Login
-@endsection
+@section('pageTitle', 'Login')
+
+@section('title', 'Login')
 
 @section('form')
 

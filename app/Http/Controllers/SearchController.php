@@ -24,9 +24,11 @@ class SearchController extends Controller
 
         $series = Series::whereRaw('LOWER(title) like ?', [$q])
             ->orWhereRaw('LOWER(description) like ?', [$q])
+            ->limit(10)
             ->get();
 
         $episodes = Episode::whereRaw('LOWER(title) like ?', [$q])
+                        ->limit(10)
                         ->get();
 
         return view('search.index', [

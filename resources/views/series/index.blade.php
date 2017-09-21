@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('pageTitle', 'Series')
+
 @section('content')
 
     <div class="section">
@@ -18,12 +20,16 @@
             <hr>
 
             <div class="columns">
-                <ul class="series-list column is-two-thirds">
-                    {{-- TODO: Move this to a series-list-element partial for better stuffs --}}
-                    @foreach ($series as $oneSeries)
-                        @include('series.partials.one-series', ['series' => $oneSeries])
-                    @endforeach
-                </ul>
+                <div class="column is-two-thirds">
+                    <ul class="series-list">
+                        {{-- TODO: Move this to a series-list-element partial for better stuffs --}}
+                        @foreach ($series as $oneSeries)
+                            @include('series.partials.one-series', ['series' => $oneSeries])
+                        @endforeach
+                    </ul>
+
+                    {{ $series->links('vendor/pagination/bulma') }}
+                </div>
             </div>
 
         </div>

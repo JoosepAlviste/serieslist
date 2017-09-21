@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('pageTitle', "Season {$season->number} of {$season->series->title}")
+
 @section('content')
 
     <div class="section">
@@ -11,8 +13,8 @@
                 </a>
                 @if ($isSeen)
                     <span class="tag is-primary ml-1 is-medium">
-                            Seen
-                        </span>
+                        Seen
+                    </span>
                 @else
                     <a href="/seasons/{{ $season->id }}/seen-episodes"
                        onclick="event.preventDefault();

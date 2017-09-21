@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('pageTitle', 'Search for "' . $q . '"')
+
 @section('content')
 
     <section class="hero is-primary">

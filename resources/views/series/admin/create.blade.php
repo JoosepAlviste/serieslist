@@ -1,8 +1,8 @@
 @extends('layouts.form_page')
 
-@section('title')
-    Create a new series
-@endsection
+@section('pageTitle', 'New series')
+
+@section('title', 'Create a new series')
 
 @section('form')
 

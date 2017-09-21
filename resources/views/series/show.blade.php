@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('pageTitle', $series->title)
+
 @section('content')
 
     <div class="section">
