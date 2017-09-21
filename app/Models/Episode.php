@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 
 /**
  * Class Episode.
@@ -15,6 +16,7 @@ use Illuminate\Database\Eloquent\Builder;
  * @property Season season
  * @property bool isSeen
  *
+ * @method static Episode|Episode[]|Collection find($arg)
  * @method static Builder search(string $q)
  *
  * @package App\Models

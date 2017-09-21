@@ -36,7 +36,7 @@ class SeriesController extends Controller
         );
         $seenSeries       = Collection::make([]);
 
-        $lastSeenEpisodes->each(function ($episode) use ($seenSeries) {
+        $lastSeenEpisodes->each(function (Episode $episode) use ($seenSeries) {
             $series = $episode->season->series->toArray();
 
             $episodeArr = $episode->makeHidden('season')->toArray();
