@@ -21,12 +21,7 @@
 
             <div class="columns">
                 <div class="column is-two-thirds">
-                    <ul class="series-list">
-                        {{-- TODO: Move this to a series-list-element partial for better stuffs --}}
-                        @foreach ($series as $oneSeries)
-                            @include('series.partials.one-series', ['series' => $oneSeries])
-                        @endforeach
-                    </ul>
+                    @include('series.partials.series-list')
 
                     {{ $series->links('vendor/pagination/bulma') }}
                 </div>

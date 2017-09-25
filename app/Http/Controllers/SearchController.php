@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Episode;
 use App\Models\Series;
+use Illuminate\Support\Collection;
 
 /**
  * Class SearchController.
@@ -22,16 +23,46 @@ class SearchController extends Controller
         $q = strtolower(request()->input('q'));
 
         $series = Series::search($q)
-                        ->limit(10)
+                        ->limit(6)
                         ->get();
 
         $episodes = Episode::search($q)
                            ->orderBy('title')
-                           ->limit(10)
+                           ->limit(6)
                            ->get();
 
         return view('search.index', [
             'series'   => $series,
+            'episodes' => $episodes,
+            'q'        => request()->input('q'),
+        ]);
+    }
+
+    public function series()
+    {
+        $q = strtolower(request()->input('q'));
+
+        $series = Series::search($q)
+                        ->orderBy('title')
+                        ->paginate(10);
+        $series->appends(request()->input())->links();
+
+        return view('search.series', [
+            'series' => $series,
+            'q'        => request()->input('q'),
+        ]);
+    }
+
+    public function episodes()
+    {
+        $q = strtolower(request()->input('q'));
+
+        $episodes = Episode::search($q)
+                           ->orderBy('title')
+                           ->paginate(10);
+        $episodes->appends(request()->input())->links();
+
+        return view('search.episodes', [
             'episodes' => $episodes,
             'q'        => request()->input('q'),
         ]);

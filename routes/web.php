@@ -14,6 +14,24 @@
 
 /*
 |--------------------------------------------------------------------------
+| Pages
+|--------------------------------------------------------------------------
+*/
+
+Auth::routes();
+
+Route::get('/', 'PagesController@welcome');
+Route::get('home', 'PagesController@home')->name('home')->middleware('auth');
+
+/*** Search ***/
+
+Route::get('search', 'SearchController@index')->name('search');
+Route::get('series/search', 'SearchController@series')->name('search.series');
+Route::get('episodes/search', 'SearchController@episodes')->name('search.episodes');
+
+
+/*
+|--------------------------------------------------------------------------
 | Series
 |--------------------------------------------------------------------------
 */
@@ -65,24 +83,3 @@ Route::middleware('auth')
 
 Route::get('list', 'ListController@index')->middleware('auth');
 Route::get('users/{user}/series', 'Api\SeriesController@inProgressSeries');
-
-
-/*
-|--------------------------------------------------------------------------
-| Pages
-|--------------------------------------------------------------------------
-*/
-
-Auth::routes();
-
-Route::get('/', 'PagesController@welcome');
-Route::get('home', 'PagesController@home')->name('home')->middleware('auth');
-
-
-/*
-|--------------------------------------------------------------------------
-| Search
-|--------------------------------------------------------------------------
-*/
-
-Route::get('search', 'SearchController@index');

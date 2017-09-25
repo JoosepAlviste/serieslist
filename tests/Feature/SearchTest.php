@@ -23,7 +23,7 @@ class SearchTest extends TestCase
 
         $query = 'test t';
 
-        $this->get("/search?q={$query}")
+        $this->get("/series/search?q={$query}")
              ->assertSee($series->title)
              ->assertDontSee($seriesTwo->title);
     }
@@ -57,9 +57,34 @@ class SearchTest extends TestCase
 
         $query = 'test t';
 
+        $this->get("/episodes/search?q={$query}")
+             ->assertSee($episode->title)
+             ->assertDontSee($episodeTwo->title);
+    }
+
+    /** @test */
+    function episodes_and_series_can_be_searched_for()
+    {
+        $series    = create(Series::class, [
+            'title' => 'Test title series',
+        ]);
+        $seriesTwo = create(Series::class, [
+            'title' => 'Not searchable title series',
+        ]);
+
+        $episode    = create(Episode::class, [
+            'title' => 'Test title episode',
+        ]);
+        $episodeTwo = create(Episode::class, [
+            'title' => 'Not searchable title episode',
+        ]);
+
+        $query = 'test t';
+
         $this->get("/search?q={$query}")
+             ->assertSee($series->title)
+             ->assertDontSee($seriesTwo->title)
              ->assertSee($episode->title)
              ->assertDontSee($episodeTwo->title);
     }
 }
-

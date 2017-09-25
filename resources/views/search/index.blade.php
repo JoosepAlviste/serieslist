@@ -21,20 +21,18 @@
             <h2 class="subtitle">Series</h2>
             <hr>
 
-            <div class="content">
-                @if ($series->count() === 0)
-                    <p>No series found</p>
-                @else
-                    <ul>
-                        @foreach ($series as $oneSeries)
-                            <li>
-                                <a href="{{ $oneSeries->path() }}">
-                                    {{ $oneSeries->title }}
-                                </a>
-                            </li>
-                        @endforeach
-                    </ul>
-                @endif
+            <div class="columns">
+                <div class="column is-two-thirds">
+                    @if ($series->count() === 0)
+                        <p>No series found</p>
+                    @else
+                        @include('series.partials.series-list')
+
+                        <div>
+                            <a href="{{ route('search.series', ['q' => $q]) }}">See more series</a>
+                        </div>
+                    @endif
+                </div>
             </div>
 
         </section>
@@ -57,6 +55,10 @@
                             </li>
                         @endforeach
                     </ul>
+
+                    <div>
+                        <a href="{{ route('search.episodes', ['q' => $q]) }}">See more episodes</a>
+                    </div>
                 @endif
             </div>
 
