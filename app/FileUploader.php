@@ -15,7 +15,7 @@ class FileUploader
     public function storeSeriesPoster($request)
     {
         $file          = Image::make($request->file('poster'));
-        $path          = public_path('uploads/images') . '/';
+        $path          = storage_path('app/public/posters') . '/';
         $filenameHash  = md5($request->file('poster')->hashName() . microtime());
         $largeFilename = $filenameHash . '-poster-large.png';
         $smallFilename = $filenameHash . '-poster-small.png';
