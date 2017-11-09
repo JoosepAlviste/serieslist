@@ -36,8 +36,7 @@
             findInProgressSeries() {
                 window.axios.get('/users/' + window.App.user.id + '/series')
                     .then(({data}) => {
-                        console.log(data)
-                        this.inProgressSeries = data
+                        this.inProgressSeries = data.data
                     })
             },
 
@@ -47,7 +46,9 @@
         },
 
         mounted() {
-            this.findInProgressSeries()
+            setTimeout(() => {
+                this.findInProgressSeries()
+            }, 1000)
         },
     }
 </script>

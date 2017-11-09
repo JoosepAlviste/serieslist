@@ -11,7 +11,7 @@
                    v-text="latestSeenEpisode">
                 </a>
                 <span class="fa fa-plus-circle series-list-element__mark-as-seen"
-                      v-if="series.latestSeenEpisode.nextEpisode"
+                      v-if="series.nextEpisode"
                       @click="markNextEpisodeAsSeen">
                 </span>
             </span>
@@ -53,8 +53,8 @@
 
         methods: {
             markNextEpisodeAsSeen() {
-                if (this.series.latestSeenEpisode.nextEpisode) {
-                    window.axios.post('episodes/' + this.series.latestSeenEpisode.nextEpisode.id + '/seen-episodes')
+                if (this.series.nextEpisode) {
+                    window.axios.post('episodes/' + this.series.nextEpisode.id + '/seen-episodes')
                         .then(({data}) => {
                             this.$emit('latest-seen-episode-was-updated', data)
                         })

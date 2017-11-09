@@ -16,11 +16,11 @@ class ListController extends Controller
      */
     public function index()
     {
-        $controller = app(\App\Http\Controllers\Api\SeriesController::class);
-        $series = $controller->inProgressSeries(auth()->user());
-        dd($series);
-
-        return view('pages.home');
-//        return view('list.index');
+//        $controller = app(\App\Http\Controllers\Api\SeriesController::class);
+//        $series = $controller->inProgressSeries(auth()->user());
+//        dd($series);
+//
+//        return view('pages.home');
+        return view('list.index');
     }
 }
