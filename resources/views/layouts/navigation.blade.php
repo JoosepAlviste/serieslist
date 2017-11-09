@@ -33,7 +33,10 @@
                     </form>
                 </div>
 
-                <a class="navbar-item {{ Request::is('series') ? 'is-active' : '' }}" href="{{ url('series') }}">
+                <a
+                    class="navbar-item {{ Request::is('series') ? 'is-active' : '' }}"
+                    href="{{ url('series') }}"
+                >
                     Series
                 </a>
 
@@ -49,23 +52,28 @@
                     <a class="navbar-item"
                        href="{{ url('/logout') }}"
                        onclick="event.preventDefault();
-                                document.getElementById('logout-form').submit();">
+                                document.getElementById('logout-form').submit();"
+                    >
                         Logout
                     </a>
 
                     <form id="logout-form"
                           action="{{ url('/logout') }}"
                           method="POST"
-                          style="display: none;">
+                          style="display: none;"
+                    >
                         {{ csrf_field() }}
                     </form>
                 @else
                     <a class="navbar-item {{ Request::is('login') ? 'is-active' : '' }}"
-                       href="{{ url('/login') }}">
+                       href="{{ url('/login') }}"
+                    >
                         Login
                     </a>
+
                     <a class="navbar-item {{ Request::is('register') ? 'is-active' : '' }}"
-                       href="{{ url('/register') }}">
+                       href="{{ url('/register') }}"
+                    >
                         Register
                     </a>
                 @endif

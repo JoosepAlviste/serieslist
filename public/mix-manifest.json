@@ -1,6 +1,6 @@
 {
-  "/js/app.js": "/js/app.js",
-  "/css/app.css": "/css/app.css",
-  "/js/series_create.js": "/js/series_create.js",
-  "/js/list.js": "/js/list.js"
+    "/js/list.js": "/js/list.js",
+    "/js/series_create.js": "/js/series_create.js",
+    "/js/app.js": "/js/app.js",
+    "/css/app.css": "/css/app.css"
 }

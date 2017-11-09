@@ -9,6 +9,7 @@ use App\Models\Series;
 use App\Models\User;
 use App\Queries\LatestSeenEpisodesQuery;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class SeriesController.
@@ -29,35 +30,62 @@ class SeriesController extends Controller
     {
         $seenEpisodes = (new LatestSeenEpisodesQuery([$user->id]))
             ->execute();
+        // series_id, series_title, episode_id, season_id, season_number,
+        // episode_number
 
-        $lastSeenEpisodes = Episode::find(
-            $seenEpisodes->map(function ($seenEpisode) {
-                return $seenEpisode->episode_id;
-            })
-        );
-        $seenSeries       = Collection::make([]);
-        $lastSeenEpisodes = $this->findNextEpisodes($lastSeenEpisodes);
+        // Need:
+        // series_id  -  have
+        // season_number  -  have
+        // episode_id, episode_number  -  have
+        // next_episode_id
 
-        $lastSeenEpisodes->each(function (Episode $episode) use ($seenSeries) {
-            $series = $episode->season->series->toArray();
+        // Next episodes
+        $query = DB::table('episodes')->select(['id', 'season_id']);
+        foreach ($seenEpisodes as $episode) {
+            $episode->shortSlug = sprintf("S%02dE%02d", $episode->season_number, $episode->episode_number);
+            $query->orWhere(function ($query) use ($episode) {
+                $query->where('number', $episode->episode_number + 1)
+                      ->where('season_id', $episode->season_id);
+            });
+        }
+        $nextEpisodesInSameSeason = $query->get();
 
-            $episodeArr = $episode->makeHidden('season')->toArray();
+        $episodesWithNoEpisodeSameSeason = $seenEpisodes->filter(function ($thisEpisode) use ($nextEpisodesInSameSeason) {
+            $matches = $nextEpisodesInSameSeason->map(function ($nextEpisode) use ($thisEpisode) {
+                if ($nextEpisode->season_id === $thisEpisode->season_id) {
+                    $thisEpisode->nextEpisode = $nextEpisode;
+                    return true;
+                }
 
-            $nextEpisode = $episode->calculatedNextEpisode;
-            if ($nextEpisode) {
-                $episodeArr['nextEpisode'] = $nextEpisode->makeHidden('season')->toArray();
-            } else {
-                $episodeArr['nextEpisode'] = null;
-            }
-            $episodeArr['shortSlug'] = $episode->shortSlug();
+                return false;
+            });
 
-            $series['latestSeenEpisode'] = $episodeArr;
-            $seenSeries->push($series);
+            $filtered = $matches->filter(function ($match) {
+                return $match === true;
+            });
+            return $filtered->isEmpty();
         });
 
-        $seenSeries = $seenSeries->sortBy('title');
+        // next seasons  - 1 query
+        $nextSeasonsQuery = Season::with('episodes');
+        $episodesWithNoEpisodeSameSeason->each(function ($episode) use ($nextSeasonsQuery) {
+            $nextSeasonsQuery->orWhere(function ($query) use ($episode) {
+                $query->where('number', $episode->season_number + 1)
+                      ->where('series_id', $episode->series_id);
+            });
+        });
+        $nextSeasons = $nextSeasonsQuery->get();
 
-        return $seenSeries->values()->all();
+        $seenEpisodes->each(function ($seenEpisode) use ($nextSeasons) {
+            $nextSeasons->each(function ($nextSeason) use ($seenEpisode) {
+                if ($seenEpisode->series_id === $nextSeason->series_id) {
+                    $seenEpisode->nextEpisode = $nextSeason->episodes->first()->toArray();
+                }
+            });
+        });
+        $seenEpisodes->sortBy('series_title');
+
+        return $seenEpisodes;
     }
 
     /**

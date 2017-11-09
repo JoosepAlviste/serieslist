@@ -61,7 +61,7 @@ class SeriesController extends Controller
 
         $series->save();
 
-        if ($request->has('seasons')) {
+        if ($request->filled('seasons')) {
             foreach ($request->get('seasons') as $season) {
                 $savedSeason = $series->addSeason($season);
                 if (array_key_exists('episodes', $season)) {
