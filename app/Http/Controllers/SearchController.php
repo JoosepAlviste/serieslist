@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Episode;
 use App\Models\Series;
-use Illuminate\Support\Collection;
 
 /**
  * Class SearchController.
@@ -20,7 +19,7 @@ class SearchController extends Controller
      */
     public function index()
     {
-        $q = strtolower(request()->input('q'));
+        $q = $this->getQuery();
 
         $series = Series::search($q)
                         ->limit(6)
@@ -38,9 +37,14 @@ class SearchController extends Controller
         ]);
     }
 
+    /**
+     * Show the page for showing series search results.
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function series()
     {
-        $q = strtolower(request()->input('q'));
+        $q = $this->getQuery();
 
         $series = Series::search($q)
                         ->orderBy('title')
@@ -53,9 +57,14 @@ class SearchController extends Controller
         ]);
     }
 
+    /**
+     * Show the page for showing episodes search results.
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function episodes()
     {
-        $q = strtolower(request()->input('q'));
+        $q = $this->getQuery();
 
         $episodes = Episode::search($q)
                            ->orderBy('title')
@@ -66,5 +75,15 @@ class SearchController extends Controller
             'episodes' => $episodes,
             'q'        => request()->input('q'),
         ]);
+    }
+
+    /**
+     * Get the search query keyword.
+     *
+     * @return string
+     */
+    protected function getQuery()
+    {
+        return strtolower(request()->input('q'));
     }
 }

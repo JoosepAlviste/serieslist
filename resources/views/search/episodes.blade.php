@@ -22,9 +22,13 @@
             <div class="columns">
                 <div class="column is-two-thirds">
                     @if ($episodes->count() === 0)
-                        <p>No series found</p>
+                        <div class="content">
+                            <p>No episodes found</p>
+                        </div>
                     @else
-                        @include('episodes._episodes-list')
+                        <div class="content">
+                            @include('episodes._episodes-list')
+                        </div>
 
                         {{ $episodes->links('vendor/pagination/bulma') }}
                     @endif
