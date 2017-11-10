@@ -14,7 +14,7 @@ script:
   - vendor/bin/phpunit --coverage-clover build/logs/clover.xml
 after_success:
   - bash <(curl -s https://codecov.io/bash)
-  - ./deploy.sh
+  - bash deploy.sh
 #deploy:
 #  provider: heroku
 #  api_key:
