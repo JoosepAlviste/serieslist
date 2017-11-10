@@ -48,7 +48,7 @@
     <div class="hero-body">
         <div class="container has-text-centered">
             <h1 class="title">
-                Serieslist
+                Serieslist!
             </h1>
         </div>
     </div>

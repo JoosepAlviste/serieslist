@@ -2,24 +2,28 @@ language: php
 git:
   depth: 1
 php:
-- 7.0
+  - 7.0
 before_script:
-- cp .env.travis .env
-- mysql -e 'create database homestead_test;'
-- composer self-update
-- composer install --no-interaction
-- php artisan key:generate
-- mkdir -p build/logs
+  - cp .env.travis .env
+  - mysql -e 'create database homestead_test;'
+  - composer self-update
+  - composer install --no-interaction
+  - php artisan key:generate
+  - mkdir -p build/logs
 script:
-- vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+  - vendor/bin/phpunit --coverage-clover build/logs/clover.xml
 after_success:
-- bash <(curl -s https://codecov.io/bash)
-deploy:
-  provider: heroku
-  api_key:
-    secure: ISQN8JQ1Ll2djmKquY4hNgq022SYYBzyvLNXkdVkS14pDsC7PAgdlJh4DrvPHKYjGCReRNjPFrRDXYo0E358twI89SQCknOZWljMme8tC9Z54AFW3I+RRQkNprzhN2ueP3lPzETOM9+V6sMuewPxA/bxM/zORxKqzScF1VHbt+xpAAlgCZJdQP/Q8fJTJkqnuQWYXT64P6zp0O5tiWRxunk6drr/Fio7oB0fs3TB1RJP+3qyDhYlcBs0xNq+UAB/NeO9NRlmBkPvVl0yYtlwNSA38BQ75lHH2Sb026VtmOPu+LbSjmkCkWSELg+SKn70dEO6ad9AEdMQlxv9VVG6FNZoabP4WU/z0tKK7WMgtGnyKUpcUa8IJHj8qFvEMwfWwK7dB3CwxvjdKfP/wQOK4iHj7EwfZqSrJGhMnq1mLa3xVtpemp9gJPGb8UfS7iW/Fr2dpcu12UMPISobQNzRuXWr/hyEjrg/BBGY1Ty0PPMlhbYHMMqy9/YMfyyUIUQU0Z1k0tjJf4TlFuHAX83m5dh1cxlVYAEJI881x7gnH45yyJURGhvx9m3EaJ1nssxlc+cyp66Ez/F4kkXUvCpvAbaOlmGwgPazDOvZ2NtXgjAz8AxAl4RyeW4VY0gbuUmjD3EHdfxVHBvfD/HoQS9lYjLXZOIVQac2MyS+oC1CNew=
-  app: serieslist
-  on:
-    repo: JoosepAlviste/serieslist
-  run:
-  - php artisan migrate --force
+  - bash <(curl -s https://codecov.io/bash)
+  - ./deploy.sh
+#deploy:
+#  provider: heroku
+#  api_key:
+#    secure: ISQN8JQ1Ll2djmKquY4hNgq022SYYBzyvLNXkdVkS14pDsC7PAgdlJh4DrvPHKYjGCReRNjPFrRDXYo0E358twI89SQCknOZWljMme8tC9Z54AFW3I+RRQkNprzhN2ueP3lPzETOM9+V6sMuewPxA/bxM/zORxKqzScF1VHbt+xpAAlgCZJdQP/Q8fJTJkqnuQWYXT64P6zp0O5tiWRxunk6drr/Fio7oB0fs3TB1RJP+3qyDhYlcBs0xNq+UAB/NeO9NRlmBkPvVl0yYtlwNSA38BQ75lHH2Sb026VtmOPu+LbSjmkCkWSELg+SKn70dEO6ad9AEdMQlxv9VVG6FNZoabP4WU/z0tKK7WMgtGnyKUpcUa8IJHj8qFvEMwfWwK7dB3CwxvjdKfP/wQOK4iHj7EwfZqSrJGhMnq1mLa3xVtpemp9gJPGb8UfS7iW/Fr2dpcu12UMPISobQNzRuXWr/hyEjrg/BBGY1Ty0PPMlhbYHMMqy9/YMfyyUIUQU0Z1k0tjJf4TlFuHAX83m5dh1cxlVYAEJI881x7gnH45yyJURGhvx9m3EaJ1nssxlc+cyp66Ez/F4kkXUvCpvAbaOlmGwgPazDOvZ2NtXgjAz8AxAl4RyeW4VY0gbuUmjD3EHdfxVHBvfD/HoQS9lYjLXZOIVQac2MyS+oC1CNew=
+#  app: serieslist
+#  on:
+#    repo: JoosepAlviste/serieslist
+#  run:
+#  - php artisan migrate --force
+before_install:
+- openssl aes-256-cbc -K $encrypted_1503264ce2c7_key -iv $encrypted_1503264ce2c7_iv
+  -in deploy-key.enc -out deploy-key -d
