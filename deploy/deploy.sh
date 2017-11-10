@@ -7,7 +7,7 @@ if [ $TRAVIS_BRANCH == 'master' ] ; then
     composer install &&
     php artisan migrate --force
 EOM
-    ssh -o "StrictHostKeyChecking no" -i deploy-key deploy@serieslist.joosep.xyz $SSH_COMMAND
+    ssh -o "StrictHostKeyChecking no" -i deploy/deploy-key deploy@serieslist.joosep.xyz $SSH_COMMAND
 else
     echo "Not deploying, since this branch isn't master."
 fi
