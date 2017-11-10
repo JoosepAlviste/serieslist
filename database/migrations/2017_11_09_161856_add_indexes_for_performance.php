@@ -26,8 +26,6 @@ class AddIndexesForPerformance extends Migration
      */
     public function down()
     {
-        Schema::table('seen_episodes', function (Blueprint $table) {
-            $table->dropForeign(['episode_id', 'user_id']);
-        });
+        //
     }
 }
