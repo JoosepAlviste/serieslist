@@ -66,7 +66,7 @@
 
 <style lang="sass">
 
-    @import '../../../sass/includes/variables'
+    @import '../../sass/includes/variables'
 
     .series-list-element__mark-as-seen
         cursor: pointer

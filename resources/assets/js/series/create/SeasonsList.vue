@@ -73,7 +73,7 @@
 
 <style lang="sass" scoped>
 
-    @import '../../../../sass/includes/mixins'
+    @import '../../../sass/includes/mixins'
 
     .seasons-list
         margin-bottom: 20px

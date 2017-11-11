@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import SeasonsList from './components/series/create/SeasonsList.vue'
+import SeasonsList from './series/create/SeasonsList.vue'
 
 window.Events = new Vue();
 

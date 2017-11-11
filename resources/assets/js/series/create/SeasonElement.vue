@@ -76,8 +76,8 @@
 
 <style lang="sass">
 
-    @import '../../../../sass/includes/variables'
-    @import '../../../../sass/includes/mixins'
+    @import '../../../sass/includes/variables'
+    @import '../../../sass/includes/mixins'
 
     .season-element
 

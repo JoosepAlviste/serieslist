@@ -8,10 +8,19 @@
                 </tr>
             </thead>
             <tbody>
-                <list-element v-for="series in inProgressSeries"
-                              :key="series.id"
-                              :series="series"
-                              @latest-seen-episode-was-updated="handleLatestSeenUpdated(series, $event)">
+
+                <tr v-if="loading">
+                    <td colspan="2">
+                        <loading-spinner></loading-spinner>
+                    </td>
+                </tr>
+
+                <list-element
+                        v-for="series in inProgressSeries"
+                        :key="series.id"
+                        :series="series"
+                        @latest-seen-episode-was-updated="handleLatestSeenUpdated(series, $event)"
+                >
                 </list-element>
             </tbody>
         </table>
@@ -20,15 +29,17 @@
 
 <script>
     import ListElement from './ListElement.vue'
+    import LoadingSpinner from '../components/LoadingSpinner.vue'
 
     export default {
         name: 'SeriesList',
 
-        components: { ListElement },
+        components: { ListElement, LoadingSpinner },
 
         data() {
             return {
                 inProgressSeries: [],
+                loading: false,
             }
         },
 
@@ -37,6 +48,8 @@
                 window.axios.get('/users/' + window.App.user.id + '/series')
                     .then(({data}) => {
                         this.inProgressSeries = data.data
+
+                        this.loading = false
                     })
             },
 
@@ -46,9 +59,11 @@
         },
 
         mounted() {
+            this.loading = true
+
             setTimeout(() => {
                 this.findInProgressSeries()
-            }, 1000)
+            }, 100)
         },
     }
 </script>
