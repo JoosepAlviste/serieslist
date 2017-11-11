@@ -27,6 +27,8 @@ class Episode extends Model
 
     protected $with = ['season', 'season.series'];
 
+    const SHORT_SLUG_TEMPLATE = "S%02dE%02d";
+
     /**
      * Boot method used to add global scopes, etc. So whenever Episodes are
      * queried, these scopes are automatically activated.
@@ -106,7 +108,7 @@ class Episode extends Model
      */
     public function shortSlug()
     {
-        return sprintf("S%02dE%02d", $this->season->number, $this->number);
+        return sprintf(static::SHORT_SLUG_TEMPLATE, $this->season->number, $this->number);
     }
 
     /**

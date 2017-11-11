@@ -68,14 +68,17 @@ class SeriesController extends Controller
             return $filtered->isEmpty();
         });
 
-        $nextSeasonsQuery = Season::with('episodes');
-        $episodesWithNoEpisodeSameSeason->each(function ($episode) use ($nextSeasonsQuery) {
-            $nextSeasonsQuery->orWhere(function ($query) use ($episode) {
-                $query->where('number', $episode->season_number + 1)
-                      ->where('series_id', $episode->series_id);
+        $nextSeasons = new Collection;
+        if (! $episodesWithNoEpisodeSameSeason->isEmpty()) {
+            $nextSeasonsQuery = Season::with('episodes');
+            $episodesWithNoEpisodeSameSeason->each(function ($episode) use ($nextSeasonsQuery) {
+                $nextSeasonsQuery->orWhere(function ($query) use ($episode) {
+                    $query->where('number', $episode->season_number + 1)
+                          ->where('series_id', $episode->series_id);
+                });
             });
-        });
-        $nextSeasons = $nextSeasonsQuery->get();
+            $nextSeasons = $nextSeasonsQuery->get();
+        }
 
         $seenEpisodes->each(function ($seenEpisode) use ($nextSeasons) {
             $nextSeasons->each(function ($nextSeason) use ($seenEpisode) {

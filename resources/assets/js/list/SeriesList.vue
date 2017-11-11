@@ -45,7 +45,7 @@
 
         methods: {
             findInProgressSeries() {
-                window.axios.get('/users/' + window.App.user.id + '/series')
+                window.axios.get(`/users/${window.App.user.id}/series`)
                     .then(({data}) => {
                         this.inProgressSeries = data.data
 
