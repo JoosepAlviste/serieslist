@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Episode;
+use App\Models\Season;
 use App\Models\SeenEpisode;
 use Illuminate\Foundation\Testing\TestResponse;
 use Tests\TestCase;
@@ -71,6 +72,45 @@ class ListTest extends TestCase
         ]);
 
         $response->assertDontSeeText($this->notSeenEpisode->season->series->title);
+    }
+
+    /** @test */
+    function next_episode_has_a_higher_number_than_the_seen_episode()
+    {
+        $notNextEpisode = create(Episode::class, [
+            'number' => $this->seenEpisode->episode->number - 1,
+            'season_id' => $this->seenEpisode->episode->season->id,
+        ]);
+
+        $response = $this->fetchList();
+
+        $response->assertJsonFragment([
+            'nextEpisode' => null,
+        ]);
+        $response->assertJsonMissing([
+            'nextEpisode' => [
+                'id' => $notNextEpisode->id,
+            ],
+        ]);
+    }
+
+    /** @test */
+    function next_episode_can_be_in_the_next_season_if_seen_is_last_episode_of_season()
+    {
+        $episodeInNextSeason = create(Episode::class, [
+            'season_id' => create(Season::class, [
+                'series_id' => $this->seenEpisode->episode->season->series_id,
+                'number' => $this->seenEpisode->episode->season->number + 1,
+            ]),
+        ]);
+
+        $response = $this->fetchList();
+
+        $response->assertJsonFragment([
+            'nextEpisode' => [
+                'id' => $episodeInNextSeason->id,
+            ],
+        ]);
     }
 
     /**
