@@ -5,6 +5,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('favicons/apple-touch-icon.png?v=pgq38q4lAN') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicons/favicon-32x32.png?v=pgq38q4lAM') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicons/favicon-16x16.png?v=pgq38q4lAN') }}">
+    <link rel="manifest" href="{{ asset('favicons/manifest.json?v=pgq38q4lAN') }}">
+    <link rel="mask-icon" href="{{ asset('favicons/safari-pinned-tab.svg?v=pgq38q4lAN') }}" color="#7767c6">
+    <link rel="shortcut icon" href="{{ asset('favicons/favicon.ico?v=pgq38q4lAN') }}">
+    <meta name="msapplication-config" content="{{ asset('favicons/browserconfig.xml?v=pgq38q4lAN') }}">
+    <meta name="theme-color" content="#ffffff">
+
     <title>Serieslist</title>
 
     <!-- Fonts -->
