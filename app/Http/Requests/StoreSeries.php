@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Series;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreSeries extends FormRequest
@@ -28,6 +29,18 @@ class StoreSeries extends FormRequest
             'description' => 'required',
             'start_year' => 'required|numeric',
             'end_year' => 'nullable|numeric',
+            'poster' => 'nullable|file|image',
         ];
+    }
+
+    public function getInstance()
+    {
+        $series              = new Series;
+        $series->title       = $this->get('title');
+        $series->description = $this->get('description');
+        $series->start_year  = $this->get('start_year');
+        $series->end_year    = $this->get('end_year');
+
+        return $series;
     }
 }

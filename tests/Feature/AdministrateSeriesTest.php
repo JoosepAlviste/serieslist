@@ -2,9 +2,14 @@
 
 namespace Tests\Feature;
 
+use App\FileUploader;
 use App\Models\Series;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\UploadedFile;
+use Intervention\Image\Image;
 use Tests\TestCase;
+use \Mockery as M;
 
 class AdministrateSeriesTest extends TestCase
 {
@@ -175,6 +180,53 @@ class AdministrateSeriesTest extends TestCase
              ->assertStatus(403);
 
         $this->assertDatabaseHas('series', ['id' => $series->id]);
+    }
+
+    /** @test */
+    function a_series_can_have_a_poster()
+    {
+        $mockFileUploader = M::mock(FileUploader::class)
+            ->shouldReceive('storeSeriesPoster')
+            ->andReturn(['filename' => 'chicken'])
+            ->getMock();
+        $this->app->instance(FileUploader::class, $mockFileUploader);
+
+        $this->createSeries([
+            'poster' => $file = UploadedFile::fake()->image('poster.jpg'),
+        ]);
+        $series = Series::first();
+
+        $this->assertEquals('chicken', $series->poster);
+    }
+
+    /** @test */
+    function a_poster_has_to_be_a_file()
+    {
+        $mockFileUploader = M::mock(FileUploader::class)
+             ->shouldNotReceive('storeSeriesPoster')
+             ->getMock();
+        $this->app->instance(FileUploader::class, $mockFileUploader);
+
+        $response = $this->createSeries([
+            'poster' => 'test',
+        ]);
+
+        $response->assertSessionHasErrors('poster');
+    }
+
+    /** @test */
+    function a_poster_has_to_be_an_image()
+    {
+        $mockFileUploader = M::mock(FileUploader::class)
+             ->shouldNotReceive('storeSeriesPoster')
+             ->getMock();
+        $this->app->instance(FileUploader::class, $mockFileUploader);
+
+        $response = $this->createSeries([
+            'poster' => $file = UploadedFile::fake()->create('poster.pdf'),
+        ]);
+
+        $response->assertSessionHasErrors('poster');
     }
 
     protected function createSeries($overrides = [])

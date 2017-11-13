@@ -18,6 +18,7 @@ use Illuminate\Support\Collection;
  * @property Season[]|Collection seasons
  *
  * @method static Builder search(string $q)
+ * @method static Series first
  *
  * @package App\Models
  */

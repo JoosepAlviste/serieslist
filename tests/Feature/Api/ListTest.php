@@ -57,6 +57,9 @@ class ListTest extends TestCase
     /** @test */
     function in_progress_series_contains_next_episode()
     {
+        $anotherSeenEpisode = create(SeenEpisode::class, [
+            'user_id' => auth()->id(),
+        ]);
         $nextEpisode = create(Episode::class, [
             'number' => $this->seenEpisode->episode->number + 1,
             'season_id' => $this->seenEpisode->episode->season->id,
