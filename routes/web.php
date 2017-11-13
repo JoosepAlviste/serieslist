@@ -81,5 +81,5 @@ Route::middleware('auth')
 |--------------------------------------------------------------------------
 */
 
-Route::get('list', 'ListController@index')->middleware('auth');
+Route::get('list', 'PagesController@seriesList')->middleware('auth');
 Route::get('users/{user}/series', 'Api\SeriesController@inProgressSeries');
