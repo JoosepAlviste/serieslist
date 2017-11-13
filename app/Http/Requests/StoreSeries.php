@@ -33,9 +33,9 @@ class StoreSeries extends FormRequest
         ];
     }
 
-    public function getInstance()
+    public function getInstance($series = null)
     {
-        $series              = new Series;
+        $series              = $series ?: new Series;
         $series->title       = $this->get('title');
         $series->description = $this->get('description');
         $series->start_year  = $this->get('start_year');

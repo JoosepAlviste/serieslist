@@ -229,6 +229,38 @@ class AdministrateSeriesTest extends TestCase
         $response->assertSessionHasErrors('poster');
     }
 
+    /** @test */
+    function a_series_poster_can_be_updated()
+    {
+        $mockFileUploader = M::mock(FileUploader::class)
+                             ->shouldReceive('storeSeriesPoster')
+                             ->andReturn(['filename' => 'chicken'])
+                             ->getMock();
+        $this->app->instance(FileUploader::class, $mockFileUploader);
+
+        $this->updateSeries([
+            'poster' => $file = UploadedFile::fake()->image('poster.jpg'),
+        ]);
+        $series = Series::first();
+
+        $this->assertEquals('chicken', $series->poster);
+    }
+
+    /** @test */
+    function while_updating_a_poster_it_has_to_be_an_image()
+    {
+        $mockFileUploader = M::mock(FileUploader::class)
+                             ->shouldNotReceive('storeSeriesPoster')
+                             ->getMock();
+        $this->app->instance(FileUploader::class, $mockFileUploader);
+
+        $response = $this->updateSeries([
+            'poster' => $file = UploadedFile::fake()->create('poster.pdf'),
+        ]);
+
+        $response->assertSessionHasErrors('poster');
+    }
+
     protected function createSeries($overrides = [])
     {
         $this->withExceptionHandling()
@@ -236,5 +268,16 @@ class AdministrateSeriesTest extends TestCase
         $series = make(Series::class, $overrides);
 
         return $this->post('/series', $series->toArray());
+    }
+
+    protected function updateSeries($updates, $originalOverrides = [])
+    {
+        $this->withExceptionHandling()
+             ->signInAdmin();
+        $series = create(Series::class, $originalOverrides);
+
+        $params = array_merge($series->toArray(), $updates);
+
+        return $this->put("/series/{$series->id}", $params);
     }
 }

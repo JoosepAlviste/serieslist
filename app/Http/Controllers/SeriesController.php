@@ -92,10 +92,7 @@ class SeriesController extends Controller
      */
     public function update(StoreSeries $request, Series $series)
     {
-        $series->title       = $request->get('title');
-        $series->description = $request->get('description');
-        $series->start_year  = $request->get('start_year');
-        $series->end_year    = $request->get('end_year');
+        $series = $request->getInstance($series);
 
         if ($request->file('poster')) {
             $filenames = app()->make(FileUploader::class)->storeSeriesPoster($request);
