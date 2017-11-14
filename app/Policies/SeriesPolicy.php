@@ -20,18 +20,6 @@ class SeriesPolicy
     }
 
     /**
-     * Determine whether the user can view the series.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Series  $series
-     * @return mixed
-     */
-    public function view(User $user, Series $series)
-    {
-        //
-    }
-
-    /**
      * Determine whether the user can create series.
      *
      * @param  \App\Models\User  $user

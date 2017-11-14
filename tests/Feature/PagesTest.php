@@ -41,6 +41,16 @@ class PagesTest extends TestCase
         $this->assertGuestsCannotAccess('/list');
     }
 
+    /** @test */
+    function a_logged_in_user_cannot_visit_the_login_page()
+    {
+        $this->signIn();
+
+        $this->get('/login')
+            ->assertStatus(302)
+            ->assertRedirect('/home');
+    }
+
     protected function assertUsersCanAccess($uri, $content = null)
     {
         $this->signIn();
