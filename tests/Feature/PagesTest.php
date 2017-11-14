@@ -12,9 +12,7 @@ class PagesTest extends TestCase
     /** @test */
     function it_displays_the_welcome_page()
     {
-        $this->get('/')
-            ->assertStatus(200)
-            ->assertSee('Serieslist');
+        $this->assertPageWorks('/', 'Serieslist');
     }
 
     /** @test */
@@ -53,16 +51,8 @@ class PagesTest extends TestCase
 
     protected function assertUsersCanAccess($uri, $content = null)
     {
-        $this->signIn();
-
-        $response = $this->get($uri)
-            ->assertStatus(200);
-
-        return tap($response, function ($response) use ($content) {
-            if ($content) {
-                $response->assertSee($content);
-            }
-        });
+        return $this->signIn()
+            ->assertPageWorks($uri, $content);
     }
 
     protected function assertGuestsCannotAccess($uri)
@@ -72,6 +62,18 @@ class PagesTest extends TestCase
         return $this->get($uri)
              ->assertStatus(302)
              ->assertRedirect('/login');
+    }
+
+    protected function assertPageWorks($uri, $content = null)
+    {
+        $response = $this->get($uri)
+            ->assertStatus(200);
+
+        return tap($response, function ($response) use ($content) {
+            if ($content) {
+                $response->assertSee($content);
+            }
+        });
     }
 }
 
