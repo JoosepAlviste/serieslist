@@ -13,3 +13,10 @@ const app = new Vue({
         },
     },
 })
+
+const posterInput = document.getElementById('poster')
+posterInput.onchange = function () {
+    if (posterInput.files.length > 0) {
+        document.getElementById('poster-file-name').innerHTML = posterInput.files[ 0 ].name
+    }
+}

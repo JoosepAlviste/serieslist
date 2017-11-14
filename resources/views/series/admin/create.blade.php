@@ -17,8 +17,9 @@
             Description
         @endcomponent
 
-        <label class="label" for="poster">Poster</label>
-        <input class="mb-1" type="file" name="poster" id="poster">
+        @component('partials.file-input', ['name' => 'poster'])
+            Choose a poster...
+        @endcomponent
 
         <div class="columns">
 

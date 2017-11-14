@@ -16,19 +16,23 @@
             <div class="navbar-end">
                 <div class="navbar-item">
                     <form action="/search" method="get">
-                        <div class="field has-addons search__field">
-                            <div class="control">
-                                <input class="input search__input"
-                                       name="q"
-                                       type="text"
-                                       placeholder="Search..."
-                                       value="{{ request()->input('q', '') }}">
-                            </div>
-                            <div class="control">
-                                <button class="search__button">
-                                    <span class="fa fa-search"></span>
-                                </button>
-                            </div>
+                        <div class="field search__field">
+
+                            <p class="control has-icons-left">
+
+                                <input
+                                        class="input"
+                                        name="q"
+                                        type="text"
+                                        placeholder="Search..."
+                                        value="{{ isset($q) ? $q : null }}"
+                                        autocomplete="off"
+                                >
+
+                                <span class="icon is-left has-text-primary">
+                                    <i class="fa fa-lg fa-search"></i>
+                                </span>
+                            </p>
                         </div>
                     </form>
                 </div>

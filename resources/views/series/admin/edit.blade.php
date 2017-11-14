@@ -20,20 +20,14 @@
             Description
         @endcomponent
 
-        @if ($series->poster)
-            <div class="columns">
-                <div class="column is-narrow">
-                    <img src="{{ asset('uploads/images/' . $series->poster . '-poster-small.png') }}" alt="{{ $series->title }}">
-                </div>
+        @component('partials.file-input', ['name' => 'poster'])
+            Choose a poster...
+        @endcomponent
 
-                <div class="column">
-                    <label class="label" for="poster">Poster</label>
-                    <input class="mb-1" type="file" name="poster" id="poster">
-                </div>
+        @if ($series->poster)
+            <div class="field">
+                @include('series.partials.poster-small')
             </div>
-        @else
-            <label class="label" for="poster">Poster</label>
-            <input class="mb-1" type="file" name="poster" id="poster">
         @endif
 
         <div class="columns">

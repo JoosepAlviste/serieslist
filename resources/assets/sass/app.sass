@@ -120,12 +120,12 @@ ul.series-list
 .series-list__element
   padding: 15px 30px
 
-.series-list__element:not(:last-child)::after
-  display: block
-  content: ""
-  border-bottom: 1px solid lightgrey
-  width: 90%
-  margin: 30px auto 0 auto
+  &:not(:last-child)::after
+    display: block
+    content: ""
+    border-bottom: 1px solid lightgrey
+    width: 90%
+    margin: 30px auto 0 auto
 
 .series-list__element-container
   display: flex
@@ -144,21 +144,8 @@ ul.series-list
 
 // Search
 
-.search__field.has-addons:first-child
-  .search__input.input
-    border: none
-    border-bottom: 2px $primary solid
-    border-radius: 0
-
-.search__button
-  background: transparent
+.search__field .input
   border: none
-  color: $primary
-  cursor: pointer
-
-  &:focus
-    outline: none
-
-.search__input
+  border-radius: 0
+  border-bottom: 2px $primary solid
   box-shadow: none
-  color: $primary
