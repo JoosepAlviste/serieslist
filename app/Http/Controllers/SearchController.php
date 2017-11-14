@@ -22,13 +22,13 @@ class SearchController extends Controller
         $q = $this->getQuery();
 
         $series = Series::search($q)
-                        ->limit(6)
-                        ->get();
+            ->limit(6)
+            ->get();
 
         $episodes = Episode::search($q)
-                           ->orderBy('title')
-                           ->limit(6)
-                           ->get();
+            ->orderBy('title')
+            ->limit(6)
+            ->get();
 
         return view('search.index', [
             'series'   => $series,
@@ -47,13 +47,13 @@ class SearchController extends Controller
         $q = $this->getQuery();
 
         $series = Series::search($q)
-                        ->orderBy('title')
-                        ->paginate(10);
+            ->orderBy('title')
+            ->paginate(10);
         $series->appends(request()->input())->links();
 
         return view('search.series', [
             'series' => $series,
-            'q'        => request()->input('q'),
+            'q'      => request()->input('q'),
         ]);
     }
 
@@ -67,8 +67,8 @@ class SearchController extends Controller
         $q = $this->getQuery();
 
         $episodes = Episode::search($q)
-                           ->orderBy('title')
-                           ->paginate(10);
+            ->orderBy('title')
+            ->paginate(10);
         $episodes->appends(request()->input())->links();
 
         return view('search.episodes', [

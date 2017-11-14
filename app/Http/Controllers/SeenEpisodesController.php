@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\InProgressSeries;
 use App\Models\Episode;
 use App\Models\Season;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
 
 class SeenEpisodesController extends Controller
 {
@@ -12,22 +15,27 @@ class SeenEpisodesController extends Controller
      *
      * @param Episode $episode
      *
-     * @return Episode|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return InProgressSeries|Episode|RedirectResponse|Redirector
      */
     public function toggle(Episode $episode)
     {
         $episode->toggleSeen(auth()->id());
 
         if (request()->expectsJson()) {
+            $seenEpisode = new \StdClass;
+            $seenEpisode->series_id = $episode->season->series_id;
+            $seenEpisode->series_title = $episode->season->series->title;
+            $seenEpisode->episode_id = $episode->id;
+            $seenEpisode->shortSlug = $episode->shortSlug();
+
             $nextEpisode = $episode->nextEpisode();
             if ($nextEpisode) {
-                $nextEpisode->shortSlug = $nextEpisode->shortSlug();
+                $seenEpisode->next_episode_id = $nextEpisode->id;
+            } else {
+                $seenEpisode->next_episode_id = null;
             }
 
-            $episode->nextEpisode = $nextEpisode;
-            $episode->shortSlug = $episode->shortSlug();
-
-            return $episode;
+            return new InProgressSeries($seenEpisode);
         }
 
         return redirect($episode->path());

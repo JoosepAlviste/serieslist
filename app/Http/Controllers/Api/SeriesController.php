@@ -55,7 +55,7 @@ class SeriesController extends Controller
         $episodesWithNoEpisodeSameSeason = $seenEpisodes->filter(function ($thisEpisode) use ($nextEpisodesInSameSeason) {
             $matches = $nextEpisodesInSameSeason->map(function ($nextEpisode) use ($thisEpisode) {
                 if ($nextEpisode->season_id === $thisEpisode->season_id) {
-                    $thisEpisode->nextEpisode = $nextEpisode;
+                    $thisEpisode->next_episode_id = $nextEpisode->id;
                     return true;
                 }
 
@@ -83,7 +83,7 @@ class SeriesController extends Controller
         $seenEpisodes->each(function ($seenEpisode) use ($nextSeasons) {
             $nextSeasons->each(function ($nextSeason) use ($seenEpisode) {
                 if ($seenEpisode->series_id === $nextSeason->series_id) {
-                    $seenEpisode->nextEpisode = $nextSeason->episodes->first();
+                    $seenEpisode->next_episode_id = $nextSeason->episodes->first()->id;
                 }
             });
         });

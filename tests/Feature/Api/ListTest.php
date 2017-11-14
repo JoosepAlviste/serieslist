@@ -68,10 +68,9 @@ class ListTest extends TestCase
         $response = $this->fetchList();
 
         $this->containsSeenEpisode($response);
+
         $response->assertJsonFragment([
-            'nextEpisode' => [
-                'id' => $nextEpisode->id,
-            ],
+            'next_episode_id' => $nextEpisode->id,
         ]);
 
         $response->assertDontSeeText($this->notSeenEpisode->season->series->title);
@@ -88,12 +87,10 @@ class ListTest extends TestCase
         $response = $this->fetchList();
 
         $response->assertJsonFragment([
-            'nextEpisode' => null,
+            'next_episode_id' => null,
         ]);
         $response->assertJsonMissing([
-            'nextEpisode' => [
-                'id' => $notNextEpisode->id,
-            ],
+            'next_episode_id' =>  $notNextEpisode->id,
         ]);
     }
 
@@ -110,9 +107,7 @@ class ListTest extends TestCase
         $response = $this->fetchList();
 
         $response->assertJsonFragment([
-            'nextEpisode' => [
-                'id' => $episodeInNextSeason->id,
-            ],
+            'next_episode_id' =>  $episodeInNextSeason->id,
         ]);
     }
 

@@ -16,12 +16,17 @@ class SeasonsController extends Controller
      */
     public function show($seriesId, $seasonNumber)
     {
+        /** @var Season $season */
         $season = Season::where('series_id', $seriesId)
-                        ->where('number', $seasonNumber)
-                        ->with(['episodes', 'series', 'episodes.seenEpisodes' => function ($query) {
-                            $query->where('user_id', auth()->id());
-                        }])
-                        ->first();
+            ->where('number', $seasonNumber)
+            ->with([
+                'series',
+                'episodes',
+                'episodes.seenEpisodes' => function ($query) {
+                    $query->where('user_id', auth()->id());
+                }
+            ])
+            ->first();
         $nextSeason = $season->nextSeason;
 
         $unseenEpisode = $season->episodes->first(function ($episode) {
@@ -29,9 +34,9 @@ class SeasonsController extends Controller
         });
 
         return view('seasons.show', [
-            'season' => $season,
+            'season'     => $season,
             'nextSeason' => $nextSeason,
-            'isSeen' => $unseenEpisode === null,
+            'isSeen'     => $unseenEpisode === null,
         ]);
     }
 }

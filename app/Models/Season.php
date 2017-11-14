@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
@@ -14,6 +15,8 @@ use Illuminate\Support\Collection;
  * @property Series series
  * @property Episode[]|Collection episodes
  * @property Season nextSeason
+ *
+ * @method static Builder where(string $table, string|int $val)
  *
  * @package App\Models
  */

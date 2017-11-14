@@ -21,11 +21,9 @@ class SeenEpisodeTest extends TestCase
         );
 
         $response = $this->markEpisodeSeen($episode);
-        $response->assertJson([
-            'title' => $episode->title,
-            'nextEpisode' => [
-                'title' => $episodeTwo->title,
-            ],
+
+        $response->assertJsonFragment([
+            'next_episode_id' => $episodeTwo->id,
         ]);
     }
 

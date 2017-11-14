@@ -44,7 +44,10 @@
         },
 
         methods: {
-            findInProgressSeries() {
+            /**
+             * Fetch the in progress series for the current user.
+             */
+            fetchInProgressSeries() {
                 window.axios.get(`/users/${window.App.user.id}/series`)
                     .then(({data}) => {
                         this.inProgressSeries = data.data
@@ -53,8 +56,17 @@
                     })
             },
 
-            handleLatestSeenUpdated(series, episode) {
-                series.latestSeenEpisode = episode
+            /**
+             * When the latest seen is updated, set the latest seen to the
+             * next episode and next episode id to the one after that.
+             *
+             * @param {Object} series
+             * @param {{id: Number, shortSlug: String}} latestSeenEpisode
+             * @param {Number} next_episode_id
+             */
+            handleLatestSeenUpdated(series, { latestSeenEpisode, next_episode_id }) {
+                series.latestSeenEpisode = latestSeenEpisode
+                series.next_episode_id = next_episode_id
             },
         },
 
@@ -62,7 +74,9 @@
             this.loading = true
 
             setTimeout(() => {
-                this.findInProgressSeries()
+                // This timeout is here so we can see the request in
+                // the debug bar.
+                this.fetchInProgressSeries()
             }, 100)
         },
     }

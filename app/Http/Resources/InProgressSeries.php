@@ -9,6 +9,12 @@ use Illuminate\Http\Resources\Json\Resource;
  * Used as an interface to transform in progress series to the format required
  * by the front-end.
  *
+ * @property int episode_id
+ * @property string shortSlug
+ * @property int series_id
+ * @property string series_title
+ * @property int next_episode_id
+ *
  * @package App\Http\Resources
  */
 class InProgressSeries extends Resource
@@ -26,15 +32,15 @@ class InProgressSeries extends Resource
             'shortSlug' => $this->shortSlug,
         ];
 
-        $nextEpisode = isset($this->nextEpisode)
-            ? [ 'id' => $this->nextEpisode->id ]
+        $nextEpisodeId = isset($this->next_episode_id)
+            ? $this->next_episode_id
             : null;
 
         return [
             'id' => $this->series_id,
             'title' => $this->series_title,
             'latestSeenEpisode' => $latestSeenEpisode,
-            'nextEpisode' => $nextEpisode,
+            'next_episode_id' => $nextEpisodeId,
         ];
     }
 }
