@@ -64,7 +64,7 @@
              * @returns {String}
              */
             seriesLink() {
-                return `${this.series.id}`
+                return `/series/${this.series.id}`
             },
         },
 
