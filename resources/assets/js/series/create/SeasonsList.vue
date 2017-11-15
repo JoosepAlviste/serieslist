@@ -80,6 +80,6 @@
 
     .seasons-list-list
         margin-bottom: 20px
-        +box-shadow(0 2px 7px -3px rgba(0, 0, 0, 0.2))
+        box-shadow: 0 2px 7px -3px rgba(0, 0, 0, 0.2)
 
 </style>

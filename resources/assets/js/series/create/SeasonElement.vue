@@ -85,17 +85,17 @@
             border-top: 0
 
         .dropdown-arrow svg
-            +transition(transform .2s ease-in)
+            transition: transform .2s ease-in
 
         &.is-open
             .season-container
-                +box-shadow(0px 2px 2px -2px rgba(0,0,0,0.2))
+                box-shadow: 0px 2px 2px -2px rgba(0,0,0,0.2)
 
             .dropdown-arrow svg
-                +transform(rotate(90deg))
+                transform: rotate(90deg)
 
         &.is-closed .dropdown-arrow svg
-            +transform(rotate(0))
+            transform: rotate(0)
 
 
     .season-container

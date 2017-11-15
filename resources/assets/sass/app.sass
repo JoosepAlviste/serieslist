@@ -56,13 +56,13 @@
   background-image: linear-gradient( 135deg, #3B2667 10%, #BC78EC 100%)
 
   .nav-menu
-    @media screen and (max-width: $tablet - 1)
+    +until($tablet)
       background: rgba(0, 0, 0, .2)
 
 .navbar
   padding: 0 9em
 
-  @media screen and (max-width: $tablet - 1)
+  +until($tablet)
     padding: 0
 
 
@@ -86,10 +86,6 @@
   &.is-182x268
     height: 268px
     width: 182px
-  //@each $dimension in $image-dimensions
-  //  &.is-#{$dimension}x#{$dimension}
-  //    height: $dimension * 1px
-  //    width: $dimension * 1px
 
 
 // Show episode page
@@ -113,7 +109,7 @@
 .series-list__container
   margin-top: -8em
 
-ul.series-list
+.series-list
   list-style: none
   margin-left: 0
 
