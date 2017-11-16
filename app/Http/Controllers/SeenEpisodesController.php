@@ -41,6 +41,13 @@ class SeenEpisodesController extends Controller
         return redirect($episode->path());
     }
 
+    /**
+     * Mark all episodes in the season as seen.
+     *
+     * @param Season $season
+     *
+     * @return RedirectResponse|Redirector
+     */
     public function markSeasonAsSeen(Season $season)
     {
         foreach ($season->episodes as $episode) {

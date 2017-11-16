@@ -1,3 +1,13 @@
+import Vue from 'vue'
+
+import './bootstrap'
+import EpisodeSeenTag from './components/EpisodeSeenTag.vue'
+
+const app = new Vue({
+    el: '#app',
+    components: { EpisodeSeenTag },
+})
+
 document.addEventListener('DOMContentLoaded', function () {
 
     // Get all "navbar-burger" elements
