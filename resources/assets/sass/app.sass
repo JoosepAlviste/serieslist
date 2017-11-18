@@ -126,8 +126,18 @@
 
 // Search
 
-.search__field .input
-  border: none
-  border-radius: 0
-  border-bottom: 2px $primary solid
-  box-shadow: none
+.search__field
+
+  .input
+    border: none
+    border-radius: 0
+    border-bottom: 2px $primary solid
+    box-shadow: none
+
+  .control.has-icons-left
+    /* For aligning left side of the search icon */
+    .icon
+      width: 1.5rem
+
+    .input
+      padding-left: 1.75rem
