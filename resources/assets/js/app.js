@@ -2,10 +2,21 @@ import Vue from 'vue'
 
 import './bootstrap'
 import EpisodeSeenTag from './components/EpisodeSeenTag.vue'
+import SeriesList from './list/SeriesList.vue'
+import SeasonsList from './series/create/SeasonsList.vue'
+
+window.Events = new Vue();
 
 const app = new Vue({
     el: '#app',
-    components: { EpisodeSeenTag },
+
+    components: { EpisodeSeenTag, SeriesList, SeasonsList },
+
+    computed: {
+        initialSeasons() {
+            return window.series ? window.series.seasons : []
+        },
+    },
 })
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -37,3 +48,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 })
+
+const posterInput = document.getElementById('poster')
+if (posterInput) {
+    posterInput.onchange = function () {
+        if (posterInput.files.length > 0) {
+            document.getElementById('poster-file-name').innerHTML = posterInput.files[ 0 ].name
+        }
+    }
+}

@@ -14,26 +14,6 @@
                         :is-seen="{{ $episode->isSeen ? 'true' : 'false' }}"
                 >
                 </episode-seen-tag>
-                {{--<a href="/episodes/{{ $episode->id }}/seen-episodes"--}}
-                   {{--onclick="event.preventDefault();--}}
-                                {{--document.getElementById('mark-as-seen-form').submit();">--}}
-                    {{--@if ($episode->isSeen)--}}
-                        {{--<span class="tag is-primary ml-1 is-medium has-hover">--}}
-                            {{--Seen--}}
-                            {{--<button class="delete is-medium"></button>--}}
-                        {{--</span>--}}
-                    {{--@else--}}
-                        {{--<span class="tag is-default ml-1 is-medium has-hover">--}}
-                            {{--Mark as seen--}}
-                        {{--</span>--}}
-                    {{--@endif--}}
-                {{--</a>--}}
-
-                {{--<form id="mark-as-seen-form"--}}
-                      {{--method="POST"--}}
-                      {{--action="/episodes/{{ $episode->id }}/seen-episodes">--}}
-                    {{--{{ csrf_field() }}--}}
-                {{--</form>--}}
             </h1>
 
             <h2 class="subtitle">

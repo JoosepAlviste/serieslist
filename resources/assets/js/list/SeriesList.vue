@@ -15,6 +15,14 @@
                     </td>
                 </tr>
 
+                <tr v-if="! loading && ! inProgressSeries.length">
+                    <td colspan="2">
+                        <p class="no-series-seen-message">
+                            Set an episode as 'seen' and the series will show up here!
+                        </p>
+                    </td>
+                </tr>
+
                 <list-element
                         v-for="series in inProgressSeries"
                         :key="series.id"
@@ -94,5 +102,10 @@
         th
             padding-top: 1em
             padding-bottom: 1em
+
+    .no-series-seen-message
+        margin-top: 20px
+        margin-bottom: 20px
+        text-align: center
 
 </style>

@@ -44,6 +44,8 @@
         @include('layouts.footer')
     </div>
 
+    @yield('scripts-before-main')
+
     <script src="{{ asset('/js/app.js') }}"></script>
 
     @yield('scripts')

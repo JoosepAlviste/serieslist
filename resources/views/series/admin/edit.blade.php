@@ -82,11 +82,8 @@
 
 @endsection
 
-@section('scripts')
-
+@section('scripts-before-main')
     <script>
         window.series = {!! $series->toJson() !!};
     </script>
-
-    <script src="{{ asset('js/series_create.js') }}"></script>
 @endsection
