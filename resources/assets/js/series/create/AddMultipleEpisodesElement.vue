@@ -1,13 +1,17 @@
 <template>
-    <div class="add-multiple-episodes-container">
+    <div class="add-multiple-episodes-element">
 
-        <input class="input add-episodes-input"
-               type="number"
-               v-model="numberOfEpisodes">
+        <input
+                class="input has-sharp-right-corners add-episodes-input"
+                type="number"
+                v-model="numberOfEpisodes"
+        >
 
-        <button class="button is-primary add-episodes-button"
+        <button
+                class="button is-primary has-sharp-left-corners"
                 type="button"
-                @click="handleAddEpisodesClicked">
+                @click="handleAddEpisodesClicked"
+        >
             Add episodes
         </button>
 
@@ -36,18 +40,11 @@
 
 <style lang="sass" scoped>
 
-    .add-multiple-episodes-container
+    .add-multiple-episodes-element
         display: flex
         justify-content: flex-end
 
-    .add-episodes-button
-        border-top-left-radius: 0
-        border-bottom-left-radius: 0
-
     .add-episodes-input
         width: 5em
-
-        border-top-right-radius: 0
-        border-bottom-right-radius: 0
 
 </style>

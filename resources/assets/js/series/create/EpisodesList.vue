@@ -4,21 +4,29 @@
 
         <ul>
             <li v-for="(episode, index) in episodes">
-                <episode-element :episode="episode"
-                                 :episodeNumber="index + 1"
-                                 :seasonNumber="seasonNumber"
-                                 @episode-was-changed="handleEpisodeChanged"
-                                 @remove-episode-was-clicked="handleRemoveEpisodeClicked">
+                <episode-element
+                        :episode="episode"
+                        :episode-number="index + 1"
+                        :season-number="seasonNumber"
+                        @episode-was-changed="handleEpisodeChanged"
+                        @remove-episode-was-clicked="handleRemoveEpisodeClicked"
+                >
                 </episode-element>
             </li>
         </ul>
 
         <div class="level mt-1">
-            <button class="button is-primary" type="button" @click="handleAddEpisodeClicked">
+            <button
+                    class="button is-primary"
+                    type="button"
+                    @click="handleAddEpisodeClicked"
+            >
                 Add an episode
             </button>
 
-            <add-multiple-episodes-element @episodes-were-added="handleMultipleEpisodesAdded">
+            <add-multiple-episodes-element
+                    @episodes-were-added="handleMultipleEpisodesAdded"
+            >
             </add-multiple-episodes-element>
         </div>
 

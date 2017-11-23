@@ -3,16 +3,21 @@
         <h3 class="subtitle">Seasons</h3>
 
         <ul class="seasons-list-list">
-            <season-element v-for="(season, index) in seasons"
-                            :key="index"
-                            :season="season"
-                            :season-number="index + 1"
-                            @removed="handleSeasonRemoved"
-                            @add-episode-was-clicked="handleAddEpisodeClicked(season)">
+            <season-element
+                    v-for="(season, index) in seasons"
+                    :key="index"
+                    :season="season"
+                    :season-number="index + 1"
+                    @removed="handleSeasonRemoved"
+                    @add-episode-was-clicked="handleAddEpisodeClicked(season)">
             </season-element>
         </ul>
 
-        <button class="button is-primary" @click="addSeason" type="button">
+        <button
+                class="button is-primary"
+                type="button"
+                @click="addSeason"
+        >
             Add a season
         </button>
     </div>
@@ -23,13 +28,6 @@
 
     export default {
         components: { SeasonElement },
-
-        props: {
-            initialSeasons: {
-                type: Array,
-                default() { return [] },
-            },
-        },
 
         data() {
             return {
@@ -50,7 +48,7 @@
         },
 
         mounted() {
-            this.seasons = this.initialSeasons
+            this.seasons = window.series ? window.series.seasons : []
 
             window.Events.$on('episode-added-to-season', (seasonNumber, episode = null) => {
                 if (!episode) {

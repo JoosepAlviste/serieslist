@@ -2,30 +2,38 @@
     <div>
         <hr v-if="episodeNumber !== 1">
         <div class="field">
-            <label class="label"
-                   :for="'seasons[' + seasonNumber + '][episodes][' + episodeNumber + '][title]'">
+            <label
+                    class="label"
+                    :for="titleName"
+            >
                 Episode {{ episodeNumber }} title:
             </label>
 
             <p class="control">
-                <input type="text"
-                       class="input"
-                       v-model="episode.title"
-                       :id="'seasons[' + seasonNumber + '][episodes][' + episodeNumber + '][title]'"
-                       :name="'seasons[' + seasonNumber + '][episodes][' + episodeNumber + '][title]'">
+                <input
+                        type="text"
+                        class="input"
+                        v-model="episode.title"
+                        :id="titleName"
+                        :name="titleName"
+                >
             </p>
         </div>
 
-        <button class="button is-default"
+        <button
+                class="button is-default"
                 type="button"
-                @click="$emit('remove-episode-was-clicked', episodeNumber)">
+                @click="$emit('remove-episode-was-clicked', episodeNumber)"
+        >
             Remove episode
         </button>
 
-        <input type="hidden"
-               :value="episodeNumber"
-               :id="'seasons[' + seasonNumber + '][episodes][' + episodeNumber + '][number]'"
-               :name="'seasons[' + seasonNumber + '][episodes][' + episodeNumber + '][number]'">
+        <input
+                type="hidden"
+                :value="episodeNumber"
+                :id="numberName"
+                :name="numberName"
+        >
     </div>
 </template>
 
@@ -50,6 +58,16 @@
             return {
                 episodeData: this.episode,
             }
+        },
+
+        computed: {
+            titleName() {
+                return `seasons[${this.seasonNumber}][episodes][${this.episodeNumber}][title]`
+            },
+
+            numberName() {
+                return `seasons[${this.seasonNumber}][episodes][${this.episodeNumber}][number]`
+            },
         },
 
         watch: {
