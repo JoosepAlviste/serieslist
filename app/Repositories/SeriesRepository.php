@@ -44,7 +44,7 @@ class SeriesRepository
      */
     public function searchPaginate($q, $perPage = null)
     {
-        $perPage = $perPage ?: 10;  // TODO: Move to conf?
+        $perPage = $perPage ?: config('app.per-pagination-page');
 
         $series = Series::search($q)
             ->orderBy('title')
@@ -62,7 +62,7 @@ class SeriesRepository
      */
     public function paginate($perPage = null)
     {
-        $perPage = $perPage ?: 10;  // TODO: Move to conf?
+        $perPage = $perPage ?: config('app.per-pagination-page');
 
         $series = Series::orderBy('title')
             ->paginate($perPage);

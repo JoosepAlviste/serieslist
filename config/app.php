@@ -7,11 +7,24 @@ return [
     | Search Limit
     |--------------------------------------------------------------------------
     |
-    | When searching use this limit as the maximum series and episodes to show.
+    | When searching use this limit as the maximum series and episodes to
+    | show.
     |
     */
 
     'search-limit' => 6,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Per Pagination Page
+    |--------------------------------------------------------------------------
+    |
+    | Whenever something is paginated, use this as the default number of
+    | items on one page.
+    |
+    */
+
+    'per-pagination-page' => 10,
 
     /*
     |--------------------------------------------------------------------------

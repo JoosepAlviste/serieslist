@@ -39,7 +39,7 @@ class EpisodesRepository
      */
     public function searchPaginate($q, $perPage = null)
     {
-        $perPage = $perPage ?: 10;  // TODO: Move to conf?
+        $perPage = $perPage ?: config('app.per-pagination-page');  // TODO: Move to conf?
 
         $episodes = Episode::search($q)
             ->orderBy('title')
