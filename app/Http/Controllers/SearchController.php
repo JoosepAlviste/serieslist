@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Repositories\SeriesRepository;
 use App\Models\Episode;
 use App\Models\Series;
+use Illuminate\Http\Request;
 
 /**
  * Class SearchController.
@@ -12,6 +14,23 @@ use App\Models\Series;
  */
 class SearchController extends Controller
 {
+    /** @var Request */
+    private $request;
+    /** @var SeriesRepository */
+    private $seriesRepository;
+
+    /**
+     * SearchController constructor.
+     *
+     * @param Request $request
+     * @param SeriesRepository $seriesRepository
+     */
+    public function __construct(Request $request, SeriesRepository $seriesRepository)
+    {
+        $this->request = $request;
+        $this->seriesRepository = $seriesRepository;
+    }
+
     /**
      * Show the Search page with results.
      *
@@ -21,9 +40,7 @@ class SearchController extends Controller
     {
         $q = $this->getQuery();
 
-        $series = Series::search($q)
-            ->limit(6)
-            ->get();
+        $series = $this->seriesRepository->search($q);
 
         $episodes = Episode::search($q)
             ->orderBy('title')
@@ -33,7 +50,7 @@ class SearchController extends Controller
         return view('search.index', [
             'series'   => $series,
             'episodes' => $episodes,
-            'q'        => request()->input('q'),
+            'q'        => $this->request->input('q'),
         ]);
     }
 
@@ -46,14 +63,12 @@ class SearchController extends Controller
     {
         $q = $this->getQuery();
 
-        $series = Series::search($q)
-            ->orderBy('title')
-            ->paginate(10);
-        $series->appends(request()->input())->links();
+        $series = $this->seriesRepository->searchPaginate($q);
+        $series->appends($this->request->input())->links();
 
         return view('search.series', [
             'series' => $series,
-            'q'      => request()->input('q'),
+            'q'      => $this->request->input('q'),
         ]);
     }
 
@@ -69,11 +84,11 @@ class SearchController extends Controller
         $episodes = Episode::search($q)
             ->orderBy('title')
             ->paginate(10);
-        $episodes->appends(request()->input())->links();
+        $episodes->appends($this->request->input())->links();
 
         return view('search.episodes', [
             'episodes' => $episodes,
-            'q'        => request()->input('q'),
+            'q'        => $this->request->input('q'),
         ]);
     }
 
@@ -84,6 +99,6 @@ class SearchController extends Controller
      */
     protected function getQuery()
     {
-        return strtolower(request()->input('q'));
+        return strtolower($this->request->input('q'));
     }
 }

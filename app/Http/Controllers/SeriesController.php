@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\FileUploader;
+use App\Http\Repositories\SeriesRepository;
 use App\Http\Requests\StoreSeries;
 use App\Models\Series;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
 /**
@@ -14,6 +16,23 @@ use Illuminate\Support\Collection;
  */
 class SeriesController extends Controller
 {
+    /** @var Request */
+    protected $request;
+    /** @var SeriesRepository */
+    protected $seriesRepository;
+
+    /**
+     * SeriesController constructor.
+     *
+     * @param Request $request
+     * @param SeriesRepository $seriesRepository
+     */
+    public function __construct(Request $request, SeriesRepository $seriesRepository)
+    {
+        $this->request = $request;
+        $this->seriesRepository = $seriesRepository;
+    }
+
     /**
      * Show one series info page.
      *
@@ -33,8 +52,7 @@ class SeriesController extends Controller
      */
     public function index()
     {
-        $series = Series::orderBy('title')
-                        ->paginate(10);
+        $series = $this->seriesRepository->paginate();
 
         return view('series.index', compact('series'));
     }

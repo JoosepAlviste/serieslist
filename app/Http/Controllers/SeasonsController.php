@@ -2,10 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Repositories\SeasonsRepository;
 use App\Models\Season;
 
 class SeasonsController extends Controller
 {
+    /** @var SeasonsRepository */
+    private $seasonsRepository;
+
+    /**
+     * SeasonsController constructor.
+     * @param SeasonsRepository $seasonsRepository
+     */
+    public function __construct(SeasonsRepository $seasonsRepository)
+    {
+        $this->seasonsRepository = $seasonsRepository;
+    }
+
     /**
      * Show one season page.
      *
@@ -16,27 +29,18 @@ class SeasonsController extends Controller
      */
     public function show($seriesId, $seasonNumber)
     {
-        /** @var Season $season */
-        $season = Season::where('series_id', $seriesId)
-            ->where('number', $seasonNumber)
-            ->with([
-                'series',
-                'episodes',
-                'episodes.seenEpisodes' => function ($query) {
-                    $query->where('user_id', auth()->id());
-                }
-            ])
-            ->first();
+        $season = $this->seasonsRepository->fetch($seriesId, $seasonNumber);
         $nextSeason = $season->nextSeason;
 
-        $unseenEpisode = $season->episodes->first(function ($episode) {
-            return $episode->seenEpisodes->count() === 0;
-        });
+        $isSeen = $season->episodes
+            ->every(function ($episode) {
+                return $episode->seenEpisodes->count() !== 0;
+            });
 
         return view('seasons.show', [
             'season'     => $season,
             'nextSeason' => $nextSeason,
-            'isSeen'     => $unseenEpisode === null,
+            'isSeen'     => $isSeen,
         ]);
     }
 }
