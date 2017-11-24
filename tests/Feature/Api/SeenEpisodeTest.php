@@ -27,6 +27,18 @@ class SeenEpisodeTest extends TestCase
         ]);
     }
 
+    /** @test */
+    function when_there_is_no_next_episode_null_will_be_returned()
+    {
+        $episode = create(Episode::class);
+
+        $response = $this->markEpisodeSeen($episode);
+
+        $response->assertJsonFragment([
+            'next_episode_id' => null,
+        ]);
+    }
+
     protected function markEpisodeSeen($episode = null)
     {
         if (!auth()->check()) {
