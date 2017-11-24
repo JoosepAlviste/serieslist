@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Http\Repositories\SeriesRepository;
+use App\Repositories\SeriesRepository;
 use App\Models\Series;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;

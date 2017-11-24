@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Repositories\SeriesRepository;
-use App\Models\Episode;
-use App\Models\Series;
+use App\Repositories\EpisodesRepository;
+use App\Repositories\SeriesRepository;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 /**
  * Class SearchController.
@@ -18,34 +19,38 @@ class SearchController extends Controller
     private $request;
     /** @var SeriesRepository */
     private $seriesRepository;
+    /** @var EpisodesRepository */
+    private $episodesRepository;
 
     /**
      * SearchController constructor.
      *
      * @param Request $request
      * @param SeriesRepository $seriesRepository
+     * @param EpisodesRepository $episodesRepository
      */
-    public function __construct(Request $request, SeriesRepository $seriesRepository)
+    public function __construct(
+        Request $request,
+        SeriesRepository $seriesRepository,
+        EpisodesRepository $episodesRepository
+    )
     {
         $this->request = $request;
         $this->seriesRepository = $seriesRepository;
+        $this->episodesRepository = $episodesRepository;
     }
 
     /**
      * Show the Search page with results.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function index()
     {
         $q = $this->getQuery();
 
         $series = $this->seriesRepository->search($q);
-
-        $episodes = Episode::search($q)
-            ->orderBy('title')
-            ->limit(6)
-            ->get();
+        $episodes = $this->episodesRepository->search($q);
 
         return view('search.index', [
             'series'   => $series,
@@ -57,7 +62,7 @@ class SearchController extends Controller
     /**
      * Show the page for showing series search results.
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return Factory|View
      */
     public function series()
     {
@@ -75,15 +80,13 @@ class SearchController extends Controller
     /**
      * Show the page for showing episodes search results.
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return Factory|View
      */
     public function episodes()
     {
         $q = $this->getQuery();
 
-        $episodes = Episode::search($q)
-            ->orderBy('title')
-            ->paginate(10);
+        $episodes = $this->episodesRepository->searchPaginate($q);
         $episodes->appends($this->request->input())->links();
 
         return view('search.episodes', [
@@ -93,7 +96,7 @@ class SearchController extends Controller
     }
 
     /**
-     * Get the search query keyword.
+     * Get the search query keyword for this request.
      *
      * @return string
      */

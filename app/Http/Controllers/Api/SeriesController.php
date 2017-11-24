@@ -3,15 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\InProgressSeries;
-use App\Models\Episode;
+use App\Http\Resources\InProgressSeries as InProgressSeriesResource;
 use App\Models\Season;
-use App\Models\Series;
 use App\Models\User;
 use App\Queries\LatestSeenEpisodesQuery;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use App\Http\Resources\InProgressSeries as InProgressSeriesResource;
 
 /**
  * Class SeriesController.
@@ -26,7 +24,7 @@ class SeriesController extends Controller
      *
      * @param User $user
      *
-     * @return Series[]|Collection
+     * @return AnonymousResourceCollection
      */
     public function inProgressSeries(User $user)
     {
@@ -88,6 +86,6 @@ class SeriesController extends Controller
             });
         });
 
-        return InProgressSeries::collection($seenEpisodes);
+        return InProgressSeriesResource::collection($seenEpisodes);
     }
 }

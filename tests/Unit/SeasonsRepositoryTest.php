@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Http\Repositories\SeasonsRepository;
+use App\Repositories\SeasonsRepository;
 use App\Models\Episode;
 use App\Models\Season;
 use App\Models\SeenEpisode;

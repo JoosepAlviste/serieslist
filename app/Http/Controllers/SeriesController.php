@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\FileUploader;
-use App\Http\Repositories\SeriesRepository;
+use App\Repositories\SeriesRepository;
 use App\Http\Requests\StoreSeries;
 use App\Models\Series;
 use Illuminate\Http\Request;

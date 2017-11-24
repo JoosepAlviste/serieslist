@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Repositories\SeasonsRepository;
-use App\Models\Season;
+use App\Repositories\SeasonsRepository;
 
 class SeasonsController extends Controller
 {
