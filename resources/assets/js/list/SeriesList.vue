@@ -7,15 +7,18 @@
                     <th>Latest seen episode</th>
                 </tr>
             </thead>
-            <tbody>
 
-                <tr v-if="loading">
-                    <td colspan="2">
-                        <loading-spinner></loading-spinner>
-                    </td>
-                </tr>
+            <loading-list v-if="loading"></loading-list>
 
-                <tr v-if="! loading && ! inProgressSeries.length">
+            <tbody v-if="!loading">
+
+                <!--<tr v-if="loading">-->
+                    <!--<td colspan="2">-->
+                        <!--<loading-spinner></loading-spinner>-->
+                    <!--</td>-->
+                <!--</tr>-->
+
+                <tr v-if="!inProgressSeries.length">
                     <td colspan="2">
                         <p class="no-series-seen-message">
                             Set an episode as 'seen' and the series will show up here!
@@ -38,11 +41,12 @@
 <script>
     import ListElement from './ListElement.vue'
     import LoadingSpinner from '../components/LoadingSpinner.vue'
+    import LoadingList from './LoadingList'
 
     export default {
         name: 'SeriesList',
 
-        components: { ListElement, LoadingSpinner },
+        components: { ListElement, LoadingSpinner, LoadingList },
 
         data() {
             return {
