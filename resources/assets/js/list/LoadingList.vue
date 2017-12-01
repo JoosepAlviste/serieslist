@@ -30,11 +30,11 @@
 <style lang="scss" scoped>
 
     $elem-sizes: (
-            (200px, 80px),
-            (300px, 50px),
-            (150px, 50px),
-            (175px, 80px),
-            (275px, 50px),
+            (120px, 80px),
+            (170px, 60px),
+            (80px, 60px),
+            (85px, 80px),
+            (110px, 60px),
     );
 
     .loading-list__row {
@@ -59,10 +59,10 @@
         background: rgba(77, 83, 130, 0.4);
 
         display: block;
-        height: 30px;
-        border-radius: 5px;
+        height: 20px;
+        border-radius: 6px;
 
-        animation: pulse 800ms ease-in-out infinite alternate;
+        animation: pulse 800ms ease-in infinite alternate;
     }
 
     @keyframes pulse {

@@ -64,7 +64,7 @@
                     .then(({data}) => {
                         this.inProgressSeries = data.data
 
-                        this.loading = false
+                        // this.loading = false
                     })
             },
 
