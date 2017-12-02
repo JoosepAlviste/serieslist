@@ -80,11 +80,12 @@
     }
 </script>
 
-<style lang="sass" scoped>
+<style lang="scss" scoped>
 
-    .episodes-list
-        padding: 10px 15px
-        border: 1px solid #e3e1e4
-        border-top: 0
+    .episodes-list {
+        padding: 10px 15px;
+        border: 1px solid #e3e1e4;
+        border-top: 0;
+    }
 
 </style>

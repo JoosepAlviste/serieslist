@@ -10,15 +10,9 @@
 
             <loading-list v-if="loading"></loading-list>
 
-            <tbody v-if="!loading">
+            <tbody v-else>
 
-                <!--<tr v-if="loading">-->
-                    <!--<td colspan="2">-->
-                        <!--<loading-spinner></loading-spinner>-->
-                    <!--</td>-->
-                <!--</tr>-->
-
-                <tr v-if="!inProgressSeries.length">
+                <tr v-if="noInProgressSeries">
                     <td colspan="2">
                         <p class="no-series-seen-message">
                             Set an episode as 'seen' and the series will show up here!
@@ -40,19 +34,27 @@
 
 <script>
     import ListElement from './ListElement.vue'
-    import LoadingSpinner from '../components/LoadingSpinner.vue'
     import LoadingList from './LoadingList'
 
     export default {
         name: 'SeriesList',
 
-        components: { ListElement, LoadingSpinner, LoadingList },
+        components: { ListElement, LoadingList },
 
         data() {
             return {
                 inProgressSeries: [],
                 loading: false,
             }
+        },
+
+        computed: {
+            /**
+             * If there are no series in progress.
+             */
+            noInProgressSeries() {
+                return !this.inProgressSeries.length
+            },
         },
 
         methods: {
@@ -89,27 +91,31 @@
                 // This timeout is here so we can see the request in
                 // the debug bar.
                 this.fetchInProgressSeries()
-            }, 100)
+            }, 10)
         },
     }
 </script>
 
-<style lang="sass">
+<style lang="scss">
 
-    .series-list__table
-        width: 100%
+    .series-list__table {
+        width: 100%;
 
-        td
-            padding-top: 1em
-            padding-bottom: 1em
+        td {
+            padding-top: 1em;
+            padding-bottom: 1em;
+        }
 
-        th
-            padding-top: 1em
-            padding-bottom: 1em
+        th {
+            padding-top: 1em;
+            padding-bottom: 1em;
+        }
+    }
 
-    .no-series-seen-message
-        margin-top: 20px
-        margin-bottom: 20px
-        text-align: center
+    .no-series-seen-message {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
 
 </style>

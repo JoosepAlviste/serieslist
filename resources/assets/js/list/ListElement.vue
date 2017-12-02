@@ -86,14 +86,15 @@
     }
 </script>
 
-<style lang="sass">
+<style lang="scss">
 
-    @import '../../sass/includes/variables'
+    @import '../../sass/includes/variables';
 
-    .series-list-element__mark-as-seen
-        cursor: pointer
-        color: $primary
-        font-size: 1.1em
-        vertical-align: baseline
+    .series-list-element__mark-as-seen {
+        cursor: pointer;
+        color: $primary;
+        font-size: 1.1em;
+        vertical-align: baseline;
+    }
 
 </style>

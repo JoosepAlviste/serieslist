@@ -76,34 +76,40 @@
     }
 </script>
 
-<style lang="sass">
+<style lang="scss">
 
-    @import '../../../sass/includes/variables'
-    @import '../../../sass/includes/mixins'
+    @import '../../../sass/includes/variables';
 
-    .season-element
+    .season-element {
 
-        &:not(:first-child) .season-container
-            border-top: 0
+        &:not(:first-child) .season-container {
+            border-top: 0;
+        }
 
-        &.is-open
-            > .season-container
-                box-shadow: 0 2px 2px -2px rgba(0, 0, 0, 0.2)
-
-
-    .season-container
-        display: flex
-        align-items: center
-        justify-content: space-between
-        padding: 5px 5px 5px 15px
-        border: 1px solid #e3e1e4
-
-        &:hover
-            cursor: pointer
+        &.is-open {
+            > .season-container {
+                box-shadow: 0 2px 2px -2px rgba(0, 0, 0, 0.2);
+            }
+        }
+    }
 
 
-    .season-number
-        display: flex
-        user-select: none
+    .season-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 5px 5px 5px 15px;
+        border: 1px solid #e3e1e4;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+
+    .season-number {
+        display: flex;
+        user-select: none;
+    }
 
 </style>

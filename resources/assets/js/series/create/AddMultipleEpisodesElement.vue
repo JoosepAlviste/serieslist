@@ -38,13 +38,15 @@
     }
 </script>
 
-<style lang="sass" scoped>
+<style lang="scss" scoped>
 
-    .add-multiple-episodes-element
-        display: flex
-        justify-content: flex-end
+    .add-multiple-episodes-element {
+        display: flex;
+        justify-content: flex-end;
+    }
 
-    .add-episodes-input
-        width: 5em
+    .add-episodes-input {
+        width: 5em;
+    }
 
 </style>

@@ -69,15 +69,15 @@
     }
 </script>
 
-<style lang="sass" scoped>
+<style lang="scss" scoped>
 
-    @import '../../../sass/includes/mixins'
+    .seasons-list {
+        margin-bottom: 20px;
+    }
 
-    .seasons-list
-        margin-bottom: 20px
-
-    .seasons-list-list
-        margin-bottom: 20px
-        box-shadow: 0 2px 7px -3px rgba(0, 0, 0, 0.2)
+    .seasons-list-list {
+        margin-bottom: 20px;
+        box-shadow: 0 2px 7px -3px rgba(0, 0, 0, 0.2);
+    }
 
 </style>

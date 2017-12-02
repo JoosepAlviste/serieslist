@@ -18,20 +18,26 @@
     }
 </script>
 
-<style lang="sass" scoped>
+<style lang="scss" scoped>
 
-    .dropdown-arrow
-        height: 1.5em
-        width: 1.5em
-        margin-right: .4em
-        padding: .2em
+    $arrow-size: 1.5rem;
 
-        > svg
-            transition: transform .2s ease-in
-            transform: rotate(0)
+    .dropdown-arrow {
+        height: $arrow-size;
+        width: $arrow-size;
+        margin-right: 0.4rem;
+        padding: 0.2rem;
 
-        &.is-open
-            > svg
-                transform: rotate(90deg)
+        > svg {
+            transition: transform 0.2s ease-in;
+            transform: rotate(0);
+        }
+
+        &.is-open {
+            > svg {
+                transform: rotate(90deg);
+            }
+        }
+    }
 
 </style>

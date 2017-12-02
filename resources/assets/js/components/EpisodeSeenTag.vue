@@ -71,24 +71,30 @@
     }
 </script>
 
-<style lang="sass" scoped>
+<style lang="scss" scoped>
 
-    @import '../../sass/includes/variables'
+    @import '../../sass/includes/variables';
 
-    .seen-tag
-        cursor: pointer
+    .seen-tag {
+        cursor: pointer;
 
-        .delete
+        .delete {
             display: none
+        }
 
-        &:hover .delete
+        &:hover .delete {
             display: block
+        }
 
-        &.has-hover
-            &.is-default:hover
+        &.has-hover {
+            &.is-default:hover {
                 background: $white-bis
+            }
 
-            &.is-primary:hover
+            &.is-primary:hover {
                 background: darken($primary, 5%)
+            }
+        }
+    }
 
 </style>
