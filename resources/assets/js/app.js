@@ -4,13 +4,14 @@ import './bootstrap'
 import EpisodeSeenTag from './components/EpisodeSeenTag.vue'
 import SeriesList from './list/SeriesList.vue'
 import SeasonsList from './series/create/SeasonsList.vue'
+import AppNotifications from './components/AppNotifications'
 
 window.Events = new Vue();
 
 const app = new Vue({
     el: '#app',
 
-    components: { EpisodeSeenTag, SeriesList, SeasonsList },
+    components: { EpisodeSeenTag, SeriesList, SeasonsList, AppNotifications },
 
     computed: {
         initialSeasons() {

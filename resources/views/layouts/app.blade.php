@@ -42,6 +42,8 @@
         </div>
 
         @include('layouts.footer')
+
+        <app-notifications></app-notifications>
     </div>
 
     @yield('scripts-before-main')
@@ -49,5 +51,14 @@
     <script src="{{ asset('/js/app.js') }}"></script>
 
     @yield('scripts')
+
+    <script>
+        var status = '{!! session('status') ? session('status') : false !!}';
+
+        if (status) {
+            window.Events.$emit('show-notification', { message: status, type: 'success' });
+        }
+
+    </script>
 </body>
 </html>

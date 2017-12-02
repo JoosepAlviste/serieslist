@@ -49,17 +49,28 @@
                         My list
                     </a>
 
-                    <a class="navbar-item">
-                        {{ Auth::user()->name }}
-                    </a>
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link">
+                            {{ Auth::user()->name }}
+                        </a>
 
-                    <a class="navbar-item"
-                       href="{{ url('/logout') }}"
-                       onclick="event.preventDefault();
-                                document.getElementById('logout-form').submit();"
-                    >
-                        Logout
-                    </a>
+                        <div class="navbar-dropdown">
+                            <a class="navbar-item" href="{{ url('/settings') }}">
+                                Settings
+                            </a>
+
+                            <hr class="navbar-divider">
+
+                            <a
+                                    class="navbar-item"
+                                    href="{{ url('/logout') }}"
+                                    onclick="event.preventDefault();
+                                             document.getElementById('logout-form').submit();"
+                            >
+                                Logout
+                            </a>
+                        </div>
+                    </div>
 
                     <form id="logout-form"
                           action="{{ url('/logout') }}"

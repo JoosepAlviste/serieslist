@@ -3,7 +3,7 @@
         {{ $slot }}
     @endslot
 
-    <input type="text"
+    <input type="{{ isset($type) ? $type : 'text' }}"
            class="input {{ $errors->has($name) ? 'is-danger' : '' }}"
            id="{{ $name }}"
            value="{{ isset($value) ? $value : (old($name) ?: '') }}"

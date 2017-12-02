@@ -83,3 +83,14 @@ Route::middleware('auth')
 
 Route::get('list', 'PagesController@seriesList')->middleware('auth');
 Route::get('users/{user}/series', 'Api\SeriesController@inProgressSeries');
+
+
+/*
+|--------------------------------------------------------------------------
+| Users
+|--------------------------------------------------------------------------
+*/
+
+Route::get('settings', 'UserSettingsController@edit')->middleware('auth');
+
+Route::post('settings/password', 'PasswordChangeController@update')->middleware('auth');

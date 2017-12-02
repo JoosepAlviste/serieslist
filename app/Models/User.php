@@ -13,6 +13,9 @@ use Illuminate\Support\Collection;
  * @property string name
  * @property string email
  * @property bool is_admin
+ * @property string password
+ *
+ * @method static User first()
  *
  * @package App\Models
  */
