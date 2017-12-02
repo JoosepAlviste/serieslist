@@ -1,17 +1,17 @@
 <template>
     <tbody>
-        <tr v-for="row in nrOfRows" class="loading-list__row">
-            <td>
+    <tr v-for="row in nrOfRows" class="loading-list__row">
+        <td>
                 <span class="loading-list__elem  loading-list__elem--series">
                     <span class="content"></span>
                 </span>
-            </td>
-            <td>
+        </td>
+        <td>
                 <span class="loading-list__elem  loading-list__elem--episode">
                     <span class="content"></span>
                 </span>
-            </td>
-        </tr>
+        </td>
+    </tr>
     </tbody>
 </template>
 
@@ -29,28 +29,33 @@
 
 <style lang="scss" scoped>
 
+    $elem-height: 12px;
     $elem-sizes: (
-            (120px, 80px),
-            (170px, 60px),
-            (80px, 60px),
-            (85px, 80px),
-            (110px, 60px),
+                    (120px, 80px),
+                    (170px, 60px),
+                    (80px, 60px),
+                    (85px, 80px),
+                    (110px, 60px),
     );
 
-    .loading-list__row {
-        @for $i from 1 through length($elem-sizes) {
-            $row: nth($elem-sizes, $i);
-            $series-width: nth($row, 1);
-            $episode-width: nth($row, 2);
+    .loading-list__row > td {
+        padding-top: 22px;
+        padding-bottom: 22px;
+    }
 
-            &:nth-child(5n + #{$i}) {
-                .loading-list__elem--series {
-                    width: $series-width;
-                }
+    @for $i from 1 through length($elem-sizes) {
+        $row: nth($elem-sizes, $i);
+        $series-width: nth($row, 1);
+        $episode-width: nth($row, 2);
 
-                .loading-list__elem--episode {
-                    width: $episode-width;
-                }
+        .loading-list__row:nth-child(5n + #{$i}) {
+
+            > td > .loading-list__elem--series {
+                width: $series-width;
+            }
+
+            > td > .loading-list__elem--episode {
+                width: $episode-width;
             }
         }
     }
@@ -59,8 +64,8 @@
         background: rgba(77, 83, 130, 0.4);
 
         display: block;
-        height: 20px;
-        border-radius: 6px;
+        height: $elem-height;
+        border-radius: 4px;
 
         animation: pulse 800ms ease-in infinite alternate;
     }
