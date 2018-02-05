@@ -19,4 +19,6 @@ class SeriesStatusType extends Model
     public $timestamps = false;
 
     protected $fillable = ['code', 'status'];
+
+    protected $primaryKey = 'code';
 }
