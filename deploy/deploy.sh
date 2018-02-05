@@ -5,7 +5,8 @@ if [ $TRAVIS_BRANCH == 'master' ] ; then
     cd /var/www/html/serieslist &&
     git pull &&
     composer install &&
-    php artisan migrate --force
+    php artisan migrate --force &&
+    php artisan db:seed --class=ProductionDatabaseSeeder
 EOM
     ssh -o "StrictHostKeyChecking no" -i deploy/deploy-key deploy@serieslist.joosep.xyz $SSH_COMMAND
 else
