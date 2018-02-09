@@ -43,6 +43,7 @@ Route::get('series/{series}', 'SeriesController@show');
 Route::put('series/{series}', 'SeriesController@update')->middleware('can:update,series');
 Route::get('series/{series}/edit', 'SeriesController@edit')->middleware('can:update,series');
 Route::delete('series/{series}', 'SeriesController@destroy')->middleware('can:delete,series');
+Route::put('series/{series}/status', 'Api\SeriesStatusController@update')->middleware('auth');
 
 
 /*

@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string status
  *
  * @method static SeriesStatusType create(array $params)
+ * @method static SeriesStatusType first()
  *
  * @package App\App\Models
  */

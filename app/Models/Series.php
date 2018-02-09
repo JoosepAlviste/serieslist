@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\SeriesStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 
 /**
@@ -16,6 +18,7 @@ use Illuminate\Support\Collection;
  * @property int end_year
  * @property string poster
  * @property Season[]|Collection seasons
+ * @property SeriesStatus[]|Collection seriesStatuses
  *
  * @method static Builder search(string $q)
  * @method static Series first
@@ -100,13 +103,23 @@ class Series extends Model
     }
 
     /**
-     * Many to one relationship where a series has many seasons..
+     * Many to one relationship where a series has many seasons.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function seasons()
     {
         return $this->hasMany(Season::class);
+    }
+
+    /**
+     * Many to one relationship where a series has many statuses.
+     *
+     * @return HasMany
+     */
+    public function statuses()
+    {
+        return $this->hasMany(SeriesStatus::class);
     }
 
     /**
@@ -122,5 +135,49 @@ class Series extends Model
     {
         return $query->whereRaw('LOWER(title) like ?', ["%{$q}%"])
             ->orWhereRaw('LOWER(description) like ?', ["%$q%"]);
+    }
+
+    /**
+     * Update a series' status for the given user. If no user id
+     * is given, get the authenticated user's id.
+     *
+     * @param int $seriesStatusTypeCode
+     * @param int|null $userId
+     *
+     * @return SeriesStatus
+     */
+    public function updateSeriesStatus($seriesStatusTypeCode, $userId = null)
+    {
+        $userId = $userId ?: auth()->id();
+
+        $status = $this->statusForUser($userId);
+
+        if ($status) {
+            $status->series_status_type_code = $seriesStatusTypeCode;
+            $status->save();
+
+            return $status;
+        }
+
+        return $this->statuses()->create([
+            'user_id' => $userId,
+            'series_status_type_code' => $seriesStatusTypeCode,
+        ]);
+    }
+
+    /**
+     * Get the series status for this series and the given user.
+     * If no user is given, use the authenticated user.
+     *
+     * @param int|null $userId
+     * @return SeriesStatus
+     */
+    public function statusForUser($userId = null)
+    {
+        $userId = $userId ?: auth()->id();
+
+        return $this->statuses()
+            ->where('user_id', $userId)
+            ->first();
     }
 }

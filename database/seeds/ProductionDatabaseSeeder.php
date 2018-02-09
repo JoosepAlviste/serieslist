@@ -12,8 +12,6 @@ class ProductionDatabaseSeeder extends Seeder
      */
     public function run()
     {
-        if (SeriesStatusType::all()->isEmpty()) {
-            $this->call(SeriesStatusTypesTableSeeder::class);
-        }
+        //
     }
 }
