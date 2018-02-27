@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\Models\Series;
+use App\Models\SeriesStatus;
 use App\Models\SeriesStatusType;
 use App\Models\User;
 use Tests\TestCase;
@@ -11,6 +12,16 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 class SeriesStatusTest extends TestCase
 {
     use DatabaseMigrations;
+
+    /** @var SeriesStatus */
+    private $status;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->status = create(SeriesStatus::class);
+    }
 
     /** @test */
     function a_user_can_have_a_status_for_a_series()
@@ -27,4 +38,22 @@ class SeriesStatusTest extends TestCase
 
         $this->assertEquals($statusCode, $seriesStatus->series_status_type_code);
 	}
+
+	/** @test */
+	function it_has_a_status_type()
+	{
+	    $this->assertInstanceOf(SeriesStatusType::class, $this->status->type);
+	}
+
+    /** @test */
+    function it_has_a_user()
+    {
+        $this->assertInstanceOf(User::class, $this->status->user);
+    }
+
+    /** @test */
+    function it_has_a_series()
+    {
+        $this->assertInstanceOf(Series::class, $this->status->series);
+    }
 }

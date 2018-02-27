@@ -22,4 +22,6 @@ class SeriesStatusType extends Model
     protected $fillable = ['code', 'status'];
 
     protected $primaryKey = 'code';
+
+    public $incrementing = false;
 }

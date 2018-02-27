@@ -15,6 +15,15 @@
                 <div class="column">
                     <h1 class="title">{{ $series->title }}</h1>
                     <h2 class="subtitle">{{ $series->start_year }} - {{ $series->end_year or '...' }}</h2>
+
+                    @if (\Auth::check())
+                        <status-select
+                                :data-status="{{ $status->series_status_type_code }}"
+                                :status-types="{{ $statusTypes->toJson() }}"
+                                :series-id="{{ $series->id }}"
+                        ></status-select>
+                    @endif
+
                     <hr>
 
                     <div class="content">

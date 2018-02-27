@@ -5,13 +5,16 @@ import EpisodeSeenTag from './components/EpisodeSeenTag.vue'
 import SeriesList from './list/SeriesList.vue'
 import SeasonsList from './series/create/SeasonsList.vue'
 import AppNotifications from './components/AppNotifications'
+import StatusSelect from './series/show/StatusSelect'
 
 window.Events = new Vue();
 
 const app = new Vue({
     el: '#app',
 
-    components: { EpisodeSeenTag, SeriesList, SeasonsList, AppNotifications },
+    components: {
+        EpisodeSeenTag, SeriesList, SeasonsList, AppNotifications, StatusSelect,
+    },
 
     computed: {
         initialSeasons() {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\FileUploader;
+use App\Models\SeriesStatusType;
 use App\Repositories\SeriesRepository;
 use App\Http\Requests\StoreSeries;
 use App\Models\Series;
@@ -42,7 +43,10 @@ class SeriesController extends Controller
      */
     public function show(Series $series)
     {
-        return view('series.show', compact('series'));
+        $status = auth()->check() ? $series->statusForUser() : null;
+        $statusTypes = SeriesStatusType::all();
+
+        return view('series.show', compact('series', 'status', 'statusTypes'));
     }
 
     /**
