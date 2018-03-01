@@ -24,4 +24,17 @@ class SeriesStatusType extends Model
     protected $primaryKey = 'code';
 
     public $incrementing = false;
+
+    protected $appends = ['pretty'];
+
+    /**
+     * Prettify the slug of the status type. For example, 'in-progress' turns to
+     * 'In progress'. This can be shown to the user.
+     *
+     * @return string
+     */
+    public function getPrettyAttribute()
+    {
+        return __('seriesStatus.' . $this->status);
+    }
 }

@@ -7,7 +7,7 @@
                     <option
                         v-for="statusType in statusTypes"
                         :value="statusType.code"
-                        v-text="statusType.status"
+                        v-text="statusType.pretty"
                     />
                 </select>
             </div>
