@@ -26,4 +26,18 @@ class SeriesStatusController extends Controller
 
         return response('', 200);
     }
+
+    /**
+     * Remove a series from having any status for the current user.
+     *
+     * @param Series $series
+     *
+     * @return ResponseFactory|Response
+     */
+    public function destroy(Series $series)
+    {
+        $series->removeStatusForUser();
+
+        return response('', 200);
+    }
 }

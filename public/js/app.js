@@ -15871,7 +15871,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         remove: function remove() {
-            // TODO: Remove status
+            __WEBPACK_IMPORTED_MODULE_0_axios___default.a.delete('/series/' + this.seriesId + '/status').then(function (response) {
+                window.Events.$emit('show-notification', {
+                    message: 'Series status removed!',
+                    type: 'success'
+                });
+            });
         }
     }
 });

@@ -64,7 +64,13 @@
             },
 
             remove() {
-                // TODO: Remove status
+                axios.delete(`/series/${this.seriesId}/status`)
+                    .then(response => {
+                        window.Events.$emit('show-notification', {
+                            message: 'Series status removed!',
+                            type: 'success',
+                        })
+                    })
             },
         },
     }

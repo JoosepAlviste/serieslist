@@ -56,4 +56,19 @@ class SeriesStatusTest extends TestCase
     {
         $this->assertInstanceOf(Series::class, $this->status->series);
     }
+
+    /** @test */
+    function a_series_can_delete_the_status_for_it_and_a_user()
+    {
+        /** @var User $user */
+        $user = create(User::class);
+
+        /** @var SeriesStatus $seriesStatus */
+        $seriesStatus = create(SeriesStatus::class, ['user_id' => $user->id]);
+        $seriesStatus->series->removeStatusForUser($user->id);
+
+        $this->assertDatabaseMissing('series_statuses', [
+            'id' => $seriesStatus->id
+        ]);
+    }
 }

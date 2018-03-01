@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Series;
+use App\Models\SeriesStatus;
 use App\Models\SeriesStatusType;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -82,6 +83,20 @@ class SeriesStatusTest extends TestCase
 
         $this->assertEquals(2, $series->statusForUser()->series_status_type_code);
         $this->assertDatabaseMissing('series_statuses', ['series_status_type_code' => 1]);
+    }
+
+    /** @test */
+    function a_series_status_can_be_deleted()
+    {
+        $this->signIn();
+
+        $seriesStatus = create(SeriesStatus::class, ['user_id' => auth()->id()]);
+
+        $this->json('delete', "/series/{$seriesStatus->series->id}/status");
+
+        $this->assertDatabaseMissing('series_statuses', [
+            'user_id' => auth()->id(),
+        ]);
     }
 
     protected function updateSeriesStatus($seriesId, $code)

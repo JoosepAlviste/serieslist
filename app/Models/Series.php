@@ -180,4 +180,20 @@ class Series extends Model
             ->where('user_id', $userId)
             ->first();
     }
+
+    /**
+     * Remove the status for this series for the user given. If no user is
+     * given, use the authenticated user.
+     *
+     * @param int|null $userId
+     * @return int
+     */
+    public function removeStatusForUser($userId = null)
+    {
+        $userId = $userId ?: auth()->id();
+
+        return $this->statuses()
+            ->where('user_id', $userId)
+            ->delete();
+    }
 }
