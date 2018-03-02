@@ -77,6 +77,9 @@
                 return !this.inProgressSeries.length
             },
 
+            /**
+             * Include other filters (for tabs) in the status types.
+             */
             computedStatusTypes() {
                 return [
                     {
@@ -87,14 +90,30 @@
                     ...this.statusTypes,
                 ]
             },
+
+            /**
+             * The currently active series status type.
+             */
+            activeStatusType() {
+                return this.computedStatusTypes
+                    .filter(type => type.code === this.activeStatusTypeCode)[0]
+            },
         },
 
         methods: {
             /**
              * Fetch the in progress series for the current user.
              */
-            fetchInProgressSeries() {
-                window.axios.get(`/users/${window.App.user.id}/series`)
+            fetchSeries() {
+                const params = { }
+                if (this.activeStatusType.status !== 'all') {
+                    params.status = this.activeStatusType.status
+                }
+
+                this.loading = true
+                window.axios.get(`/users/${window.App.user.id}/series`, {
+                    params,
+                })
                     .then(({data}) => {
                         this.inProgressSeries = data.data
 
@@ -117,16 +136,15 @@
 
             handleTabChanged(statusTypeCode) {
                 this.activeStatusTypeCode = statusTypeCode
+                this.fetchSeries()
             },
         },
 
         mounted() {
-            this.loading = true
-
             setTimeout(() => {
                 // This timeout is here so we can see the request in
                 // the debug bar.
-                this.fetchInProgressSeries()
+                this.fetchSeries()
             }, 0)
         },
     }

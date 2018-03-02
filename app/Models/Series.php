@@ -21,6 +21,7 @@ use Illuminate\Support\Collection;
  * @property SeriesStatus[]|Collection seriesStatuses
  *
  * @method static Builder search(string $q)
+ * @method static Builder byStatus(string|null $status, int|null $userId)
  * @method static Series first
  *
  * @package App\Models
@@ -195,5 +196,37 @@ class Series extends Model
         return $this->statuses()
             ->where('user_id', $userId)
             ->delete();
+    }
+
+    /**
+     * Register the by status scope. Gets series where the given status for the
+     * given user is set. So, when the user has marked a series as
+     * 'in-progress' and asks for their 'in-progress' series, they get the
+     * correct series.
+     *
+     * If no status is given, gets all series for which the user has marked a
+     * status.
+     *
+     * @param Builder $query
+     * @param null|string $status
+     * @param null|int $userId
+     *
+     * @return Builder
+     */
+    public function scopeByStatus($query, $status, $userId)
+    {
+        $userId = $userId ?: auth()->id();
+
+        $query->whereHas('statuses', function ($query) use ($userId) {
+            $query->where('user_id', $userId);
+        });
+
+        if ($status) {
+            $query->whereHas('statuses.type', function ($query) use ($status) {
+                $query->where('status', $status);
+            });
+        }
+
+        return $query;
     }
 }

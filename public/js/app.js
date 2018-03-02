@@ -13696,12 +13696,29 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         noInProgressSeries: function noInProgressSeries() {
             return !this.inProgressSeries.length;
         },
+
+
+        /**
+         * Include other filters (for tabs) in the status types.
+         */
         computedStatusTypes: function computedStatusTypes() {
             return [{
                 code: 0,
                 pretty: 'All',
                 status: 'all'
             }].concat(_toConsumableArray(this.statusTypes));
+        },
+
+
+        /**
+         * The currently active series status type.
+         */
+        activeStatusType: function activeStatusType() {
+            var _this = this;
+
+            return this.computedStatusTypes.filter(function (type) {
+                return type.code === _this.activeStatusTypeCode;
+            })[0];
         }
     },
 
@@ -13709,15 +13726,23 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         /**
          * Fetch the in progress series for the current user.
          */
-        fetchInProgressSeries: function fetchInProgressSeries() {
-            var _this = this;
+        fetchSeries: function fetchSeries() {
+            var _this2 = this;
 
-            window.axios.get('/users/' + window.App.user.id + '/series').then(function (_ref) {
+            var params = {};
+            if (this.activeStatusType.status !== 'all') {
+                params.status = this.activeStatusType.status;
+            }
+
+            this.loading = true;
+            window.axios.get('/users/' + window.App.user.id + '/series', {
+                params: params
+            }).then(function (_ref) {
                 var data = _ref.data;
 
-                _this.inProgressSeries = data.data;
+                _this2.inProgressSeries = data.data;
 
-                _this.loading = false;
+                _this2.loading = false;
             });
         },
 
@@ -13739,18 +13764,17 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         },
         handleTabChanged: function handleTabChanged(statusTypeCode) {
             this.activeStatusTypeCode = statusTypeCode;
+            this.fetchSeries();
         }
     },
 
     mounted: function mounted() {
-        var _this2 = this;
-
-        this.loading = true;
+        var _this3 = this;
 
         setTimeout(function () {
             // This timeout is here so we can see the request in
             // the debug bar.
-            _this2.fetchInProgressSeries();
+            _this3.fetchSeries();
         }, 0);
     }
 });

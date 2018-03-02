@@ -27,10 +27,12 @@ class InProgressSeries extends Resource
      */
     public function toArray($request)
     {
-        $latestSeenEpisode = [
-            'id' => $this->episode_id,
-            'shortSlug' => $this->shortSlug,
-        ];
+        $latestSeenEpisode = isset($this->episode_id)
+            ? [
+                'id' => $this->episode_id,
+                'shortSlug' => $this->shortSlug,
+            ]
+            : null;
 
         $nextEpisodeId = isset($this->next_episode_id)
             ? $this->next_episode_id
