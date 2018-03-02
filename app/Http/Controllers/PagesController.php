@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SeriesStatusType;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\View\View;
 
@@ -40,6 +41,8 @@ class PagesController extends Controller
      */
     public function seriesList()
     {
-        return view('list.index');
+        $statusTypes = SeriesStatusType::all();
+
+        return view('list.index', compact('statusTypes'));
     }
 }

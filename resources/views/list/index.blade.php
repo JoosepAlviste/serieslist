@@ -15,7 +15,9 @@
     </section>
 
     <div class="container series-list__container card">
-        <series-list></series-list>
+        <series-list
+                :status-types="{{ $statusTypes->toJson() }}"
+        ></series-list>
     </div>
 
 @endsection

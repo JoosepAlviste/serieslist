@@ -13600,7 +13600,7 @@ exports = module.exports = __webpack_require__(2)(undefined);
 
 
 // module
-exports.push([module.i, "\n.series-list__table {\n  width: 100%;\n}\n.series-list__table td {\n    padding-top: 1em;\n    padding-bottom: 1em;\n}\n.series-list__table th {\n    padding-top: 1em;\n    padding-bottom: 1em;\n}\n.no-series-seen-message {\n  margin-top: 20px;\n  margin-bottom: 20px;\n  text-align: center;\n}\n", ""]);
+exports.push([module.i, "\n.series-list__container .series-list__tabs {\n  margin-bottom: 0;\n}\n.series-list__table {\n  width: 100%;\n}\n.series-list__table td {\n    padding-top: 1em;\n    padding-bottom: 1em;\n}\n.series-list__table th {\n    padding-top: 1em;\n    padding-bottom: 1em;\n}\n.no-series-seen-message {\n  margin-top: 20px;\n  margin-bottom: 20px;\n  text-align: center;\n}\n", ""]);
 
 // exports
 
@@ -13615,6 +13615,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__ListElement_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__ListElement_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__LoadingList__ = __webpack_require__(52);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__LoadingList___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__LoadingList__);
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -13658,10 +13673,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     components: { ListElement: __WEBPACK_IMPORTED_MODULE_0__ListElement_vue___default.a, LoadingList: __WEBPACK_IMPORTED_MODULE_1__LoadingList___default.a },
 
+    props: {
+        statusTypes: {
+            type: Array,
+            required: true
+        }
+    },
+
     data: function data() {
         return {
             inProgressSeries: [],
-            loading: false
+            loading: false,
+            activeStatusTypeCode: 0 // All
         };
     },
 
@@ -13672,6 +13695,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
          */
         noInProgressSeries: function noInProgressSeries() {
             return !this.inProgressSeries.length;
+        },
+        computedStatusTypes: function computedStatusTypes() {
+            return [{
+                code: 0,
+                pretty: 'All',
+                status: 'all'
+            }].concat(_toConsumableArray(this.statusTypes));
         }
     },
 
@@ -13706,6 +13736,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             series.latestSeenEpisode = latestSeenEpisode;
             series.next_episode_id = next_episode_id;
+        },
+        handleTabChanged: function handleTabChanged(statusTypeCode) {
+            this.activeStatusTypeCode = statusTypeCode;
         }
     },
 
@@ -13718,7 +13751,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             // This timeout is here so we can see the request in
             // the debug bar.
             _this2.fetchInProgressSeries();
-        }, 10);
+        }, 0);
     }
 });
 
@@ -14149,6 +14182,36 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
+    _c(
+      "div",
+      { staticClass: "tabs is-medium is-fullwidth  series-list__tabs" },
+      [
+        _c(
+          "ul",
+          _vm._l(_vm.computedStatusTypes, function(statusType) {
+            return _c(
+              "li",
+              {
+                class: {
+                  "is-active": statusType.code === _vm.activeStatusTypeCode
+                }
+              },
+              [
+                _c("a", {
+                  domProps: { textContent: _vm._s(statusType.pretty) },
+                  on: {
+                    click: function($event) {
+                      _vm.handleTabChanged(statusType.code)
+                    }
+                  }
+                })
+              ]
+            )
+          })
+        )
+      ]
+    ),
+    _vm._v(" "),
     _c(
       "table",
       { staticClass: "table series-list__table" },

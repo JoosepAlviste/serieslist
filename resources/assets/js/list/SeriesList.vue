@@ -1,5 +1,19 @@
 <template>
     <div>
+        <div class="tabs is-medium is-fullwidth  series-list__tabs">
+            <ul>
+                <li
+                    v-for="statusType in computedStatusTypes"
+                    :class="{ 'is-active': statusType.code === activeStatusTypeCode }"
+                >
+                    <a
+                        v-text="statusType.pretty"
+                        @click="handleTabChanged(statusType.code)"
+                    />
+                </li>
+            </ul>
+        </div>
+
         <table class="table series-list__table">
             <thead>
                 <tr>
@@ -8,7 +22,7 @@
                 </tr>
             </thead>
 
-            <loading-list v-if="loading"></loading-list>
+            <loading-list v-if="loading" />
 
             <tbody v-else>
 
@@ -21,12 +35,11 @@
                 </tr>
 
                 <list-element
-                        v-for="series in inProgressSeries"
-                        :key="series.id"
-                        :series="series"
-                        @latest-seen-episode-was-updated="handleLatestSeenUpdated(series, $event)"
-                >
-                </list-element>
+                    v-for="series in inProgressSeries"
+                    :key="series.id"
+                    :series="series"
+                    @latest-seen-episode-was-updated="handleLatestSeenUpdated(series, $event)"
+                />
             </tbody>
         </table>
     </div>
@@ -41,10 +54,18 @@
 
         components: { ListElement, LoadingList },
 
+        props: {
+            statusTypes: {
+                type: Array,
+                required: true,
+            },
+        },
+
         data() {
             return {
                 inProgressSeries: [],
                 loading: false,
+                activeStatusTypeCode: 0,  // All
             }
         },
 
@@ -54,6 +75,17 @@
              */
             noInProgressSeries() {
                 return !this.inProgressSeries.length
+            },
+
+            computedStatusTypes() {
+                return [
+                    {
+                        code: 0,
+                        pretty: 'All',
+                        status: 'all',
+                    },
+                    ...this.statusTypes,
+                ]
             },
         },
 
@@ -82,6 +114,10 @@
                 series.latestSeenEpisode = latestSeenEpisode
                 series.next_episode_id = next_episode_id
             },
+
+            handleTabChanged(statusTypeCode) {
+                this.activeStatusTypeCode = statusTypeCode
+            },
         },
 
         mounted() {
@@ -91,12 +127,16 @@
                 // This timeout is here so we can see the request in
                 // the debug bar.
                 this.fetchInProgressSeries()
-            }, 10)
+            }, 0)
         },
     }
 </script>
 
 <style lang="scss">
+
+    .series-list__container .series-list__tabs {
+        margin-bottom: 0;
+    }
 
     .series-list__table {
         width: 100%;
