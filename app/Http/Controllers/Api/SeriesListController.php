@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Season;
+use App\Models\SeenEpisode;
 use App\Models\Series;
 use App\Models\User;
 use App\Http\Resources\InProgressSeries as InProgressSeriesResource;
@@ -26,17 +27,19 @@ class SeriesListController extends Controller
         $series = Series::byStatus($status, $user->id)
             ->get();
 
+        if ($series->isEmpty()) {
+            return InProgressSeriesResource::collection(new Collection);
+        }
+
         $params = collect([$user->id]);
         $series->each(function ($series) use ($params) {
             $params->push($series->id);
         });
 
-        if ($series->isEmpty()) {
-            return InProgressSeriesResource::collection(new Collection);
-        }
-
         $seenEpisodes = (new LatestSeenEpisodesQuery($params->toArray()))
             ->execute();
+
+        // TODO: Refactor this!
 
         if ($seenEpisodes->count() !== $series->count()) {
             $series->each(function ($serie) use ($seenEpisodes) {

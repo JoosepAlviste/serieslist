@@ -167,7 +167,9 @@ class ListTest extends TestCase
     function series_list_contains_the_last_seen_episode()
     {
         /** @var SeenEpisode $seenEpisode */
-        $seenEpisode = create(SeenEpisode::class);
+        $seenEpisode = create(SeenEpisode::class, [
+            'user_id' => auth()->id(),
+        ]);
         create(SeriesStatus::class, [
             'series_id' => $seenEpisode->episode->season->series_id,
             'user_id' => auth()->id(),
