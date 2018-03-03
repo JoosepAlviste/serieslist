@@ -8,7 +8,7 @@ if [ $TRAVIS_BRANCH == 'master' ] ; then
     php artisan migrate --force &&
     php artisan db:seed --class=ProductionDatabaseSeeder
 EOM
-    ssh -o "StrictHostKeyChecking no" -i deploy/deploy-key deploy@serieslist.joosep.xyz $SSH_COMMAND
+    ssh -o "StrictHostKeyChecking no" -i deploy/deploy-key deploy@46.101.147.166 $SSH_COMMAND
 else
     echo "Not deploying, since this branch isn't master."
 fi
