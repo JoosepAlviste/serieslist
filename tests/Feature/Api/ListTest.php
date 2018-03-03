@@ -17,37 +17,6 @@ class ListTest extends TestCase
 {
     use DatabaseMigrations;
 
-//    /** @var SeenEpisode */
-//    protected $seenEpisode;
-//    /** @var Episode */
-//    protected $notSeenEpisode;
-//
-//    public function setUp()
-//    {
-//        parent::setUp();
-//
-//        $this->signIn();
-//        $this->seenEpisode = create(SeenEpisode::class, [
-//            'user_id' => auth()->id(),
-//        ]);
-//        $this->notSeenEpisode = create(Episode::class);
-//    }
-//
-//    /** @test */
-//    function a_users_in_progress_list_can_be_accessed()
-//    {
-//        $seenEpisodeTwo = create(SeenEpisode::class, [
-//            'user_id' => auth()->id(),
-//        ]);
-//
-//        $response = $this->fetchList();
-//
-//        $response->assertSee($this->seenEpisode->episode->season->series->title);
-//        $response->assertSee($seenEpisodeTwo->episode->season->series->title);
-//
-//        $response->assertDontSee($this->notSeenEpisode->season->series->title);
-//    }
-//
 //    /** @test */
 //    function in_progress_series_contains_the_last_seen_episode()
 //    {
@@ -194,6 +163,21 @@ class ListTest extends TestCase
         ]]);
     }
 
+    /** @test */
+    function series_list_contains_the_last_seen_episode()
+    {
+        /** @var SeenEpisode $seenEpisode */
+        $seenEpisode = create(SeenEpisode::class);
+        create(SeriesStatus::class, [
+            'series_id' => $seenEpisode->episode->season->series_id,
+            'user_id' => auth()->id(),
+        ]);
+
+        $response = $this->fetchList();
+
+        $this->containsSeenEpisode($response, $seenEpisode);
+    }
+
     /**
      * Fetch the in progress list of the authenticated user.
      *
@@ -218,12 +202,12 @@ class ListTest extends TestCase
      *
      * @return TestResponse
      */
-    protected function containsSeenEpisode($response)
+    protected function containsSeenEpisode($response, $seenEpisode)
     {
         return $response->assertJsonFragment([
             'latestSeenEpisode' => [
-                'id' => $this->seenEpisode->episode->id,
-                'shortSlug' => $this->seenEpisode->episode->shortSlug(),
+                'id' => $seenEpisode->episode->id,
+                'shortSlug' => $seenEpisode->episode->shortSlug(),
             ],
         ]);
     }

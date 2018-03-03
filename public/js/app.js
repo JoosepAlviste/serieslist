@@ -13664,6 +13664,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 //
 //
 //
+//
 
 
 
@@ -13684,6 +13685,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
         return {
             inProgressSeries: [],
             loading: false,
+            initialLoading: true,
             activeStatusTypeCode: 0 // All
         };
     },
@@ -13694,7 +13696,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
          * If there are no series in progress.
          */
         noInProgressSeries: function noInProgressSeries() {
-            return !this.inProgressSeries.length;
+            return !this.inProgressSeries.length && !this.loading;
         },
 
 
@@ -13742,6 +13744,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
                 _this2.inProgressSeries = data.data;
 
+                _this2.initialLoading = false;
                 _this2.loading = false;
             });
         },
@@ -14242,7 +14245,7 @@ var render = function() {
       [
         _vm._m(0),
         _vm._v(" "),
-        _vm.loading
+        _vm.initialLoading
           ? _c("loading-list")
           : _c(
               "tbody",
@@ -14252,7 +14255,9 @@ var render = function() {
                       _c("td", { attrs: { colspan: "2" } }, [
                         _c("p", { staticClass: "no-series-seen-message" }, [
                           _vm._v(
-                            "\n                        Set an episode as 'seen' and the series will show up here!\n                    "
+                            "\n                        Set a series as '" +
+                              _vm._s(_vm.activeStatusType.pretty) +
+                              "' and\n                        it will show up here!\n                    "
                           )
                         ])
                       ])

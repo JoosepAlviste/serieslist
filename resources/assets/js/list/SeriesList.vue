@@ -22,14 +22,15 @@
                 </tr>
             </thead>
 
-            <loading-list v-if="loading" />
+            <loading-list v-if="initialLoading" />
 
             <tbody v-else>
 
                 <tr v-if="noInProgressSeries">
                     <td colspan="2">
                         <p class="no-series-seen-message">
-                            Set an episode as 'seen' and the series will show up here!
+                            Set a series as '{{ activeStatusType.pretty }}' and
+                            it will show up here!
                         </p>
                     </td>
                 </tr>
@@ -65,6 +66,7 @@
             return {
                 inProgressSeries: [],
                 loading: false,
+                initialLoading: true,
                 activeStatusTypeCode: 0,  // All
             }
         },
@@ -74,7 +76,7 @@
              * If there are no series in progress.
              */
             noInProgressSeries() {
-                return !this.inProgressSeries.length
+                return !this.inProgressSeries.length && !this.loading
             },
 
             /**
@@ -117,6 +119,7 @@
                     .then(({data}) => {
                         this.inProgressSeries = data.data
 
+                        this.initialLoading = false
                         this.loading = false
                     })
             },

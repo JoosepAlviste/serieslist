@@ -93,6 +93,8 @@ class LatestSeenEpisodesQuery
             LIMIT 1
 
           )
+        AND
+          series.id in ({seriesIds})
 
         ORDER BY series.title ASC
           
@@ -116,7 +118,10 @@ EOT;
      */
     public function execute()
     {
-        $results = DB::select($this->query, $this->params);
+        $bindingsString = trim( str_repeat('?,', count($this->params) - 1), ',');
+        $query = preg_replace('/{seriesIds}/i', $bindingsString, $this->query);
+
+        $results = DB::select($query, $this->params);
 
         return Collection::make($results);
     }

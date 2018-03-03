@@ -17,8 +17,8 @@ class InsertSeriesStatusTypes extends Migration
     {
         $types = [
             1 => 'in-progress',
-            2 => 'completed',
-            3 => 'plan to watch',
+            2 => 'plan to watch',
+            3 => 'completed',
         ];
 
         foreach ($types as $code => $status) {
