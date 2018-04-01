@@ -19,13 +19,21 @@ use Illuminate\Support\Facades\DB;
  */
 class SeriesListController extends Controller
 {
+    /**
+     * Get the list of series for the current user based on the given status
+     * filter. If no status is given for the filter, get all series to which
+     * the user has marked a status.
+     *
+     * @param User $user
+     *
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
     public function index(User $user)
     {
         $status = request()->get('status', null);
 
         /** @var Collection|Series[] $series */
-        $series = Series::byStatus($status, $user->id)
-            ->get();
+        $series = Series::byStatus($status, $user->id)->get();
 
         if ($series->isEmpty()) {
             return InProgressSeriesResource::collection(new Collection);
