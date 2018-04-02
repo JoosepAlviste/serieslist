@@ -124,6 +124,17 @@ class Series extends Model
     }
 
     /**
+     * Many to one relationship where a series has many progresses associated
+     * with it. Each user has one series progress.
+     *
+     * @return HasMany
+     */
+    public function progresses()
+    {
+        return $this->hasMany(SeriesProgress::class);
+    }
+
+    /**
      * Register the Search scope. Series can be searched for
      * by their title and description.
      *
@@ -228,5 +239,54 @@ class Series extends Model
         }
 
         return $query;
+    }
+
+    /**
+     * Get the progress for the user for this series. If no user id is given,
+     * get the currently authenticated user's id.
+     *
+     * @param int|null $userId
+     *
+     * @return SeriesProgress|null
+     */
+    public function progress($userId = null)
+    {
+        $userId = $userId ?: auth()->id();
+
+        return $this->progresses()->where('user_id', $userId)->first();
+    }
+
+    /**
+     * Updates or creates a new progress for this series and the given user.
+     * When no user id is given, take the authenticated user's id.
+     *
+     * If the user has no progress, will insert a new entry into the series
+     * progresses table with the given latest seen episode id and the next
+     * episode id.
+     *
+     * @param $latestSeenEpisodeId
+     * @param null $nextEpisodeId
+     * @param null $userId
+     * @return SeriesProgress|Model|null
+     */
+    public function setProgress(
+        $latestSeenEpisodeId, $nextEpisodeId = null, $userId = null
+    ) {
+        $userId = $userId ?: auth()->id();
+
+        $progress = $this->progress($userId);
+
+        if (!$progress) {
+            $progress = $this->progresses()->make([
+                'user_id' => $userId,
+            ]);
+        }
+
+        $progress->latest_seen_episode_id = $latestSeenEpisodeId;
+        $progress->next_episode_id = $nextEpisodeId;
+
+        $progress->save();
+
+        return $progress;
     }
 }

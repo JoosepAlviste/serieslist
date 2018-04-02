@@ -11,7 +11,8 @@ use Illuminate\Routing\Redirector;
 class SeenEpisodesController extends Controller
 {
     /**
-     * Toggle an episode's seen status for the authenticated user.
+     * Toggle an episode's seen status for the authenticated user. Also should
+     * update the SeriesProgress for that series and user.
      *
      * @param Episode $episode
      *
@@ -21,6 +22,14 @@ class SeenEpisodesController extends Controller
     {
         $episode->toggleSeen(auth()->id());
 
+        $series = $episode->season->series;
+        $nextEpisode = $episode->nextEpisode();
+        if ($nextEpisode) {
+            $series->setProgress($episode->id, $episode->nextEpisode()->id);
+        } else {
+            $series->setProgress($episode->id);
+        }
+
         if (request()->expectsJson()) {
             $seenEpisode = new \StdClass;
             $seenEpisode->series_id = $episode->season->series_id;
@@ -28,7 +37,6 @@ class SeenEpisodesController extends Controller
             $seenEpisode->episode_id = $episode->id;
             $seenEpisode->shortSlug = $episode->shortSlug();
 
-            $nextEpisode = $episode->nextEpisode();
             if ($nextEpisode) {
                 $seenEpisode->next_episode_id = $nextEpisode->id;
             } else {

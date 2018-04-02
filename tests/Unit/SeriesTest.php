@@ -4,7 +4,9 @@ namespace Tests\Unit;
 
 use App\Models\Episode;
 use App\Models\Season;
+use App\Models\SeenEpisode;
 use App\Models\Series;
+use App\Models\SeriesProgress;
 use App\Models\User;
 use Illuminate\Support\Collection;
 use Tests\TestCase;
@@ -120,5 +122,124 @@ class SeriesTest extends TestCase
 
         $this->assertTrue($foundSeries->contains('id', $series->id));
         $this->assertFalse($foundSeries->contains('id', $seriesTwo->id));
+    }
+
+    /** @test */
+    function it_has_a_progress_for_a_user()
+    {
+        $seriesProgress = $this->createSeriesProgress();
+
+        $this->assertEquals(
+            $this->series->id,
+            $this->series->progress($seriesProgress->user_id)->series_id
+        );
+    }
+
+    /** @test */
+    function it_returns_no_progress_when_there_is_none()
+    {
+        $this->assertEquals(null, $this->series->progress(1));
+    }
+
+    /** @test */
+    function it_can_set_a_new_progress_for_a_user()
+    {
+        $this->signIn();
+
+        $episodes = $this->createBackToBackEpisodes();
+
+        $this->series->setProgress(
+            $episodes[0]->id,
+            $episodes[1]->id,
+            auth()->id()
+        );
+
+        $this->assertDatabaseHas('series_progresses', [
+            'user_id' => auth()->id(),
+            'series_id' => $episodes[0]->season->series_id,
+            'latest_seen_episode_id' => $episodes[0]->id,
+            'next_episode_id' => $episodes[1]->id,
+        ]);
+    }
+
+    /** @test */
+    function it_can_update_the_progress_of_a_user()
+    {
+        $this->signIn();
+
+        $episodes = $this->createBackToBackEpisodes(3);
+        $progress = $this->createSeriesProgress($episodes);
+
+        $this->series->setProgress(
+            $episodes[1]->id,
+            $episodes[2]->id,
+            auth()->id()
+        );
+
+        $progress = $progress->fresh();
+
+        $this->assertEquals($episodes[1]->id, $progress->latest_seen_episode_id);
+        $this->assertEquals($episodes[2]->id, $progress->next_episode_id);
+    }
+
+    /**
+     * @param Episode[]|Collection $episodes
+     *
+     * @return SeriesProgress
+     */
+    private function createSeriesProgress($episodes = null)
+    {
+        $episodes = $episodes ?: $this->createBackToBackEpisodes();
+
+        if (auth()->id()) {
+            /** @var SeriesProgress $seriesProgress */
+            $seriesProgress = create(SeriesProgress::class, [
+                'user_id' => auth()->id(),
+                'series_id' => $this->series->id,
+                'latest_seen_episode_id' => $episodes[0]->id,
+                'next_episode_id' => $episodes[1]->id,
+            ]);
+        } else {
+            $seriesProgress = create(SeriesProgress::class, [
+                'series_id' => $this->series->id,
+                'latest_seen_episode_id' => $episodes[0]->id,
+                'next_episode_id' => $episodes[1]->id,
+            ]);
+        }
+
+        return $seriesProgress;
+    }
+
+    /**
+     * Create back to back episodes for a series. The episodes are in the same
+     * season and the next episode's numbers will be one more than the previous
+     * one's.
+     *
+     * It just returns a collection of episodes where they are in numerical
+     * order.
+     *
+     * @param int $numberOfEpisodes
+     *
+     * @return Collection|Episode[]
+     */
+    private function createBackToBackEpisodes($numberOfEpisodes = 2)
+    {
+        $firstEpisode = create(Episode::class, [
+            'season_id' => create(Season::class, [
+                'series_id' => $this->series->id,
+            ]),
+        ]);
+        $episodes = Collection::make([$firstEpisode]);
+
+        for ($i = 1; $i < $numberOfEpisodes; $i++) {
+            $nextEpisode = create(Episode::class, [
+                'season_id' => $firstEpisode->season_id,
+                'number' => $episodes->last()->number + 1
+            ]);
+
+            $episodes->push($nextEpisode);
+        }
+
+        return $episodes;
     }
 }
