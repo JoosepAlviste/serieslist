@@ -58,8 +58,17 @@ class SeenEpisodesController extends Controller
      */
     public function markSeasonAsSeen(Season $season)
     {
+        $series = $season->series;
         foreach ($season->episodes as $episode) {
             $episode->markAsSeen();
+        }
+
+        /** @var Episode $lastEpisode */
+        $lastEpisode = $season->episodes->last();
+        if ($nextEpisode = $lastEpisode->nextEpisode()) {
+            $series->setProgress($lastEpisode->id, $nextEpisode->id);
+        } else {
+            $series->setProgress($lastEpisode->id);
         }
 
         return redirect($season->path());

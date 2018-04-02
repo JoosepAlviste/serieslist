@@ -89,6 +89,55 @@ class SeenEpisodeTest extends TestCase
         });
     }
 
+    /** @test */
+    function when_a_season_is_marked_as_seen_the_series_progress_will_be_updated()
+    {
+        $this->signIn();
+
+        $season   = create(Season::class);
+        $episode = create(Episode::class, [
+            'season_id' => $season,
+        ]);
+
+        $seasonTwo   = create(Season::class, [
+            'series_id' => $season->series_id,
+            'number' => $season->number + 1,
+        ]);
+        $seasonTwoEpisodeOne = create(Episode::class, [
+            'season_id' => $seasonTwo,
+            'number' => 1,
+        ]);
+
+        $this->post("/seasons/{$season->id}/seen-episodes");
+
+        $this->assertDatabaseHas('series_progresses', [
+            'user_id' => auth()->id(),
+            'series_id' => $season->series_id,
+            'latest_seen_episode_id' => $episode->id,
+            'next_episode_id' => $seasonTwoEpisodeOne->id,
+        ]);
+    }
+
+    /** @test */
+    function when_there_is_no_more_episodes_the_next_episode_id_will_be_null()
+    {
+        $this->signIn();
+
+        $season   = create(Season::class);
+        $episode = create(Episode::class, [
+            'season_id' => $season,
+        ]);
+
+        $this->post("/seasons/{$season->id}/seen-episodes");
+
+        $this->assertDatabaseHas('series_progresses', [
+            'user_id' => auth()->id(),
+            'series_id' => $season->series_id,
+            'latest_seen_episode_id' => $episode->id,
+            'next_episode_id' => null,
+        ]);
+    }
+
     protected function markEpisodeSeen($episode = null)
     {
         if ( ! auth()->check()) {
