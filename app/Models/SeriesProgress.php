@@ -23,7 +23,7 @@ use Illuminate\Database\Eloquent\Model;
 class SeriesProgress extends Model
 {
     protected $fillable = [
-        'user_id', 'series_id', 'latest_seen_episode_id', 'next_episode_id'
+        'user_id', 'series_id', 'latest_seen_episode_id', 'next_episode_id',
     ];
 
     /**

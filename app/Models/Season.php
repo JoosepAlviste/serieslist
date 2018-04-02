@@ -16,7 +16,7 @@ use Illuminate\Support\Collection;
  * @property Episode[]|Collection episodes
  * @property Season nextSeason
  *
- * @method static Builder where(string $table, string|int $val)
+ * @method static Builder where(string $table, string | int $val)
  *
  * @package App\Models
  */
@@ -32,8 +32,7 @@ class Season extends Model
         parent::boot();
 
         static::deleting(function ($season) {
-            Episode::where('season_id', $season->id)
-                ->delete();
+            Episode::where('season_id', $season->id)->delete();
         });
     }
 
@@ -48,7 +47,7 @@ class Season extends Model
     }
 
     /**
-     * Add an episode to this season.
+     * Add an episode to this season with the given parameters.
      *
      * @param array $episode
      *
@@ -56,9 +55,19 @@ class Season extends Model
      */
     public function addEpisode($episode)
     {
-        return $this->episodes()->create($episode);
+        /** @var Episode $episode */
+        $episode = $this->episodes()->create($episode);
+
+        return $episode;
     }
 
+    /**
+     * Update the episodes in this season based on the new episodes given.
+     *
+     * @param $episodes
+     *
+     * @throws \Exception
+     */
     public function updateEpisodes($episodes)
     {
         $oldEpisodes = $this->episodes;

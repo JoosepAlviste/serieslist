@@ -44,6 +44,8 @@ class User extends Authenticatable
     /**
      * Get the in progress series which this user watched an episode of.
      *
+     * TODO: Does this need to exist?
+     *
      * @return Series[]|Collection
      */
     public function inProgressSeries()

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\SeriesStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -22,8 +21,9 @@ use Illuminate\Support\Collection;
  * @property SeriesProgress[]|Collection progresses
  *
  * @method static Builder search(string $q)
- * @method static Builder byStatus(string|null $status, int|null $userId)
+ * @method static Builder byStatus(string | null $status, int | null $userId)
  * @method static Series first
+ * @method static Builder whereHas($association, $rule)
  *
  * @package App\Models
  */
@@ -309,7 +309,8 @@ class Series extends Model
      */
     public function setProgress(
         $latestSeenEpisodeId, $nextEpisodeId = null, $userId = null
-    ) {
+    )
+    {
         $userId = $userId ?: auth()->id();
 
         $progress = $this->progress($userId);

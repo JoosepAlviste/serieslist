@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -13,6 +14,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property User user
  * @property Episode episode
  *
+ * @method static Builder where(string $field, string | int $value)
+ * @method static SeenEpisode firstOrCreate(array $params)
+ *
  * @package App\Models
  */
 class SeenEpisode extends Model
@@ -20,8 +24,8 @@ class SeenEpisode extends Model
     protected $fillable = ['user_id', 'episode_id'];
 
     /**
-     * Register the many to one relationship with episode.
-     * The episode which has been seen by the user.
+     * Register the many to one relationship with episode. The episode which has
+     * been seen by the user.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -31,8 +35,8 @@ class SeenEpisode extends Model
     }
 
     /**
-     * Register the many to one relationship with user.
-     * The user who has seen the episode.
+     * Register the many to one relationship with user. The user who has seen
+     * the episode.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

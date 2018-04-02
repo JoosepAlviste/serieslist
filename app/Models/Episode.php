@@ -18,6 +18,7 @@ use Illuminate\Support\Collection;
  *
  * @method static Episode|Episode[]|Collection find($arg)
  * @method static Builder search(string $q)
+ * @method static Builder where(string $field, $value)
  *
  * @package App\Models
  */
@@ -33,7 +34,8 @@ class Episode extends Model
      * Boot method used to add global scopes, etc. So whenever Episodes are
      * queried, these scopes are automatically activated.
      */
-    protected static function boot() {
+    protected static function boot()
+    {
         parent::boot();
 
         static::addGlobalScope('orderByNumber', function (Builder $builder) {
@@ -52,9 +54,7 @@ class Episode extends Model
     }
 
     /**
-     * Check if this episode is seen by the user with the
-     * given ID.
-     * If no ID is given, use authenticated user ID instead.
+     * Check if the current user has seen this episode.
      *
      * @return bool
      */
@@ -64,8 +64,9 @@ class Episode extends Model
     }
 
     /**
-     * Checks if this episode is seen by the given user or
-     * if no user is given, the authenticated user.
+     * Checks if this episode is seen by the given user.
+     *
+     * If no user is given, the authenticated user is used.
      *
      * @param int|null $userId
      *
@@ -75,13 +76,14 @@ class Episode extends Model
     {
         $userId = $userId ?: auth()->id();
 
-        return ! ! $this->seenEpisodes
+        return !!$this->seenEpisodes
             ->where('user_id', $userId)
             ->first();
     }
 
     /**
      * Toggle this episode's seen status for the user with the given id.
+     *
      * If no user id is given, use authenticated user instead.
      *
      * @param int|null $userId
@@ -92,7 +94,7 @@ class Episode extends Model
     {
         $userId = $userId ?: auth()->id();
 
-        if ( ! $this->isSeen) {
+        if (!$this->isSeen) {
             $this->markAsSeen($userId);
         } else {
             $this->markAsNotSeen($userId);
@@ -108,12 +110,16 @@ class Episode extends Model
      */
     public function shortSlug()
     {
-        return sprintf(static::SHORT_SLUG_TEMPLATE, $this->season->number, $this->number);
+        return sprintf(
+            static::SHORT_SLUG_TEMPLATE,
+            $this->season->number,
+            $this->number
+        );
     }
 
     /**
-     * Gets the next episode. If this is the last episode of the season
-     * get the first episode of the next season.
+     * Gets the next episode. If this is the last episode of the season get the
+     * first episode of the next season.
      *
      * @return Episode
      */
@@ -121,16 +127,16 @@ class Episode extends Model
     {
         $this->season;
         $nextEpisode = $this->season
-                            ->episodes()
-                            ->where('number', $this->number + 1)
-                            ->setEagerLoads([])
-                            ->first();
+            ->episodes()
+            ->where('number', $this->number + 1)
+            ->setEagerLoads([])
+            ->first();
         if ($nextEpisode) {
             // Improve performance (less SQL queries), with setEagerLoads([])
             $nextEpisode->season = $this->season;
         }
 
-        if ( ! $nextEpisode) {
+        if (!$nextEpisode) {
             $nextSeason = $this->season->nextSeason;
 
             if ($nextSeason) {
@@ -161,6 +167,8 @@ class Episode extends Model
 
     /**
      * Mark this episode as seen by the given user.
+     *
+     * If no user is given, use the authenticated user.
      *
      * @param int|null $userId
      *
@@ -197,8 +205,7 @@ class Episode extends Model
     }
 
     /**
-     * Register the Search scope. Episodes can be searched for
-     * by their title.
+     * Register the Search scope. Episodes can be searched for by their title.
      *
      * @param Builder $query
      * @param string $q
