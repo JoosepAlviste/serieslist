@@ -19,6 +19,7 @@ use Illuminate\Support\Collection;
  * @property string poster
  * @property Season[]|Collection seasons
  * @property SeriesStatus[]|Collection seriesStatuses
+ * @property SeriesProgress[]|Collection progresses
  *
  * @method static Builder search(string $q)
  * @method static Builder byStatus(string|null $status, int|null $userId)

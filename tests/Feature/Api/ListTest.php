@@ -34,6 +34,9 @@ class ListTest extends TestCase
             'user_id' => auth()->id(),
         ]);
         $this->series = $this->seenEpisode->episode->season->series;
+
+        $this->series->setProgress($this->seenEpisode->episode_id);
+
         create(SeriesStatus::class, [
             'user_id' => auth()->id(),
             'series_id' => $this->series->id,
@@ -75,6 +78,9 @@ class ListTest extends TestCase
     function series_list_has_the_correct_format()
     {
         $nextEpisode = $this->nextEpisode();
+        $this->series->setProgress(
+            $this->seenEpisode->episode_id, $nextEpisode->id
+        );
 
         /** @var SeriesStatus $seriesStatusB */
         $seriesStatusB = create(SeriesStatus::class, [
@@ -135,6 +141,9 @@ class ListTest extends TestCase
     function series_list_contains_next_episode()
     {
         $nextEpisode = $this->nextEpisode();
+        $this->series->setProgress(
+            $this->seenEpisode->episode_id, $nextEpisode->id
+        );
 
         $this->fetchList()
             ->assertJsonFragment([
@@ -166,6 +175,9 @@ class ListTest extends TestCase
                 'number' => $this->seenEpisode->episode->season->number + 1,
             ]),
         ]);
+        $this->series->setProgress(
+            $this->seenEpisode->episode_id, $episodeInNextSeason->id
+        );
 
         $response = $this->fetchList();
 
