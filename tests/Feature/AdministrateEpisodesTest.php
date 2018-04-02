@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Episode;
+use App\Models\Season;
 use App\Models\Series;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -72,6 +73,24 @@ class AdministrateEpisodesTest extends TestCase
         $this->assertDatabaseHas('episodes', [
             'title' => 'New episode',
         ]);
+    }
+
+    /** @test */
+    function updating_and_adding_a_season_correctly_adds_new_episodes()
+    {
+        $this->signInAdmin();
+
+        $savedSeries = create(Series::class);
+
+        $updatedSeries = $savedSeries->toArray();
+        $updatedSeries['seasons'][] = ['number' => 1, 'episodes' => []];
+        $updatedSeries['seasons'][0]['episodes'][] = [
+            'title' => 'test', 'number' => 0,
+        ];
+
+        $this->put("/series/{$savedSeries->id}", $updatedSeries);
+
+        $this->assertCount(1, $savedSeries->fresh()->seasons[0]->episodes);
     }
 
     protected function createEpisodeAndGetAsParams($overrides = [])

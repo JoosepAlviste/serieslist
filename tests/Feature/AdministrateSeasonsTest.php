@@ -80,4 +80,21 @@ class AdministrateSeasonsTest extends TestCase
             'id' => $episode->id,
         ]);
     }
+
+    /** @test */
+    function an_empty_season_can_be_added()
+    {
+        $this->signInAdmin();
+
+        $series = create(Series::class);
+
+        $params = $series->toArray();
+        $params['seasons'] = [
+            ['number' => 1],
+        ];
+
+        $this->put($series->path(), $params);
+
+        $this->assertCount(1, $series->fresh()->seasons);
+    }
 }

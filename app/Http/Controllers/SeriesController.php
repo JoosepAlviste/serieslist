@@ -111,6 +111,8 @@ class SeriesController extends Controller
      * @param Series $series
      *
      * @return \Illuminate\Http\RedirectResponse
+     *
+     * @throws \Exception
      */
     public function update(StoreSeries $request, Series $series)
     {

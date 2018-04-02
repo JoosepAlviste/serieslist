@@ -66,7 +66,16 @@ class Series extends Model
      */
     public function addSeason($season)
     {
-        return $this->seasons()->create($season);
+        /* @var Season $savedSeason */
+        $savedSeason = $this->seasons()->create($season);
+
+        if (array_has($season, 'episodes')) {
+            foreach ($season['episodes'] as $episode) {
+                $savedSeason->addEpisode($episode);
+            }
+        }
+
+        return $savedSeason;
     }
 
     /**
