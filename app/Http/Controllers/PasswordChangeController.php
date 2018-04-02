@@ -28,14 +28,18 @@ class PasswordChangeController extends Controller
      * @param PasswordChange $request
      *
      * @return RedirectResponse|Redirector
-     * @throws ValidationException
      */
     public function update(PasswordChange $request)
     {
         $user = auth()->user();
         $hasher = app('hash');
 
-        if (!$hasher->check($request->input('current-password'), $user->password)) {
+        $isCorrectPassword = $hasher->check(
+            $request->input('current-password'),
+            $user->password
+        );
+
+        if (!$isCorrectPassword) {
             throw ValidationException::withMessages([
                 'current-password' => [trans('auth.failed')],
             ]);
@@ -45,6 +49,7 @@ class PasswordChangeController extends Controller
 
         $this->resetPassword(auth()->user(), $newPassword);
 
-        return redirect('/settings')->with('status', 'Password reset successfully!');
+        return redirect('/settings')
+            ->with('status', 'Password reset successfully!');
     }
 }

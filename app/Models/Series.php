@@ -75,7 +75,7 @@ class Series extends Model
         /* @var Season $savedSeason */
         $savedSeason = $this->seasons()->create($season);
 
-        if (array_has($season, 'episodes')) {
+        if (array_key_exists('episodes', $season)) {
             foreach ($season['episodes'] as $episode) {
                 $savedSeason->addEpisode($episode);
             }

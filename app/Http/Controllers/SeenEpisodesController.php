@@ -50,7 +50,8 @@ class SeenEpisodesController extends Controller
     }
 
     /**
-     * Mark all episodes in the season as seen.
+     * Mark all episodes in the season as seen. Also updates the series progress
+     * for the relevant series.
      *
      * @param Season $season
      *

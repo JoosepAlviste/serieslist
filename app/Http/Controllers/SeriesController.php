@@ -28,7 +28,10 @@ class SeriesController extends Controller
      * @param Request $request
      * @param SeriesRepository $seriesRepository
      */
-    public function __construct(Request $request, SeriesRepository $seriesRepository)
+    public function __construct(
+        Request $request,
+        SeriesRepository $seriesRepository
+    )
     {
         $this->request = $request;
         $this->seriesRepository = $seriesRepository;
@@ -50,7 +53,7 @@ class SeriesController extends Controller
     }
 
     /**
-     * Show all series.
+     * Show all series with pagination.
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -62,7 +65,8 @@ class SeriesController extends Controller
     }
 
     /**
-     * Save a series from the request.
+     * Save a series from the request. Also saves the seasons and episodes for
+     * each season.
      *
      * @param StoreSeries $request
      *
@@ -72,26 +76,17 @@ class SeriesController extends Controller
     {
         $series = $request->getInstance();
 
-        if ($request->file('poster')) {
-            $filenames = app()->make(FileUploader::class)
-                              ->storeSeriesPoster($request);
-            $series->poster = $filenames['filename'];
-        }
+        $series = $this->savePoster($request, $series);
 
         $series->save();
 
         if ($request->filled('seasons')) {
             foreach ($request->get('seasons') as $season) {
-                $savedSeason = $series->addSeason($season);
-                if (array_key_exists('episodes', $season)) {
-                    foreach ($season['episodes'] as $episode) {
-                        $savedSeason->addEpisode($episode);
-                    }
-                }
+                $series->addSeason($season);
             }
         }
 
-        return redirect("/series/{$series->id}");
+        return redirect($series->path());
     }
 
     /**
@@ -118,15 +113,12 @@ class SeriesController extends Controller
     {
         $series = $request->getInstance($series);
 
-        if ($request->file('poster')) {
-            $filenames = app()->make(FileUploader::class)->storeSeriesPoster($request);
-            $series->poster = $filenames['filename'];
-        }
+        $series = $this->savePoster($request, $series);
 
         $series->save();
 
-        $oldSeasons   = $series->seasons;
-        $newSeasons   = $request->get('seasons') ?: new Collection;
+        $oldSeasons = $series->seasons;
+        $newSeasons = $request->get('seasons') ?: new Collection;
         $addedSeasons = new Collection;
 
         // TODO: Move to Series model?
@@ -134,9 +126,10 @@ class SeriesController extends Controller
             $shouldDelete = true;
             foreach ($newSeasons as $newSeason) {
                 if ($oldSeason->number == $newSeason['number']) {
-                    $oldSeason->updateEpisodes(
-                        array_key_exists('episodes', $newSeason) ? $newSeason['episodes'] : []
-                    );
+                    $newEpisodes = array_key_exists('episodes', $newSeason)
+                        ? $newSeason['episodes']
+                        : [];
+                    $oldSeason->updateEpisodes($newEpisodes);
 
                     $shouldDelete = false;
                     $addedSeasons->push($oldSeason->number);
@@ -150,16 +143,16 @@ class SeriesController extends Controller
         }
 
         foreach ($newSeasons as $newSeason) {
-            if ( ! $addedSeasons->contains($newSeason['number'])) {
+            if (!$addedSeasons->contains($newSeason['number'])) {
                 $series->addSeason($newSeason);
             }
         }
 
-        return redirect("/series/{$series->id}");
+        return redirect($series->path());
     }
 
     /**
-     * Show the edit series form.
+     * Show the edit series form with the currently saved series info.
      *
      * @param Series $series
      *
@@ -181,11 +174,33 @@ class SeriesController extends Controller
      * @param Series $series
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     *
+     * @throws \Exception
      */
     public function destroy(Series $series)
     {
         $series->delete();
 
         return redirect('/series');
+    }
+
+    /**
+     * Save the poster from the given request to the given series object. Does
+     * not perform the actual saving but just sets the field value.
+     *
+     * @param StoreSeries $request
+     * @param Series $series
+     *
+     * @return Series
+     */
+    protected function savePoster(StoreSeries $request, $series)
+    {
+        if ($request->file('poster')) {
+            $fileNames = app()->make(FileUploader::class)
+                ->storeSeriesPoster($request);
+            $series->poster = $fileNames['filename'];
+        }
+
+        return $series;
     }
 }

@@ -11,6 +11,7 @@ class SeasonsController extends Controller
 
     /**
      * SeasonsController constructor.
+     *
      * @param SeasonsRepository $seasonsRepository
      */
     public function __construct(SeasonsRepository $seasonsRepository)
@@ -19,7 +20,8 @@ class SeasonsController extends Controller
     }
 
     /**
-     * Show one season page.
+     * Show one season page with info about whether all of the episodes in the
+     * season have been seen.
      *
      * @param int $seriesId
      * @param int $seasonNumber
@@ -31,10 +33,9 @@ class SeasonsController extends Controller
         $season = $this->seasonsRepository->fetch($seriesId, $seasonNumber);
         $nextSeason = $season->nextSeason;
 
-        $isSeen = $season->episodes
-            ->every(function ($episode) {
-                return $episode->seenEpisodes->count() !== 0;
-            });
+        $isSeen = $season->episodes->every(function ($episode) {
+            return $episode->seenEpisodes->count() !== 0;
+        });
 
         return view('seasons.show', [
             'season'     => $season,

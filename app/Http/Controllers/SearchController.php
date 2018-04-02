@@ -33,8 +33,7 @@ class SearchController extends Controller
         Request $request,
         SeriesRepository $seriesRepository,
         EpisodesRepository $episodesRepository
-    )
-    {
+    ) {
         $this->request = $request;
         $this->seriesRepository = $seriesRepository;
         $this->episodesRepository = $episodesRepository;
