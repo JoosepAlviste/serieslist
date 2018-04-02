@@ -225,19 +225,21 @@ class Series extends Model
      *
      * @return Builder
      */
-    public function scopeByStatus($query, $status, $userId)
+    public function scopeByStatus($query, $status, $userId = null)
     {
         $userId = $userId ?: auth()->id();
 
-        $query->whereHas('statuses', function ($query) use ($userId) {
+        $query->whereHas('statuses', function ($query) use ($userId, $status) {
             $query->where('user_id', $userId);
-        });
 
-        if ($status) {
-            $query->whereHas('statuses.type', function ($query) use ($status) {
-                $query->where('status', $status);
-            });
-        }
+            if ($status) {
+                // If a status type filter has been added, check that the type
+                // text is also correct ('in progress', 'completed', etc.)
+                $query->whereHas('type', function ($query) use ($status) {
+                    $query->where('status', $status);
+                });
+            }
+        });
 
         return $query;
     }
