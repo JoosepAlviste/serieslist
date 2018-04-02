@@ -58,7 +58,13 @@ class Series extends Model
     }
 
     /**
-     * Add a season to this series.
+     * Add a season to this series. Also triggers adding episodes for the
+     * created series from the given parameters.
+     *
+     * The parameters can have a key 'episodes' containing a list of episodes.
+     * These episodes will be added to the newly created season.
+     *
+     * TODO: This should probably be done in a more efficient way -- one SQL query
      *
      * @param array $season
      *
@@ -79,10 +85,13 @@ class Series extends Model
     }
 
     /**
-     * Get the latest episode of this series the given user
-     * has seen.
-     * Does not take into account seen episodes after skipped
-     * episodes.
+     * Get the latest episode of this series the given user has seen. Does not
+     * take into account seen episodes after skipped episodes.
+     *
+     * TODO: Remove this because we now have SeriesProgress in the database?
+     *
+     * Might be good for finding episodes that have been missed (one episode not
+     * seen and the next ones have been seen).
      *
      * @param int|null $userId
      *
@@ -135,7 +144,10 @@ class Series extends Model
 
     /**
      * Many to one relationship where a series has many progresses associated
-     * with it. Each user has one series progress.
+     * with it. Each user has one series progress so this collection should
+     * always have one or zero elements.
+     *
+     * TODO: Look into having filter for auth()->id() and a hasOne relationship?
      *
      * @return HasMany
      */
@@ -145,8 +157,10 @@ class Series extends Model
     }
 
     /**
-     * Register the Search scope. Series can be searched for
-     * by their title and description.
+     * Register the Search scope. Series can be searched for by their title and
+     * description.
+     *
+     * TODO: Eventually this will be handled by something smarter like Elasticsearch
      *
      * @param Builder $query
      * @param string $q
@@ -160,8 +174,10 @@ class Series extends Model
     }
 
     /**
-     * Update a series' status for the given user. If no user id
-     * is given, get the authenticated user's id.
+     * Update a series' status for the given user. The series status code is one
+     * that's found in the `series_status_types` table.
+     *
+     * If no user id is given, get the authenticated user's id.
      *
      * @param int $seriesStatusTypeCode
      * @param int|null $userId
@@ -174,6 +190,7 @@ class Series extends Model
 
         $status = $this->statusForUser($userId);
 
+        // TODO: Look into Eloquent update or create
         if ($status) {
             $status->series_status_type_code = $seriesStatusTypeCode;
             $status->save();
@@ -181,17 +198,22 @@ class Series extends Model
             return $status;
         }
 
-        return $this->statuses()->create([
+        /** @var SeriesStatus $status */
+        $status = $this->statuses()->create([
             'user_id' => $userId,
             'series_status_type_code' => $seriesStatusTypeCode,
         ]);
+
+        return $status;
     }
 
     /**
      * Get the series status for this series and the given user.
+     *
      * If no user is given, use the authenticated user.
      *
      * @param int|null $userId
+     *
      * @return SeriesStatus
      */
     public function statusForUser($userId = null)
@@ -204,10 +226,12 @@ class Series extends Model
     }
 
     /**
-     * Remove the status for this series for the user given. If no user is
-     * given, use the authenticated user.
+     * Remove the status for this series for the given user.
+     *
+     * If no user is given, use the authenticated user.
      *
      * @param int|null $userId
+     *
      * @return int
      */
     public function removeStatusForUser($userId = null)
@@ -270,15 +294,17 @@ class Series extends Model
 
     /**
      * Updates or creates a new progress for this series and the given user.
-     * When no user id is given, take the authenticated user's id.
      *
      * If the user has no progress, will insert a new entry into the series
      * progresses table with the given latest seen episode id and the next
      * episode id.
      *
-     * @param $latestSeenEpisodeId
-     * @param null $nextEpisodeId
-     * @param null $userId
+     * When no user id is given, take the authenticated user's id.
+     *
+     * @param int $latestSeenEpisodeId
+     * @param int|null $nextEpisodeId
+     * @param int|null $userId
+     *
      * @return SeriesProgress|Model|null
      */
     public function setProgress(
@@ -288,6 +314,7 @@ class Series extends Model
 
         $progress = $this->progress($userId);
 
+        // TODO: Look into Eloquent create or update?
         if (!$progress) {
             $progress = $this->progresses()->make([
                 'user_id' => $userId,
