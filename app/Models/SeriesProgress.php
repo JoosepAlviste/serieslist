@@ -39,17 +39,6 @@ class SeriesProgress extends Model
     }
 
     /**
-     * Register the nextEpisode relation where a SeriesProgress points to one
-     * episode which is the next episode.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function nextEpisode()
-    {
-        return $this->belongsTo(Episode::class, 'next_episode_id');
-    }
-
-    /**
      * Register the series relationship where a SeriesProgress points to one
      * series, the progress for which the SeriesProgress represents.
      *
