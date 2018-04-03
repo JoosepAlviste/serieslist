@@ -33,21 +33,7 @@ class SeriesListController extends Controller
 
         // TODO: Refactor with progresses... to model scope?
         $series = Series::byStatus($status, $user->id)
-            ->with([
-                'progresses' => function ($query) {
-                    /** @var Builder $query */
-                    $query->where('user_id', auth()->id());
-                    // Because we already have series info from the series
-                    // table, we do not need it again (added by default by
-                    // Episode)
-                    $query->with([
-                        'latestSeenEpisode' => function ($query) {
-                            /** @var Builder $query */
-                            $query->without('season.series');
-                        },
-                    ]);
-                },
-            ])
+            ->withProgress($user->id)
             ->get();
 
         // TODO: Refactor this to be a bit prettier

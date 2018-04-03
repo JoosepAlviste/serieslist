@@ -21,7 +21,8 @@ use Illuminate\Support\Collection;
  * @property SeriesProgress[]|Collection progresses
  *
  * @method static Builder search(string $q)
- * @method static Builder byStatus(string | null $status, int | null $userId)
+ * @method static Builder byStatus(string|null $status, int|null $userId)
+ * @method static Builder withProgress(int|null $userId)
  * @method static Series first
  * @method static Builder whereHas($association, $rule)
  *
@@ -193,40 +194,6 @@ class Series extends Model
     }
 
     /**
-     * Register the by status scope. Gets series where the given status for the
-     * given user is set. So, when the user has marked a series as
-     * 'in-progress' and asks for their 'in-progress' series, they get the
-     * correct series.
-     *
-     * If no status is given, gets all series for which the user has marked a
-     * status.
-     *
-     * @param Builder $query
-     * @param null|string $status
-     * @param null|int $userId
-     *
-     * @return Builder
-     */
-    public function scopeByStatus($query, $status, $userId = null)
-    {
-        $userId = $userId ?: auth()->id();
-
-        $query->whereHas('statuses', function ($query) use ($userId, $status) {
-            $query->where('user_id', $userId);
-
-            if ($status) {
-                // If a status type filter has been added, check that the type
-                // text is also correct ('in progress', 'completed', etc.)
-                $query->whereHas('type', function ($query) use ($status) {
-                    $query->where('status', $status);
-                });
-            }
-        });
-
-        return $query;
-    }
-
-    /**
      * Get the progress for the user for this series. If no user id is given,
      * get the currently authenticated user's id.
      *
@@ -291,6 +258,86 @@ class Series extends Model
     }
 
     /**
+     * Register the by status scope. Gets series where the given status for the
+     * given user is set. So, when the user has marked a series as
+     * 'in-progress' and asks for their 'in-progress' series, they get the
+     * correct series.
+     *
+     * If no status is given, gets all series for which the user has marked a
+     * status.
+     *
+     * @param Builder $query
+     * @param null|string $status
+     * @param null|int $userId
+     *
+     * @return Builder
+     */
+    public function scopeByStatus($query, $status, $userId = null)
+    {
+        $userId = $userId ?: auth()->id();
+
+        $query->whereHas('statuses', function ($query) use ($userId, $status) {
+            $query->where('user_id', $userId);
+
+            if ($status) {
+                // If a status type filter has been added, check that the type
+                // text is also correct ('in progress', 'completed', etc.)
+                $query->whereHas('type', function ($query) use ($status) {
+                    $query->where('status', $status);
+                });
+            }
+        });
+
+        return $query;
+    }
+
+    /**
+     * Register the Search scope. Series can be searched for by their title and
+     * description.
+     *
+     * TODO: Eventually this will be handled by something smarter like Elasticsearch
+     *
+     * @param Builder $query
+     * @param string $q
+     *
+     * @return Builder
+     */
+    public function scopeSearch($query, $q)
+    {
+        return $query->whereRaw('LOWER(title) like ?', ["%{$q}%"])
+            ->orWhereRaw('LOWER(description) like ?', ["%$q%"]);
+    }
+
+    /**
+     * Add progresses for the given user to the query.
+     *
+     * @param Builder $query
+     * @param int|null $userId
+     *
+     * @return Builder
+     */
+    public function scopeWithProgress($query, $userId = null)
+    {
+        $userId = $userId ?: auth()->id();
+
+        return $query->with([
+            'progresses' => function ($query) use ($userId) {
+                /** @var Builder $query */
+                $query->where('user_id', $userId);
+                // Because we already have series info from the series
+                // table, we do not need it again (added by default by
+                // Episode)
+                $query->with([
+                    'latestSeenEpisode' => function ($query) {
+                        /** @var Builder $query */
+                        $query->without('season.series');
+                    },
+                ]);
+            },
+        ]);
+    }
+
+    /**
      * Many to one relationship where a series has many seasons.
      *
      * @return HasMany
@@ -322,22 +369,5 @@ class Series extends Model
     public function progresses()
     {
         return $this->hasMany(SeriesProgress::class);
-    }
-
-    /**
-     * Register the Search scope. Series can be searched for by their title and
-     * description.
-     *
-     * TODO: Eventually this will be handled by something smarter like Elasticsearch
-     *
-     * @param Builder $query
-     * @param string $q
-     *
-     * @return Builder
-     */
-    public function scopeSearch($query, $q)
-    {
-        return $query->whereRaw('LOWER(title) like ?', ["%{$q}%"])
-            ->orWhereRaw('LOWER(description) like ?', ["%$q%"]);
     }
 }

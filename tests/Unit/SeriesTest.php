@@ -109,7 +109,7 @@ class SeriesTest extends TestCase
     /** @test */
     function it_can_be_searched_for_by_its_title_or_description()
     {
-        $series    = create(Series::class, [
+        $series = create(Series::class, [
             'title' => 'Test title',
         ]);
         $seriesTwo = create(Series::class, [
@@ -119,7 +119,7 @@ class SeriesTest extends TestCase
         $query = 'test t';
 
         $foundSeries = Series::search($query)
-                             ->get();
+            ->get();
 
         $this->assertTrue($foundSeries->contains('id', $series->id));
         $this->assertFalse($foundSeries->contains('id', $seriesTwo->id));
@@ -201,6 +201,30 @@ class SeriesTest extends TestCase
             'user_id' => $progress->user_id,
             'series_id' => $progress->series_id,
         ]);
+    }
+
+    /** @test */
+    function it_can_be_queried_with_progress_for_a_user()
+    {
+        $this->signIn();
+
+        $episodes = $this->createSubsequentEpisodes($this->series);
+        $progress = create(SeriesProgress::class, [
+            'user_id' => auth()->id(),
+            'series_id' => $this->series->id,
+            'latest_seen_episode_id' => $episodes[0]->id,
+            'next_episode_id' => $episodes[1]->id,
+        ]);
+        create(SeriesProgress::class, [
+            'series_id' => $this->series->id,
+            'latest_seen_episode_id' => $episodes[1]->id,
+            'next_episode_id' => null,
+        ]);
+
+        $seriesWithProgresses = Series::withProgress($progress->user_id)->first();
+
+        $this->assertEquals(1, $seriesWithProgresses->progresses->count());
+        $this->assertEquals($progress->user_id, $seriesWithProgresses->progresses[0]->user_id);
     }
 
     /**
