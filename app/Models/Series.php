@@ -121,6 +121,7 @@ class Series extends Model
 
         return $lastSeen;
     }
+
     /**
      * Update a series' status for the given user. The series status code is one
      * that's found in the `series_status_types` table.
@@ -261,10 +262,8 @@ class Series extends Model
     {
         $userId = $userId ?: auth()->id();
 
-        $progress = $this->progress($userId);
-
         // TODO: Look into Eloquent create or update?
-        if (!$progress) {
+        if (!$progress = $this->progress($userId)) {
             $progress = $this->progresses()->make([
                 'user_id' => $userId,
             ]);
@@ -272,7 +271,6 @@ class Series extends Model
 
         $progress->latest_seen_episode_id = $latestSeenEpisodeId;
         $progress->next_episode_id = $nextEpisodeId;
-
         $progress->save();
 
         return $progress;
@@ -342,5 +340,4 @@ class Series extends Model
         return $query->whereRaw('LOWER(title) like ?', ["%{$q}%"])
             ->orWhereRaw('LOWER(description) like ?', ["%$q%"]);
     }
-
 }

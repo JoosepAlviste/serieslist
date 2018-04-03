@@ -16,8 +16,7 @@ class EpisodeTest extends TestCase
     {
         $episode = create(Episode::class);
 
-        // TODO: Refactor to use episode slug?
-        $this->get("{$episode->season->series->path()}/episodes/{$episode->id}")
+        $this->get($episode->path())
              ->assertSee($episode->title);
     }
 
