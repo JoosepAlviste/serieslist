@@ -80,6 +80,7 @@ class SeriesController extends Controller
 
         $series->save();
 
+        // TODO: Add method to Series addSeasons?
         if ($request->filled('seasons')) {
             foreach ($request->get('seasons') as $season) {
                 $series->addSeason($season);
