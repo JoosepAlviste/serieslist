@@ -16,6 +16,7 @@ use Illuminate\Support\Collection;
  * @property string password
  *
  * @method static User first()
+ * @method static User create($params)
  *
  * @package App\Models
  */
