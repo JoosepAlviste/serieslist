@@ -227,6 +227,43 @@ class SeriesTest extends TestCase
         $this->assertEquals($progress->user_id, $seriesWithProgresses->progresses[0]->user_id);
     }
 
+    /** @test
+     * @throws \Exception
+     */
+    function it_can_update_its_seasons()
+    {
+        $episodes = $this->createSubsequentEpisodes($this->series, 3);
+
+        $seriesArray = $this->series
+            ->fresh()
+            ->load('seasons', 'seasons.episodes')
+            ->toArray();
+
+        $newSeasons = [
+            $seriesArray['seasons'][0],
+            [
+                'number' => $episodes[0]->season->number + 1,
+                'episodes' => [
+                    [
+                        'number' => 1,
+                        'title' => 'A test title',
+                    ],
+                ],
+            ],
+        ];
+
+        $this->series->updateSeasons($newSeasons);
+
+        $this->assertDatabaseHas('seasons', [
+            'number' => $episodes[0]->season->number + 1,
+            'series_id' => $this->series->id,
+        ]);
+        $this->assertDatabaseHas('episodes', [
+            'number' => 1,
+            'title' => 'A test title',
+        ]);
+    }
+
     /**
      * @param Episode[]|Collection $episodes
      *

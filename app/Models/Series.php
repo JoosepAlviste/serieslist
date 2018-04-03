@@ -86,6 +86,51 @@ class Series extends Model
     }
 
     /**
+     * Update the seasons for this series with the given values. First checks if
+     * there should be any seasons or episodes updated from the existing ones.
+     * Next, it will delete the seasons, which don't exist in the new seasons.
+     * Then, it will add new seasons.
+     *
+     * @param array $newSeasons
+     *
+     * @return $this
+     *
+     * @throws \Exception
+     */
+    public function updateSeasons($newSeasons)
+    {
+        $addedSeasons = new Collection;
+
+        foreach ($this->seasons as $oldSeason) {
+            $shouldDelete = true;
+            foreach ($newSeasons as $newSeason) {
+                if ($oldSeason->number == $newSeason['number']) {
+                    $newEpisodes = array_key_exists('episodes', $newSeason)
+                        ? $newSeason['episodes']
+                        : [];
+                    $oldSeason->updateEpisodes($newEpisodes);
+
+                    $shouldDelete = false;
+                    $addedSeasons->push($oldSeason->number);
+                    break;
+                }
+            }
+
+            if ($shouldDelete) {
+                $oldSeason->delete();
+            }
+        }
+
+        foreach ($newSeasons as $newSeason) {
+            if (!$addedSeasons->contains($newSeason['number'])) {
+                $this->addSeason($newSeason);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
      * Get the latest episode of this series the given user has seen. Does not
      * take into account seen episodes after skipped episodes.
      *

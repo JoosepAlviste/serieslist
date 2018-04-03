@@ -71,10 +71,9 @@ class Season extends Model
      */
     public function updateEpisodes($episodes)
     {
-        $oldEpisodes = $this->episodes;
         $updatedEpisodes = new Collection;
 
-        foreach ($oldEpisodes as $oldEpisode) {
+        foreach ($this->episodes as $oldEpisode) {
             $shouldDelete = true;
             foreach ($episodes as $newEpisode) {
                 if ($oldEpisode->number == $newEpisode['number']) {

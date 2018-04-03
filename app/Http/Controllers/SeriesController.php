@@ -112,41 +112,10 @@ class SeriesController extends Controller
     public function update(StoreSeries $request, Series $series)
     {
         $series = $request->getInstance($series);
-
         $series = $this->savePoster($request, $series);
-
         $series->save();
 
-        $oldSeasons = $series->seasons;
-        $newSeasons = $request->get('seasons') ?: new Collection;
-        $addedSeasons = new Collection;
-
-        // TODO: Move to Series model?
-        foreach ($oldSeasons as $oldSeason) {
-            $shouldDelete = true;
-            foreach ($newSeasons as $newSeason) {
-                if ($oldSeason->number == $newSeason['number']) {
-                    $newEpisodes = array_key_exists('episodes', $newSeason)
-                        ? $newSeason['episodes']
-                        : [];
-                    $oldSeason->updateEpisodes($newEpisodes);
-
-                    $shouldDelete = false;
-                    $addedSeasons->push($oldSeason->number);
-                    break;
-                }
-            }
-
-            if ($shouldDelete) {
-                $oldSeason->delete();
-            }
-        }
-
-        foreach ($newSeasons as $newSeason) {
-            if (!$addedSeasons->contains($newSeason['number'])) {
-                $series->addSeason($newSeason);
-            }
-        }
+        $series->updateSeasons($request->get('seasons', new Collection));
 
         return redirect($series->path());
     }
