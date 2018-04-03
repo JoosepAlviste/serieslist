@@ -15,6 +15,7 @@ use Illuminate\Support\Collection;
  * @property Series series
  * @property Episode[]|Collection episodes
  * @property Season nextSeason
+ * @property Season previousSeason
  *
  * @method static Builder where(string $table, string | int $val)
  *
@@ -129,6 +130,18 @@ class Season extends Model
     {
         return Season::where('series_id', $this->series_id)
             ->where('number', $this->number + 1)
+            ->first();
+    }
+
+    /**
+     * Find the previous season for this season's series.
+     *
+     * @return Season
+     */
+    public function getPreviousSeasonAttribute()
+    {
+        return Season::where('series_id', $this->series_id)
+            ->where('number', $this->number - 1)
             ->first();
     }
 }

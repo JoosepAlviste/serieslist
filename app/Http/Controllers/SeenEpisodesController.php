@@ -23,11 +23,24 @@ class SeenEpisodesController extends Controller
         $episode->toggleSeen(auth()->id());
 
         $series = $episode->season->series;
-        $nextEpisode = $episode->nextEpisode();
-        if ($nextEpisode) {
-            $series->setProgress($episode->id, $episode->nextEpisode()->id);
+        if ($episode->isSeen) {
+            $nextEpisode = $episode->nextEpisode();
+            if ($nextEpisode) {
+                $series->setProgress($episode->id, $episode->nextEpisode()->id);
+            } else {
+                $series->setProgress($episode->id);
+            }
         } else {
-            $series->setProgress($episode->id);
+            $previousEpisode = $episode->previousEpisode();
+            $nextEpisode = $episode;
+
+//            dump($previousEpisode, $nextEpisode->toArray());
+
+            if ($previousEpisode) {
+                $series->setProgress($previousEpisode->id, $episode->id);
+            } else {
+                $series->deleteProgress();
+            }
         }
 
         if (request()->expectsJson()) {

@@ -107,4 +107,18 @@ class SeasonTest extends TestCase
             $this->season->nextSeason->id
         );
     }
+
+    /** @test */
+    function it_knows_its_previous_season()
+    {
+        $previousSeason = create(Season::class, [
+            'series_id' => $this->season->series_id,
+            'number' => $this->season->number - 1,
+        ]);
+
+        $this->assertEquals(
+            $previousSeason->id,
+            $this->season->previousSeason->id
+        );
+    }
 }

@@ -8,11 +8,12 @@ use App\Models\SeenEpisode;
 use App\Models\Series;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\Concerns\CreatesEpisodes;
 use Tests\TestCase;
 
 class EpisodeTest extends TestCase
 {
-    use DatabaseMigrations;
+    use DatabaseMigrations, CreatesEpisodes;
 
     /** @var Episode */
     protected $episode;
@@ -194,5 +195,19 @@ class EpisodeTest extends TestCase
 
         $this->assertTrue($foundEpisodes->contains('id', $episode->id));
         $this->assertFalse($foundEpisodes->contains('id', $episodeTwo->id));
+    }
+    
+    /** @test */
+    function it_can_find_its_previous_episode()
+    {
+        $series = create(Series::class);
+        $episodes = $this->createSubsequentEpisodes($series);
+
+        $previousEpisode = $episodes[1]->previousEpisode();
+
+        $this->assertEquals(
+            $episodes[0]->id,
+            $previousEpisode->id
+        );
     }
 }

@@ -185,6 +185,36 @@ class Episode extends Model
     }
 
     /**
+     * Gets the previous episode. If this is the first episode of the season get
+     * the last episode of the previous season.
+     *
+     * @return Episode
+     */
+    public function previousEpisode()
+    {
+        $this->load('season');
+        $previousEpisode = $this->season
+            ->episodes()
+            ->where('number', $this->number - 1)
+            ->setEagerLoads([])
+            ->first();
+        if ($previousEpisode) {
+            // Improve performance (less SQL queries), with setEagerLoads([])
+            $previousEpisode->season = $this->season;
+        }
+
+        if (!$previousEpisode) {
+            $previousSeason = $this->season->previousSeason;
+
+            if ($previousSeason) {
+                $previousEpisode = $previousSeason->episodes->last();
+            }
+        }
+
+        return $previousEpisode;
+    }
+
+    /**
      * Set the one to many relationship where an episode belongs to a season.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

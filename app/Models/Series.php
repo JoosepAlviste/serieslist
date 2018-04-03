@@ -121,58 +121,6 @@ class Series extends Model
 
         return $lastSeen;
     }
-
-    /**
-     * Many to one relationship where a series has many seasons.
-     *
-     * @return HasMany
-     */
-    public function seasons()
-    {
-        return $this->hasMany(Season::class);
-    }
-
-    /**
-     * Many to one relationship where a series has many statuses.
-     *
-     * @return HasMany
-     */
-    public function statuses()
-    {
-        return $this->hasMany(SeriesStatus::class);
-    }
-
-    /**
-     * Many to one relationship where a series has many progresses associated
-     * with it. Each user has one series progress so this collection should
-     * always have one or zero elements.
-     *
-     * TODO: Look into having filter for auth()->id() and a hasOne relationship?
-     *
-     * @return HasMany
-     */
-    public function progresses()
-    {
-        return $this->hasMany(SeriesProgress::class);
-    }
-
-    /**
-     * Register the Search scope. Series can be searched for by their title and
-     * description.
-     *
-     * TODO: Eventually this will be handled by something smarter like Elasticsearch
-     *
-     * @param Builder $query
-     * @param string $q
-     *
-     * @return Builder
-     */
-    public function scopeSearch($query, $q)
-    {
-        return $query->whereRaw('LOWER(title) like ?', ["%{$q}%"])
-            ->orWhereRaw('LOWER(description) like ?', ["%$q%"]);
-    }
-
     /**
      * Update a series' status for the given user. The series status code is one
      * that's found in the `series_status_types` table.
@@ -329,4 +277,70 @@ class Series extends Model
 
         return $progress;
     }
+
+    /**
+     * Deletes the progress for the given user.
+     *
+     * If no user id is given, use the authenticated user's id.
+     *
+     * @param int|null $userId
+     */
+    public function deleteProgress($userId = null)
+    {
+        $userId = $userId ?: auth()->id();
+
+        $this->progresses()->where('user_id', $userId)->delete();
+    }
+
+    /**
+     * Many to one relationship where a series has many seasons.
+     *
+     * @return HasMany
+     */
+    public function seasons()
+    {
+        return $this->hasMany(Season::class);
+    }
+
+    /**
+     * Many to one relationship where a series has many statuses.
+     *
+     * @return HasMany
+     */
+    public function statuses()
+    {
+        return $this->hasMany(SeriesStatus::class);
+    }
+
+    /**
+     * Many to one relationship where a series has many progresses associated
+     * with it. Each user has one series progress so this collection should
+     * always have one or zero elements.
+     *
+     * TODO: Look into having filter for auth()->id() and a hasOne relationship?
+     *
+     * @return HasMany
+     */
+    public function progresses()
+    {
+        return $this->hasMany(SeriesProgress::class);
+    }
+
+    /**
+     * Register the Search scope. Series can be searched for by their title and
+     * description.
+     *
+     * TODO: Eventually this will be handled by something smarter like Elasticsearch
+     *
+     * @param Builder $query
+     * @param string $q
+     *
+     * @return Builder
+     */
+    public function scopeSearch($query, $q)
+    {
+        return $query->whereRaw('LOWER(title) like ?', ["%{$q}%"])
+            ->orWhereRaw('LOWER(description) like ?', ["%$q%"]);
+    }
+
 }
