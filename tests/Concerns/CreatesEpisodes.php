@@ -44,4 +44,21 @@ trait CreatesEpisodes
 
         return $episodes;
     }
+
+    /**
+     * Create an episode and get its fields as an array that can be passed to
+     * update series.
+     *
+     * @param array $overrides
+     *
+     * @return array
+     */
+    protected function createEpisodeAndGetAsParams($overrides = [])
+    {
+        $episode = create(Episode::class, $overrides);
+        $params = $episode->season->series->toArray();
+        $params['seasons'] = [$episode->season->makeHidden('series')->load('episodes')->toArray()];
+
+        return $params;
+    }
 }

@@ -5,12 +5,13 @@ namespace Tests\Feature;
 use App\Models\Episode;
 use App\Models\Season;
 use App\Models\Series;
+use Tests\Concerns\CreatesEpisodes;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class AdministrateEpisodesTest extends TestCase
 {
-    use DatabaseMigrations;
+    use DatabaseMigrations, CreatesEpisodes;
 
     /** @test */
     function an_admin_user_can_save_episodes_for_series()
@@ -91,14 +92,5 @@ class AdministrateEpisodesTest extends TestCase
         $this->put("/series/{$savedSeries->id}", $updatedSeries);
 
         $this->assertCount(1, $savedSeries->fresh()->seasons[0]->episodes);
-    }
-
-    protected function createEpisodeAndGetAsParams($overrides = [])
-    {
-        $episode = create(Episode::class, $overrides);
-        $params = $episode->season->series->toArray();
-        $params['seasons'] = [$episode->season->makeHidden('series')->load('episodes')->toArray()];
-
-        return $params;
     }
 }
