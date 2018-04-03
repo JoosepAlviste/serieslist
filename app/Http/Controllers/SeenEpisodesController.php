@@ -21,6 +21,7 @@ class SeenEpisodesController extends Controller
     public function toggle(Episode $episode)
     {
         $episode->toggleSeen(auth()->id());
+        $episode = $episode->fresh();
 
         $series = $episode->season->series;
         if ($episode->isSeen) {
@@ -33,8 +34,6 @@ class SeenEpisodesController extends Controller
         } else {
             $previousEpisode = $episode->previousEpisode();
             $nextEpisode = $episode;
-
-//            dump($previousEpisode, $nextEpisode->toArray());
 
             if ($previousEpisode) {
                 $series->setProgress($previousEpisode->id, $episode->id);
