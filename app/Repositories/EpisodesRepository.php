@@ -29,8 +29,7 @@ class EpisodesRepository
     }
 
     /**
-     * Search for episodes with the given keyword and paginate the
-     * results.
+     * Search for episodes with the given keyword and paginate the results.
      *
      * @param string $q
      * @param int|null $perPage
@@ -39,7 +38,7 @@ class EpisodesRepository
      */
     public function searchPaginate($q, $perPage = null)
     {
-        $perPage = $perPage ?: config('app.per-pagination-page');  // TODO: Move to conf?
+        $perPage = $perPage ?: config('app.per-pagination-page');
 
         $episodes = Episode::search($q)
             ->orderBy('title')

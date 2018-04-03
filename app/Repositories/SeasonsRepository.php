@@ -13,8 +13,8 @@ use App\Models\Season;
 class SeasonsRepository
 {
     /**
-     * Fetch a season based on the series id and the season
-     * number. Also eager load some fields.
+     * Fetch a season based on the series id and the season number. Also eager
+     * load some fields.
      *
      * @param int $seriesId
      * @param int $seasonNumber

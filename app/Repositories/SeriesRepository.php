@@ -34,8 +34,7 @@ class SeriesRepository
     }
 
     /**
-     * Search for series with the given keyword and paginate the
-     * results.
+     * Search for series with the given keyword and paginate the results.
      *
      * @param string $q
      * @param int|null $perPage
