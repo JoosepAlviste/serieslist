@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Episode;
+use App\Models\SeenEpisode;
 use App\Models\Series;
 use App\Models\SeriesProgress;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -20,6 +21,14 @@ class SeriesProgressTest extends TestCase
 
         $series = create(Series::class);
         $episodes = $this->createSubsequentEpisodes($series, 3);
+        create(SeenEpisode::class, [
+            'user_id' => auth()->id(),
+            'episode_id' => $episodes[0]->id,
+        ]);
+        create(SeenEpisode::class, [
+            'user_id' => auth()->id(),
+            'episode_id' => $episodes[1]->id,
+        ]);
         create(SeriesProgress::class, [
             'user_id' => auth()->id(),
             'series_id' => $series->id,
@@ -44,6 +53,10 @@ class SeriesProgressTest extends TestCase
 
         /** @var Episode $episode */
         $episode = create(Episode::class);
+        create(SeenEpisode::class, [
+            'user_id' => auth()->id(),
+            'episode_id' => $episode->id,
+        ]);
         create(SeriesProgress::class, [
             'user_id' => auth()->id(),
             'series_id' => $episode->season->series_id,
