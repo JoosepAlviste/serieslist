@@ -43,19 +43,15 @@ class SeenEpisodesController extends Controller
         }
 
         if (request()->expectsJson()) {
-            $seenEpisode = new \StdClass;
-            $seenEpisode->series_id = $episode->season->series_id;
-            $seenEpisode->series_title = $episode->season->series->title;
-            $seenEpisode->episode_id = $episode->id;
-            $seenEpisode->shortSlug = $episode->shortSlug();
+            $seenEpisode = [
+                'series_id' => $episode->season->series_id,
+                'series_title' => $episode->season->series->title,
+                'episode_id' => $episode->id,
+                'shortSlug' => $episode->shortSlug(),
+                'next_episode_id' => $nextEpisode ? $nextEpisode->id : null,
+            ];
 
-            if ($nextEpisode) {
-                $seenEpisode->next_episode_id = $nextEpisode->id;
-            } else {
-                $seenEpisode->next_episode_id = null;
-            }
-
-            return new InProgressSeries($seenEpisode);
+            return new InProgressSeries((object) $seenEpisode);
         }
 
         return redirect($episode->path());

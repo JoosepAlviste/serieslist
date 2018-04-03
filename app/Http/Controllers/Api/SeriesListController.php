@@ -31,7 +31,6 @@ class SeriesListController extends Controller
     {
         $status = request()->get('status', null);
 
-        // TODO: Refactor with progresses... to model scope?
         $series = Series::byStatus($status, $user->id)
             ->withProgress($user->id)
             ->get();
