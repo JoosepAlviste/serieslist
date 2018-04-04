@@ -144,6 +144,10 @@
 
             handleTabChanged(statusType) {
                 this.activeStatus = statusType
+                history.pushState({
+                    filter: this.activeStatus
+                }, '', `/list/${this.activeStatus}`)
+
                 this.fetchSeries()
             },
         },
@@ -154,6 +158,11 @@
                 // the debug bar.
                 this.fetchSeries()
             }, 0)
+
+            window.addEventListener('popstate', e => {
+                this.activeStatus = e.state.filter
+                this.fetchSeries()
+            })
         },
     }
 </script>

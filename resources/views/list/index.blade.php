@@ -17,6 +17,7 @@
     <div class="container series-list__container card">
         <series-list
                 :data-status-types="{{ $statusTypes->toJson() }}"
+                data-active-status-type="{{ $filter }}"
         ></series-list>
     </div>
 

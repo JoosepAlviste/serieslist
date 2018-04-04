@@ -40,6 +40,15 @@ class PagesTest extends TestCase
     }
 
     /** @test */
+    function the_list_view_filter_defaults_to_all()
+    {
+        $this->signIn();
+        $response = $this->get('/list/test');
+
+        $response->assertViewHas('filter', 'all');
+    }
+
+    /** @test */
     function a_logged_in_user_cannot_visit_the_login_page()
     {
         $this->signIn();

@@ -37,12 +37,19 @@ class PagesController extends Controller
     /**
      * Display the in progress series' list view.
      *
+     * @param string $filter
+     *
      * @return Factory|View
      */
-    public function seriesList()
+    public function seriesList($filter = 'all')
     {
         $statusTypes = SeriesStatusType::all();
 
-        return view('list.index', compact('statusTypes'));
+        $correctFilter = $statusTypes->pluck('status')->contains($filter);
+        if (!$correctFilter) {
+            $filter = 'all';
+        }
+
+        return view('list.index', compact('statusTypes', 'filter'));
     }
 }

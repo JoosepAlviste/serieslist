@@ -83,7 +83,7 @@ Route::middleware('auth')
 |--------------------------------------------------------------------------
 */
 
-Route::get('list', 'PagesController@seriesList')->middleware('auth');
+Route::get('list/{filter?}', 'PagesController@seriesList')->middleware('auth');
 Route::get('users/{user}/series', 'Api\SeriesListController@index');
 
 

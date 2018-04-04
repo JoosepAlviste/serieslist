@@ -45,7 +45,7 @@
                 </a>
 
                 @if (Auth::check())
-                    <a class="navbar-item" href="{{ url('list') }}">
+                    <a class="navbar-item" href="{{ url('list', ['filter' => 'in-progress']) }}">
                         My list
                     </a>
 
