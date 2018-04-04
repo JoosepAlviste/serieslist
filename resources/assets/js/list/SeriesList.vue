@@ -3,12 +3,12 @@
         <div class="tabs is-medium is-fullwidth  series-list__tabs">
             <ul>
                 <li
-                    v-for="statusType in computedStatusTypes"
-                    :class="{ 'is-active': statusType.code === activeStatusTypeCode }"
+                    v-for="statusType in statusTypes"
+                    :class="{ 'is-active': statusType.status === activeStatus }"
                 >
                     <a
                         v-text="statusType.pretty"
-                        @click="handleTabChanged(statusType.code)"
+                        @click="handleTabChanged(statusType.status)"
                     />
                 </li>
             </ul>
@@ -36,10 +36,10 @@
                 </tr>
 
                 <list-element
-                    v-for="series in inProgressSeries"
-                    :key="series.id"
-                    :series="series"
-                    @latest-seen-episode-was-updated="handleLatestSeenUpdated(series, $event)"
+                    v-for="oneSeries in series"
+                    :key="oneSeries.id"
+                    :series="oneSeries"
+                    @latest-seen-episode-was-updated="handleLatestSeenUpdated(oneSeries, $event)"
                 />
             </tbody>
         </table>
@@ -56,18 +56,23 @@
         components: { ListElement, LoadingList },
 
         props: {
-            statusTypes: {
+            dataStatusTypes: {
                 type: Array,
                 required: true,
+            },
+            dataActiveStatusType: {
+                type: String,
+                required: false,
+                default: 'in-progress',
             },
         },
 
         data() {
             return {
-                inProgressSeries: [],
+                series: [],
                 loading: false,
                 initialLoading: true,
-                activeStatusTypeCode: 0,  // All
+                activeStatus: this.dataActiveStatusType,
             }
         },
 
@@ -76,20 +81,20 @@
              * If there are no series in progress.
              */
             noInProgressSeries() {
-                return !this.inProgressSeries.length && !this.loading
+                return !this.series.length && !this.loading
             },
 
             /**
              * Include other filters (for tabs) in the status types.
              */
-            computedStatusTypes() {
+            statusTypes() {
                 return [
                     {
                         code: 0,
                         pretty: 'All',
                         status: 'all',
                     },
-                    ...this.statusTypes,
+                    ...this.dataStatusTypes,
                 ]
             },
 
@@ -97,8 +102,8 @@
              * The currently active series status type.
              */
             activeStatusType() {
-                return this.computedStatusTypes
-                    .filter(type => type.code === this.activeStatusTypeCode)[0]
+                return this.statusTypes
+                    .filter(type => type.status === this.activeStatus)[0]
             },
         },
 
@@ -107,6 +112,8 @@
              * Fetch the in progress series for the current user.
              */
             fetchSeries() {
+                console.log(this.activeStatus)
+
                 const params = { }
                 if (this.activeStatusType.status !== 'all') {
                     params.status = this.activeStatusType.status
@@ -117,7 +124,7 @@
                     params,
                 })
                     .then(({data}) => {
-                        this.inProgressSeries = data.data
+                        this.series = data.data
 
                         this.initialLoading = false
                         this.loading = false
@@ -137,8 +144,8 @@
                 series.next_episode_id = next_episode_id
             },
 
-            handleTabChanged(statusTypeCode) {
-                this.activeStatusTypeCode = statusTypeCode
+            handleTabChanged(statusType) {
+                this.activeStatus = statusType
                 this.fetchSeries()
             },
         },
