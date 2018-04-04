@@ -112,8 +112,6 @@
              * Fetch the in progress series for the current user.
              */
             fetchSeries() {
-                console.log(this.activeStatus)
-
                 const params = { }
                 if (this.activeStatusType.status !== 'all') {
                     params.status = this.activeStatusType.status
