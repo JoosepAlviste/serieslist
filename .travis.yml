@@ -2,7 +2,7 @@ language: php
 git:
   depth: 1
 php:
-  - 7.0
+  - 7.2
 before_script:
   - cp .env.travis .env
   - mysql -e 'create database homestead_test;'
