@@ -3,6 +3,10 @@ git:
   depth: 1
 php:
   - 7.2
+before_install:
+  - openssl aes-256-cbc -K $encrypted_1503264ce2c7_key -iv $encrypted_1503264ce2c7_iv -in deploy/deploy-key.enc -out deploy/deploy-key -d
+  - rm deploy/deploy-key.enc
+  - chmod 600 deploy/deploy-key
 before_script:
   - cp .env.travis .env
   - mysql -e 'create database homestead_test;'
@@ -14,8 +18,8 @@ script:
   - vendor/bin/phpunit --coverage-clover build/logs/clover.xml
 after_success:
   - bash <(curl -s https://codecov.io/bash)
-  - bash deploy/deploy.sh
-before_install:
-  - openssl aes-256-cbc -K $encrypted_1503264ce2c7_key -iv $encrypted_1503264ce2c7_iv -in deploy/deploy-key.enc -out deploy/deploy-key -d
-  - rm deploy/deploy-key.enc
-  - chmod 600 deploy/deploy-key
+deploy:
+  provider: script
+  script: bash deploy/deploy.sh
+  on:
+    branch: master
