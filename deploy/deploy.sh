@@ -8,7 +8,8 @@ read -r -d '' SSH_COMMAND << EOM
 EOM
 
 echo "Beginning deploy!"
-pwd
+pw
+d
 ls -la
 ls -la deploy
 ssh -o "StrictHostKeyChecking no" -i deploy-key deploy@46.101.147.166 $SSH_COMMAND || exit 1
