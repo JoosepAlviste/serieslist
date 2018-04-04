@@ -14,10 +14,10 @@ before_script:
   - composer install --no-interaction
   - php artisan key:generate
   - mkdir -p build/logs
-script:
-  - vendor/bin/phpunit --coverage-clover build/logs/clover.xml
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
+#script:
+#  - vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+#after_success:
+#  - bash <(curl -s https://codecov.io/bash)
 deploy:
   provider: script
   script: bash deploy/deploy.sh
