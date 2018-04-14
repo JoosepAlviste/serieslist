@@ -28,10 +28,7 @@
 
                 <tr v-if="noInProgressSeries">
                     <td colspan="2">
-                        <p class="no-series-seen-message">
-                            Set a series as '{{ activeStatusType.pretty }}' and
-                            it will show up here!
-                        </p>
+                        <p class="no-series-status-message" v-text="noSeriesStatusMessage" />
                     </td>
                 </tr>
 
@@ -104,6 +101,20 @@
             activeStatusType() {
                 return this.statusTypes
                     .filter(type => type.status === this.activeStatus)[0]
+            },
+
+            /**
+             * The message to show when the user has not marked any episodes as
+             * the currently active status type.
+             *
+             * @return {string}
+             */
+            noSeriesStatusMessage() {
+                if (this.activeStatusType.code === 0) {
+                    return 'Set a status for a series and it will show up here!'
+                }
+
+                return `Set a series as '${this.activeStatusType.pretty}' and it will show up here!`
             },
         },
 
@@ -187,7 +198,7 @@
         }
     }
 
-    .no-series-seen-message {
+    .no-series-status-message {
         margin-top: 20px;
         margin-bottom: 20px;
         text-align: center;
