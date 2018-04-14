@@ -6,7 +6,7 @@ use App\Models\Series;
 use App\Models\User;
 use App\Http\Resources\InProgressSeries as InProgressSeriesResource;
 use App\Http\Controllers\Controller;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 
 /**
  * Class SeriesListController.
@@ -31,6 +31,7 @@ class SeriesListController extends Controller
     {
         $status = request()->get('status', null);
 
+        /** @var Series[]|Collection $series */
         $series = Series::byStatus($status, $user->id)
             ->withProgress($user->id)
             ->get();

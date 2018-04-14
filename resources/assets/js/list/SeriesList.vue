@@ -33,7 +33,20 @@
                 </tr>
 
                 <list-element
-                    v-for="oneSeries in series"
+                    v-for="oneSeries in seriesWithNextEpisode"
+                    :key="oneSeries.id"
+                    :series="oneSeries"
+                    @latest-seen-episode-was-updated="handleLatestSeenUpdated(oneSeries, $event)"
+                />
+
+                <tr v-if="seriesWithNextEpisode.length && seriesWithoutNextEpisode.length">
+                    <td colspan="2">
+                        <p><strong>Waiting for more episodes</strong></p>
+                    </td>
+                </tr>
+
+                <list-element
+                    v-for="oneSeries in seriesWithoutNextEpisode"
                     :key="oneSeries.id"
                     :series="oneSeries"
                     @latest-seen-episode-was-updated="handleLatestSeenUpdated(oneSeries, $event)"
@@ -115,6 +128,20 @@
                 }
 
                 return `Set a series as '${this.activeStatusType.pretty}' and it will show up here!`
+            },
+
+            /**
+             * Series where there is a next episode to be seen.
+             */
+            seriesWithNextEpisode() {
+                return this.series.filter(series => series.next_episode_id !== null)
+            },
+
+            /**
+             * Series which don't have a next episode.
+             */
+            seriesWithoutNextEpisode() {
+                return this.series.filter(series => series.next_episode_id === null)
             },
         },
 
