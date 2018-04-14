@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Builder;
 
 /**
  * Class SeriesStatusType.
@@ -12,6 +13,8 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @method static SeriesStatusType create(array $params)
  * @method static SeriesStatusType first()
+ * @method static SeriesStatusType find($primaryKey)
+ * @method static Builder where($field, $value)
  *
  * @package App\App\Models
  */
