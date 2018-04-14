@@ -76,7 +76,7 @@
                 if (this.series.next_episode_id) {
                     const nextEpisodeId = this.series.next_episode_id
 
-                    window.axios.post(`episodes/${nextEpisodeId}/seen-episodes`)
+                    window.axios.post(`/episodes/${nextEpisodeId}/seen-episodes`)
                         .then(({data}) => {
                             this.$emit('latest-seen-episode-was-updated', data.data)
                         })
