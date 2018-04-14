@@ -42,7 +42,7 @@
 
                 <div class="nav-right nav-menu" id="navbar">
                     @if (Auth::check())
-                        <a class="nav-item" href="{{ url('/list') }}">My list</a>
+                        <a class="nav-item" href="{{ url('/list/in-progress') }}">My list</a>
                         <a class="nav-item" href="{{ url('/series') }}">Series</a>
                     @else
                         <a class="nav-item" href="{{ url('/login') }}">Login</a>
