@@ -134,14 +134,18 @@
              * Series where there is a next episode to be seen.
              */
             seriesWithNextEpisode() {
-                return this.series.filter(series => series.next_episode_id !== null)
+                return this.series
+                    .filter(series => series.next_episode_id !== null ||
+                        (series.latestSeenEpisode === null && series.next_episode_id === null))
             },
 
             /**
              * Series which don't have a next episode.
              */
             seriesWithoutNextEpisode() {
-                return this.series.filter(series => series.next_episode_id === null)
+                return this.series
+                    .filter(series => series.next_episode_id === null &&
+                        series.latestSeenEpisode !== null)
             },
         },
 
