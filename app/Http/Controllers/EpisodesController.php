@@ -17,7 +17,12 @@ class EpisodesController extends Controller
     public function show($seriesId, Episode $episode)
     {
         $nextEpisode = $episode->nextEpisode();
+        $previousEpisode = $episode->previousEpisode();
 
-        return view('episodes.show', compact('episode', 'nextEpisode'));
+        return view('episodes.show', compact(
+            'episode',
+            'nextEpisode',
+            'previousEpisode'
+        ));
     }
 }

@@ -32,6 +32,7 @@ class SeasonsController extends Controller
     {
         $season = $this->seasonsRepository->fetch($seriesId, $seasonNumber);
         $nextSeason = $season->nextSeason;
+        $previousSeason = $season->previousSeason;
 
         $isSeen = $season->episodes->every(function ($episode) {
             return $episode->seenEpisodes->count() !== 0;
@@ -40,6 +41,8 @@ class SeasonsController extends Controller
         return view('seasons.show', [
             'season'     => $season,
             'nextSeason' => $nextSeason,
+            'previousSeason' => $previousSeason
+            ,
             'isSeen'     => $isSeen,
         ]);
     }
