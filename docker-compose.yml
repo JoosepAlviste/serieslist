@@ -18,8 +18,8 @@ services:
       dockerfile: deploy/docker/Dockerfile
     volumes:
       - .:/app
-      - ./.deploy/php/php.ini:/usr/local/etc/php/conf.d/php.ini
-      - ./.deploy/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+      - ./deploy/php/php.ini:/usr/local/etc/php/conf.d/php.ini
+      - ./deploy/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
     environment:
       DB_CONNECTION: pgsql
       DB_HOST: db
