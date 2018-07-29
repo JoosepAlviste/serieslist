@@ -11,6 +11,8 @@ services:
     depends_on:
       - php
       - db
+    environment:
+      VIRTUAL_HOST: serieslist.joosep.xyz
 
   php:
     build:
