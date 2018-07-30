@@ -13,6 +13,7 @@ services:
       - db
     environment:
       VIRTUAL_HOST: serieslist.joosep.xyz
+    user: ${CURRENT_UID}
 
   php:
     build:
@@ -28,12 +29,14 @@ services:
       DB_DATABASE: serieslist
       DB_USERNAME: serieslist
       DB_PASSWORD: serieslist
+    user: ${CURRENT_UID}
 
   composer:
     image: composer
     volumes:
       - .:/app
     command: install --ignore-platform-reqs
+    user: ${CURRENT_UID}
 
   db:
     image: postgres
@@ -44,6 +47,7 @@ services:
       - ./.data/postgres:/var/lib/postgresql/data
     ports:
       - 5432:5432
+    user: ${CURRENT_UID}
 
 networks:
   default:
