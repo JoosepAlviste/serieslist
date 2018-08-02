@@ -10,7 +10,7 @@ services:
       - ./deploy/nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - php
-      - db
+      - serieslist_db
 
   php:
     build:
@@ -21,9 +21,9 @@ services:
       - ./deploy/php/php.ini:/usr/local/etc/php/conf.d/php.ini
       - ./deploy/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
     environment:
-      DB_CONNECTION: pgsql
-      DB_HOST: db
-      DB_PORT: 5432
+      DB_CONNECTION: mysql
+      DB_HOST: serieslist_db
+      DB_PORT: 3306
       DB_DATABASE: serieslist
       DB_USERNAME: serieslist
       DB_PASSWORD: serieslist
@@ -34,12 +34,13 @@ services:
       - .:/app
     command: install --ignore-platform-reqs
 
-  db:
-    image: postgres
+  serieslist_db:
+    image: mysql:5.6
     environment:
-      POSTGRES_USER: serieslist
-      POSTGRES_PASSWORD: serieslist
+      - MYSQL_DATABASE=serieslist
+      - MYSQL_USER=serieslist
+      - MYSQL_PASSWORD=serieslist
+      - MYSQL_ROOT_PASSWORD=serieslist
     volumes:
-      - ./.data/postgres:/var/lib/postgresql/data
-    ports:
-      - 5432:5432
+      - .data/mysql:/var/lib/mysql
+
