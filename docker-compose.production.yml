@@ -46,4 +46,5 @@ services:
       - MYSQL_ROOT_PASSWORD=serieslist
     volumes:
       - .data/mysql:/var/lib/mysql
+    user: ${CURRENT_UID}
 
