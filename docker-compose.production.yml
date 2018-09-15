@@ -3,9 +3,8 @@ version: '3'
 services:
   nginx:
     image: nginx
-    ports:
-      - "80:80"
-      - "443:443"
+    expose:
+      - 8000
     volumes:
       - .:/app
       - ./deploy/nginx/production/default.conf:/etc/nginx/conf.d/default.conf
@@ -13,6 +12,11 @@ services:
     depends_on:
       - php
       - serieslist_db
+    environment:
+      VIRTUAL_HOST: serieslist.joosep.xyz
+      VIRTUAL_PORT: 8000
+      LETSENCRYPT_HOST: serieslist.joosep.xyz
+      LETSENCRYPT_EMAIL: joosep.alviste@gmail.com
 
   php:
     build:
@@ -47,4 +51,10 @@ services:
     volumes:
       - .data/mysql:/var/lib/mysql
     user: ${CURRENT_UID}
+
+
+networks:
+  default:
+    external:
+      name: nginx-proxy
 
