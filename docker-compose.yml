@@ -4,7 +4,7 @@ services:
   nginx:
     image: nginx
     ports:
-      - "80:80"
+      - "8000:80"
     volumes:
       - .:/app
       - ./deploy/nginx/default.conf:/etc/nginx/conf.d/default.conf
@@ -27,12 +27,14 @@ services:
       DB_DATABASE: serieslist
       DB_USERNAME: serieslist
       DB_PASSWORD: serieslist
+    user: ${CURRENT_UID}
 
   composer:
     image: composer
     volumes:
       - .:/app
     command: install --ignore-platform-reqs
+    user: ${CURRENT_UID}
 
   serieslist_db:
     image: mysql:5.6
@@ -41,6 +43,10 @@ services:
       - MYSQL_USER=serieslist
       - MYSQL_PASSWORD=serieslist
       - MYSQL_ROOT_PASSWORD=serieslist
+    # Comment in the following if you want to access MySQL from your host
+    # machine (for example with Sequel Pro or some other MySQL UI).
+#    ports:
+#      - "3306:3306"
     volumes:
       - .data/mysql:/var/lib/mysql
 
