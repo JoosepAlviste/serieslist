@@ -53,6 +53,8 @@ cp .env.example .env
 
 # Generate a secure key to be used by Laravel
 docker-compose run --rm php artisan key:generate
+# Link the storage to public folder
+docker-compose run --rm php artisan storage:link
 
 # Run the application
 docker-compose up
