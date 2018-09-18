@@ -1,12 +1,12 @@
-up-prod:
-	@docker-compose -f docker-compose.production.yml up
+migrate:
+	@CURRENT_UID=$(id -u):$(id -g) docker-compose run --rm php php artisan migrate
 
-run-prod:
-	@docker-compose -f docker-compose.production.yml up -d
+up-prod:
+	@CURRENT_UID=$(id -u):$(id -g) docker-compose -f docker-compose.production.yml up -d
 
 migrate-prod:
-	@docker-compose -f docker-compose.production.yml run --rm php php artisan migrate
+	@CURRENT_UID=$(id -u):$(id -g) docker-compose -f docker-compose.production.yml run --rm php php artisan migrate
 
 bash-prod:
-	@docker-compose -f docker-compose.production.yml run --rm php bash
+	@CURRENT_UID=$(id -u):$(id -g) docker-compose -f docker-compose.production.yml run --rm php bash
 
