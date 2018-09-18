@@ -1,0 +1,3 @@
+[myslqd]
+innodb_buffer_pool_size = 20M
+
