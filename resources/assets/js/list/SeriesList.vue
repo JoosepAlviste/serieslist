@@ -162,6 +162,9 @@
                 this.loading = true
                 window.axios.get(`/users/${window.App.user.id}/series`, {
                     params,
+                    headers: {
+                        'X-CSRF-TOKEN': window.App.csrfToken,
+                    },
                 })
                     .then(({data}) => {
                         this.series = data.data

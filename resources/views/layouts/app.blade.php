@@ -30,6 +30,7 @@
             @if (auth()->check())
                 user: {!! auth()->user()->toJson() !!},
             @endif
+            csrfToken: "{{ csrf_token() }}",
         };
     </script>
 </head>

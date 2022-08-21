@@ -1,0 +1,53 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/app
+      - ./deploy/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+      - serieslist_db
+
+  php:
+    build:
+      context: .
+      dockerfile: deploy/docker/Dockerfile
+    volumes:
+      - .:/app
+      - ./deploy/php/php.ini:/usr/local/etc/php/conf.d/php.ini
+      - ./deploy/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: serieslist_db
+      DB_PORT: 3306
+      DB_DATABASE: serieslist
+      DB_USERNAME: serieslist
+      DB_PASSWORD: serieslist
+    user: ${CURRENT_UID}
+
+  composer:
+    image: composer
+    volumes:
+      - .:/app
+    command: install --ignore-platform-reqs
+    user: ${CURRENT_UID}
+
+  serieslist_db:
+    image: mysql:5.6
+    environment:
+      - MYSQL_DATABASE=serieslist
+      - MYSQL_USER=serieslist
+      - MYSQL_PASSWORD=serieslist
+      - MYSQL_ROOT_PASSWORD=serieslist
+    # Comment in the following if you want to access MySQL from your host
+    # machine (for example with Sequel Pro or some other MySQL UI).
+#    ports:
+#      - "3306:3306"
+    volumes:
+      - .data/mysql:/var/lib/mysql
+    user: ${CURRENT_UID}
+
