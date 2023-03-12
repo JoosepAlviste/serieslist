@@ -1,0 +1,26 @@
+{
+  "name": "@serieslist/api",
+  "version": "1.0.0",
+  "description": "A side project. Keep track of your seen series' episodes.",
+  "author": "Joosep Alviste <joosep.alviste@gmail.com> (https://joosep.xyz/)",
+  "type": "module",
+  "module": "src/main.js",
+  "scripts": {
+    "start": "node src/main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "graphql": "^16.6.0",
+    "graphql-yoga": "^3.7.2"
+  },
+  "devDependencies": {},
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JoosepAlviste/serieslist.git"
+  },
+  "bugs": {
+    "url": "https://github.com/JoosepAlviste/serieslist/issues"
+  },
+  "homepage": "https://github.com/JoosepAlviste/serieslist#readme"
+}
