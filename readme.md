@@ -16,3 +16,9 @@ git clone https://github.com/JoosepAlviste/serieslist.git
 ## Production
 
 TODO: Instructions here!
+
+Running in production mode with Docker:
+
+```sh
+docker-compose up
+```
