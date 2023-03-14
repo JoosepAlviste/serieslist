@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "ES2018",
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "lib": [
+      "ESNext"
+    ],
+    "strict": true,
+    "isolatedModules": true,
+    "outDir": "dist",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
+  },
+  "ts-node": {
+    "swc": true,
+    "esm": true
+  }
+}
