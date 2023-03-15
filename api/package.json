@@ -1,6 +1,7 @@
 {
   "name": "@serieslist/api",
   "version": "1.0.0",
+  "private": true,
   "description": "A side project. Keep track of your seen series' episodes.",
   "author": "Joosep Alviste <joosep.alviste@gmail.com> (https://joosep.xyz/)",
   "type": "module",
