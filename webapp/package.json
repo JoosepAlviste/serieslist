@@ -6,7 +6,8 @@
     "start": "next dev",
     "build": "next build",
     "start:prod": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "tsc": "tsc --noEmit"
   },
   "dependencies": {
     "next": "13.2.4",

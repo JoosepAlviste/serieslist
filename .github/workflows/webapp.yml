@@ -1,0 +1,28 @@
+name: Webapp
+
+on:
+  push:
+    branches: [master, rewrite]
+    paths:
+      - 'webapp/**'
+  pull_request:
+    paths:
+      - 'webapp/**'
+
+jobs:
+
+  check_webapp:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./webapp
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run tsc
+      - run: npm run build
