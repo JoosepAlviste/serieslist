@@ -4,6 +4,7 @@ import { schema } from './schema.js'
 
 const yoga = createYoga({ schema })
 
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
 const server = createServer(yoga)
 
 server.listen(4000, () => {
