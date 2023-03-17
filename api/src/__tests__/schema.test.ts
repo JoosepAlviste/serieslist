@@ -1,17 +1,17 @@
 import { describe, it, expect } from 'vitest'
-import { parse } from 'graphql'
-import { executor } from '@/test/testUtils'
+import { executeOperation } from '@/test/testUtils.js'
+import { graphql } from '@/generated/gql/index.js'
 
 describe('schema', () => {
   it('returns a hello world', async () => {
-    const result = await executor({
-      document: parse(/* GraphQL */ `
-        query {
+    const result = await executeOperation(
+      graphql(`
+        query HelloQuery {
           hello
         }
       `),
-    })
+    )
 
-    expect((result as { data: { hello: string } }).data.hello).toBe('world')
+    expect(result.data?.hello).toEqual('world')
   })
 })
