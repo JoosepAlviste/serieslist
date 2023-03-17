@@ -7,7 +7,7 @@
   "type": "module",
   "module": "src/main.ts",
   "scripts": {
-    "build": "rimraf dist && tsc && resolve-tspaths",
+    "build": "rimraf dist && tsc -p tsconfig.build.json && resolve-tspaths",
     "start": "nodemon src/main.ts",
     "start:prod": "node dist/main.js",
     "tsc": "tsc --noEmit",
