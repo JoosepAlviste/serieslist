@@ -3,7 +3,7 @@
 
 import React, { useContext, createContext } from 'react'
 
-import { NotWorthIt } from '@/types/utils'
+import { type NotWorthIt } from '@/types/utils'
 
 import type { PageContext } from './types'
 

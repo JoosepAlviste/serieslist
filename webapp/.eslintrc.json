@@ -36,6 +36,12 @@
   },
   "root": true,
   "rules": {
+    "@typescript-eslint/consistent-type-imports": [
+      "error",
+      {
+        "fixStyle": "inline-type-imports"
+      }
+    ],
     "@typescript-eslint/no-misused-promises": [
       "error",
       {
