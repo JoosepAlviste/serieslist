@@ -40,7 +40,12 @@ async function startServer() {
     const { httpResponse } = pageContext
     if (!httpResponse) return next()
     const { body, statusCode, contentType, earlyHints } = httpResponse
-    res.writeEarlyHints({ link: earlyHints.map((e) => e.earlyHintLink) })
+
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    if (res.writeEarlyHints) {
+      res.writeEarlyHints({ link: earlyHints.map((e) => e.earlyHintLink) })
+    }
+
     res.status(statusCode).type(contentType).send(body)
   })
 
