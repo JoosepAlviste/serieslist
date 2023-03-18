@@ -1,6 +1,6 @@
 import {
-  ResultOf,
-  TypedDocumentNode as DocumentNode,
+  type ResultOf,
+  type TypedDocumentNode as DocumentNode,
 } from '@graphql-typed-document-node/core'
 
 export type FragmentType<TDocumentType extends DocumentNode<any, any>> =
