@@ -1,5 +1,6 @@
 import React from 'react'
 import { hydrateRoot, createRoot, Root } from 'react-dom/client'
+
 import { getPageTitle } from './getPageTitle'
 import { PageShell } from './PageShell'
 import type { PageContextClient } from './types'

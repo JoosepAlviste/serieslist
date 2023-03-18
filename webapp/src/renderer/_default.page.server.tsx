@@ -1,11 +1,12 @@
 // See https://vite-plugin-ssr.com/data-fetching
 export const passToClient = ['pageProps', 'documentProps']
 
-import ReactDOMServer from 'react-dom/server'
 import React from 'react'
-import { PageShell } from './PageShell'
+import { renderToString } from 'react-dom/server'
 import { escapeInject, dangerouslySkipEscape } from 'vite-plugin-ssr'
+
 import logoUrl from './logo.svg'
+import { PageShell } from './PageShell'
 import type { PageContextServer } from './types'
 
 export function render(pageContext: PageContextServer) {
@@ -16,7 +17,7 @@ export function render(pageContext: PageContextServer) {
     throw new Error('My render() hook expects pageContext.Page to be defined')
   }
 
-  const pageHtml = ReactDOMServer.renderToString(
+  const pageHtml = renderToString(
     <PageShell pageContext={pageContext}>
       <Page {...pageProps} />
     </PageShell>,

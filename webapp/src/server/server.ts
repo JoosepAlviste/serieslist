@@ -1,8 +1,9 @@
 // Note that this file isn't processed by Vite, see https://github.com/brillout/vite-plugin-ssr/issues/562
 
-import express from 'express'
 import compression from 'compression'
+import express from 'express'
 import { renderPage } from 'vite-plugin-ssr'
+
 import { root } from './root.js'
 
 const isProduction = process.env.NODE_ENV === 'production'

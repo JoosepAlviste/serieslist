@@ -1,8 +1,10 @@
 // `usePageContext` allows us to access `pageContext` in any React component.
 // See https://vite-plugin-ssr.com/pageContext-anywhere
 
-import { NotWorthIt } from '@/types/utils'
 import React, { useContext, createContext } from 'react'
+
+import { NotWorthIt } from '@/types/utils'
+
 import type { PageContext } from './types'
 
 const Context = createContext<PageContext>(
