@@ -4,16 +4,15 @@ import compression from 'compression'
 import express from 'express'
 import { renderPage } from 'vite-plugin-ssr'
 
+import { makeApolloClient } from '../lib/apollo.js'
+import { type PageContext } from '../renderer/types.js'
+
 import { root } from './root.js'
 
 const isProduction = process.env.NODE_ENV === 'production'
 
 void startServer()
 
-// TODO: We are currenty running the production server with `ts-node`. Maybe we
-// could have a separate `serverProduction.ts` (or `.js`) that we run for prod.
-// Then, we wouldn't probably need TypeScript and `ts-node` as production
-// dependencies?
 async function startServer() {
   const app = express()
 
@@ -34,10 +33,16 @@ async function startServer() {
   }
 
   app.get('*', async (req, res, next) => {
-    const pageContextInit = {
+    const apollo = makeApolloClient({
+      ssr: true,
+    })
+
+    const pageContextInit: Partial<PageContext> = {
       urlOriginal: req.originalUrl,
+      apollo,
     }
     const pageContext = await renderPage(pageContextInit)
+
     const { httpResponse } = pageContext
     if (!httpResponse) return next()
     const { body, statusCode, contentType, earlyHints } = httpResponse

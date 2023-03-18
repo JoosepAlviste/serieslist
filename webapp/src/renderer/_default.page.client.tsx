@@ -1,6 +1,8 @@
 import React from 'react'
 import { hydrateRoot, createRoot, type Root } from 'react-dom/client'
 
+import { makeApolloClient } from '@/lib/apollo'
+
 import { getPageTitle } from './getPageTitle'
 import { PageShell } from './PageShell'
 import type { PageContextClient } from './types'
@@ -16,6 +18,10 @@ export function render(pageContext: PageContextClient) {
       'Client-side render() hook expects pageContext.Page to be defined',
     )
   }
+
+  pageContext.apollo = makeApolloClient({
+    initialState: pageContext.apolloInitialState,
+  })
 
   const page = (
     <PageShell pageContext={pageContext}>

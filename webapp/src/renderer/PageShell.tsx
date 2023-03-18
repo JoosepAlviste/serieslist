@@ -1,3 +1,4 @@
+import { ApolloProvider } from '@apollo/client'
 import React from 'react'
 
 import { Link } from './Link'
@@ -16,20 +17,22 @@ export function PageShell({
 }) {
   return (
     <React.StrictMode>
-      <PageContextProvider pageContext={pageContext}>
-        <Layout>
-          <Sidebar>
-            <Logo />
-            <Link className="navitem" href="/">
-              Home
-            </Link>
-            <Link className="navitem" href="/about">
-              About
-            </Link>
-          </Sidebar>
-          <Content>{children}</Content>
-        </Layout>
-      </PageContextProvider>
+      <ApolloProvider client={pageContext.apollo}>
+        <PageContextProvider pageContext={pageContext}>
+          <Layout>
+            <Sidebar>
+              <Logo />
+              <Link className="navitem" href="/">
+                Home
+              </Link>
+              <Link className="navitem" href="/about">
+                About
+              </Link>
+            </Sidebar>
+            <Content>{children}</Content>
+          </Layout>
+        </PageContextProvider>
+      </ApolloProvider>
     </React.StrictMode>
   )
 }
