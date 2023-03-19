@@ -8,7 +8,7 @@ import { Counter } from './Counter'
 export function Page() {
   const { data } = useQuery(
     graphql(`
-      query indexPageQuery {
+      query indexPage {
         hello
       }
     `),

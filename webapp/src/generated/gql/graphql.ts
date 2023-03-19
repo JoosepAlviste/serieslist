@@ -19,10 +19,10 @@ export type Query = {
   hello?: Maybe<Scalars['String']>;
 };
 
-export type IndexPageQueryQueryVariables = Exact<{ [key: string]: never; }>;
+export type IndexPageQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type IndexPageQueryQuery = { __typename?: 'Query', hello?: string | null };
+export type IndexPageQuery = { __typename?: 'Query', hello?: string | null };
 
 
-export const IndexPageQueryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"indexPageQuery"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hello"}}]}}]} as unknown as DocumentNode<IndexPageQueryQuery, IndexPageQueryQueryVariables>;
+export const IndexPageDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"indexPage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hello"}}]}}]} as unknown as DocumentNode<IndexPageQuery, IndexPageQueryVariables>;
