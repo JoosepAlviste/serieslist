@@ -9,7 +9,6 @@ const config: CodegenConfig = {
     },
   },
   emitLegacyCommonJSImports: false,
-  require: 'ts-node/esm/transpile-only',
   hooks: {
     afterAllFileWrite: ['npx eslint --fix'],
   },
