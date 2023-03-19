@@ -1,14 +1,18 @@
-import { gql, useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import React from 'react'
+
+import { graphql } from '@/generated/gql'
 
 import { Counter } from './Counter'
 
 export function Page() {
-  const { data } = useQuery<{ hello: string }>(gql`
-    {
-      hello
-    }
-  `)
+  const { data } = useQuery(
+    graphql(`
+      query indexPageQuery {
+        hello
+      }
+    `),
+  )
 
   return (
     <>
