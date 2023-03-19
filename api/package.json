@@ -7,6 +7,7 @@
   "type": "module",
   "module": "src/main.ts",
   "scripts": {
+    "postinstall": "cp -n ../.env.example ../.env",
     "build": "rimraf dist && tsc -p tsconfig.build.json && resolve-tspaths",
     "start": "tsx watch src/main.ts",
     "start:prod": "node dist/main.js",
@@ -18,6 +19,7 @@
     "codegen:watch": "npm run codegen -- --watch"
   },
   "dependencies": {
+    "dotenv": "^16.0.3",
     "graphql": "^16.6.0",
     "graphql-yoga": "^3.7.2"
   },
