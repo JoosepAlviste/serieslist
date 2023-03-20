@@ -1,8 +1,12 @@
 // Note that this file isn't processed by Vite, see https://github.com/brillout/vite-plugin-ssr/issues/562
 
+import './loadDotenv'
+
 import compression from 'compression'
 import express from 'express'
 import { renderPage } from 'vite-plugin-ssr'
+
+import { config } from '@/config'
 
 import { makeApolloClient } from '../lib/apollo.js'
 import { type PageContext } from '../renderer/types.js'
@@ -55,7 +59,6 @@ async function startServer() {
     res.status(statusCode).type(contentType).send(body)
   })
 
-  const port = process.env.PORT ?? 3000
-  app.listen(port)
-  console.log(`Server running at http://localhost:${port}`)
+  app.listen(config.port)
+  console.log(`Server running at http://localhost:${config.port}`)
 }

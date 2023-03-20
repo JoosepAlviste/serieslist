@@ -14,6 +14,7 @@ export default defineConfig({
   ssr: {
     noExternal: ['@apollo/client'],
   },
+  envDir: '..',
   test: {
     environment: 'happy-dom',
     coverage: {
