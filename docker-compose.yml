@@ -1,8 +1,19 @@
 version: '3.8'
 
 services:
-  api:
-    build:
-      context: api
+  db:
+    image: postgres:15.2-alpine
     ports:
-      - '4000:4000'
+      - '${DB_PORT}:5432'
+    volumes:
+      - 'pgdata:/var/lib/postgresql/data'
+    # Make Postgres faster
+    # https://github.com/testjavascript/nodejs-integration-tests-best-practices#%EF%B8%8F-4-optimize-your-real-db-for-testing-dont-fake-it
+    command: postgres -c fsync=off -c synchronous_commit=off -c full_page_writes=off -c random_page_cost=1.0
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DB}
+
+volumes:
+  pgdata:
