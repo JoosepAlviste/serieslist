@@ -8,6 +8,14 @@ dotenvConfig({
   path: path.resolve(__dirname, '..', '..', '.env'),
 })
 
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 export const config = {
   port: parseInt(process.env.API_PORT ?? '4000', 10),
+
+  db: {
+    port: parseInt(process.env.DB_PORT!, 10),
+    db: process.env.DB_DB,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+  },
 }

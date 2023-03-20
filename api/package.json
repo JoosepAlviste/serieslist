@@ -16,12 +16,16 @@
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
     "codegen": "graphql-codegen-esm",
-    "codegen:watch": "npm run codegen -- --watch"
+    "codegen:watch": "npm run codegen -- --watch",
+    "migration": "./bin/createMigration.sh",
+    "migrate": "tsx bin/migrate.ts"
   },
   "dependencies": {
     "dotenv": "^16.0.3",
     "graphql": "^16.6.0",
-    "graphql-yoga": "^3.7.2"
+    "graphql-yoga": "^3.7.2",
+    "kysely": "^0.23.5",
+    "pg": "^8.10.0"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^3.2.2",
@@ -29,6 +33,7 @@
     "@graphql-tools/executor-http": "^0.1.9",
     "@graphql-typed-document-node/core": "^3.1.2",
     "@types/node": "^18.15.3",
+    "@types/pg": "^8.6.6",
     "@typescript-eslint/eslint-plugin": "^5.55.0",
     "@typescript-eslint/parser": "^5.55.0",
     "@vitest/coverage-c8": "^0.29.3",
