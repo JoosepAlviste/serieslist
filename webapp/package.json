@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "ts-node ./src/server/server.ts",
+    "start": "tsx ./src/server/server.ts",
     "build": "rimraf dist && vite build && npm run build:server",
     "build:server": "tsc -p tsconfig.server.json",
     "start:prod": "cross-env NODE_ENV=production node dist/prodServer/server.js",
@@ -51,7 +51,7 @@
     "mock-apollo-client": "^1.2.1",
     "prettier": "2.8.4",
     "rimraf": "^4.4.0",
-    "ts-node": "^10.9.1",
+    "tsx": "^3.12.6",
     "typescript": "^4.9.4",
     "vite": "^4.0.3",
     "vitest": "^0.29.3"
