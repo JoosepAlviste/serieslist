@@ -19,6 +19,8 @@ To migrate the database:
 npm run migrate
 ```
 
+This also runs `kysely-codegen` to generate TypeScript types for the database.
+
 To add a new migration:
 
 ```sh

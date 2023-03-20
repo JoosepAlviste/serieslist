@@ -17,8 +17,9 @@
     "test:coverage": "vitest run --coverage",
     "codegen": "graphql-codegen-esm",
     "codegen:watch": "npm run codegen -- --watch",
+    "codegen:db": "tsx bin/kyselyCodegen.ts && eslint --fix src/generated/db.ts",
     "migration": "./bin/createMigration.sh",
-    "migrate": "tsx bin/migrate.ts"
+    "migrate": "tsx bin/migrate.ts && npm run codegen:db"
   },
   "dependencies": {
     "dotenv": "^16.0.3",
@@ -42,6 +43,7 @@
     "eslint-import-resolver-typescript": "^3.5.3",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-prettier": "^4.2.1",
+    "kysely-codegen": "^0.9.0",
     "madge": "^6.0.0",
     "prettier": "^2.8.4",
     "resolve-tspaths": "^0.8.8",

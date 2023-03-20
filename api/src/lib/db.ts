@@ -1,14 +1,12 @@
-import { Kysely, PostgresDialect } from 'kysely'
+import { CamelCasePlugin, Kysely, PostgresDialect } from 'kysely'
 import pg from 'pg'
 
 import { config } from '@/config'
+import { type DB } from '@/generated/db'
 
 const { Pool } = pg
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface Database {}
-
-export const db = new Kysely<Database>({
+export const db = new Kysely<DB>({
   // Use MysqlDialect for MySQL and SqliteDialect for SQLite.
   dialect: new PostgresDialect({
     pool: new Pool({
@@ -19,4 +17,5 @@ export const db = new Kysely<Database>({
       password: config.db.password,
     }),
   }),
+  plugins: [new CamelCasePlugin()],
 })
