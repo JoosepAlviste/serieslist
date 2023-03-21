@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "tsx ./src/server/server.ts",
+    "start:e2e": "dotenv -e ../.env.e2e npm run start",
     "build": "rimraf dist && vite build && npm run build:server",
     "build:server": "tsc -p tsconfig.server.json",
     "start:prod": "cross-env NODE_ENV=production node dist/prodServer/server.js",
@@ -40,6 +41,7 @@
     "@typescript-eslint/eslint-plugin": "^5.55.0",
     "@typescript-eslint/parser": "^5.55.0",
     "@vitest/coverage-c8": "^0.29.3",
+    "dotenv-cli": "^7.1.0",
     "eslint": "8.36.0",
     "eslint-config-prettier": "^8.7.0",
     "eslint-import-resolver-typescript": "^3.5.3",
