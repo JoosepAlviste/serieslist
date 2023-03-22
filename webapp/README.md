@@ -21,8 +21,36 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 npm run lint
 ```
 
+
 ### TypeScript
 
 ```sh
 npm run tsc
+```
+
+
+### Tests
+
+```sh
+npm t
+```
+
+
+### E2E tests
+
+First, run the back-end:
+
+```sh
+cd api
+# Migrate the e2e database
+npm run migrate:e2e
+# Run the server
+npm run start:e2e
+```
+
+Then, run the e2e tests in another terminal tab:
+
+```sh
+cd webapp
+npm run test:e2e
 ```
