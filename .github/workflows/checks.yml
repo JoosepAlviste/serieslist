@@ -1,0 +1,63 @@
+name: Checks
+
+on:
+  push:
+    branches: [master, rewrite]
+  pull_request:
+
+jobs:
+
+  check:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: serieslist
+          POSTGRES_PASSWORD: serieslist
+          POSTGRES_DB: serieslist_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: API checks
+        run: |
+          cd api
+          npm ci
+          npm run lint
+          npm run tsc
+          npm run test:coverage
+          npm run build
+
+      - name: Webapp checks
+        run: |
+          cd webapp
+          npm ci
+          npm run lint
+          npm run tsc
+          npm run test:coverage
+          npm run build
+
+      - name: E2E tests
+        run: |
+          (cd api && npm run migrate:e2e)
+          (cd webapp && npx playwright install --with-deps)
+          (cd api && npm run start:e2e) & (cd webapp && npm run test:e2e)
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: webapp/playwright-report/
+          retention-days: 30
