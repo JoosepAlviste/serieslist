@@ -6,6 +6,8 @@ import { Link } from './Link'
 import type { PageContext } from './types'
 import { PageContextProvider } from './usePageContext'
 
+import './reset.css'
+import './global.css'
 import './PageShell.css'
 
 export function PageShell({
