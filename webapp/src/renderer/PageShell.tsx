@@ -1,8 +1,8 @@
 import { ApolloProvider } from '@apollo/client'
 import React from 'react'
 
+import logo from './favicon.ico'
 import { Link } from './Link'
-import logo from './logo.svg'
 import type { PageContext } from './types'
 import { PageContextProvider } from './usePageContext'
 

@@ -2,7 +2,7 @@ import { renderToStringWithData } from '@apollo/client/react/ssr'
 import React from 'react'
 import { escapeInject, dangerouslySkipEscape } from 'vite-plugin-ssr'
 
-import logoUrl from './logo.svg'
+import logoUrl from './favicon.ico'
 import { PageShell } from './PageShell'
 import type { PageContextServer } from './types'
 
