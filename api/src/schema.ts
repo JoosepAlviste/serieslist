@@ -1,6 +1,4 @@
-import SchemaBuilder from '@pothos/core'
-
-const builder = new SchemaBuilder({})
+import { builder } from './schemaBuilder'
 
 builder.queryType({
   fields: (t) => ({
