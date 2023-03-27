@@ -52,5 +52,7 @@ Then, run the e2e tests in another terminal tab:
 
 ```sh
 cd webapp
+# Install the playwright dependencies if they haven't been yet
+npx playwright install chromium --with-deps
 npm run test:e2e
 ```
