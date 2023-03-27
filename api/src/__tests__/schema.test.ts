@@ -13,6 +13,6 @@ describe('schema', () => {
       `),
     )
 
-    expect(result.data?.hello).toEqual('world')
+    expect(result.data?.hello).toEqual('hello world')
   })
 })

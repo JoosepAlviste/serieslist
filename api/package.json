@@ -24,6 +24,7 @@
     "migrate:e2e": "dotenv -e ../.env.e2e npm run migrate"
   },
   "dependencies": {
+    "@pothos/core": "^3.29.0",
     "dotenv": "^16.0.3",
     "graphql": "^16.6.0",
     "graphql-yoga": "^3.7.2",

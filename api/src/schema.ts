@@ -1,14 +1,18 @@
-import { createSchema } from 'graphql-yoga'
+import SchemaBuilder from '@pothos/core'
 
-export const schema = createSchema({
-  typeDefs: /* GraphQL */ `
-    type Query {
-      hello: String
-    }
-  `,
-  resolvers: {
-    Query: {
-      hello: () => 'world',
-    },
-  },
+const builder = new SchemaBuilder({})
+
+builder.queryType({
+  fields: (t) => ({
+    hello: t.string({
+      args: {
+        name: t.arg.string(),
+      },
+      resolve: (_, { name }) => {
+        return `hello ${name ?? 'world'}`
+      },
+    }),
+  }),
 })
+
+export const schema = builder.toSchema()

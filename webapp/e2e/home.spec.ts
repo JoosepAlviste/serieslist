@@ -9,5 +9,5 @@ test('has title', async ({ page }) => {
 test('makes a GraphQL request and shows the result', async ({ page }) => {
   await page.goto('/')
 
-  page.getByText('{"hello":"world"}')
+  page.getByText('{"hello":"hello world"}')
 })
