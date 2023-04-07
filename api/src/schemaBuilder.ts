@@ -10,9 +10,11 @@ export const builder = new SchemaBuilder({
     default: (config) => isRootField(config),
     wrap: (resolver, _options, config) =>
       wrapResolver(resolver, (_error, duration) => {
-        console.log(
-          `Executed resolver ${config.parentType}.${config.name} in ${duration}ms`,
-        )
+        if (process.env.NODE_ENV !== 'test') {
+          console.log(
+            `Executed resolver ${config.parentType}.${config.name} in ${duration}ms`,
+          )
+        }
       }),
   },
 })
