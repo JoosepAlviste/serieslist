@@ -7,7 +7,7 @@
   "type": "module",
   "module": "src/main.ts",
   "scripts": {
-    "postinstall": "cp -n ../.env.example ../.env",
+    "postinstall": "cp -n ../.env.example ../.env || exit 0",
     "build": "rimraf dist && tsc -p tsconfig.build.json && resolve-tspaths",
     "start": "tsx watch src/main.ts",
     "start:prod": "node dist/main.js",
