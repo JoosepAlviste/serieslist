@@ -29,7 +29,7 @@
     "dotenv": "^16.0.3",
     "graphql": "^16.6.0",
     "graphql-yoga": "^3.7.2",
-    "kysely": "^0.23.5",
+    "kysely": "^0.24.2",
     "pg": "^8.10.0"
   },
   "devDependencies": {
@@ -48,7 +48,7 @@
     "eslint-import-resolver-typescript": "^3.5.3",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-prettier": "^4.2.1",
-    "kysely-codegen": "^0.9.0",
+    "kysely-codegen": "^0.10.0",
     "madge": "^6.0.0",
     "prettier": "^2.8.4",
     "resolve-tspaths": "^0.8.8",
