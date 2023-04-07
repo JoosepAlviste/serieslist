@@ -6,7 +6,7 @@ export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
 
 export type Timestamp = ColumnType<Date, Date | string, Date | string>
 
-export interface User {
+export type User = {
   id: Generated<number>
   name: string
   email: string
@@ -16,6 +16,6 @@ export interface User {
   updatedAt: Generated<Timestamp>
 }
 
-export interface DB {
+export type DB = {
   user: User
 }
