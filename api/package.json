@@ -14,7 +14,7 @@
     "start:e2e": "dotenv -e ../.env.e2e npm start",
     "tsc": "tsc --noEmit",
     "lint": "eslint src && madge --circular --extensions ts ./src",
-    "test": "vitest",
+    "test": "dotenv -e ../.env.test vitest",
     "test:coverage": "vitest run --coverage",
     "codegen": "DOTENV_CONFIG_PATH='../.env' graphql-codegen-esm -r dotenv/config",
     "codegen:watch": "npm run codegen -- --watch",
