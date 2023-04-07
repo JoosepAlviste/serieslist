@@ -1,5 +1,8 @@
 import { builder } from './schemaBuilder'
 
+import '@/features/auth/auth.schema'
+import '@/features/users/users.schema'
+
 builder.queryType({
   fields: (t) => ({
     hello: t.string({

@@ -4,7 +4,9 @@ import TracingPlugin, {
   isRootField,
 } from '@pothos/plugin-tracing'
 
-export const builder = new SchemaBuilder({
+import { type Context } from './types/context'
+
+export const builder = new SchemaBuilder<{ Context: Context }>({
   plugins: [TracingPlugin],
   tracing: {
     default: (config) => isRootField(config),
