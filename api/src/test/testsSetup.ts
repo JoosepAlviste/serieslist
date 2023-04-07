@@ -1,5 +1,5 @@
 import { sql } from 'kysely'
-import { afterAll } from 'vitest'
+import { beforeAll } from 'vitest'
 
 import { db } from '@/lib/db'
 
@@ -18,6 +18,6 @@ const clearDatabase = async () => {
   }
 }
 
-afterAll(async () => {
+beforeAll(async () => {
   await clearDatabase()
 })
