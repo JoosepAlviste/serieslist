@@ -16,7 +16,7 @@
     "lint": "eslint src && madge --circular --extensions ts ./src",
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
-    "codegen": "graphql-codegen-esm",
+    "codegen": "DOTENV_CONFIG_PATH='../.env' graphql-codegen-esm -r dotenv/config",
     "codegen:watch": "npm run codegen -- --watch",
     "codegen:db": "tsx bin/kyselyCodegen.ts && eslint --fix src/generated/db.ts",
     "migration": "./bin/createMigration.sh",
