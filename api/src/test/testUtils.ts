@@ -1,7 +1,7 @@
 import { type TypedDocumentNode } from '@graphql-typed-document-node/core'
 import { type ExecutionResult, print } from 'graphql'
 
-import { yoga } from '@/server.js'
+import { yoga } from '@/server'
 
 /**
  * A helper for making fully typed GraphQL requests in tests.

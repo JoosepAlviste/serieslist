@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 
-import { graphql } from '@/generated/gql/index.js'
-import { executeOperation } from '@/test/testUtils.js'
+import { graphql } from '@/generated/gql/index'
+import { executeOperation } from '@/test/testUtils'
 
 describe('schema', () => {
   it('returns a hello world', async () => {
