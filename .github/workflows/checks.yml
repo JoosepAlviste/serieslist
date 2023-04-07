@@ -37,6 +37,7 @@ jobs:
           cd api
           npm ci
           npm run lint
+          npm run migrate:test
           npm run tsc
           npm run test:coverage
           npm run build
@@ -52,7 +53,6 @@ jobs:
 
       - name: E2E tests
         run: |
-          (cd api && npm run migrate:e2e)
           (cd webapp && npx playwright install chromium --with-deps)
           (cd api && npm run start:e2e) & (cd webapp && npm run test:e2e)
       - uses: actions/upload-artifact@v3

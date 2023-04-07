@@ -42,8 +42,8 @@ First, run the back-end:
 
 ```sh
 cd api
-# Migrate the e2e database
-npm run migrate:e2e
+# Migrate the test database
+npm run migrate:test
 # Run the server
 npm run start:e2e
 ```

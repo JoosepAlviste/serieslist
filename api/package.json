@@ -21,7 +21,7 @@
     "codegen:db": "tsx bin/kyselyCodegen.ts && eslint --fix src/generated/db.ts",
     "migration": "./bin/createMigration.sh",
     "migrate": "tsx bin/migrate.ts && npm run codegen:db",
-    "migrate:e2e": "dotenv -e ../.env.e2e npm run migrate"
+    "migrate:test": "dotenv -e ../.env.test npm run migrate"
   },
   "dependencies": {
     "@pothos/core": "^3.29.0",
