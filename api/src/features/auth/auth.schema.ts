@@ -3,6 +3,8 @@ import { ZodError } from 'zod'
 import { UserRef } from '@/features/users/users.schema'
 import { builder } from '@/schemaBuilder'
 
+import { register } from './auth.service'
+
 const RegisterInput = builder.inputType('RegisterInput', {
   fields: (t) => ({
     name: t.string({
@@ -37,19 +39,7 @@ builder.mutationType({
         types: [ZodError],
       },
       resolve: async (_parent, args, ctx) => {
-        const { name, password, email } = args.input
-
-        const user = await ctx.db
-          .insertInto('user')
-          .values({
-            name,
-            email,
-            password,
-          })
-          .returning(['id', 'name', 'email'])
-          .executeTakeFirstOrThrow()
-
-        return user
+        return register(ctx)(args.input)
       },
     }),
   }),

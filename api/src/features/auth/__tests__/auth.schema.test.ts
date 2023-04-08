@@ -1,3 +1,4 @@
+import { v4 as uuid } from 'uuid'
 import { it, describe, expect } from 'vitest'
 
 import { type RegisterInput } from '@/generated/gql/graphql'
@@ -38,8 +39,10 @@ describe('features/auth/auth.schema', () => {
       )
 
     it('allows registering a user', async () => {
+      const uid = uuid()
+
       const result = await executeMutation({
-        email: 'test@test.com',
+        email: `test${uid}@test.com`,
         name: 'Test Dude',
       })
 
@@ -53,7 +56,7 @@ describe('features/auth/auth.schema', () => {
         .executeTakeFirstOrThrow()
 
       expect(user.name).toBe('Test Dude')
-      expect(user.email).toBe('test@test.com')
+      expect(user.email).toBe(`test${uid}@test.com`)
     })
 
     it('requires a valid email', async () => {
@@ -65,6 +68,29 @@ describe('features/auth/auth.schema', () => {
       expect(error.fieldErrors).toContainEqual({
         path: ['input', 'email'],
         message: 'Invalid email',
+      })
+    })
+
+    it('requires a unique email', async () => {
+      const uid = uuid()
+
+      await db
+        .insertInto('user')
+        .values({
+          email: `test${uid}@test.com`,
+          name: 'Test Dude',
+          password: '123',
+        })
+        .execute()
+
+      const result = await executeMutation({
+        email: `test${uid}@test.com`,
+      })
+
+      const error = expectErrors(result.data?.register)
+      expect(error.fieldErrors).toContainEqual({
+        path: ['input', 'email'],
+        message: 'A user with this email already exists.',
       })
     })
   })
