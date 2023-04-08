@@ -30,7 +30,7 @@ describe('features/auth/auth.schema', () => {
         `),
         {
           input: {
-            email: 'test@test.com',
+            email: `test${uuid()}@test.com`,
             name: 'Test Dude',
             password: 'test123',
             ...input,
@@ -57,6 +57,23 @@ describe('features/auth/auth.schema', () => {
 
       expect(user.name).toBe('Test Dude')
       expect(user.email).toBe(`test${uid}@test.com`)
+    })
+
+    it("hashes the users's password", async () => {
+      const result = await executeMutation({
+        password: 'test123',
+      })
+
+      const resultUser = checkErrors(result.data?.register)
+      expect(resultUser.id).toBeTruthy()
+
+      const user = await db
+        .selectFrom('user')
+        .select(['password'])
+        .where('id', '=', parseInt(resultUser.id))
+        .executeTakeFirstOrThrow()
+
+      expect(user.password).not.toBe('test123')
     })
 
     it('requires a valid email', async () => {
