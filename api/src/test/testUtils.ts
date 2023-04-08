@@ -28,3 +28,45 @@ export async function executeOperation<TResult, TVariables>(
 
   return (await response.json()) as ExecutionResult<TResult>
 }
+
+const graphqlErrors = ['BaseError', 'InvalidInputError'] as const
+type GraphqlErrors = (typeof graphqlErrors)[number]
+
+/**
+ * If the returned data is an error, throw an exception. Otherwise, return the
+ * data with the correct type set.
+ *
+ * This is necessary when the API returns unions with errors in responses as
+ * otherwise, we'd need to add a bunch of `if` statements in tests to satisfy
+ * TypeScript.
+ *
+ * @example
+ * ```ts
+ * const result = await executeOperation(graphql(`...`))
+ * // result.data.query type is User | InvalidInputError
+ *
+ * const resultUser = await checkErrors(result.data.query)
+ * // If the result was InvalidInputError, an exception is thrown
+ * // resultUser is typed as User
+ *
+ * // No type error below!
+ * expect(resultUser.id).toBeTruthy()
+ * ```
+ */
+export const checkErrors = <T extends { __typename: string | GraphqlErrors }>(
+  result: T | undefined,
+) => {
+  if (!result) {
+    throw new Error('Expected result to not be undefined.')
+  }
+
+  graphqlErrors.forEach((error) => {
+    if (result.__typename === error) {
+      throw new Error(
+        `Expected to not receive a ${error}: ${JSON.stringify(result)}.`,
+      )
+    }
+  })
+
+  return result as Exclude<T, { __typename: GraphqlErrors }>
+}

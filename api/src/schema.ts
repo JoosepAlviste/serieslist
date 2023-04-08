@@ -2,6 +2,7 @@ import { builder } from './schemaBuilder'
 
 import '@/features/auth/auth.schema'
 import '@/features/users/users.schema'
+import '@/schema/errors.schema'
 
 builder.queryType({
   fields: (t) => ({

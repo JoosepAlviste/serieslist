@@ -1,4 +1,5 @@
 import SchemaBuilder from '@pothos/core'
+import ErrorsPlugin from '@pothos/plugin-errors'
 import TracingPlugin, {
   wrapResolver,
   isRootField,
@@ -7,7 +8,11 @@ import TracingPlugin, {
 import { type Context } from './types/context'
 
 export const builder = new SchemaBuilder<{ Context: Context }>({
-  plugins: [TracingPlugin],
+  plugins: [TracingPlugin, ErrorsPlugin],
+  errorOptions: {
+    defaultTypes: [],
+    directResult: true,
+  },
   tracing: {
     default: (config) => isRootField(config),
     wrap: (resolver, _options, config) =>

@@ -2,7 +2,7 @@ import { it, describe, expect } from 'vitest'
 
 import { graphql } from '@/generated/gql/index'
 import { db } from '@/lib/db'
-import { executeOperation } from '@/test/testUtils'
+import { checkErrors, executeOperation } from '@/test/testUtils'
 
 describe('features/auth/auth.schema', () => {
   describe('register mutation', () => {
@@ -11,9 +11,12 @@ describe('features/auth/auth.schema', () => {
         graphql(`
           mutation register($input: RegisterInput!) {
             register(input: $input) {
-              id
-              name
-              email
+              __typename
+              ... on User {
+                id
+                name
+                email
+              }
             }
           }
         `),
@@ -26,13 +29,13 @@ describe('features/auth/auth.schema', () => {
         },
       )
 
-      const savedId = result.data?.register.id
-      expect(savedId).not.toBeNull()
+      const resultUser = checkErrors(result.data?.register)
+      expect(resultUser.id).toBeTruthy()
 
       const user = await db
         .selectFrom('user')
         .select(['id', 'name', 'email'])
-        .where('id', '=', parseInt(savedId!))
+        .where('id', '=', parseInt(resultUser.id))
         .executeTakeFirstOrThrow()
 
       expect(user.name).toBe('Test Dude')
