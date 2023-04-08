@@ -27,11 +27,13 @@
     "@pothos/core": "^3.29.0",
     "@pothos/plugin-errors": "^3.11.0",
     "@pothos/plugin-tracing": "^0.5.7",
+    "@pothos/plugin-validation": "^3.9.0",
     "dotenv": "^16.0.3",
     "graphql": "^16.6.0",
     "graphql-yoga": "^3.7.2",
     "kysely": "^0.24.2",
-    "pg": "^8.10.0"
+    "pg": "^8.10.0",
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^3.2.2",

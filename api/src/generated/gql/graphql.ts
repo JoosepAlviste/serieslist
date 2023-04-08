@@ -31,8 +31,8 @@ export type InvalidInputError = Error & {
 
 export type InvalidInputErrorField = {
   __typename?: 'InvalidInputErrorField';
-  field: Scalars['String'];
   message: Scalars['String'];
+  path: Array<Scalars['String']>;
 };
 
 export type Mutation = {

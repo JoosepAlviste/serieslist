@@ -4,11 +4,12 @@ import TracingPlugin, {
   wrapResolver,
   isRootField,
 } from '@pothos/plugin-tracing'
+import ValidationPlugin from '@pothos/plugin-validation'
 
 import { type Context } from './types/context'
 
 export const builder = new SchemaBuilder<{ Context: Context }>({
-  plugins: [TracingPlugin, ErrorsPlugin],
+  plugins: [TracingPlugin, ErrorsPlugin, ValidationPlugin],
   errorOptions: {
     defaultTypes: [],
     directResult: true,

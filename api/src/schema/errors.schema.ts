@@ -1,3 +1,5 @@
+import { ZodError, type ZodFormattedError } from 'zod'
+
 import { builder } from '../schemaBuilder'
 
 export const ErrorInterfaceRef = builder
@@ -14,7 +16,7 @@ builder.objectType(Error, {
 })
 
 type InvalidInputErrorField = {
-  field: string
+  path: string[]
   message: string
 }
 
@@ -22,27 +24,47 @@ export const InvalidInputErrorFieldRef = builder
   .objectRef<InvalidInputErrorField>('InvalidInputErrorField')
   .implement({
     fields: (t) => ({
-      field: t.exposeString('field'),
+      path: t.exposeStringList('path'),
       message: t.exposeString('message'),
     }),
   })
 
-export class InvalidInputError extends Error {
-  constructor(
-    public fieldErrors: InvalidInputErrorField[],
-    message = 'Invalid input',
-  ) {
-    super(message)
-  }
+/**
+ * Format Zod validation errors into a type that's more easily expressible in
+ * GraphQL.
+ *
+ * https://pothos-graphql.dev/docs/plugins/errors#with-validation-plugin
+ */
+const flattenErrors = (
+  error: ZodFormattedError<unknown>,
+  path: string[] = [],
+): { path: string[]; message: string }[] => {
+  const errors = error._errors.map((message) => ({
+    path,
+    message,
+  }))
+
+  Object.keys(error).forEach((key) => {
+    if (key !== '_errors') {
+      errors.push(
+        ...flattenErrors(
+          (error as Record<string, unknown>)[key] as ZodFormattedError<unknown>,
+          [...path, key],
+        ),
+      )
+    }
+  })
+
+  return errors
 }
 
-builder.objectType(InvalidInputError, {
+builder.objectType(ZodError, {
   name: 'InvalidInputError',
   interfaces: [ErrorInterfaceRef],
   fields: (t) => ({
     fieldErrors: t.field({
       type: [InvalidInputErrorFieldRef],
-      resolve: (parent) => parent.fieldErrors,
+      resolve: (err) => flattenErrors(err.format()),
     }),
   }),
 })

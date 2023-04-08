@@ -1,12 +1,28 @@
+import { ZodError } from 'zod'
+
 import { UserRef } from '@/features/users/users.schema'
-import { InvalidInputError } from '@/schema/errors.schema'
 import { builder } from '@/schemaBuilder'
 
 const RegisterInput = builder.inputType('RegisterInput', {
   fields: (t) => ({
-    name: t.string({ required: true }),
-    email: t.string({ required: true }),
-    password: t.string({ required: true }),
+    name: t.string({
+      required: true,
+      validate: {
+        minLength: 2,
+      },
+    }),
+    email: t.string({
+      required: true,
+      validate: {
+        email: true,
+      },
+    }),
+    password: t.string({
+      required: true,
+      validate: {
+        minLength: 7,
+      },
+    }),
   }),
 })
 
@@ -18,19 +34,10 @@ builder.mutationType({
         input: t.arg({ type: RegisterInput, required: true }),
       },
       errors: {
-        types: [InvalidInputError],
+        types: [ZodError],
       },
       resolve: async (_parent, args, ctx) => {
         const { name, password, email } = args.input
-
-        if (name.length < 1) {
-          throw new InvalidInputError([
-            {
-              message: 'Name is required',
-              field: 'name',
-            },
-          ])
-        }
 
         const user = await ctx.db
           .insertInto('user')
@@ -40,11 +47,7 @@ builder.mutationType({
             password,
           })
           .returning(['id', 'name', 'email'])
-          .executeTakeFirst()
-
-        if (!user) {
-          throw new Error('something went wrong!')
-        }
+          .executeTakeFirstOrThrow()
 
         return user
       },

@@ -24,7 +24,7 @@ describe('features/auth/auth.schema', () => {
           input: {
             email: 'test@test.com',
             name: 'Test Dude',
-            password: 'abc123',
+            password: 'test123',
           },
         },
       )
