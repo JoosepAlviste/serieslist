@@ -14,7 +14,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  */
 const documents = {
     "\n        query HelloQuery {\n          hello\n        }\n      ": types.HelloQueryDocument,
-    "\n          mutation register($input: RegisterInput!) {\n            register(input: $input) {\n              __typename\n              ... on User {\n                id\n                name\n                email\n              }\n            }\n          }\n        ": types.RegisterDocument,
+    "\n          mutation register($input: RegisterInput!) {\n            register(input: $input) {\n              __typename\n              ... on User {\n                id\n                name\n                email\n              }\n              ... on InvalidInputError {\n                fieldErrors {\n                  path\n                  message\n                }\n              }\n            }\n          }\n        ": types.RegisterDocument,
 };
 
 /**
@@ -38,7 +38,7 @@ export function graphql(source: "\n        query HelloQuery {\n          hello\n
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n          mutation register($input: RegisterInput!) {\n            register(input: $input) {\n              __typename\n              ... on User {\n                id\n                name\n                email\n              }\n            }\n          }\n        "): (typeof documents)["\n          mutation register($input: RegisterInput!) {\n            register(input: $input) {\n              __typename\n              ... on User {\n                id\n                name\n                email\n              }\n            }\n          }\n        "];
+export function graphql(source: "\n          mutation register($input: RegisterInput!) {\n            register(input: $input) {\n              __typename\n              ... on User {\n                id\n                name\n                email\n              }\n              ... on InvalidInputError {\n                fieldErrors {\n                  path\n                  message\n                }\n              }\n            }\n          }\n        "): (typeof documents)["\n          mutation register($input: RegisterInput!) {\n            register(input: $input) {\n              __typename\n              ... on User {\n                id\n                name\n                email\n              }\n              ... on InvalidInputError {\n                fieldErrors {\n                  path\n                  message\n                }\n              }\n            }\n          }\n        "];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

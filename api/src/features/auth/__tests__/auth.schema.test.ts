@@ -1,13 +1,14 @@
 import { it, describe, expect } from 'vitest'
 
+import { type RegisterInput } from '@/generated/gql/graphql'
 import { graphql } from '@/generated/gql/index'
 import { db } from '@/lib/db'
-import { checkErrors, executeOperation } from '@/test/testUtils'
+import { checkErrors, executeOperation, expectErrors } from '@/test/testUtils'
 
 describe('features/auth/auth.schema', () => {
   describe('register mutation', () => {
-    it('allows registering a user', async () => {
-      const result = await executeOperation(
+    const executeMutation = (input: Partial<RegisterInput>) =>
+      executeOperation(
         graphql(`
           mutation register($input: RegisterInput!) {
             register(input: $input) {
@@ -17,6 +18,12 @@ describe('features/auth/auth.schema', () => {
                 name
                 email
               }
+              ... on InvalidInputError {
+                fieldErrors {
+                  path
+                  message
+                }
+              }
             }
           }
         `),
@@ -25,9 +32,16 @@ describe('features/auth/auth.schema', () => {
             email: 'test@test.com',
             name: 'Test Dude',
             password: 'test123',
+            ...input,
           },
         },
       )
+
+    it('allows registering a user', async () => {
+      const result = await executeMutation({
+        email: 'test@test.com',
+        name: 'Test Dude',
+      })
 
       const resultUser = checkErrors(result.data?.register)
       expect(resultUser.id).toBeTruthy()
@@ -40,6 +54,18 @@ describe('features/auth/auth.schema', () => {
 
       expect(user.name).toBe('Test Dude')
       expect(user.email).toBe('test@test.com')
+    })
+
+    it('requires a valid email', async () => {
+      const result = await executeMutation({
+        email: 'an invalid email',
+      })
+
+      const error = expectErrors(result.data?.register)
+      expect(error.fieldErrors).toContainEqual({
+        path: ['input', 'email'],
+        message: 'Invalid email',
+      })
     })
   })
 })

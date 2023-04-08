@@ -70,3 +70,25 @@ export const checkErrors = <T extends { __typename: string | GraphqlErrors }>(
 
   return result as Exclude<T, { __typename: GraphqlErrors }>
 }
+
+/**
+ * Similarly to `checkErrors`, this function allows extracting an error from the
+ * GraphQL response in tests so that it has the correct type.
+ */
+export const expectErrors = <
+  ErrorKey extends GraphqlErrors,
+  T extends { __typename: ErrorKey | string },
+>(
+  result: T | undefined,
+) => {
+  if (!result) {
+    throw new Error('Expected result to not be undefined.')
+  }
+
+  const error = graphqlErrors.find((e) => result.__typename === e)
+  if (!error) {
+    throw new Error(`Expected to have an error, got ${JSON.stringify(result)}.`)
+  }
+
+  return result as Extract<T, { __typename: ErrorKey }>
+}
