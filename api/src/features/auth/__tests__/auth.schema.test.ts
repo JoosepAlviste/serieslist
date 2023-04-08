@@ -1,10 +1,12 @@
 import { v4 as uuid } from 'uuid'
 import { it, describe, expect } from 'vitest'
 
-import { type RegisterInput } from '@/generated/gql/graphql'
+import { type LoginInput, type RegisterInput } from '@/generated/gql/graphql'
 import { graphql } from '@/generated/gql/index'
 import { db } from '@/lib/db'
 import { checkErrors, executeOperation, expectErrors } from '@/test/testUtils'
+
+import { hashPassword } from '../auth.service'
 
 describe('features/auth/auth.schema', () => {
   describe('register mutation', () => {
@@ -108,6 +110,103 @@ describe('features/auth/auth.schema', () => {
       expect(error.fieldErrors).toContainEqual({
         path: ['input', 'email'],
         message: 'A user with this email already exists.',
+      })
+    })
+  })
+
+  describe('login mutation', () => {
+    const executeMutation = (input: Partial<LoginInput>) =>
+      executeOperation(
+        graphql(`
+          mutation login($input: LoginInput!) {
+            login(input: $input) {
+              __typename
+              ... on User {
+                id
+                name
+                email
+              }
+              ... on InvalidInputError {
+                fieldErrors {
+                  path
+                  message
+                }
+              }
+            }
+          }
+        `),
+        {
+          input: {
+            email: `test${uuid()}@test.com`,
+            password: 'test123',
+            ...input,
+          },
+        },
+      )
+
+    it('allows logging in a user with the correct credentials', async () => {
+      const email = `test${uuid()}@test.com`
+
+      await db
+        .insertInto('user')
+        .values({
+          email,
+          name: 'Test Dude',
+          password: await hashPassword('test123'),
+        })
+        .execute()
+
+      const res = await executeMutation({
+        email,
+        password: 'test123',
+      })
+      const user = checkErrors(res.data?.login)
+      expect(user.email).toBe(email)
+    })
+
+    it('requires a correct email', async () => {
+      await db
+        .insertInto('user')
+        .values({
+          email: `test${uuid()}@test.com`,
+          name: 'Test Dude',
+          password: await hashPassword('test123'),
+        })
+        .execute()
+
+      const res = await executeMutation({
+        email: 'incorrect@test.com',
+        password: 'test123',
+      })
+
+      const error = expectErrors(res.data?.login)
+      expect(error.fieldErrors).toContainEqual({
+        path: ['input', 'email'],
+        message: 'Invalid credentials.',
+      })
+    })
+
+    it('requires a correct password', async () => {
+      const email = `test${uuid()}@test.com`
+
+      await db
+        .insertInto('user')
+        .values({
+          email,
+          name: 'Test Dude',
+          password: await hashPassword('test123'),
+        })
+        .execute()
+
+      const res = await executeMutation({
+        email,
+        password: 'test1234',
+      })
+
+      const error = expectErrors(res.data?.login)
+      expect(error.fieldErrors).toContainEqual({
+        path: ['input', 'email'],
+        message: 'Invalid credentials.',
       })
     })
   })
