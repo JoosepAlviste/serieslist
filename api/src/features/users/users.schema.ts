@@ -1,7 +1,7 @@
 import type { User } from '@/generated/db'
 import { builder } from '@/schemaBuilder'
 
-type UserType = Pick<User, 'name' | 'email'> & {
+export type UserType = Pick<User, 'name' | 'email'> & {
   id: number
 }
 

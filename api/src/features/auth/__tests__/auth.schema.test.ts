@@ -16,10 +16,14 @@ describe('features/auth/auth.schema', () => {
           mutation register($input: RegisterInput!) {
             register(input: $input) {
               __typename
-              ... on User {
-                id
-                name
-                email
+              ... on AuthPayload {
+                accessToken
+                refreshToken
+                user {
+                  id
+                  name
+                  email
+                }
               }
               ... on InvalidInputError {
                 fieldErrors {
@@ -48,13 +52,13 @@ describe('features/auth/auth.schema', () => {
         name: 'Test Dude',
       })
 
-      const resultUser = checkErrors(result.data?.register)
-      expect(resultUser.id).toBeTruthy()
+      const authResponse = checkErrors(result.data?.register)
+      expect(authResponse.user.id).toBeTruthy()
 
       const user = await db
         .selectFrom('user')
         .select(['id', 'name', 'email'])
-        .where('id', '=', parseInt(resultUser.id))
+        .where('id', '=', parseInt(authResponse.user.id))
         .executeTakeFirstOrThrow()
 
       expect(user.name).toBe('Test Dude')
@@ -66,13 +70,13 @@ describe('features/auth/auth.schema', () => {
         password: 'test123',
       })
 
-      const resultUser = checkErrors(result.data?.register)
-      expect(resultUser.id).toBeTruthy()
+      const authResponse = checkErrors(result.data?.register)
+      expect(authResponse.user.id).toBeTruthy()
 
       const user = await db
         .selectFrom('user')
         .select(['password'])
-        .where('id', '=', parseInt(resultUser.id))
+        .where('id', '=', parseInt(authResponse.user.id))
         .executeTakeFirstOrThrow()
 
       expect(user.password).not.toBe('test123')
@@ -121,10 +125,14 @@ describe('features/auth/auth.schema', () => {
           mutation login($input: LoginInput!) {
             login(input: $input) {
               __typename
-              ... on User {
-                id
-                name
-                email
+              ... on AuthPayload {
+                accessToken
+                refreshToken
+                user {
+                  id
+                  name
+                  email
+                }
               }
               ... on InvalidInputError {
                 fieldErrors {
@@ -160,8 +168,8 @@ describe('features/auth/auth.schema', () => {
         email,
         password: 'test123',
       })
-      const user = checkErrors(res.data?.login)
-      expect(user.email).toBe(email)
+      const authResponse = checkErrors(res.data?.login)
+      expect(authResponse.user.email).toBe(email)
     })
 
     it('requires a correct email', async () => {

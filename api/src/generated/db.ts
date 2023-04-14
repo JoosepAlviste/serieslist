@@ -6,6 +6,16 @@ export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
 
 export type Timestamp = ColumnType<Date, Date | string, Date | string>
 
+export type Session = {
+  token: string
+  userId: number | null
+  ip: string | null
+  userAgent: string | null
+  isValid: Generated<boolean | null>
+  createdAt: Generated<Timestamp>
+  updatedAt: Generated<Timestamp>
+}
+
 export type User = {
   id: Generated<number>
   name: string
@@ -17,5 +27,6 @@ export type User = {
 }
 
 export type DB = {
+  session: Session
   user: User
 }

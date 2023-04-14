@@ -32,6 +32,7 @@
     "dotenv": "^16.0.3",
     "graphql": "^16.6.0",
     "graphql-yoga": "^3.7.2",
+    "jsonwebtoken": "^9.0.0",
     "kysely": "^0.24.2",
     "pg": "^8.10.0",
     "zod": "^3.21.4"
@@ -42,6 +43,7 @@
     "@graphql-tools/executor-http": "^0.1.9",
     "@graphql-typed-document-node/core": "^3.1.2",
     "@types/bcryptjs": "^2.4.2",
+    "@types/jsonwebtoken": "^9.0.1",
     "@types/node": "^18.15.3",
     "@types/pg": "^8.6.6",
     "@types/uuid": "^9.0.1",
