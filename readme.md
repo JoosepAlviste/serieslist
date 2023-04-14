@@ -10,6 +10,11 @@ Serieslist](https://raw.githubusercontent.com/JoosepAlviste/serieslist/master/im
 
 ```bash
 git clone https://github.com/JoosepAlviste/serieslist.git
+
+cd api
+npm install
+cd ..
+./bin/generate-secret-token.sh
 ```
 
 

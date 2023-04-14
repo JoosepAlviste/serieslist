@@ -12,6 +12,8 @@ dotenvConfig({
 export const config = {
   port: parseInt(process.env.API_PORT ?? '4000', 10),
 
+  secretToken: process.env.SECRET_TOKEN!,
+
   db: {
     host: process.env.DB_HOST ?? 'localhost',
     port: parseInt(process.env.DB_PORT!, 10),
