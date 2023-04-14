@@ -8,7 +8,8 @@ import { type Context } from './types/context'
 
 export const yoga = createYoga({
   schema,
-  context: (): Context => ({
+  context: (ctx): Context => ({
+    ...ctx,
     db,
   }),
 })
