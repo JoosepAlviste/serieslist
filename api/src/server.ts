@@ -1,5 +1,4 @@
-import { createServer } from 'http'
-
+import express from 'express'
 import { createYoga } from 'graphql-yoga'
 
 import { db } from './lib/db'
@@ -14,5 +13,8 @@ export const yoga = createYoga({
   }),
 })
 
+const app = express()
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
-export const server = createServer(yoga)
+app.use('/graphql', yoga)
+
+export { app }
