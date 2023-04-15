@@ -32,6 +32,11 @@ jobs:
         with:
           node-version: '16'
 
+      - name: Setup
+        run: |
+          cp .env.example .env
+          bash bin/generate-secret-token.sh
+
       - name: API checks
         run: |
           cd api
