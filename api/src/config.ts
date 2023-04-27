@@ -8,8 +8,12 @@ dotenvConfig({
   path: path.resolve(__dirname, '..', '..', '.env'),
 })
 
+type Environment = 'development' | 'test' | 'production'
+
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 export const config = {
+  environment: (process.env.NODE_ENV ?? 'production') as Environment,
+
   port: parseInt(process.env.API_PORT ?? '4000', 10),
 
   secretToken: process.env.SECRET_TOKEN!,
