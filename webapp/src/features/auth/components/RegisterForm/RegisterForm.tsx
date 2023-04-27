@@ -7,20 +7,22 @@ import { graphql } from '@/generated/gql'
 import { useForm } from '@/lib/forms'
 
 type FormData = {
+  name: string
   email: string
   password: string
 }
 
 const schema = z.object({
+  name: z.string().min(2),
   email: z.string().email(),
   password: z.string().min(7),
 })
 
-export const LoginForm = () => {
+export const RegisterForm = () => {
   const [mutate] = useMutation(
     graphql(`
-      mutation login($input: LoginInput!) {
-        login(input: $input) {
+      mutation register($input: RegisterInput!) {
+        register(input: $input) {
           __typename
           ... on User {
             id
@@ -53,9 +55,9 @@ export const LoginForm = () => {
       },
     })
 
-    const { login } = res.data ?? {}
-    if (checkErrors(login)) {
-      // TODO: Login was successful, redirect
+    const { register } = res.data ?? {}
+    if (checkErrors(register)) {
+      // TODO: Registering was successful, redirect
     }
   })
 
@@ -65,6 +67,8 @@ export const LoginForm = () => {
 
       <Field label="Email" error={errors.email} {...register('email')} />
 
+      <Field label="Name" error={errors.name} {...register('name')} />
+
       <Field
         label="Password"
         type="password"
@@ -72,7 +76,7 @@ export const LoginForm = () => {
         {...register('password')}
       />
 
-      <button type="submit">Log in</button>
+      <button type="submit">Register</button>
     </form>
   )
 }

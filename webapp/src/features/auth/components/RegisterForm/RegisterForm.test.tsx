@@ -2,16 +2,16 @@ import { fireEvent, screen, waitFor } from '@testing-library/react'
 import React from 'react'
 import { describe, expect, it } from 'vitest'
 
-import { LoginDocument } from '@/generated/gql/graphql'
+import { RegisterDocument } from '@/generated/gql/graphql'
 import { createMockResolver, fillForm, render } from '@/lib/testUtils'
 
-import { LoginForm } from './LoginForm'
+import { RegisterForm } from './RegisterForm'
 
-describe('features/auth/components/LoginForm', () => {
-  it('allows logging in', async () => {
-    const [doc, mockResolver] = createMockResolver(LoginDocument, {
+describe('features/auth/components/RegisterForm', () => {
+  it('allows registering', async () => {
+    const [doc, mockResolver] = createMockResolver(RegisterDocument, {
       data: {
-        login: {
+        register: {
           __typename: 'User',
           id: '1',
           email: 'r@r.com',
@@ -19,18 +19,19 @@ describe('features/auth/components/LoginForm', () => {
       },
     })
 
-    render(<LoginForm />, {
+    render(<RegisterForm />, {
       requestMocks: [[doc, mockResolver]],
     })
 
     fillForm({
+      Name: 'Test Dude',
       Email: 'r@r.com',
       Password: 'test123',
     })
 
     fireEvent.click(
       screen.getByRole('button', {
-        name: 'Log in',
+        name: 'Register',
       }),
     )
 

@@ -30,6 +30,12 @@ export function PageShell({
               <Link className="navitem" href="/about">
                 About
               </Link>
+              <Link className="navitem" href="/login">
+                Log in
+              </Link>
+              <Link className="navitem" href="/register">
+                Register
+              </Link>
             </Sidebar>
             <Content>{children}</Content>
           </Layout>
