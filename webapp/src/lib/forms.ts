@@ -1,8 +1,10 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import {
   type FieldValues,
   useForm as useFormBase,
   type UseFormProps,
 } from 'react-hook-form'
+import { type ZodSchema } from 'zod'
 
 import { type InvalidInputError } from '@/generated/gql/graphql'
 import { type NotWorthIt, type LiterallyAnything } from '@/types/utils'
@@ -14,10 +16,17 @@ import { type NotWorthIt, type LiterallyAnything } from '@/types/utils'
 export const useForm = <
   TFieldValues extends FieldValues = FieldValues,
   TContext = LiterallyAnything,
->(
-  props?: UseFormProps<TFieldValues, TContext>,
-) => {
-  const res = useFormBase<TFieldValues, TContext>(props)
+>({
+  schema,
+  ...props
+}: UseFormProps<TFieldValues, TContext> & {
+  schema?: ZodSchema<TFieldValues>
+} = {}) => {
+  const res = useFormBase<TFieldValues, TContext>({
+    mode: 'onTouched',
+    resolver: schema ? zodResolver(schema) : undefined,
+    ...props,
+  })
 
   type SubmitHandlerArgument = {
     data: TFieldValues

@@ -1,5 +1,6 @@
 import { useMutation } from '@apollo/client'
 import React from 'react'
+import { z } from 'zod'
 
 import { graphql } from '@/generated/gql'
 import { useForm } from '@/lib/forms'
@@ -8,6 +9,11 @@ type FormData = {
   email: string
   password: string
 }
+
+const schema = z.object({
+  email: z.string().email(),
+  password: z.string().min(7),
+})
 
 export const Page = () => {
   const [mutate] = useMutation(
@@ -35,7 +41,7 @@ export const Page = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>()
+  } = useForm<FormData>({ schema })
 
   const onSubmit = handleSubmit(async ({ data, checkErrors }) => {
     const res = await mutate({
