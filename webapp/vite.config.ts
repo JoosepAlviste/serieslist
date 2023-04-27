@@ -18,7 +18,7 @@ export default defineConfig({
   envDir: '..',
   test: {
     dir: path.resolve(__dirname, 'src'),
-    environment: 'happy-dom',
+    environment: 'jsdom',
     coverage: {
       all: true,
     },
