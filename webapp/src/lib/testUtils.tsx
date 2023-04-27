@@ -14,7 +14,7 @@ import { vi } from 'vitest'
 
 import { type LiterallyAnything } from '@/types/utils'
 
-interface ExtraRenderOptions {
+type ExtraRenderOptions = {
   /**
    * Mocks for GraphQL requests
    *

@@ -9,7 +9,7 @@ import fetch from 'isomorphic-unfetch'
 
 import { config } from '@/config'
 
-interface MakeApolloClientOptions {
+type MakeApolloClientOptions = {
   ssr?: boolean
   initialState?: NormalizedCacheObject
   req?: Request

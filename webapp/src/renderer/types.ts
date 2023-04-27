@@ -3,10 +3,9 @@ import type { PageContextBuiltIn } from 'vite-plugin-ssr'
 import type { PageContextBuiltInClient } from 'vite-plugin-ssr/client/router'
 
 export type Page = (pageProps: PageProps) => React.ReactElement
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface PageProps {}
+export type PageProps = Record<string, unknown>
 
-export interface PageContextCustom {
+export type PageContextCustom = {
   Page: Page
   pageProps?: PageProps
   urlPathname: string
