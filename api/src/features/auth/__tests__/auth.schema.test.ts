@@ -181,7 +181,7 @@ describe('features/auth/auth.schema', () => {
 
       const error = expectErrors(res.data?.login)
       expect(error.fieldErrors).toContainEqual({
-        path: ['input', 'email'],
+        path: ['root'],
         message: 'Invalid credentials.',
       })
     })
@@ -205,7 +205,7 @@ describe('features/auth/auth.schema', () => {
 
       const error = expectErrors(res.data?.login)
       expect(error.fieldErrors).toContainEqual({
-        path: ['input', 'email'],
+        path: ['root'],
         message: 'Invalid credentials.',
       })
     })

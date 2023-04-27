@@ -125,7 +125,7 @@ export const login = (ctx: Context) => async (input: LoginInput) => {
     throw new ZodError([
       {
         code: 'custom',
-        path: ['input', 'email'],
+        path: ['root'],
         message: 'Invalid credentials.',
       },
     ])
@@ -136,7 +136,7 @@ export const login = (ctx: Context) => async (input: LoginInput) => {
     throw new ZodError([
       {
         code: 'custom',
-        path: ['input', 'email'],
+        path: ['root'],
         message: 'Invalid credentials.',
       },
     ])
