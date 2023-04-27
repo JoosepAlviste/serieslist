@@ -2,6 +2,7 @@ import { useMutation } from '@apollo/client'
 import React from 'react'
 import { z } from 'zod'
 
+import { Field } from '@/components'
 import { graphql } from '@/generated/gql'
 import { useForm } from '@/lib/forms'
 
@@ -62,16 +63,14 @@ export const Page = () => {
       <form onSubmit={onSubmit}>
         {errors.root && <p>Root error: {errors.root.message}</p>}
 
-        <label>
-          Email
-          <input {...register('email')} />
-        </label>
-        {errors.email && <p>Error: {errors.email.message}</p>}
-        <label>
-          Password
-          <input type="password" {...register('password')} />
-        </label>
-        {errors.password && <p>Error: {errors.password.message}</p>}
+        <Field label="Email" error={errors.email} {...register('email')} />
+
+        <Field
+          label="Password"
+          type="password"
+          error={errors.password}
+          {...register('password')}
+        />
 
         <button type="submit">Log in</button>
       </form>
