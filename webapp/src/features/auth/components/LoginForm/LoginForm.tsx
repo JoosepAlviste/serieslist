@@ -16,7 +16,7 @@ const schema = z.object({
   password: z.string().min(7),
 })
 
-export const Page = () => {
+export const LoginForm = () => {
   const [mutate] = useMutation(
     graphql(`
       mutation login($input: LoginInput!) {
@@ -58,22 +58,19 @@ export const Page = () => {
   })
 
   return (
-    <>
-      <h1>Login</h1>
-      <form onSubmit={onSubmit}>
-        {errors.root && <p>Root error: {errors.root.message}</p>}
+    <form onSubmit={onSubmit}>
+      {errors.root && <p>Root error: {errors.root.message}</p>}
 
-        <Field label="Email" error={errors.email} {...register('email')} />
+      <Field label="Email" error={errors.email} {...register('email')} />
 
-        <Field
-          label="Password"
-          type="password"
-          error={errors.password}
-          {...register('password')}
-        />
+      <Field
+        label="Password"
+        type="password"
+        error={errors.password}
+        {...register('password')}
+      />
 
-        <button type="submit">Log in</button>
-      </form>
-    </>
+      <button type="submit">Log in</button>
+    </form>
   )
 }

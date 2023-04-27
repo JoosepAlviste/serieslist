@@ -5,7 +5,9 @@ import type {
   VariablesOf,
 } from '@graphql-typed-document-node/core'
 import {
+  fireEvent,
   render as baseRender,
+  screen,
   type RenderOptions,
 } from '@testing-library/react'
 import { createMockClient, type RequestHandler } from 'mock-apollo-client'
@@ -65,4 +67,12 @@ export const createMockResolver = <
     .mockResolvedValue(mockResponse)
 
   return [document, handler] as const
+}
+
+export const fillForm = (fields: Record<string, string>) => {
+  Object.entries(fields).forEach(([field, value]) => {
+    fireEvent.change(screen.getByLabelText(field), {
+      target: { value },
+    })
+  })
 }
