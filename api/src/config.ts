@@ -25,4 +25,10 @@ export const config = {
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
   },
+
+  webapp: {
+    url: `http://${process.env.VITE_APP_HOST ?? 'localhost'}:${
+      process.env.VITE_APP_PORT ?? 3000
+    }`,
+  },
 }

@@ -36,12 +36,39 @@ export const createTokens = (sessionToken: string, userId: number) => {
 }
 
 /**
+ * Generate new access and refresh tokens for the user and save them into the cookies.
+ */
+const refreshTokens =
+  (ctx: Context) => (sessionToken: string, userId: number) => {
+    const tokens = createTokens(sessionToken, userId)
+
+    void ctx.reply.setCookie('accessToken', tokens.accessToken, {
+      httpOnly: true,
+      path: '/',
+      domain: 'localhost',
+      secure: true,
+      sameSite: 'none',
+    })
+
+    const now = new Date()
+    const refreshExpires = now.setDate(now.getDate() + 30)
+    void ctx.reply.setCookie('refreshToken', tokens.refreshToken, {
+      httpOnly: true,
+      path: '/',
+      domain: 'localhost',
+      expires: new Date(refreshExpires),
+      secure: true,
+      sameSite: 'none',
+    })
+  }
+
+/**
  * Create a new session for the user and set token cookies.
  */
 const logUserIn = (ctx: Context) => async (userId: number) => {
   const sessionToken = randomBytes(43).toString('hex')
 
-  const session = await ctx.db
+  await ctx.db
     .insertInto('session')
     .values({
       token: sessionToken,
@@ -50,9 +77,7 @@ const logUserIn = (ctx: Context) => async (userId: number) => {
     .returning(['userId', 'token'])
     .executeTakeFirst()
 
-  const tokens = createTokens(sessionToken, userId)
-
-  return { ...tokens, session }
+  refreshTokens(ctx)(sessionToken, userId)
 }
 
 export const register = (ctx: Context) => async (input: RegisterInput) => {
@@ -85,9 +110,9 @@ export const register = (ctx: Context) => async (input: RegisterInput) => {
     .returning(['id', 'name', 'email'])
     .executeTakeFirstOrThrow()
 
-  const tokens = await logUserIn(ctx)(user.id)
+  await logUserIn(ctx)(user.id)
 
-  return { ...tokens, user }
+  return user
 }
 
 export const login = (ctx: Context) => async (input: LoginInput) => {
@@ -117,7 +142,7 @@ export const login = (ctx: Context) => async (input: LoginInput) => {
     ])
   }
 
-  const tokens = await logUserIn(ctx)(user.id)
+  await logUserIn(ctx)(user.id)
 
-  return { ...tokens, user }
+  return user
 }

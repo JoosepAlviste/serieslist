@@ -1,6 +1,6 @@
 import { ZodError } from 'zod'
 
-import { UserRef, type UserType } from '@/features/users/users.schema'
+import { UserRef } from '@/features/users/users.schema'
 import { builder } from '@/schemaBuilder'
 
 import { login, register } from './auth.service'
@@ -45,28 +45,10 @@ const LoginInput = builder.inputType('LoginInput', {
   }),
 })
 
-export type AuthPayload = {
-  user: UserType
-  accessToken: string
-  refreshToken: string
-}
-
-const AuthPayloadRef = builder.objectRef<AuthPayload>('AuthPayload').implement({
-  fields: (t) => ({
-    user: t.field({
-      type: UserRef,
-      nullable: false,
-      resolve: (parent) => parent.user,
-    }),
-    accessToken: t.exposeString('accessToken'),
-    refreshToken: t.exposeString('refreshToken'),
-  }),
-})
-
 builder.mutationType({
   fields: (t) => ({
     register: t.field({
-      type: AuthPayloadRef,
+      type: UserRef,
       args: {
         input: t.arg({ type: RegisterInput, required: true }),
       },
@@ -79,7 +61,7 @@ builder.mutationType({
     }),
 
     login: t.field({
-      type: AuthPayloadRef,
+      type: UserRef,
       args: {
         input: t.arg({ type: LoginInput, required: true }),
       },

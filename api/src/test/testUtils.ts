@@ -1,7 +1,11 @@
 import { type TypedDocumentNode } from '@graphql-typed-document-node/core'
 import { type ExecutionResult, print } from 'graphql'
+import { createYoga } from 'graphql-yoga'
+import { vi } from 'vitest'
 
-import { yoga } from '@/server'
+import { db } from '@/lib/db'
+import { schema } from '@/schema'
+import { type Context } from '@/types/context'
 
 /**
  * A helper for making fully typed GraphQL requests in tests.
@@ -12,6 +16,28 @@ export async function executeOperation<TResult, TVariables>(
   operation: TypedDocumentNode<TResult, TVariables>,
   ...[variables]: TVariables extends Record<string, never> ? [] : [TVariables]
 ): Promise<ExecutionResult<TResult>> {
+  const setCookieMock = vi.fn()
+
+  // create a separate Yoga instance for tests so that we can customize the ctx
+  const yoga = createYoga({
+    schema,
+    context: (
+      ctx,
+    ): Omit<Context, 'req' | 'reply'> & {
+      // We can't really create the Fastify request and reply objects on their
+      // own, so we only mock the fields that we need from them
+      reply: {
+        setCookie: () => void
+      }
+    } => ({
+      ...ctx,
+      db,
+      reply: {
+        setCookie: setCookieMock,
+      },
+    }),
+  })
+
   const response = await Promise.resolve(
     yoga.fetch('http://yoga/graphql', {
       method: 'POST',

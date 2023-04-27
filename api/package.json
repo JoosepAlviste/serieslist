@@ -24,6 +24,8 @@
     "migrate:test": "dotenv -e ../.env.test npm run migrate"
   },
   "dependencies": {
+    "@fastify/cookie": "^8.3.0",
+    "@fastify/cors": "^8.2.1",
     "@pothos/core": "^3.29.0",
     "@pothos/plugin-errors": "^3.11.0",
     "@pothos/plugin-tracing": "^0.5.7",
