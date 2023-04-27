@@ -5,6 +5,8 @@
 const env = typeof process !== 'undefined' ? process.env : import.meta.env
 
 export const config = {
+  development: env.DEV,
+
   port: parseInt(env.VITE_APP_PORT ?? '3000', 10),
 
   api: {

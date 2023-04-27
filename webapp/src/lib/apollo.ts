@@ -29,6 +29,7 @@ export const makeApolloClient = ({
 
   const uri = `${config.api.url}/graphql`
   const apolloClient = new ApolloClient({
+    connectToDevTools: Boolean(config.development && !ssr),
     ssrMode: ssr,
     link: createHttpLink({
       uri,
