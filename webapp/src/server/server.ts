@@ -39,6 +39,7 @@ async function startServer() {
   app.get('*', async (req, res, next) => {
     const apollo = makeApolloClient({
       ssr: true,
+      req,
     })
 
     const pageContextInit: Partial<PageContext> = {

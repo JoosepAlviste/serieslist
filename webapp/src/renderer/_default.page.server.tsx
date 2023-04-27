@@ -10,7 +10,6 @@ export const passToClient = ['pageProps', 'documentProps', 'apolloInitialState']
 
 export async function render(pageContext: PageContextServer) {
   const { Page, pageProps } = pageContext
-  // This render() hook only supports SSR, see https://vite-plugin-ssr.com/render-modes for how to modify render() to support SPA
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!Page) {
     throw new Error('My render() hook expects pageContext.Page to be defined')
