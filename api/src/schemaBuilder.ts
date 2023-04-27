@@ -6,7 +6,7 @@ import TracingPlugin, {
 } from '@pothos/plugin-tracing'
 import ValidationPlugin from '@pothos/plugin-validation'
 
-import { app } from './server'
+import { app } from './lib/fastify'
 import { type Context } from './types/context'
 
 export const builder = new SchemaBuilder<{ Context: Context }>({

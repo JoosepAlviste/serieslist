@@ -1,0 +1,7 @@
+{
+  "tsConfig": {
+    "compilerOptions": {
+      "moduleResolution": "node"
+    }
+  }
+}

@@ -1,45 +1,10 @@
-import type { FastifyCookieOptions } from '@fastify/cookie'
-import cookie from '@fastify/cookie'
-import cors from '@fastify/cors'
-import fastify, {
-  type FastifyRequest,
-  type FastifyReply,
-  type FastifyServerOptions,
-} from 'fastify'
+import { type FastifyRequest, type FastifyReply } from 'fastify'
 import { createYoga } from 'graphql-yoga'
 
-import { config } from './config'
 import { db } from './lib/db'
+import { app } from './lib/fastify'
 import { schema } from './schema'
 import { type Context } from './types/context'
-
-const envToLogger: Record<string, FastifyServerOptions['logger']> = {
-  development: {
-    transport: {
-      target: 'pino-pretty',
-      options: {
-        translateTime: 'HH:MM:ss Z',
-        ignore: 'pid,hostname',
-      },
-    },
-  },
-  production: true,
-  test: false,
-}
-
-const app = fastify({
-  logger: envToLogger[config.environment] ?? true,
-})
-
-await app.register(cookie, {
-  secret: config.secretToken,
-  parseOptions: {},
-} as FastifyCookieOptions)
-
-await app.register(cors, {
-  credentials: true,
-  origin: [config.webapp.url],
-})
 
 export const yoga = createYoga<{
   req: FastifyRequest
