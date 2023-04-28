@@ -11,8 +11,8 @@ import { hashPassword } from '../auth.service'
 describe('features/auth/auth.schema', () => {
   describe('register mutation', () => {
     const executeMutation = (input: Partial<RegisterInput>) =>
-      executeOperation(
-        graphql(`
+      executeOperation({
+        operation: graphql(`
           mutation register($input: RegisterInput!) {
             register(input: $input) {
               __typename
@@ -30,7 +30,7 @@ describe('features/auth/auth.schema', () => {
             }
           }
         `),
-        {
+        variables: {
           input: {
             email: `test${uuid()}@test.com`,
             name: 'Test Dude',
@@ -38,7 +38,8 @@ describe('features/auth/auth.schema', () => {
             ...input,
           },
         },
-      )
+        user: null,
+      })
 
     it('allows registering a user', async () => {
       const uid = uuid()
@@ -116,8 +117,8 @@ describe('features/auth/auth.schema', () => {
 
   describe('login mutation', () => {
     const executeMutation = (input: Partial<LoginInput>) =>
-      executeOperation(
-        graphql(`
+      executeOperation({
+        operation: graphql(`
           mutation login($input: LoginInput!) {
             login(input: $input) {
               __typename
@@ -135,14 +136,15 @@ describe('features/auth/auth.schema', () => {
             }
           }
         `),
-        {
+        variables: {
           input: {
             email: `test${uuid()}@test.com`,
             password: 'test123',
             ...input,
           },
         },
-      )
+        user: null,
+      })
 
     it('allows logging in a user with the correct credentials', async () => {
       const email = `test${uuid()}@test.com`

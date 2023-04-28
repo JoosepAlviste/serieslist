@@ -1,6 +1,7 @@
 import { type TypedDocumentNode } from '@graphql-typed-document-node/core'
 import { type ExecutionResult, print } from 'graphql'
 import { createYoga } from 'graphql-yoga'
+import { v4 as uuid } from 'uuid'
 import { vi } from 'vitest'
 
 import { db } from '@/lib/db'
@@ -13,10 +14,35 @@ import { type Context } from '@/types/context'
  * https://the-guild.dev/graphql/codegen/docs/guides/api-testing
  */
 export async function executeOperation<TResult, TVariables>(
-  operation: TypedDocumentNode<TResult, TVariables>,
-  ...[variables]: TVariables extends Record<string, never> ? [] : [TVariables]
+  params: {
+    operation: TypedDocumentNode<TResult, TVariables>
+    /**
+     * The authenticated user. Set to `null` to be logged out. If undefined, a new
+     * user will be created.
+     */
+    user?: Context['currentUser'] | null
+  } & (TVariables extends Record<string, never>
+    ? unknown
+    : // Only add the variables field if there are any. Setting to `undefined`
+      // still requires giving the key.
+      { variables: TVariables }),
 ): Promise<ExecutionResult<TResult>> {
   const setCookieMock = vi.fn()
+
+  const { operation, user } = params
+
+  const authenticatedUser =
+    user === undefined
+      ? await db
+          .insertInto('user')
+          .values({
+            name: 'Test Dude',
+            email: `test-${uuid()}@test.com`,
+            password: 'test123',
+          })
+          .returningAll()
+          .executeTakeFirst()
+      : user
 
   // create a separate Yoga instance for tests so that we can customize the ctx
   const yoga = createYoga({
@@ -35,6 +61,7 @@ export async function executeOperation<TResult, TVariables>(
       reply: {
         setCookie: setCookieMock,
       },
+      currentUser: authenticatedUser ?? undefined,
     }),
   })
 
@@ -47,7 +74,7 @@ export async function executeOperation<TResult, TVariables>(
       },
       body: JSON.stringify({
         query: print(operation),
-        variables: variables ?? undefined,
+        variables: 'variables' in params ? params.variables : undefined,
       }),
     }),
   )
