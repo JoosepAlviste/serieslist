@@ -2,6 +2,7 @@ import { type Selectable } from 'kysely'
 import { v4 as uuid } from 'uuid'
 import { it, describe, expect } from 'vitest'
 
+import { userFactory } from '@/features/users/user.factory'
 import { type User } from '@/generated/db'
 import { type LoginInput, type RegisterInput } from '@/generated/gql/graphql'
 import { graphql } from '@/generated/gql/index'
@@ -96,14 +97,9 @@ describe('features/auth/auth.schema', () => {
     it('requires a unique email', async () => {
       const uid = uuid()
 
-      await db
-        .insertInto('user')
-        .values({
-          email: `test${uid}@test.com`,
-          name: 'Test Dude',
-          password: '123',
-        })
-        .execute()
+      await userFactory.create({
+        email: `test${uid}@test.com`,
+      })
 
       const result = await executeMutation({
         email: `test${uid}@test.com`,
@@ -149,16 +145,12 @@ describe('features/auth/auth.schema', () => {
       })
 
     it('allows logging in a user with the correct credentials', async () => {
-      const email = `test${uuid()}@test.com`
+      const email = `test-${uuid()}@test.com`
 
-      await db
-        .insertInto('user')
-        .values({
-          email,
-          name: 'Test Dude',
-          password: await hashPassword('test123'),
-        })
-        .execute()
+      await userFactory.create({
+        email,
+        password: await hashPassword('test123'),
+      })
 
       const res = await executeMutation({
         email,
@@ -169,14 +161,9 @@ describe('features/auth/auth.schema', () => {
     })
 
     it('requires a correct email', async () => {
-      await db
-        .insertInto('user')
-        .values({
-          email: `test${uuid()}@test.com`,
-          name: 'Test Dude',
-          password: await hashPassword('test123'),
-        })
-        .execute()
+      await userFactory.create({
+        email: `test${uuid()}@test.com`,
+      })
 
       const res = await executeMutation({
         email: 'incorrect@test.com',
@@ -193,14 +180,9 @@ describe('features/auth/auth.schema', () => {
     it('requires a correct password', async () => {
       const email = `test${uuid()}@test.com`
 
-      await db
-        .insertInto('user')
-        .values({
-          email,
-          name: 'Test Dude',
-          password: await hashPassword('test123'),
-        })
-        .execute()
+      await userFactory.create({
+        password: await hashPassword('test123'),
+      })
 
       const res = await executeMutation({
         email,
@@ -231,15 +213,7 @@ describe('features/auth/auth.schema', () => {
       })
 
     it('returns the currently authenticated user', async () => {
-      const authenticatedUser = await db
-        .insertInto('user')
-        .values({
-          email: `test-${uuid()}@dude.com`,
-          name: 'Test Dude',
-          password: await hashPassword('test123'),
-        })
-        .returningAll()
-        .executeTakeFirstOrThrow()
+      const authenticatedUser = await userFactory.create()
 
       const res = await executeQuery(authenticatedUser)
 

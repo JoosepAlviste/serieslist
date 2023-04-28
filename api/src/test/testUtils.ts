@@ -4,6 +4,7 @@ import { createYoga } from 'graphql-yoga'
 import { v4 as uuid } from 'uuid'
 import { vi } from 'vitest'
 
+import { userFactory } from '@/features/users/user.factory'
 import { db } from '@/lib/db'
 import { schema } from '@/schema'
 import { type Context } from '@/types/context'
@@ -32,17 +33,7 @@ export async function executeOperation<TResult, TVariables>(
   const { operation, user } = params
 
   const authenticatedUser =
-    user === undefined
-      ? await db
-          .insertInto('user')
-          .values({
-            name: 'Test Dude',
-            email: `test-${uuid()}@test.com`,
-            password: 'test123',
-          })
-          .returningAll()
-          .executeTakeFirst()
-      : user
+    user === undefined ? await userFactory.create() : user
 
   // create a separate Yoga instance for tests so that we can customize the ctx
   const yoga = createYoga({
