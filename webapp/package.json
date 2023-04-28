@@ -56,6 +56,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "fishery": "^2.2.2",
     "jsdom": "^21.1.1",
     "madge": "^6.0.0",
     "mock-apollo-client": "^1.2.1",

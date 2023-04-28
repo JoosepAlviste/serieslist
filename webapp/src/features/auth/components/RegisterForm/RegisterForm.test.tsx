@@ -2,6 +2,7 @@ import { fireEvent, screen, waitFor } from '@testing-library/react'
 import React from 'react'
 import { describe, expect, it } from 'vitest'
 
+import { userFactory } from '@/features/users/user.factory'
 import { RegisterDocument } from '@/generated/gql/graphql'
 import { createMockResolver, fillForm, render } from '@/lib/testUtils'
 
@@ -11,11 +12,9 @@ describe('features/auth/components/RegisterForm', () => {
   it('allows registering', async () => {
     const [doc, mockResolver] = createMockResolver(RegisterDocument, {
       data: {
-        register: {
-          __typename: 'User',
-          id: '1',
+        register: userFactory.build({
           email: 'r@r.com',
-        },
+        }),
       },
     })
 

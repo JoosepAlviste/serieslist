@@ -2,6 +2,7 @@ import { fireEvent, screen, waitFor } from '@testing-library/react'
 import React from 'react'
 import { describe, expect, it } from 'vitest'
 
+import { userFactory } from '@/features/users/user.factory'
 import { LoginDocument } from '@/generated/gql/graphql'
 import { createMockResolver, fillForm, render } from '@/lib/testUtils'
 
@@ -11,11 +12,9 @@ describe('features/auth/components/LoginForm', () => {
   it('allows logging in', async () => {
     const [doc, mockResolver] = createMockResolver(LoginDocument, {
       data: {
-        login: {
-          __typename: 'User',
-          id: '1',
+        login: userFactory.build({
           email: 'r@r.com',
-        },
+        }),
       },
     })
 
