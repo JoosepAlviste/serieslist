@@ -1,6 +1,7 @@
 import { type FastifyRequest, type FastifyReply } from 'fastify'
 import { createYoga } from 'graphql-yoga'
 
+import { getAuthenticatedUserAndRefreshTokens } from './features/auth/auth.service'
 import { db } from './lib/db'
 import { app } from './lib/fastify'
 import { schema } from './schema'
@@ -17,10 +18,19 @@ export const yoga = createYoga<{
     error: (...args) => args.forEach((arg) => app.log.error(arg)),
   },
   schema,
-  context: (ctx): Context => ({
-    ...ctx,
-    db,
-  }),
+  context: async (ctx): Promise<Context> => {
+    const context = {
+      ...ctx,
+      db,
+    }
+
+    const currentUser = await getAuthenticatedUserAndRefreshTokens(context)
+
+    return {
+      ...context,
+      currentUser,
+    }
+  },
 })
 
 app.route({

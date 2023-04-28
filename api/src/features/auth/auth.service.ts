@@ -146,3 +146,50 @@ export const login = (ctx: Context) => async (input: LoginInput) => {
 
   return user
 }
+
+export const getAuthenticatedUserAndRefreshTokens = async (ctx: Context) => {
+  const { accessToken, refreshToken } = ctx.req.cookies
+
+  if (accessToken) {
+    const decodedAccessToken = jwt.verify(
+      accessToken,
+      config.secretToken,
+    ) as AccessTokenPayload
+
+    return await ctx.db
+      .selectFrom('user')
+      .selectAll()
+      .where('id', '=', decodedAccessToken.userId)
+      .executeTakeFirst()
+  }
+
+  if (refreshToken) {
+    const { sessionToken } = jwt.verify(
+      refreshToken,
+      config.secretToken,
+    ) as RefreshTokenPayload
+
+    const currentSession = await ctx.db
+      .selectFrom('session')
+      .selectAll()
+      .where('token', '=', sessionToken)
+      .executeTakeFirst()
+
+    if (currentSession?.isValid) {
+      const currentUser = await ctx.db
+        .selectFrom('user')
+        .selectAll()
+        .where('id', '=', currentSession.userId)
+        .executeTakeFirst()
+      if (!currentUser) {
+        return undefined
+      }
+
+      refreshTokens(ctx)(currentSession.token, currentUser.id)
+
+      return currentUser
+    }
+  }
+
+  return undefined
+}
