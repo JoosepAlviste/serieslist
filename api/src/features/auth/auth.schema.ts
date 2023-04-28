@@ -74,3 +74,13 @@ builder.mutationType({
     }),
   }),
 })
+
+builder.queryFields((t) => ({
+  me: t.field({
+    type: UserRef,
+    nullable: true,
+    resolve: (_parent, _args, ctx) => {
+      return ctx.currentUser
+    },
+  }),
+}))

@@ -16,6 +16,7 @@ const documents = {
     "\n        query HelloQuery {\n          hello\n        }\n      ": types.HelloQueryDocument,
     "\n          mutation register($input: RegisterInput!) {\n            register(input: $input) {\n              __typename\n              ... on User {\n                id\n                name\n                email\n              }\n              ... on InvalidInputError {\n                fieldErrors {\n                  path\n                  message\n                }\n              }\n            }\n          }\n        ": types.RegisterDocument,
     "\n          mutation login($input: LoginInput!) {\n            login(input: $input) {\n              __typename\n              ... on User {\n                id\n                name\n                email\n              }\n              ... on InvalidInputError {\n                fieldErrors {\n                  path\n                  message\n                }\n              }\n            }\n          }\n        ": types.LoginDocument,
+    "\n          query me {\n            me {\n              id\n              name\n              email\n            }\n          }\n        ": types.MeDocument,
 };
 
 /**
@@ -44,6 +45,10 @@ export function graphql(source: "\n          mutation register($input: RegisterI
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n          mutation login($input: LoginInput!) {\n            login(input: $input) {\n              __typename\n              ... on User {\n                id\n                name\n                email\n              }\n              ... on InvalidInputError {\n                fieldErrors {\n                  path\n                  message\n                }\n              }\n            }\n          }\n        "): (typeof documents)["\n          mutation login($input: LoginInput!) {\n            login(input: $input) {\n              __typename\n              ... on User {\n                id\n                name\n                email\n              }\n              ... on InvalidInputError {\n                fieldErrors {\n                  path\n                  message\n                }\n              }\n            }\n          }\n        "];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n          query me {\n            me {\n              id\n              name\n              email\n            }\n          }\n        "): (typeof documents)["\n          query me {\n            me {\n              id\n              name\n              email\n            }\n          }\n        "];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

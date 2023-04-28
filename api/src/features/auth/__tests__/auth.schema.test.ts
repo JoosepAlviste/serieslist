@@ -1,6 +1,8 @@
+import { type Selectable } from 'kysely'
 import { v4 as uuid } from 'uuid'
 import { it, describe, expect } from 'vitest'
 
+import { type User } from '@/generated/db'
 import { type LoginInput, type RegisterInput } from '@/generated/gql/graphql'
 import { graphql } from '@/generated/gql/index'
 import { db } from '@/lib/db'
@@ -210,6 +212,44 @@ describe('features/auth/auth.schema', () => {
         path: ['root'],
         message: 'Invalid credentials.',
       })
+    })
+  })
+
+  describe('me query', () => {
+    const executeQuery = (user: Selectable<User> | null) =>
+      executeOperation({
+        operation: graphql(`
+          query me {
+            me {
+              id
+              name
+              email
+            }
+          }
+        `),
+        user,
+      })
+
+    it('returns the currently authenticated user', async () => {
+      const authenticatedUser = await db
+        .insertInto('user')
+        .values({
+          email: `test-${uuid()}@dude.com`,
+          name: 'Test Dude',
+          password: await hashPassword('test123'),
+        })
+        .returningAll()
+        .executeTakeFirstOrThrow()
+
+      const res = await executeQuery(authenticatedUser)
+
+      expect(res.data?.me?.id).toEqual(String(authenticatedUser.id))
+    })
+
+    it('does not return any user if not authenticated', async () => {
+      const res = await executeQuery(null)
+
+      expect(res.data?.me).toBeNull()
     })
   })
 })
