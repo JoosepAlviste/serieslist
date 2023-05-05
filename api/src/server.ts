@@ -1,7 +1,7 @@
 import { type FastifyRequest, type FastifyReply } from 'fastify'
 import { createYoga } from 'graphql-yoga'
 
-import { getAuthenticatedUserAndRefreshTokens } from './features/auth/auth.service'
+import { getAuthenticatedUserAndRefreshTokens } from './features/auth'
 import { db } from './lib/db'
 import { app } from './lib/fastify'
 import { schema } from './schema'

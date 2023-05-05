@@ -1,6 +1,6 @@
 import { ZodError } from 'zod'
 
-import { UserRef } from '@/features/users/users.schema'
+import { UserRef } from '@/features/users'
 import { builder } from '@/schemaBuilder'
 
 import { login, logOut, register } from './auth.service'

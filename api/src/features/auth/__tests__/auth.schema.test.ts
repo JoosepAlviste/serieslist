@@ -2,7 +2,7 @@ import { type Selectable } from 'kysely'
 import { v4 as uuid } from 'uuid'
 import { it, describe, expect } from 'vitest'
 
-import { userFactory } from '@/features/users/user.factory'
+import { userFactory } from '@/features/users'
 import { type User } from '@/generated/db'
 import { type LoginInput, type RegisterInput } from '@/generated/gql/graphql'
 import { graphql } from '@/generated/gql/index'
