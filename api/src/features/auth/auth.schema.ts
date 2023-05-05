@@ -3,7 +3,7 @@ import { ZodError } from 'zod'
 import { UserRef } from '@/features/users/users.schema'
 import { builder } from '@/schemaBuilder'
 
-import { login, register } from './auth.service'
+import { login, logOut, register } from './auth.service'
 
 const RegisterInput = builder.inputType('RegisterInput', {
   fields: (t) => ({
@@ -70,6 +70,13 @@ builder.mutationType({
       },
       resolve: (_parent, args, ctx) => {
         return login(ctx)(args.input)
+      },
+    }),
+
+    logOut: t.field({
+      type: 'Boolean',
+      resolve: (_parent, _args, ctx) => {
+        return logOut(ctx)
       },
     }),
   }),

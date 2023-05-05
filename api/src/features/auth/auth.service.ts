@@ -8,6 +8,7 @@ import { config } from '@/config'
 import { type LoginInput, type RegisterInput } from '@/generated/gql/graphql'
 import { type Context } from '@/types/context'
 
+import { ACCESS_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from './constants'
 import { type AccessTokenPayload, type RefreshTokenPayload } from './types'
 
 export const hashPassword = async (password: string): Promise<string> => {
@@ -42,7 +43,7 @@ const refreshTokens =
   (ctx: Context) => (sessionToken: string) => (userId: number) => {
     const tokens = createTokens(sessionToken, userId)
 
-    void ctx.reply.setCookie('accessToken', tokens.accessToken, {
+    void ctx.reply.setCookie(ACCESS_TOKEN_COOKIE, tokens.accessToken, {
       httpOnly: true,
       path: '/',
       domain: 'localhost',
@@ -52,7 +53,7 @@ const refreshTokens =
 
     const now = new Date()
     const refreshExpires = now.setDate(now.getDate() + 30)
-    void ctx.reply.setCookie('refreshToken', tokens.refreshToken, {
+    void ctx.reply.setCookie(REFRESH_TOKEN_COOKIE, tokens.refreshToken, {
       httpOnly: true,
       path: '/',
       domain: 'localhost',
@@ -150,7 +151,10 @@ export const login = (ctx: Context) => async (input: LoginInput) => {
 }
 
 export const getAuthenticatedUserAndRefreshTokens = async (ctx: Context) => {
-  const { accessToken, refreshToken } = ctx.req.cookies
+  const {
+    [ACCESS_TOKEN_COOKIE]: accessToken,
+    [REFRESH_TOKEN_COOKIE]: refreshToken,
+  } = ctx.req.cookies
 
   if (accessToken) {
     const decodedAccessToken = jwt.verify(
@@ -194,4 +198,14 @@ export const getAuthenticatedUserAndRefreshTokens = async (ctx: Context) => {
   }
 
   return undefined
+}
+
+/**
+ * Logging the user out is as easy as clearing their auth tokens from the cookies.
+ */
+export const logOut = (ctx: Context) => {
+  void ctx.reply.clearCookie(ACCESS_TOKEN_COOKIE)
+  void ctx.reply.clearCookie(REFRESH_TOKEN_COOKIE)
+
+  return true
 }
