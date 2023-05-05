@@ -38,6 +38,16 @@ export const RegisterForm = () => {
         }
       }
     `),
+    {
+      update(cache, { data }) {
+        cache.modify({
+          fields: {
+            me: () =>
+              data?.register.__typename === 'User' ? data.register : undefined,
+          },
+        })
+      },
+    },
   )
 
   const {

@@ -1,8 +1,9 @@
 import { ApolloProvider } from '@apollo/client'
 import React from 'react'
 
-import logo from './favicon.ico'
-import { Link } from './Link'
+import { Navbar } from '@/components'
+import { AuthenticatedUserProvider } from '@/features/auth'
+
 import type { PageContext } from './types'
 import { PageContextProvider } from './usePageContext'
 
@@ -21,24 +22,12 @@ export function PageShell({
     <React.StrictMode>
       <ApolloProvider client={pageContext.apollo}>
         <PageContextProvider pageContext={pageContext}>
-          <Layout>
-            <Sidebar>
-              <Logo />
-              <Link className="navitem" href="/">
-                Home
-              </Link>
-              <Link className="navitem" href="/about">
-                About
-              </Link>
-              <Link className="navitem" href="/login">
-                Log in
-              </Link>
-              <Link className="navitem" href="/register">
-                Register
-              </Link>
-            </Sidebar>
-            <Content>{children}</Content>
-          </Layout>
+          <AuthenticatedUserProvider>
+            <Layout>
+              <Navbar />
+              <Content>{children}</Content>
+            </Layout>
+          </AuthenticatedUserProvider>
         </PageContextProvider>
       </ApolloProvider>
     </React.StrictMode>
@@ -59,23 +48,6 @@ function Layout({ children }: { children: React.ReactNode }) {
   )
 }
 
-function Sidebar({ children }: { children: React.ReactNode }) {
-  return (
-    <div
-      style={{
-        padding: 20,
-        flexShrink: 0,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        lineHeight: '1.8em',
-      }}
-    >
-      {children}
-    </div>
-  )
-}
-
 function Content({ children }: { children: React.ReactNode }) {
   return (
     <div
@@ -87,21 +59,6 @@ function Content({ children }: { children: React.ReactNode }) {
       }}
     >
       {children}
-    </div>
-  )
-}
-
-function Logo() {
-  return (
-    <div
-      style={{
-        marginTop: 20,
-        marginBottom: 10,
-      }}
-    >
-      <a href="/">
-        <img src={logo} height={64} width={64} alt="logo" />
-      </a>
     </div>
   )
 }
