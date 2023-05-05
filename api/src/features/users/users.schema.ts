@@ -1,9 +1,9 @@
+import { type Selectable } from 'kysely'
+
 import type { User } from '@/generated/db'
 import { builder } from '@/schemaBuilder'
 
-export type UserType = Pick<User, 'name' | 'email'> & {
-  id: number
-}
+export type UserType = Pick<Selectable<User>, 'id' | 'name' | 'email'>
 
 export const UserRef = builder.objectRef<UserType>('User')
 

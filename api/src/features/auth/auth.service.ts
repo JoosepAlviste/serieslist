@@ -39,7 +39,7 @@ export const createTokens = (sessionToken: string, userId: number) => {
  * Generate new access and refresh tokens for the user and save them into the cookies.
  */
 const refreshTokens =
-  (ctx: Context) => (sessionToken: string, userId: number) => {
+  (ctx: Context) => (sessionToken: string) => (userId: number) => {
     const tokens = createTokens(sessionToken, userId)
 
     void ctx.reply.setCookie('accessToken', tokens.accessToken, {
@@ -77,16 +77,28 @@ const logUserIn = (ctx: Context) => async (userId: number) => {
     .returning(['userId', 'token'])
     .executeTakeFirst()
 
-  refreshTokens(ctx)(sessionToken, userId)
+  refreshTokens(ctx)(sessionToken)(userId)
+}
+
+const createUser = (ctx: Context) => async (input: RegisterInput) => {
+  const password = await hashPassword(input.password)
+
+  return ctx.db
+    .insertInto('user')
+    .values({
+      name: input.name,
+      email: input.email,
+      password,
+    })
+    .returning(['id', 'name', 'email'])
+    .executeTakeFirstOrThrow()
 }
 
 export const register = (ctx: Context) => async (input: RegisterInput) => {
-  const { name, password, email } = input
-
   const existingUser = await ctx.db
     .selectFrom('user')
     .select('id')
-    .where('email', '=', email)
+    .where('email', '=', input.email)
     .executeTakeFirst()
   if (existingUser) {
     throw new ZodError([
@@ -98,17 +110,7 @@ export const register = (ctx: Context) => async (input: RegisterInput) => {
     ])
   }
 
-  const hashedPassword = await hashPassword(password)
-
-  const user = await ctx.db
-    .insertInto('user')
-    .values({
-      name,
-      email,
-      password: hashedPassword,
-    })
-    .returning(['id', 'name', 'email'])
-    .executeTakeFirstOrThrow()
+  const user = await createUser(ctx)(input)
 
   await logUserIn(ctx)(user.id)
 
@@ -185,7 +187,7 @@ export const getAuthenticatedUserAndRefreshTokens = async (ctx: Context) => {
         return undefined
       }
 
-      refreshTokens(ctx)(currentSession.token, currentUser.id)
+      refreshTokens(ctx)(currentSession.token)(currentUser.id)
 
       return currentUser
     }
