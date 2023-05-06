@@ -17,7 +17,7 @@ describe('features/auth/components/RegisterForm', () => {
       },
     })
 
-    render(<RegisterForm />, {
+    await render(<RegisterForm />, {
       requestMocks: [[doc, mockResolver]],
     })
 

@@ -14,7 +14,7 @@ describe('pages/index/index', () => {
       },
     })
 
-    render(<Page />, {
+    await render(<Page />, {
       requestMocks: [[doc, mockResolver]],
     })
 

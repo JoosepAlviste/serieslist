@@ -17,7 +17,7 @@ describe('features/auth/components/LoginForm', () => {
       },
     })
 
-    render(<LoginForm />, {
+    await render(<LoginForm />, {
       requestMocks: [[doc, mockResolver]],
     })
 

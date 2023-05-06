@@ -5,6 +5,7 @@ import type {
   VariablesOf,
 } from '@graphql-typed-document-node/core'
 import {
+  act,
   fireEvent,
   render as baseRender,
   screen,
@@ -13,7 +14,15 @@ import {
 import { createMockClient, type RequestHandler } from 'mock-apollo-client'
 import React, { type ReactElement } from 'react'
 
-import { type LiterallyAnything } from '@/types/utils'
+import {
+  AuthenticatedUserProvider,
+  type AuthenticatedUser,
+} from '@/features/auth'
+import { userFactory } from '@/features/users/user.factory'
+import { CurrentUserDocument } from '@/generated/gql/graphql'
+import { PageContextProvider } from '@/renderer/usePageContext'
+import { type NotWorthIt, type LiterallyAnything } from '@/types/utils'
+import { wait } from '@/utils/misc'
 
 type ExtraRenderOptions = {
   /**
@@ -26,15 +35,28 @@ type ExtraRenderOptions = {
    * Use `createMockResolver` to easily create this in a type-safe manner.
    */
   requestMocks?: [DocumentNode, RequestHandler][]
+
+  /**
+   * The currently authenticated user. If `null` is passed in, then there is no
+   * user.
+   */
+  authenticatedUser?: AuthenticatedUser | null
+
+  /**
+   * Whether to skip the `await wait()` after rendering.
+   */
+  skipWaiting?: boolean
 }
 
 /**
  * A wrapper around RTL `render` for setting up mocks.
  */
-export const render = (
+export const render = async (
   ui: ReactElement,
   {
     requestMocks = [],
+    authenticatedUser,
+    skipWaiting = false,
     ...options
   }: Omit<RenderOptions, 'queries'> & ExtraRenderOptions = {},
 ) => {
@@ -42,14 +64,48 @@ export const render = (
     connectToDevTools: false,
   })
 
+  const authenticatedUserMock = vi.fn().mockResolvedValue({
+    data: {
+      me:
+        authenticatedUser === undefined
+          ? userFactory.build({
+              name: 'Test Dude',
+              email: 'test@serieslist.com',
+            })
+          : authenticatedUser,
+    },
+  })
+  mockClient.setRequestHandler(CurrentUserDocument, authenticatedUserMock)
+
   requestMocks.forEach(([documentNode, handler]) => {
     mockClient.setRequestHandler(documentNode, handler)
   })
 
-  return baseRender(
-    <ApolloProvider client={mockClient}>{ui}</ApolloProvider>,
+  const utils = baseRender(
+    <ApolloProvider client={mockClient}>
+      <PageContextProvider
+        pageContext={
+          // The page context is required for some components.
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          {
+            urlPathname: '',
+            routeParams: {},
+          } as NotWorthIt
+        }
+      >
+        <AuthenticatedUserProvider>{ui}</AuthenticatedUserProvider>
+      </PageContextProvider>
+    </ApolloProvider>,
     options,
   )
+
+  if (!skipWaiting) {
+    await act(() => {
+      return wait()
+    })
+  }
+
+  return utils
 }
 
 /**

@@ -9,9 +9,9 @@ import React, {
 import { graphql } from '@/generated/gql'
 import { type CurrentUserQuery } from '@/generated/gql/graphql'
 
-type AuthenticatedUser = NonNullable<CurrentUserQuery['me']>
+export type AuthenticatedUser = NonNullable<CurrentUserQuery['me']>
 
-const AuthenticatedUserContext = createContext<{
+export const AuthenticatedUserContext = createContext<{
   currentUser: AuthenticatedUser | undefined
   logOut: () => Promise<void>
 }>({
