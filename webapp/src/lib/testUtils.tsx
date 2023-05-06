@@ -12,7 +12,6 @@ import {
 } from '@testing-library/react'
 import { createMockClient, type RequestHandler } from 'mock-apollo-client'
 import React, { type ReactElement } from 'react'
-import { vi } from 'vitest'
 
 import { type LiterallyAnything } from '@/types/utils'
 

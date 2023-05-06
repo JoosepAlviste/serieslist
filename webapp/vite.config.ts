@@ -17,6 +17,7 @@ export default defineConfig({
   },
   envDir: '..',
   test: {
+    globals: true,
     dir: path.resolve(__dirname, 'src'),
     environment: 'jsdom',
     coverage: {
