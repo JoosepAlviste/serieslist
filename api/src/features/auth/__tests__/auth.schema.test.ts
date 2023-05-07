@@ -203,9 +203,15 @@ describe('features/auth/auth.schema', () => {
         operation: graphql(`
           query me {
             me {
-              id
-              name
-              email
+              __typename
+              ... on User {
+                id
+                name
+                email
+              }
+              ... on UnauthorizedError {
+                message
+              }
             }
           }
         `),
@@ -217,13 +223,17 @@ describe('features/auth/auth.schema', () => {
 
       const res = await executeQuery(authenticatedUser)
 
-      expect(res.data?.me?.id).toEqual(String(authenticatedUser.id))
+      const resUser = checkErrors(res.data?.me)
+
+      expect(resUser.id).toEqual(String(authenticatedUser.id))
     })
 
     it('does not return any user if not authenticated', async () => {
       const res = await executeQuery(null)
 
-      expect(res.data?.me).toBeNull()
+      const resUser = expectErrors(res.data?.me)
+
+      expect(resUser.__typename).toBe('UnauthorizedError')
     })
   })
 })

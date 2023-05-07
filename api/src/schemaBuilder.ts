@@ -1,16 +1,35 @@
 import SchemaBuilder from '@pothos/core'
 import ErrorsPlugin from '@pothos/plugin-errors'
+import ScopeAuthPlugin from '@pothos/plugin-scope-auth'
 import TracingPlugin, {
   wrapResolver,
   isRootField,
 } from '@pothos/plugin-tracing'
 import ValidationPlugin from '@pothos/plugin-validation'
 
+import { UnauthorizedError } from './lib/errors'
 import { app } from './lib/fastify'
-import { type Context } from './types/context'
+import { type AuthenticatedContext, type Context } from './types/context'
 
-export const builder = new SchemaBuilder<{ Context: Context }>({
-  plugins: [TracingPlugin, ErrorsPlugin, ValidationPlugin],
+export const builder = new SchemaBuilder<{
+  Context: Context
+  AuthScopes: {
+    authenticated: boolean
+    admin: boolean
+  }
+  AuthContexts: {
+    authenticated: AuthenticatedContext
+    admin: AuthenticatedContext
+  }
+}>({
+  plugins: [TracingPlugin, ErrorsPlugin, ScopeAuthPlugin, ValidationPlugin],
+  authScopes: (context) => ({
+    authenticated: !!context.currentUser,
+    admin: !!context.currentUser?.isAdmin,
+  }),
+  scopeAuthOptions: {
+    unauthorizedError: () => new UnauthorizedError(),
+  },
   errorOptions: {
     defaultTypes: [],
     directResult: true,

@@ -11,3 +11,7 @@ export type Context = Omit<YogaInitialContext, 'request'> & {
   reply: FastifyReply
   currentUser?: Selectable<User>
 }
+
+export type AuthenticatedContext = Omit<Context, 'currentUser'> & {
+  currentUser: NonNullable<Context['currentUser']>
+}

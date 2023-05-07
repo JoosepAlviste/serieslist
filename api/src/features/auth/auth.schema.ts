@@ -1,6 +1,7 @@
 import { ZodError } from 'zod'
 
 import { UserRef } from '@/features/users'
+import { UnauthorizedError } from '@/lib/errors'
 import { builder } from '@/schemaBuilder'
 
 import { login, logOut, register } from './auth.service'
@@ -83,9 +84,15 @@ builder.mutationType({
 })
 
 builder.queryFields((t) => ({
-  me: t.field({
+  me: t.authField({
     type: UserRef,
-    nullable: true,
+    nullable: false,
+    authScopes: {
+      authenticated: true,
+    },
+    errors: {
+      types: [UnauthorizedError],
+    },
     resolve: (_parent, _args, ctx) => {
       return ctx.currentUser
     },

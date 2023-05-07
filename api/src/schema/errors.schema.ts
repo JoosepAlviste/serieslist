@@ -1,5 +1,7 @@
 import { ZodError, type ZodFormattedError } from 'zod'
 
+import { UnauthorizedError } from '@/lib/errors'
+
 import { builder } from '../schemaBuilder'
 
 export const ErrorInterfaceRef = builder
@@ -67,4 +69,9 @@ builder.objectType(ZodError, {
       resolve: (err) => flattenErrors(err.format()),
     }),
   }),
+})
+
+builder.objectType(UnauthorizedError, {
+  name: 'UnauthorizedError',
+  interfaces: [ErrorInterfaceRef],
 })

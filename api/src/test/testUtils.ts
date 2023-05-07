@@ -72,7 +72,11 @@ export async function executeOperation<TResult, TVariables>(
   return (await response.json()) as ExecutionResult<TResult>
 }
 
-const graphqlErrors = ['BaseError', 'InvalidInputError'] as const
+const graphqlErrors = [
+  'BaseError',
+  'InvalidInputError',
+  'UnauthorizedError',
+] as const
 type GraphqlErrors = (typeof graphqlErrors)[number]
 
 /**
