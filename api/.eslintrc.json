@@ -58,6 +58,14 @@
           "caseInsensitive": true
         }
       }
+    ],
+    "no-restricted-imports": [
+      "error",
+      {
+        "patterns": [
+          "@/features/*/*"
+        ]
+      }
     ]
   },
   "overrides": [
@@ -77,6 +85,16 @@
       ],
       "rules": {
         "@typescript-eslint/no-non-null-assertion": "off"
+      }
+    },
+    {
+      "files": [
+        "src/schema.ts"
+      ],
+      "rules": {
+        "no-restricted-imports": [
+          "off"
+        ]
       }
     }
   ]
