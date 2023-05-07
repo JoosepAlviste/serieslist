@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react'
 import React from 'react'
 
-import { userFactory } from '@/features/users/user.factory'
+import { userFactory } from '@/features/users'
 import { render } from '@/lib/testUtils'
 
 import { Navbar } from './Navbar'

@@ -69,6 +69,14 @@
           "caseInsensitive": true
         }
       }
+    ],
+    "no-restricted-imports": [
+      "error",
+      {
+        "patterns": [
+          "@/features/*/*"
+        ]
+      }
     ]
   },
   "overrides": [
