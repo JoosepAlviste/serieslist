@@ -8,8 +8,12 @@ import React, {
 
 import { graphql } from '@/generated/gql'
 import { type CurrentUserQuery } from '@/generated/gql/graphql'
+import { usePageContext } from '@/renderer/usePageContext'
 
-export type AuthenticatedUser = NonNullable<CurrentUserQuery['me']>
+export type AuthenticatedUser = Exclude<
+  NonNullable<CurrentUserQuery['me']>,
+  { __typename: 'UnauthorizedError' }
+>
 
 export const AuthenticatedUserContext = createContext<{
   currentUser: AuthenticatedUser | undefined
@@ -26,6 +30,8 @@ type AuthenticatedUserProviderProps = {
 export const AuthenticatedUserProvider: FC<AuthenticatedUserProviderProps> = ({
   children,
 }) => {
+  const context = usePageContext()
+
   const { data, refetch } = useQuery(
     graphql(`
       query currentUser {
@@ -39,6 +45,12 @@ export const AuthenticatedUserProvider: FC<AuthenticatedUserProviderProps> = ({
       }
     `),
   )
+
+  const currentUser = data?.me
+    ? data.me.__typename === 'User'
+      ? data.me
+      : undefined
+    : context.currentUser
 
   const [logOutMutate] = useMutation(
     graphql(`
@@ -56,7 +68,7 @@ export const AuthenticatedUserProvider: FC<AuthenticatedUserProviderProps> = ({
   return (
     <AuthenticatedUserContext.Provider
       value={{
-        currentUser: data?.me ?? undefined,
+        currentUser,
         logOut,
       }}
     >

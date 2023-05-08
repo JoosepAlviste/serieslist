@@ -64,7 +64,7 @@ export type MutationRegisterResult = InvalidInputError | User;
 export type Query = {
   __typename?: 'Query';
   hello: Scalars['String'];
-  me?: Maybe<User>;
+  me: QueryMeResult;
 };
 
 
@@ -72,10 +72,17 @@ export type QueryHelloArgs = {
   name?: InputMaybe<Scalars['String']>;
 };
 
+export type QueryMeResult = UnauthorizedError | User;
+
 export type RegisterInput = {
   email: Scalars['String'];
   name: Scalars['String'];
   password: Scalars['String'];
+};
+
+export type UnauthorizedError = Error & {
+  __typename?: 'UnauthorizedError';
+  message: Scalars['String'];
 };
 
 export type User = {
@@ -102,7 +109,7 @@ export type RegisterMutation = { __typename?: 'Mutation', register: { __typename
 export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CurrentUserQuery = { __typename?: 'Query', me?: { __typename: 'User', id: string, email: string } | null };
+export type CurrentUserQuery = { __typename?: 'Query', me: { __typename: 'UnauthorizedError' } | { __typename: 'User', id: string, email: string } };
 
 export type LogOutMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -112,7 +119,7 @@ export type LogOutMutation = { __typename?: 'Mutation', logOut: boolean };
 export type AboutPageQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AboutPageQuery = { __typename?: 'Query', me?: { __typename: 'User', id: string, email: string } | null };
+export type AboutPageQuery = { __typename?: 'Query', me: { __typename: 'UnauthorizedError' } | { __typename: 'User', id: string, email: string } };
 
 export type IndexPageQueryVariables = Exact<{ [key: string]: never; }>;
 

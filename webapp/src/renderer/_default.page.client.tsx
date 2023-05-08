@@ -2,6 +2,7 @@ import { type NormalizedCacheObject, type ApolloClient } from '@apollo/client'
 import React from 'react'
 import { hydrateRoot, createRoot, type Root } from 'react-dom/client'
 
+import { CurrentUserDocument } from '@/generated/gql/graphql'
 import { makeApolloClient } from '@/lib/apollo'
 
 import { getPageTitle } from './getPageTitle'
@@ -31,6 +32,14 @@ export function render(pageContext: PageContextClient) {
     makeApolloClient({
       initialState: pageContext.apolloInitialState,
     })
+  // Set the currentUser in the PageContext from Apollo Cache. It's probably
+  // already set in the cache in case of client-side page navigation.
+  // Client-side page navigation does NOT keep the pageContext.
+  const currentUser = apollo.readQuery({
+    query: CurrentUserDocument,
+  })?.me
+  pageContext.currentUser ??=
+    currentUser?.__typename === 'User' ? currentUser : undefined
 
   const page = (
     <PageShell pageContext={pageContext}>

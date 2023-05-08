@@ -6,7 +6,12 @@ import logoUrl from './favicon.ico'
 import { PageShell } from './PageShell'
 import type { PageContextServer } from './types'
 
-export const passToClient = ['pageProps', 'documentProps', 'apolloInitialState']
+export const passToClient = [
+  'pageProps',
+  'documentProps',
+  'apolloInitialState',
+  'currentUser',
+]
 
 export async function render(pageContext: PageContextServer) {
   const { Page, pageProps } = pageContext
