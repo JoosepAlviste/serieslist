@@ -1,5 +1,6 @@
 import { useMutation } from '@apollo/client'
 import React from 'react'
+import { navigate } from 'vite-plugin-ssr/client/router'
 import { z } from 'zod'
 
 import { Field } from '@/components'
@@ -67,7 +68,7 @@ export const RegisterForm = () => {
 
     const { register } = res.data ?? {}
     if (checkErrors(register)) {
-      // TODO: Registering was successful, redirect
+      await navigate('/')
     }
   })
 

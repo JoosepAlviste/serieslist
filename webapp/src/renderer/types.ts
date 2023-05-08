@@ -20,6 +20,7 @@ export type PageContextCustom = {
   apollo: ApolloClient<NormalizedCacheObject>
   apolloInitialState: NormalizedCacheObject
   currentUser?: AuthenticatedUser
+  redirectTo?: string
 }
 
 export type PageContextServer = PageContextBuiltIn<Page> & PageContextCustom

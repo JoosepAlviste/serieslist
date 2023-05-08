@@ -5,6 +5,7 @@ import React, {
   type FC,
   type ReactNode,
 } from 'react'
+import { navigate } from 'vite-plugin-ssr/client/router'
 
 import { graphql } from '@/generated/gql'
 import { type CurrentUserQuery } from '@/generated/gql/graphql'
@@ -63,6 +64,8 @@ export const AuthenticatedUserProvider: FC<AuthenticatedUserProviderProps> = ({
   const logOut = async () => {
     await logOutMutate()
     await refetch()
+
+    await navigate(window.location.pathname)
   }
 
   return (

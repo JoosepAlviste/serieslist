@@ -57,8 +57,13 @@ async function startServer() {
     }
     const pageContext = await renderPage(pageContextInit)
 
-    const { httpResponse } = pageContext
-    if (!httpResponse) return next()
+    const { httpResponse, redirectTo } = pageContext
+    if (redirectTo) {
+      return res.redirect(307, redirectTo)
+    } else if (!httpResponse) {
+      return next()
+    }
+
     const { body, statusCode, contentType, earlyHints } = httpResponse
 
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
