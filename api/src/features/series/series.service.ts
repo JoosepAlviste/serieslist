@@ -11,7 +11,7 @@ export const searchSeries =
 
     const existingSeries = await ctx.db
       .selectFrom('series')
-      .select(['id', 'imdbId', 'title'])
+      .select(['id', 'imdbId', 'title', 'poster', 'startYear', 'endYear'])
       .where(
         'imdbId',
         'in',
@@ -30,13 +30,20 @@ export const searchSeries =
     const newSeries = await ctx.db
       .insertInto('series')
       .values(
-        newSeriesToAdd.map((series) => ({
-          imdbId: series.imdbID,
-          title: series.Title,
-          startYear: 2000,
-        })),
+        newSeriesToAdd.map((series) => {
+          // NOTE: This is not a regular dash, but an en-dash
+          const [startYear, endYear] = series.Year.split('–')
+
+          return {
+            imdbId: series.imdbID,
+            title: series.Title,
+            startYear: parseInt(startYear, 10),
+            endYear: endYear ? parseInt(endYear, 10) : null,
+            poster: series.Poster,
+          }
+        }),
       )
-      .returning(['id', 'imdbId', 'title'])
+      .returning(['id', 'imdbId', 'title', 'poster', 'startYear', 'endYear'])
       .execute()
 
     return [...existingSeries, ...newSeries]

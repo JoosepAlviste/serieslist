@@ -30,6 +30,9 @@ describe('features/series/series.schema', () => {
               id
               title
               imdbId
+              poster
+              startYear
+              endYear
             }
           }
         `),
@@ -45,7 +48,7 @@ describe('features/series/series.schema', () => {
         Search: [
           {
             Title: 'Testing Series',
-            Year: '2022-2023',
+            Year: '2022–2023',
             imdbID: 'tt1337',
             Poster: 'foo.jpg',
           },
@@ -63,6 +66,9 @@ describe('features/series/series.schema', () => {
         expect.objectContaining({
           title: 'Testing Series',
           imdbId: 'tt1337',
+          poster: 'foo.jpg',
+          startYear: 2022,
+          endYear: 2023,
         }),
       )
     })
@@ -85,7 +91,7 @@ describe('features/series/series.schema', () => {
         Search: [
           {
             Title: 'Testing Series',
-            Year: '2022-2023',
+            Year: '2022–2023',
             imdbID: 'tt1337',
             Poster: 'foo.jpg',
           },
@@ -96,12 +102,15 @@ describe('features/series/series.schema', () => {
 
       const savedSeries = await db
         .selectFrom('series')
-        .select(['title'])
+        .select(['title', 'poster', 'startYear', 'endYear'])
         .where('imdbId', '=', 'tt1337')
         .executeTakeFirst()
 
       expect(savedSeries).toEqual({
         title: 'Testing Series',
+        startYear: 2022,
+        endYear: 2023,
+        poster: 'foo.jpg',
       })
     })
 
@@ -118,7 +127,7 @@ describe('features/series/series.schema', () => {
         Search: [
           {
             Title: title,
-            Year: '2022-2023',
+            Year: '2022–2023',
             imdbID: imdbId,
             Poster: 'foo.jpg',
           },
