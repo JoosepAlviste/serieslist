@@ -1,6 +1,6 @@
 import { Factory } from 'fishery'
 import { type Selectable } from 'kysely'
-import { v4 as uuid } from 'uuid'
+import { nanoid } from 'nanoid'
 
 import { type User } from '@/generated/db'
 import { db } from '@/lib/db'
@@ -18,7 +18,7 @@ export const userFactory = Factory.define<Selectable<User>>(
         .executeTakeFirstOrThrow()
     })
 
-    const uid = uuid()
+    const uid = nanoid()
 
     return {
       id: sequence,

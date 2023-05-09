@@ -1,5 +1,5 @@
 import { type Selectable } from 'kysely'
-import { v4 as uuid } from 'uuid'
+import { nanoid } from 'nanoid'
 import { it, describe, expect } from 'vitest'
 
 import { userFactory } from '@/features/users'
@@ -35,7 +35,7 @@ describe('features/auth/auth.schema', () => {
         `),
         variables: {
           input: {
-            email: `test${uuid()}@test.com`,
+            email: `test${nanoid()}@test.com`,
             name: 'Test Dude',
             password: 'test123',
             ...input,
@@ -45,7 +45,7 @@ describe('features/auth/auth.schema', () => {
       })
 
     it('allows registering a user', async () => {
-      const uid = uuid()
+      const uid = nanoid()
 
       const result = await executeMutation({
         email: `test${uid}@test.com`,
@@ -95,7 +95,7 @@ describe('features/auth/auth.schema', () => {
     })
 
     it('requires a unique email', async () => {
-      const uid = uuid()
+      const uid = nanoid()
 
       await userFactory.create({
         email: `test${uid}@test.com`,
@@ -136,7 +136,7 @@ describe('features/auth/auth.schema', () => {
         `),
         variables: {
           input: {
-            email: `test${uuid()}@test.com`,
+            email: `test${nanoid()}@test.com`,
             password: 'test123',
             ...input,
           },
@@ -145,7 +145,7 @@ describe('features/auth/auth.schema', () => {
       })
 
     it('allows logging in a user with the correct credentials', async () => {
-      const email = `test-${uuid()}@test.com`
+      const email = `test-${nanoid()}@test.com`
 
       await userFactory.create({
         email,
@@ -162,7 +162,7 @@ describe('features/auth/auth.schema', () => {
 
     it('requires a correct email', async () => {
       await userFactory.create({
-        email: `test${uuid()}@test.com`,
+        email: `test${nanoid()}@test.com`,
       })
 
       const res = await executeMutation({
@@ -178,7 +178,7 @@ describe('features/auth/auth.schema', () => {
     })
 
     it('requires a correct password', async () => {
-      const email = `test${uuid()}@test.com`
+      const email = `test${nanoid()}@test.com`
 
       await userFactory.create({
         password: await hashPassword('test123'),

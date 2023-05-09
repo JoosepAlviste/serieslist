@@ -51,7 +51,6 @@
     "@types/jsonwebtoken": "^9.0.1",
     "@types/node": "^18.15.3",
     "@types/pg": "^8.6.6",
-    "@types/uuid": "^9.0.1",
     "@typescript-eslint/eslint-plugin": "^5.55.0",
     "@typescript-eslint/parser": "^5.55.0",
     "@vitest/coverage-c8": "^0.29.3",
@@ -64,6 +63,7 @@
     "fishery": "^2.2.2",
     "kysely-codegen": "^0.10.0",
     "madge": "^6.0.0",
+    "nanoid": "^4.0.2",
     "nock": "^13.3.1",
     "pino-pretty": "^10.0.0",
     "prettier": "^2.8.4",
@@ -71,7 +71,6 @@
     "rimraf": "^4.4.0",
     "tsx": "^3.12.5",
     "typescript": "^4.9.5",
-    "uuid": "^9.0.0",
     "vitest": "^0.29.3"
   },
   "license": "MIT",
