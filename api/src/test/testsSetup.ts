@@ -1,7 +1,10 @@
 import { sql } from 'kysely'
+import nock from 'nock'
 import { beforeAll } from 'vitest'
 
 import { db } from '@/lib/db'
+
+nock.back.setMode('lockdown')
 
 const clearDatabase = async () => {
   const tables = await sql<{

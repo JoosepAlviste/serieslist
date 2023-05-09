@@ -17,6 +17,9 @@ cd ..
 ./bin/generate-secret-token.sh
 ```
 
+Next, [generate a new OMDb API token](https://www.omdbapi.com/apikey.aspx) and 
+add it into the [`.env`](.env) file.
+
 
 ## Production
 

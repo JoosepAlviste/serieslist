@@ -38,6 +38,7 @@
     "graphql-yoga": "^3.7.2",
     "jsonwebtoken": "^9.0.0",
     "kysely": "^0.24.2",
+    "node-fetch": "^3.3.1",
     "pg": "^8.10.0",
     "zod": "^3.21.4"
   },
@@ -63,6 +64,7 @@
     "fishery": "^2.2.2",
     "kysely-codegen": "^0.10.0",
     "madge": "^6.0.0",
+    "nock": "^13.3.1",
     "pino-pretty": "^10.0.0",
     "prettier": "^2.8.4",
     "resolve-tspaths": "^0.8.8",

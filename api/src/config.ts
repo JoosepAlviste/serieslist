@@ -31,4 +31,9 @@ export const config = {
       process.env.VITE_APP_PORT ?? 3000
     }`,
   },
+
+  omdb: {
+    url: 'http://www.omdbapi.com',
+    apiKey: process.env.OMDB_API_KEY!,
+  },
 }
