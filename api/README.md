@@ -24,5 +24,5 @@ This also runs `kysely-codegen` to generate TypeScript types for the database.
 To add a new migration:
 
 ```sh
-npm run migration -- createUserTable
+npm run migration createUserTable
 ```

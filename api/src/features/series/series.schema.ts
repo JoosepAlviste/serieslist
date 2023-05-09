@@ -35,8 +35,8 @@ builder.queryFields((t) => ({
     authScopes: {
       authenticated: true,
     },
-    resolve(_parent, args) {
-      return searchSeries(args.input)
+    resolve(_parent, args, ctx) {
+      return searchSeries(ctx)(args.input)
     },
   }),
 }))
