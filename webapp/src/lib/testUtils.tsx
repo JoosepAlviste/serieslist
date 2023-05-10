@@ -20,7 +20,7 @@ import {
 } from '@/features/auth'
 import { userFactory } from '@/features/users'
 import { CurrentUserDocument } from '@/generated/gql/graphql'
-import { PageContextProvider } from '@/renderer/usePageContext'
+import { PageContextProvider } from '@/hooks'
 import { type NotWorthIt, type LiterallyAnything } from '@/types/utils'
 import { wait } from '@/utils/misc'
 

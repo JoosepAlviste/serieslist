@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { usePageContext } from './usePageContext'
+import { usePageContext } from '@/hooks'
 
 export function Link(props: {
   href?: string

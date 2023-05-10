@@ -9,7 +9,7 @@ import { navigate } from 'vite-plugin-ssr/client/router'
 
 import { graphql } from '@/generated/gql'
 import { type CurrentUserQuery } from '@/generated/gql/graphql'
-import { usePageContext } from '@/renderer/usePageContext'
+import { usePageContext } from '@/hooks'
 
 export type AuthenticatedUser = Exclude<
   NonNullable<CurrentUserQuery['me']>,

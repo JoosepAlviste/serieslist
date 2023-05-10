@@ -3,9 +3,9 @@ import React from 'react'
 
 import { Navbar } from '@/components'
 import { AuthenticatedUserProvider } from '@/features/auth'
+import { PageContextProvider } from '@/hooks'
 
 import type { PageContext } from './types'
-import { PageContextProvider } from './usePageContext'
 
 import './reset.css'
 import './global.css'
