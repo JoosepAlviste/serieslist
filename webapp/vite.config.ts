@@ -3,6 +3,7 @@ import path from 'path'
 import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin'
 import react from '@vitejs/plugin-react'
 import ssr from 'vite-plugin-ssr/plugin'
+import svgr from 'vite-plugin-svgr'
 import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
@@ -13,6 +14,7 @@ export default defineConfig({
     }),
     react(),
     ssr(),
+    svgr(),
   ],
   resolve: {
     alias: {
