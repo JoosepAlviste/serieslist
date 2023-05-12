@@ -6,7 +6,14 @@ import ssr from 'vite-plugin-ssr/plugin'
 import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
-  plugins: [vanillaExtractPlugin(), react(), ssr()],
+  plugins: [
+    vanillaExtractPlugin({
+      // Avoid class names not matching from SSR and hydration
+      emitCssInSsr: true,
+    }),
+    react(),
+    ssr(),
+  ],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
