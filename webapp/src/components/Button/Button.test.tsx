@@ -7,7 +7,11 @@ describe('components/Button', () => {
   it('allows clicking on the button', () => {
     const onClickMock = vi.fn()
 
-    render(<Button onClick={onClickMock}>Hello</Button>)
+    render(
+      <Button onClick={onClickMock} variant="ghost">
+        Hello
+      </Button>,
+    )
 
     fireEvent.click(
       screen.getByRole('button', {

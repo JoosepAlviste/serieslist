@@ -32,5 +32,6 @@ export default defineConfig({
     coverage: {
       all: true,
     },
+    setupFiles: ['./src/lib/testsSetup.ts'],
   },
 })

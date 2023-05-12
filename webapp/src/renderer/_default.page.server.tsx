@@ -2,6 +2,8 @@ import { renderToStringWithData } from '@apollo/client/react/ssr'
 import React from 'react'
 import { escapeInject, dangerouslySkipEscape } from 'vite-plugin-ssr'
 
+import { themeClass } from '@/styles/theme.css'
+
 import logoUrl from './favicon.ico'
 import { PageShell } from './PageShell'
 import type { PageContextServer } from './types'
@@ -41,8 +43,12 @@ export async function render(pageContext: PageContextServer) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="description" content="${desc}" />
         <title>${title}</title>
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
       </head>
-      <body>
+      <body class="${themeClass}">
         <div id="page-view">${dangerouslySkipEscape(pageHtml)}</div>
       </body>
     </html>`

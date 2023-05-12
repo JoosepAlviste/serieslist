@@ -15,7 +15,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
 const documents = {
     "\n      mutation login($input: LoginInput!) {\n        login(input: $input) {\n          __typename\n          ... on User {\n            id\n            email\n          }\n          ... on InvalidInputError {\n            fieldErrors {\n              path\n              message\n            }\n            message\n          }\n        }\n      }\n    ": types.LoginDocument,
     "\n      mutation register($input: RegisterInput!) {\n        register(input: $input) {\n          __typename\n          ... on User {\n            id\n            email\n          }\n          ... on InvalidInputError {\n            fieldErrors {\n              path\n              message\n            }\n            message\n          }\n        }\n      }\n    ": types.RegisterDocument,
-    "\n      query currentUser {\n        me {\n          __typename\n          ... on User {\n            id\n            email\n          }\n        }\n      }\n    ": types.CurrentUserDocument,
+    "\n      query currentUser {\n        me {\n          __typename\n          ... on User {\n            id\n            email\n            name\n          }\n        }\n      }\n    ": types.CurrentUserDocument,
     "\n      mutation logOut {\n        logOut\n      }\n    ": types.LogOutDocument,
     "\n      query aboutPage {\n        me {\n          __typename\n          ... on User {\n            id\n            email\n          }\n        }\n      }\n    ": types.AboutPageDocument,
     "\n      query indexPage {\n        hello\n      }\n    ": types.IndexPageDocument,
@@ -46,7 +46,7 @@ export function graphql(source: "\n      mutation register($input: RegisterInput
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n      query currentUser {\n        me {\n          __typename\n          ... on User {\n            id\n            email\n          }\n        }\n      }\n    "): (typeof documents)["\n      query currentUser {\n        me {\n          __typename\n          ... on User {\n            id\n            email\n          }\n        }\n      }\n    "];
+export function graphql(source: "\n      query currentUser {\n        me {\n          __typename\n          ... on User {\n            id\n            email\n            name\n          }\n        }\n      }\n    "): (typeof documents)["\n      query currentUser {\n        me {\n          __typename\n          ... on User {\n            id\n            email\n            name\n          }\n        }\n      }\n    "];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

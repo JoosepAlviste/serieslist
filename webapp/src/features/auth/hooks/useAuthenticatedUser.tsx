@@ -41,6 +41,7 @@ export const AuthenticatedUserProvider: FC<AuthenticatedUserProviderProps> = ({
           ... on User {
             id
             email
+            name
           }
         }
       }

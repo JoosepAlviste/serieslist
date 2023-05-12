@@ -5,7 +5,7 @@ export const label = style({
 })
 
 export const labelText = style({
-  marginBottom: 4,
+  marginBottom: '0.25rem',
 })
 
 export const input = style({

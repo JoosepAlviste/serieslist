@@ -1,4 +1,6 @@
 export * from './Field'
 export * from './Button'
-export * from './Navbar'
+export * from './NavSidebar'
+export * from './Link'
+export * from './Header'
 export * from './Icons'
