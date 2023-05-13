@@ -1,5 +1,6 @@
 import { style } from '@vanilla-extract/css'
 
+import { iconColorVar } from '@/styles/cssVariables'
 import { vars } from '@/styles/theme.css'
 
 export const navLink = style({
@@ -19,10 +20,13 @@ export const navLink = style({
 
 export const navLinkIsActive = style({
   backgroundColor: vars.color.slate900,
-  color: vars.color.slate100,
 
   ':hover': {
     backgroundColor: vars.color.slate900,
+  },
+
+  vars: {
+    [iconColorVar]: vars.color.slate100,
   },
 })
 

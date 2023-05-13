@@ -1,5 +1,7 @@
+import classNames from 'classnames'
 import React, { type SVGAttributes } from 'react'
 
+import * as s from './Icon.css'
 import { ReactComponent as LogoIcon } from './Logo.svg'
 import { ReactComponent as SeriesIcon } from './Series.svg'
 import { ReactComponent as TriangleIcon } from './Triangle.svg'
@@ -16,8 +18,8 @@ type IconProps = SVGAttributes<SVGElement> & {
   name: keyof typeof icons
 }
 
-export const Icon = ({ name, ...rest }: IconProps) => {
+export const Icon = ({ name, className, ...rest }: IconProps) => {
   const Component = icons[name]
 
-  return <Component {...rest} />
+  return <Component className={classNames(s.icon, className)} {...rest} />
 }
