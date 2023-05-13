@@ -8,6 +8,7 @@ const colors = {
   slate500: '#64748b',
   slate900: '#0f172a',
 
+  indigo200: '#c7d2fe',
   indigo500: '#6366f1',
   indigo600: '#4f46e5',
 }
