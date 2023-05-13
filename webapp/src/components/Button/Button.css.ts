@@ -19,6 +19,10 @@ export const button = styleVariants({
       ':hover': {
         backgroundColor: vars.color.slate100,
       },
+
+      ':focus-visible': {
+        backgroundColor: vars.color.slate100,
+      },
     },
   ],
 })

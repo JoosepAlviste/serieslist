@@ -74,7 +74,11 @@ p, h1, h2, h3, h4, h5, h6 {
   overflow-wrap: break-word;
 }
 
+/* Custom reset */
+
 button {
-  all: unset;
+  background: none;
+  border: none;
+  border-radius: 0;
   cursor: pointer;
 }
