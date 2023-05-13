@@ -2,6 +2,7 @@ import { renderToStringWithData } from '@apollo/client/react/ssr'
 import React from 'react'
 import { escapeInject, dangerouslySkipEscape } from 'vite-plugin-ssr'
 
+import { CurrentUserDocument } from '@/generated/gql/graphql'
 import { themeClass } from '@/styles/theme.css'
 
 import logoUrl from './favicon.ico'
@@ -28,7 +29,11 @@ export async function render(pageContext: PageContextServer) {
     </PageShell>
   )
   const pageHtml = await renderToStringWithData(tree)
+
   const apolloInitialState = pageContext.apollo.extract()
+  const currentUserResponse = await pageContext.apollo.query({
+    query: CurrentUserDocument,
+  })
 
   // See https://vite-plugin-ssr.com/head
   const { documentProps } = pageContext.exports
@@ -57,6 +62,10 @@ export async function render(pageContext: PageContextServer) {
     documentHtml,
     pageContext: {
       apolloInitialState,
+      currentUser:
+        currentUserResponse.data.me.__typename === 'User'
+          ? currentUserResponse.data.me
+          : undefined,
     },
   }
 }

@@ -7,7 +7,6 @@ import express from 'express'
 import { renderPage } from 'vite-plugin-ssr'
 
 import { config } from '@/config'
-import { CurrentUserDocument } from '@/generated/gql/graphql'
 
 import { makeApolloClient } from '../lib/apollo.js'
 import { type PageContext } from '../renderer/types.js'
@@ -43,17 +42,9 @@ async function startServer() {
       req,
     })
 
-    const currentUserResponse = await apollo.query({
-      query: CurrentUserDocument,
-    })
-
     const pageContextInit: Partial<PageContext> = {
       urlOriginal: req.originalUrl,
       apollo,
-      currentUser:
-        currentUserResponse.data.me.__typename === 'User'
-          ? currentUserResponse.data.me
-          : undefined,
     }
     const pageContext = await renderPage(pageContextInit)
 
