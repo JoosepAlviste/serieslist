@@ -4,7 +4,7 @@ import React from 'react'
 import { useAuthenticatedUser } from '@/features/auth'
 
 import { Button } from '../Button'
-import { TriangleIcon, UserIcon } from '../Icons'
+import { Icon } from '../Icon'
 
 import * as s from './Header.css'
 
@@ -20,11 +20,11 @@ export const Header = () => {
             <DropdownMenu.Trigger asChild>
               <Button variant="ghost">
                 <Button.Icon>
-                  <UserIcon className={s.headerItemIcon} />
+                  <Icon name="user" className={s.headerItemIcon} />
                 </Button.Icon>
                 {currentUser.name}
                 <Button.Icon>
-                  <TriangleIcon className={s.dropdownIcon} />
+                  <Icon name="triangle" className={s.dropdownIcon} />
                 </Button.Icon>
               </Button>
             </DropdownMenu.Trigger>
@@ -44,7 +44,7 @@ export const Header = () => {
             variant="ghost"
           >
             <Button.Icon>
-              <UserIcon className={s.headerItemIcon} />
+              <Icon name="user" className={s.headerItemIcon} />
             </Button.Icon>
             Log in
           </Button>

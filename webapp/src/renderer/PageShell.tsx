@@ -1,7 +1,7 @@
 import { ApolloProvider } from '@apollo/client'
 import React from 'react'
 
-import { Header, Navbar } from '@/components'
+import { Header, NavSidebar } from '@/components'
 import { AuthenticatedUserProvider } from '@/features/auth'
 import { PageContextProvider } from '@/hooks'
 
@@ -24,7 +24,7 @@ export function PageShell({
         <PageContextProvider pageContext={pageContext}>
           <AuthenticatedUserProvider>
             <div className={s.pageContainer}>
-              <Navbar />
+              <NavSidebar />
               <main className={s.main}>
                 <Header />
                 {children}
