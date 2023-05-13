@@ -25,7 +25,7 @@ describe('components/Header', () => {
 
     await userEvent.click(
       await screen.findByRole('button', {
-        name: 'Test Dude',
+        name: 'Current User Test Dude Expand',
       }),
     )
 

@@ -20,11 +20,19 @@ export const Header = () => {
             <DropdownMenu.Trigger asChild>
               <Button variant="ghost">
                 <Button.Icon>
-                  <Icon name="user" className={s.headerItemIcon} />
+                  <Icon
+                    name="user"
+                    label="Current User"
+                    className={s.headerItemIcon}
+                  />
                 </Button.Icon>
                 {currentUser.name}
                 <Button.Icon>
-                  <Icon name="triangle" className={s.dropdownIcon} />
+                  <Icon
+                    name="triangle"
+                    label="Expand"
+                    className={s.dropdownIcon}
+                  />
                 </Button.Icon>
               </Button>
             </DropdownMenu.Trigger>
@@ -44,7 +52,7 @@ export const Header = () => {
             variant="ghost"
           >
             <Button.Icon>
-              <Icon name="user" className={s.headerItemIcon} />
+              <Icon name="user" aria-hidden className={s.headerItemIcon} />
             </Button.Icon>
             Log in
           </Button>

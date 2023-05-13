@@ -1,3 +1,4 @@
+import { AccessibleIcon } from '@radix-ui/react-accessible-icon'
 import classNames from 'classnames'
 import React, { type SVGAttributes } from 'react'
 
@@ -14,12 +15,31 @@ const icons = {
   user: UserIcon,
 }
 
-type IconProps = SVGAttributes<SVGElement> & {
+type BaseIconProps = SVGAttributes<SVGElement> & {
   name: keyof typeof icons
 }
 
-export const Icon = ({ name, className, ...rest }: IconProps) => {
+type IconProps = BaseIconProps &
+  (
+    | {
+        label: string
+      }
+    | {
+        'aria-hidden': true
+        label?: never
+      }
+  )
+
+export const Icon = ({ name, label, className, ...rest }: IconProps) => {
   const Component = icons[name]
+
+  if (label) {
+    return (
+      <AccessibleIcon label={label}>
+        <Component className={classNames(s.icon, className)} {...rest} />
+      </AccessibleIcon>
+    )
+  }
 
   return <Component className={classNames(s.icon, className)} {...rest} />
 }

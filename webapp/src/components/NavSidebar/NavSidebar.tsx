@@ -12,14 +12,14 @@ export const NavSidebar = () => (
     <NavigationMenu.List className={s.container}>
       <NavigationMenu.Item className={s.navItemLogo}>
         <NavigationMenu.Link href="/" className={s.navLinkLogo}>
-          <Icon name="logo" className={s.navIconLogo} aria-label="Home" />
+          <Icon name="logo" className={s.navIconLogo} label="Home" />
         </NavigationMenu.Link>
       </NavigationMenu.Item>
 
       <NavigationMenu.Item>
         <NavigationMenu.Link href="/about" className={s.navLink} asChild>
           <Link activeClass={s.navLinkIsActive}>
-            <Icon name="series" className={s.navIcon} aria-label="Series" />
+            <Icon name="series" className={s.navIcon} label="Series" />
           </Link>
         </NavigationMenu.Link>
       </NavigationMenu.Item>
