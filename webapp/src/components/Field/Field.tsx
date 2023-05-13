@@ -1,3 +1,4 @@
+import { Label } from '@radix-ui/react-label'
 import React, { forwardRef, type InputHTMLAttributes } from 'react'
 import { type FieldError } from 'react-hook-form'
 
@@ -19,10 +20,10 @@ export const Field = forwardRef<HTMLInputElement, FieldProps>(function Field(
 ) {
   return (
     <div>
-      <label className={labelClass}>
+      <Label className={labelClass}>
         <div className={labelText}>{label}</div>
         <input ref={ref} className={input} {...rest} />
-      </label>
+      </Label>
       {error && <p className={errorClass}>{error.message}</p>}
     </div>
   )
