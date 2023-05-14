@@ -31,8 +31,12 @@ export const searchSeries =
       .insertInto('series')
       .values(
         newSeriesToAdd.map((series) => {
-          // NOTE: This is not a regular dash, but an en-dash
-          const [startYear, endYear] = series.Year.split('–')
+          let startYear = series.Year
+          let endYear = series.Year
+          if (series.Year.includes('–')) {
+            // NOTE: This is not a regular dash, but an en-dash
+            ;[startYear, endYear] = series.Year.split('–')
+          }
 
           return {
             imdbId: series.imdbID,

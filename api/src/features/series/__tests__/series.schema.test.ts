@@ -144,5 +144,57 @@ describe('features/series/series.schema', () => {
 
       expect(savedSeries).toHaveLength(1)
     })
+
+    it('does not store end year if not given', async () => {
+      const imdbId = `tt${nanoid(12)}`
+
+      mockOMDbSearchRequest('testing*', {
+        Search: [
+          {
+            Title: 'Testing Series',
+            Year: '2022–',
+            imdbID: imdbId,
+            Poster: 'foo.jpg',
+          },
+        ],
+      })
+
+      await executeSearch('testing')
+
+      const savedSeries = await db
+        .selectFrom('series')
+        .select(['startYear', 'endYear'])
+        .where('imdbId', '=', imdbId)
+        .executeTakeFirst()
+
+      expect(savedSeries!.startYear).toEqual(2022)
+      expect(savedSeries!.endYear).toEqual(null)
+    })
+
+    it('stores the same start and end year if a single year is given', async () => {
+      const imdbId = `tt${nanoid(12)}`
+
+      mockOMDbSearchRequest('testing*', {
+        Search: [
+          {
+            Title: 'Testing Series',
+            Year: '2022',
+            imdbID: imdbId,
+            Poster: 'foo.jpg',
+          },
+        ],
+      })
+
+      await executeSearch('testing')
+
+      const savedSeries = await db
+        .selectFrom('series')
+        .select(['startYear', 'endYear'])
+        .where('imdbId', '=', imdbId)
+        .executeTakeFirst()
+
+      expect(savedSeries!.startYear).toEqual(2022)
+      expect(savedSeries!.endYear).toEqual(2022)
+    })
   })
 })
