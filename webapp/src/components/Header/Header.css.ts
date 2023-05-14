@@ -16,13 +16,17 @@ const slideUpAndFade = keyframes({
 export const header = style({
   display: 'flex',
   alignItems: 'center',
-  paddingTop: '0.5rem',
-  paddingRight: '1rem',
-  paddingBottom: '0.5rem',
+  paddingTop: '1rem',
+  paddingRight: '1.5rem',
+  paddingBottom: '1rem',
 })
 
 export const searchContainer = style({
   flex: 1,
+})
+
+export const search = style({
+  maxWidth: '30rem',
 })
 
 export const dropdownIcon = style({

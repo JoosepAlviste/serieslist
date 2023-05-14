@@ -3,7 +3,8 @@ import { globalStyle } from '@vanilla-extract/css'
 import { vars } from '@/styles/theme.css'
 
 globalStyle('body', {
-  fontFamily: ['Inter', 'sans-serif'],
+  fontFamily: 'Inter, sans-serif',
+  color: vars.color.slate900,
 })
 
 globalStyle('*', {

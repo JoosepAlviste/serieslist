@@ -2,6 +2,7 @@ import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import React from 'react'
 
 import { useAuthenticatedUser } from '@/features/auth'
+import { Search } from '@/features/search'
 
 import { Button } from '../Button'
 import { Icon } from '../Icon'
@@ -13,7 +14,9 @@ export const Header = () => {
 
   return (
     <header className={s.header}>
-      <div className={s.searchContainer}>Search here...</div>
+      <div className={s.searchContainer}>
+        <Search className={s.search} />
+      </div>
       <div>
         {currentUser ? (
           <DropdownMenu.Root>

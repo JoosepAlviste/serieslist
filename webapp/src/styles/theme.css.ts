@@ -6,6 +6,7 @@ const colors = {
   slate100: '#f1f5f9',
   slate200: '#e2e8f0',
   slate500: '#64748b',
+  slate700: '#334155',
   slate900: '#0f172a',
 
   indigo200: '#c7d2fe',

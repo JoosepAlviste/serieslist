@@ -2,8 +2,10 @@ import { AccessibleIcon } from '@radix-ui/react-accessible-icon'
 import classNames from 'classnames'
 import React, { type SVGAttributes } from 'react'
 
+import { ReactComponent as CrossIcon } from './Cross.svg'
 import * as s from './Icon.css'
 import { ReactComponent as LogoIcon } from './Logo.svg'
+import { ReactComponent as SearchIcon } from './Search.svg'
 import { ReactComponent as SeriesIcon } from './Series.svg'
 import { ReactComponent as TriangleIcon } from './Triangle.svg'
 import { ReactComponent as UserIcon } from './User.svg'
@@ -13,6 +15,8 @@ const icons = {
   series: SeriesIcon,
   triangle: TriangleIcon,
   user: UserIcon,
+  search: SearchIcon,
+  cross: CrossIcon,
 }
 
 type BaseIconProps = SVGAttributes<SVGElement> & {
