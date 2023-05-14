@@ -2,6 +2,7 @@ import { useLazyQuery } from '@apollo/client'
 import * as Popover from '@radix-ui/react-popover'
 import classNames from 'classnames'
 import React, { type HTMLAttributes, useState, useRef, useEffect } from 'react'
+import Highlighter from 'react-highlight-words'
 
 import { Icon, LoadingSpinner } from '@/components'
 import { SeriesPoster } from '@/features/series'
@@ -157,7 +158,12 @@ export const Search = ({ className, ...rest }: SearchProps) => {
                           <SeriesPoster series={series} />
                           <div>
                             <div className={s.searchResultTitle}>
-                              {series.title}
+                              <Highlighter
+                                highlightClassName={s.titleHighlight}
+                                searchWords={keyword.split(' ')}
+                                autoEscape={true}
+                                textToHighlight={series.title}
+                              />
                             </div>
                             <div className={s.searchResultDetails}>
                               {series.startYear} – {series.endYear ?? '...'}

@@ -62,6 +62,10 @@ export const searchTitle = style({
   fontSize: '0.875rem',
 })
 
+export const titleHighlight = style({
+  backgroundColor: vars.color.indigo100,
+})
+
 export const searchResultsList = style({
   paddingBottom: '0.5rem',
 })
