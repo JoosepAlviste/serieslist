@@ -1,7 +1,14 @@
 import { useLazyQuery } from '@apollo/client'
 import * as Popover from '@radix-ui/react-popover'
 import classNames from 'classnames'
-import React, { type HTMLAttributes, useState, useRef, useEffect } from 'react'
+import React, {
+  type HTMLAttributes,
+  useState,
+  useRef,
+  useEffect,
+  type KeyboardEvent,
+  useMemo,
+} from 'react'
 import Highlighter from 'react-highlight-words'
 
 import { Icon, LoadingSpinner } from '@/components'
@@ -81,7 +88,52 @@ export const Search = ({ className, ...rest }: SearchProps) => {
     triggerSearch(keyword)
   }, [keyword, triggerSearch])
 
-  const searchResults = data?.seriesSearch ?? previousData?.seriesSearch ?? []
+  const searchResults = useMemo(
+    () => data?.seriesSearch ?? previousData?.seriesSearch ?? [],
+    [data?.seriesSearch, previousData?.seriesSearch],
+  )
+
+  const searchResultItemsRef = useRef<HTMLAnchorElement[]>([])
+  useEffect(() => {
+    searchResultItemsRef.current = searchResultItemsRef.current.slice(
+      0,
+      searchResults.length,
+    )
+  }, [searchResults])
+
+  const [activeIndex, setActiveIndex] = useState(0)
+
+  const handleInputKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
+    let newIndex = activeIndex
+
+    switch (e.key) {
+      case 'Down':
+      case 'ArrowDown':
+        newIndex = Math.min(newIndex + 1, searchResults.length - 1)
+        e.preventDefault()
+        break
+      case 'Up':
+      case 'ArrowUp':
+        newIndex = Math.max(newIndex - 1, 0)
+        e.preventDefault()
+        break
+      case 'Enter':
+        searchResultItemsRef.current[activeIndex]?.dispatchEvent(
+          new MouseEvent('click', {
+            ctrlKey: e.ctrlKey,
+            metaKey: e.metaKey,
+          }),
+        )
+        return
+    }
+
+    if (newIndex !== activeIndex) {
+      setActiveIndex(newIndex)
+      searchResultItemsRef.current[newIndex].scrollIntoView({
+        behavior: 'smooth',
+      })
+    }
+  }
 
   return (
     <Popover.Root
@@ -108,13 +160,18 @@ export const Search = ({ className, ...rest }: SearchProps) => {
             onChange={(e) => {
               setKeyword(e.target.value)
             }}
+            onKeyDown={handleInputKeyUp}
           />
           {loading ? (
-            <LoadingSpinner />
+            <div className={s.inputAddonContainer}>
+              <LoadingSpinner />
+            </div>
           ) : keyword.length ? (
-            <button type="button" onClick={clearKeyword}>
-              <Icon name="cross" label="Clear" className={s.clearIcon} />
-            </button>
+            <div className={s.inputAddonContainer}>
+              <button type="button" onClick={clearKeyword}>
+                <Icon name="cross" label="Clear" className={s.clearIcon} />
+              </button>
+            </div>
           ) : null}
         </label>
       </Popover.Trigger>
@@ -149,11 +206,20 @@ export const Search = ({ className, ...rest }: SearchProps) => {
                 <>
                   <div className={s.searchTitle}>Series</div>
                   <ul className={s.searchResultsList}>
-                    {searchResults.map((series) => (
-                      <li key={series.id}>
+                    {searchResults.map((series, index) => (
+                      <li
+                        key={series.id}
+                        onMouseEnter={() => setActiveIndex(index)}
+                      >
                         <a
                           href={`https://imdb.com/title/${series.imdbId}`}
-                          className={s.searchResult}
+                          className={classNames(s.searchResult, {
+                            [s.searchResultActive]: activeIndex === index,
+                          })}
+                          ref={(el) => {
+                            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                            searchResultItemsRef.current[index] = el!
+                          }}
                         >
                           <SeriesPoster series={series} />
                           <div>

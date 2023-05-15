@@ -38,6 +38,14 @@ export const input = style({
   },
 })
 
+export const inputAddonContainer = style({
+  width: '1.5rem',
+  height: '1.5rem',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+})
+
 export const clearIcon = style({
   fontSize: '1.5rem',
   cursor: 'pointer',
@@ -62,10 +70,6 @@ export const searchTitle = style({
   fontSize: '0.875rem',
 })
 
-export const titleHighlight = style({
-  backgroundColor: vars.color.indigo100,
-})
-
 export const searchResultsList = style({
   paddingBottom: '0.5rem',
 })
@@ -73,6 +77,7 @@ export const searchResultsList = style({
 export const searchResult = style({
   display: 'flex',
   alignItems: 'center',
+  position: 'relative',
   gap: '0.75rem',
   paddingTop: '0.75rem',
   paddingRight: '1.25rem',
@@ -80,9 +85,23 @@ export const searchResult = style({
   paddingLeft: '1.25rem',
   textDecoration: 'none',
   color: vars.color.slate900,
+  // When using `.scrollIntoView()`, leave a lot of space above the item in the
+  // dropdown
+  scrollMarginTop: '40vh',
+})
 
-  ':hover': {
-    backgroundColor: vars.color.slate100,
+export const searchResultActive = style({
+  backgroundColor: vars.color.indigo50,
+
+  '::before': {
+    content: '',
+    display: 'block',
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    width: 3,
+    height: '100%',
+    backgroundColor: vars.color.indigo500,
   },
 })
 
@@ -100,6 +119,16 @@ export const poster = style({
 
 export const searchResultTitle = style({
   fontWeight: 500,
+})
+
+export const titleHighlight = style({
+  backgroundColor: vars.color.indigo100,
+
+  selectors: {
+    [`${searchResultActive} &`]: {
+      backgroundColor: vars.color.indigo200,
+    },
+  },
 })
 
 export const searchResultDetails = style({

@@ -5,10 +5,12 @@ const colors = {
 
   slate100: '#f1f5f9',
   slate200: '#e2e8f0',
+  slate300: '#cbd5e1',
   slate500: '#64748b',
   slate700: '#334155',
   slate900: '#0f172a',
 
+  indigo50: '#eef2ff',
   indigo100: '#e0e7ff',
   indigo200: '#c7d2fe',
   indigo500: '#6366f1',
