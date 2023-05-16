@@ -51,6 +51,17 @@ export const clearIcon = style({
   cursor: 'pointer',
 })
 
+export const searchShortcut = style({
+  width: '1.375rem',
+  height: '1.375rem',
+  borderRadius: vars.radii.s,
+  color: vars.color.slate500,
+  backgroundColor: vars.color.slate200,
+  fontFamily: 'monospace',
+  fontSize: '0.75rem',
+  fontWeight: vars.fontWeight.bold,
+})
+
 export const popoverContent = style({
   maxHeight: '80vh',
   backgroundColor: vars.color.white,
@@ -65,7 +76,7 @@ export const searchTitle = style({
   paddingRight: '1.25rem',
   paddingBottom: '0.25rem',
   paddingLeft: '1.25rem',
-  fontWeight: 500,
+  fontWeight: vars.fontWeight.medium,
   color: vars.color.slate500,
   fontSize: '0.875rem',
 })
@@ -118,7 +129,7 @@ export const poster = style({
 })
 
 export const searchResultTitle = style({
-  fontWeight: 500,
+  fontWeight: vars.fontWeight.medium,
 })
 
 export const titleHighlight = style({

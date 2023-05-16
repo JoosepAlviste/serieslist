@@ -135,6 +135,31 @@ export const Search = ({ className, ...rest }: SearchProps) => {
     }
   }
 
+  /**
+   * Focus search input when `/` is typed.
+   */
+  const handlePageKeyUp = (e: Event) => {
+    if (
+      !(e instanceof KeyboardEvent) ||
+      (e.target as HTMLInputElement).nodeName === 'INPUT'
+    ) {
+      return
+    }
+
+    if (e.key === '/') {
+      inputRef.current?.focus()
+      e.preventDefault()
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener('keydown', handlePageKeyUp)
+
+    return () => {
+      document.removeEventListener('keydown', handlePageKeyUp)
+    }
+  }, [])
+
   return (
     <Popover.Root
       open={Boolean(isPopoverOpen && keyword)}
@@ -161,6 +186,9 @@ export const Search = ({ className, ...rest }: SearchProps) => {
               setKeyword(e.target.value)
             }}
             onKeyDown={handleInputKeyUp}
+            onFocus={() => {
+              setIsPopoverOpen(true)
+            }}
           />
           {loading ? (
             <div className={s.inputAddonContainer}>
@@ -172,7 +200,13 @@ export const Search = ({ className, ...rest }: SearchProps) => {
                 <Icon name="cross" label="Clear" className={s.clearIcon} />
               </button>
             </div>
-          ) : null}
+          ) : (
+            <div
+              className={classNames(s.inputAddonContainer, s.searchShortcut)}
+            >
+              /
+            </div>
+          )}
         </label>
       </Popover.Trigger>
 

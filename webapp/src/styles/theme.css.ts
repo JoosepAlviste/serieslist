@@ -6,6 +6,7 @@ const colors = {
   slate100: '#f1f5f9',
   slate200: '#e2e8f0',
   slate300: '#cbd5e1',
+  slate400: '#94a3b8',
   slate500: '#64748b',
   slate700: '#334155',
   slate900: '#0f172a',
@@ -22,6 +23,12 @@ export const [themeClass, vars] = createTheme({
     ...colors,
 
     icon: colors.slate500,
+  },
+
+  fontWeight: {
+    regular: '400',
+    medium: '500',
+    bold: '700',
   },
 
   radii: {
