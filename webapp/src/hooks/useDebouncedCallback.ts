@@ -2,6 +2,11 @@ import { useCallback, useRef } from 'react'
 
 import { type LiterallyAnything } from '@/types/utils'
 
+/**
+ * Create a debounced function that can be used in React.
+ *
+ * @param func This function needs to be passed in through `useCallback`!
+ */
 export const useDebouncedCallback = <
   F extends (...args: LiterallyAnything) => void,
   T extends Parameters<F>,

@@ -8,6 +8,7 @@ import React, {
   useEffect,
   type KeyboardEvent,
   useMemo,
+  useCallback,
 } from 'react'
 import Highlighter from 'react-highlight-words'
 
@@ -54,26 +55,31 @@ export const Search = ({ className, ...rest }: SearchProps) => {
     }
   }, [keyword])
 
-  const triggerSearch = useDebouncedCallback(async (keyword: string) => {
-    const trimmedKeyword = keyword.trim()
+  const triggerSearch = useDebouncedCallback(
+    useCallback(
+      async (keyword: string) => {
+        const trimmedKeyword = keyword.trim()
+        if (!trimmedKeyword.length) {
+          return
+        }
 
-    if (!trimmedKeyword.length) {
-      return
-    }
+        if (trimmedKeyword.length < KEYWORD_MIN_LENGTH) {
+          setHasTriedToFetchWithTooShortKeyword(true)
+          return
+        }
 
-    if (trimmedKeyword.length < KEYWORD_MIN_LENGTH) {
-      setHasTriedToFetchWithTooShortKeyword(true)
-      return
-    }
-
-    await seriesSearch({
-      variables: {
-        input: {
-          keyword: trimmedKeyword,
-        },
+        await seriesSearch({
+          variables: {
+            input: {
+              keyword: trimmedKeyword,
+            },
+          },
+        })
       },
-    })
-  }, 250)
+      [seriesSearch],
+    ),
+    250,
+  )
 
   const clearKeyword = () => {
     setKeyword('')
