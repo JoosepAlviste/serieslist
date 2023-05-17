@@ -1,5 +1,6 @@
 import { searchSeriesFromOMDb } from '@/features/omdb'
 import { type SeriesSearchInput } from '@/generated/gql/graphql'
+import { NotFoundError } from '@/lib/errors'
 import { type Context } from '@/types/context'
 
 export const searchSeries =
@@ -52,3 +53,16 @@ export const searchSeries =
 
     return [...existingSeries, ...newSeries]
   }
+
+export const getSeriesById = (ctx: Context) => async (id: number) => {
+  const series = await ctx.db
+    .selectFrom('series')
+    .selectAll()
+    .where('id', '=', id)
+    .executeTakeFirst()
+  if (!series) {
+    throw new NotFoundError()
+  }
+
+  return series
+}

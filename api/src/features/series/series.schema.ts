@@ -1,9 +1,10 @@
 import { type Selectable } from 'kysely'
 
 import { type Series } from '@/generated/db'
+import { NotFoundError } from '@/lib/errors'
 import { builder } from '@/schemaBuilder'
 
-import { searchSeries } from './series.service'
+import { getSeriesById, searchSeries } from './series.service'
 
 export type SeriesType = Pick<
   Selectable<Series>,
@@ -43,6 +44,19 @@ builder.queryFields((t) => ({
     },
     resolve(_parent, args, ctx) {
       return searchSeries(ctx)(args.input)
+    },
+  }),
+
+  series: t.field({
+    type: SeriesRef,
+    args: {
+      id: t.arg({ type: 'ID', required: true }),
+    },
+    errors: {
+      types: [NotFoundError],
+    },
+    resolve(_parent, args, ctx) {
+      return getSeriesById(ctx)(parseInt(String(args.id)))
     },
   }),
 }))

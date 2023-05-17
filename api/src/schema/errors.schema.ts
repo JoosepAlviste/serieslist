@@ -1,6 +1,6 @@
 import { ZodError, type ZodFormattedError } from 'zod'
 
-import { UnauthorizedError } from '@/lib/errors'
+import { NotFoundError, UnauthorizedError } from '@/lib/errors'
 
 import { builder } from '../schemaBuilder'
 
@@ -73,5 +73,10 @@ builder.objectType(ZodError, {
 
 builder.objectType(UnauthorizedError, {
   name: 'UnauthorizedError',
+  interfaces: [ErrorInterfaceRef],
+})
+
+builder.objectType(NotFoundError, {
+  name: 'NotFoundError',
   interfaces: [ErrorInterfaceRef],
 })
