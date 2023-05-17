@@ -36,13 +36,10 @@ const SeriesSearchInput = builder.inputType('SeriesSearchInput', {
 })
 
 builder.queryFields((t) => ({
-  seriesSearch: t.authField({
+  seriesSearch: t.field({
     type: [SeriesRef],
     args: {
       input: t.arg({ type: SeriesSearchInput, required: true }),
-    },
-    authScopes: {
-      authenticated: true,
     },
     resolve(_parent, args, ctx) {
       return searchSeries(ctx)(args.input)
