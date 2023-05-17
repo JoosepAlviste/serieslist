@@ -131,3 +131,28 @@ export const fillForm = (fields: Record<string, string>) => {
     })
   })
 }
+
+/**
+ * A matcher helper for querying elements by text when the text is split between
+ * multiple elements.
+ *
+ * https://github.com/testing-library/dom-testing-library/issues/410#issuecomment-1536238708
+ */
+export const textContentMatcher = (textMatch: string | RegExp) => {
+  const hasText =
+    typeof textMatch === 'string'
+      ? (node: Element) => node.textContent === textMatch
+      : (node: Element) => textMatch.test(node.textContent ?? '')
+
+  const matcher = (_content: string, node: Element | null) => {
+    if (!node || !hasText(node)) {
+      return false
+    }
+
+    return Array.from(node.children).every((child) => !hasText(child))
+  }
+
+  matcher.toString = () => `textContentMatcher(${String(textMatch)})`
+
+  return matcher
+}

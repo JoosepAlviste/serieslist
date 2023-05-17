@@ -8,7 +8,7 @@ import React from 'react'
 
 import { seriesFactory } from '@/features/series'
 import { SearchDocument, type Series } from '@/generated/gql/graphql'
-import { createMockResolver, render } from '@/lib/testUtils'
+import { createMockResolver, render, textContentMatcher } from '@/lib/testUtils'
 import { wait } from '@/utils/misc'
 
 import { Search } from './Search'
@@ -53,8 +53,8 @@ describe('features/search/components/Search', () => {
     )
 
     // And the result is rendered
-    screen.getByText('Cool Series')
-    screen.getByText('Cool Beans')
+    screen.getByText(textContentMatcher('Cool Series'))
+    screen.getByText(textContentMatcher('Cool Beans'))
   })
 
   it('allows clearing the input', async () => {
@@ -103,7 +103,7 @@ describe('features/search/components/Search', () => {
     await userEvent.type(input, 'pre')
 
     // The results are shown
-    await screen.findByText('Previous Series')
+    await screen.findByText(textContentMatcher('Previous Series'))
 
     // The next search request returns different series
     mockResolver.mockResolvedValue({
@@ -123,6 +123,6 @@ describe('features/search/components/Search', () => {
     await waitForElementToBeRemoved(screen.getByText('Previous Series'))
 
     // The new series are shown once they are ready
-    screen.getByText('Precise New Series')
+    screen.getByText(textContentMatcher('Precise New Series'))
   })
 })
