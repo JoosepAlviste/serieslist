@@ -1,10 +1,17 @@
+import { subDays } from 'date-fns'
 import { nanoid } from 'nanoid'
 import nock, { type Body } from 'nock'
 
 import { config } from '@/config'
+import {
+  type OMDbSeason,
+  omdbSeriesDetailsFactory,
+  type OMDbSeries,
+  omdbEpisodeFactory,
+} from '@/features/omdb'
 import { graphql } from '@/generated/gql'
 import { db } from '@/lib/db'
-import { executeOperation } from '@/test/testUtils'
+import { checkErrors, executeOperation } from '@/test/testUtils'
 
 import { seriesFactory } from '../series.factory'
 
@@ -45,12 +52,12 @@ describe('features/series/series.schema', () => {
     it('searches series from the OMDb API', async () => {
       const scope = mockOMDbSearchRequest('testing*', {
         Search: [
-          {
+          omdbSeriesDetailsFactory.build({
             Title: 'Testing Series',
             Year: '2022–2023',
             imdbID: 'tt1337',
             Poster: 'foo.jpg',
-          },
+          }),
         ],
       })
 
@@ -88,12 +95,12 @@ describe('features/series/series.schema', () => {
     it('saves new series to the database', async () => {
       mockOMDbSearchRequest('testing*', {
         Search: [
-          {
+          omdbSeriesDetailsFactory.build({
             Title: 'Testing Series',
             Year: '2022–2023',
             imdbID: 'tt1337',
             Poster: 'foo.jpg',
-          },
+          }),
         ],
       })
 
@@ -124,12 +131,12 @@ describe('features/series/series.schema', () => {
 
       mockOMDbSearchRequest('testing*', {
         Search: [
-          {
+          omdbSeriesDetailsFactory.build({
             Title: title,
             Year: '2022–2023',
             imdbID: imdbId,
             Poster: 'foo.jpg',
-          },
+          }),
         ],
       })
 
@@ -143,57 +150,193 @@ describe('features/series/series.schema', () => {
 
       expect(savedSeries).toHaveLength(1)
     })
+  })
 
-    it('does not store end year if not given', async () => {
-      const imdbId = `tt${nanoid(12)}`
-
-      mockOMDbSearchRequest('testing*', {
-        Search: [
-          {
-            Title: 'Testing Series',
-            Year: '2022–',
-            imdbID: imdbId,
-            Poster: 'foo.jpg',
-          },
-        ],
+  describe('series query', () => {
+    const executeSeriesQuery = (id: number) =>
+      executeOperation({
+        operation: graphql(`
+          query series($id: ID!) {
+            series(id: $id) {
+              __typename
+              ... on Series {
+                id
+                title
+              }
+              ... on NotFoundError {
+                message
+              }
+            }
+          }
+        `),
+        variables: {
+          id: String(id),
+        },
       })
 
-      await executeSearch('testing')
+    const mockOMDbDetailsRequest = (imdbId: string, response: OMDbSeries) => {
+      return nock(`${config.omdb.url}`)
+        .get('/')
+        .query({
+          apiKey: config.omdb.apiKey,
+          i: imdbId,
+          plot: 'full',
+        })
+        .reply(200, response)
+    }
 
-      const savedSeries = await db
-        .selectFrom('series')
-        .select(['startYear', 'endYear'])
-        .where('imdbId', '=', imdbId)
-        .executeTakeFirst()
+    const mockOMDbSeasonRequest = (
+      {
+        imdbId,
+        seasonNumber,
+      }: {
+        imdbId: string
+        seasonNumber: number
+      },
+      response: OMDbSeason,
+    ) =>
+      nock(`${config.omdb.url}`)
+        .get('/')
+        .query({
+          apiKey: config.omdb.apiKey,
+          i: imdbId,
+          Season: seasonNumber,
+        })
+        .reply(200, response)
 
-      expect(savedSeries!.startYear).toEqual(2022)
-      expect(savedSeries!.endYear).toEqual(null)
+    it('allows fetching series details by its id', async () => {
+      const series = await seriesFactory.create({
+        title: 'Test Series',
+        syncedAt: new Date(Date.now()),
+      })
+
+      const res = await executeSeriesQuery(series.id)
+      const resSeries = checkErrors(res.data?.series)
+
+      expect(resSeries.id).toBe(String(series.id))
+      expect(resSeries.title).toBe('Test Series')
     })
 
-    it('stores the same start and end year if a single year is given', async () => {
-      const imdbId = `tt${nanoid(12)}`
-
-      mockOMDbSearchRequest('testing*', {
-        Search: [
-          {
-            Title: 'Testing Series',
-            Year: '2022',
-            imdbID: imdbId,
-            Poster: 'foo.jpg',
-          },
-        ],
+    it('updates series details from OMDb', async () => {
+      const series = await seriesFactory.create({
+        plot: null,
+        syncedAt: null,
       })
 
-      await executeSearch('testing')
+      const scope = mockOMDbDetailsRequest(
+        series.imdbId,
+        omdbSeriesDetailsFactory.build({
+          Plot: 'Updated plot',
+          totalSeasons: '0',
+        }),
+      )
 
-      const savedSeries = await db
+      await executeSeriesQuery(series.id)
+      const resSeries = await db
         .selectFrom('series')
-        .select(['startYear', 'endYear'])
-        .where('imdbId', '=', imdbId)
-        .executeTakeFirst()
+        .where('id', '=', series.id)
+        .selectAll()
+        .executeTakeFirstOrThrow()
 
-      expect(savedSeries!.startYear).toEqual(2022)
-      expect(savedSeries!.endYear).toEqual(2022)
+      scope.isDone()
+
+      expect(resSeries.plot).toBe('Updated plot')
+      expect(resSeries.syncedAt).not.toBeNull()
+    })
+
+    it('does not sync details from OMDb if it has recently been synced', async () => {
+      const series = await seriesFactory.create({
+        syncedAt: subDays(new Date(Date.now()), 3),
+      })
+
+      const scope = mockOMDbDetailsRequest(
+        series.imdbId,
+        omdbSeriesDetailsFactory.build(),
+      )
+
+      await executeSeriesQuery(series.id)
+
+      expect(scope.isDone()).toBeFalsy()
+    })
+
+    it('fetches seasons and episodes from OMDb API', async () => {
+      const series = await seriesFactory.create({
+        imdbId: `tt${nanoid(8)}`,
+        syncedAt: null,
+      })
+
+      mockOMDbDetailsRequest(
+        series.imdbId,
+        omdbSeriesDetailsFactory.build({
+          imdbID: series.imdbId,
+          Plot: 'Updated plot',
+          totalSeasons: '1',
+        }),
+      )
+
+      const seriesSeasonScope = mockOMDbSeasonRequest(
+        {
+          imdbId: series.imdbId,
+          seasonNumber: 1,
+        },
+        {
+          Season: '1',
+          Episodes: [
+            omdbEpisodeFactory.build({
+              Episode: '1',
+              Title: 'Episode 1',
+              imdbID: `${series.imdbId}s1e1`,
+              imdbRating: '7.2',
+            }),
+            omdbEpisodeFactory.build({
+              Episode: '2',
+              Title: 'Episode 2',
+              imdbID: `${series.imdbId}s1e2`,
+              imdbRating: '7.3',
+            }),
+          ],
+        },
+      )
+
+      await executeSeriesQuery(series.id)
+
+      // The season details with episodes were fetched
+      seriesSeasonScope.done()
+
+      // The season was saved into the database
+      const seasons = await db
+        .selectFrom('season')
+        .selectAll()
+        .where('seriesId', '=', series.id)
+        .execute()
+
+      expect(seasons).toHaveLength(1)
+      expect(seasons[0].number).toBe(1)
+
+      // The episodes were saved into the database
+      const episodes = await db
+        .selectFrom('episode')
+        .selectAll()
+        .where('seasonId', '=', seasons[0].id)
+        .execute()
+
+      expect(episodes).toHaveLength(2)
+      expect(episodes[0]).toEqual(
+        expect.objectContaining({
+          number: 1,
+          title: 'Episode 1',
+          imdbId: `${series.imdbId}s1e1`,
+          imdbRating: '7.2',
+        }),
+      )
+      expect(episodes[1]).toEqual(
+        expect.objectContaining({
+          number: 2,
+          title: 'Episode 2',
+          imdbId: `${series.imdbId}s1e2`,
+          imdbRating: '7.3',
+        }),
+      )
     })
   })
 })

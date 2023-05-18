@@ -1,28 +1,41 @@
 import fetch from 'node-fetch'
-import { z } from 'zod'
+import { type z } from 'zod'
 
 import { config } from '@/config'
+import { NotFoundError } from '@/lib/errors'
 import { app } from '@/lib/fastify'
 
-const seriesSchema = z.object({
-  Title: z.string(),
-  Year: z.string(),
-  imdbID: z.string(),
-  Poster: z.string(),
-})
+import {
+  omdbSeasonSchema,
+  omdbSeriesSchema,
+  omdbSeriesSearchResponseSchema,
+} from './omdb.schemas'
+import { type OMDbSearchSeries } from './types'
 
-const seriesSearchResponseSchema = z
-  .object({
-    Search: z.array(seriesSchema),
+const makeOMDbRequest = async <T>(
+  data: Record<string, string>,
+  schema: z.ZodSchema<T>,
+) => {
+  const searchParams = new URLSearchParams({
+    apiKey: config.omdb.apiKey,
+    ...data,
   })
-  .or(
-    z.object({
-      Response: z.string(),
-      Error: z.string(),
-    }),
-  )
+  const url = `${config.omdb.url}?${searchParams.toString()}`
 
-type OMDbSearchSeries = z.infer<typeof seriesSchema>
+  const res = await fetch(url)
+  const json = (await res.json()) as T
+
+  try {
+    return schema.parse(json)
+  } catch (e) {
+    app.log.warn('OMDb API response did not match the schema.', {
+      url,
+      json,
+    })
+
+    return null
+  }
+}
 
 /**
  * Make a request to search for series from the OMDb API.
@@ -30,36 +43,77 @@ type OMDbSearchSeries = z.infer<typeof seriesSchema>
 export const searchSeriesFromOMDb = async (
   keyword: string,
 ): Promise<OMDbSearchSeries[]> => {
-  const searchParams = new URLSearchParams({
-    apiKey: config.omdb.apiKey,
-    type: 'series',
-    // The star is a wildcard, we search for words that start with the keyword.
-    // Not officially documented, but I found it from
-    // https://github.com/omdbapi/OMDb-API/issues/108
-    s: `${keyword}*`,
-  })
-  const url = `${config.omdb.url}?${searchParams.toString()}`
+  const seriesSearchResponse = await makeOMDbRequest(
+    {
+      type: 'series',
+      // The star is a wildcard, we search for words that start with the keyword.
+      // Not officially documented, but I found it from
+      // https://github.com/omdbapi/OMDb-API/issues/108
+      s: `${keyword}*`,
+    },
+    omdbSeriesSearchResponseSchema,
+  )
 
-  const res = await fetch(url)
-  const json = await res.json()
-
-  try {
-    const seriesSearchResponse = seriesSearchResponseSchema.parse(json)
-    if ('Error' in seriesSearchResponse) {
-      // No result found or other error
-      return []
-    }
-
-    return seriesSearchResponse.Search
-  } catch (e) {
-    // The OMDb response format did not match the expected format. We should
-    // probably improve the schema.
-    // This might not need to be a warning, can be changed in the future.
-    app.log.warn('OMDb API response did not match the schema.', {
-      url,
-      json,
-    })
-
+  if (!seriesSearchResponse || 'Error' in seriesSearchResponse) {
+    // No result found or other error
     return []
   }
+
+  return seriesSearchResponse.Search
+}
+
+export const fetchSeriesDetailsFromOMDb = async (imdbId: string) => {
+  const seriesDetails = await makeOMDbRequest(
+    {
+      i: imdbId,
+      plot: 'full',
+    },
+    omdbSeriesSchema,
+  )
+  if (!seriesDetails) {
+    throw new NotFoundError()
+  }
+
+  return seriesDetails
+}
+
+export const fetchSeasonDetailsFromOMDb = async (
+  imdbId: string,
+  seasonNumber: number,
+) => {
+  const season = await makeOMDbRequest(
+    {
+      i: imdbId,
+      Season: String(seasonNumber),
+    },
+    omdbSeasonSchema,
+  )
+  if (!season) {
+    throw new NotFoundError()
+  }
+
+  return season
+}
+
+export const parseOMDbSeriesYears = (years: string) => {
+  let startYear = years
+  let endYear = years
+  if (years.includes('–')) {
+    // NOTE: This is not a regular dash, but an en-dash
+    ;[startYear, endYear] = years.split('–')
+  }
+
+  return {
+    startYear: parseInt(startYear, 10),
+    endYear: endYear ? parseInt(endYear, 10) : null,
+  }
+}
+
+export const parseOMDbSeriesRuntime = (runtime: string): number | null => {
+  const match = runtime.match(/(\d+)/g)
+  if (!match) {
+    return null
+  }
+
+  return parseInt(match[0])
 }

@@ -1,0 +1,22 @@
+import { type Kysely } from 'kysely'
+
+import { type NotWorthIt } from '@/types/utils'
+
+export async function up(db: Kysely<NotWorthIt>): Promise<void> {
+  await db.schema
+    .createTable('episode')
+    .addColumn('id', 'serial', (col) => col.primaryKey())
+    .addColumn('imdb_id', 'varchar(15)', (col) => col.notNull().unique())
+    .addColumn('season_id', 'integer', (col) =>
+      col.references('season.id').onDelete('cascade').notNull(),
+    )
+    .addColumn('number', 'int2', (col) => col.notNull())
+    .addColumn('title', 'varchar(255)', (col) => col.notNull())
+    .addColumn('released_at', 'date', (col) => col.notNull())
+    .addColumn('imdb_rating', 'decimal')
+    .execute()
+}
+
+export async function down(db: Kysely<NotWorthIt>): Promise<void> {
+  await db.schema.dropTable('episode').execute()
+}

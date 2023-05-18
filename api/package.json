@@ -32,6 +32,7 @@
     "@pothos/plugin-tracing": "^0.5.7",
     "@pothos/plugin-validation": "^3.9.0",
     "bcryptjs": "^2.4.3",
+    "date-fns": "^2.30.0",
     "dotenv": "^16.0.3",
     "fastify": "^4.17.0",
     "graphql": "^16.6.0",

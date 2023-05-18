@@ -75,6 +75,7 @@ const graphqlErrors = [
   'BaseError',
   'InvalidInputError',
   'UnauthorizedError',
+  'NotFoundError',
 ] as const
 type GraphqlErrors = (typeof graphqlErrors)[number]
 

@@ -25,6 +25,10 @@ export const seriesFactory = Factory.define<Selectable<Series>>(
       startYear: 2020,
       poster: null,
       endYear: null,
+      imdbRating: null,
+      plot: null,
+      syncedAt: null,
+      runtimeMinutes: null,
       createdAt: new Date(),
       updatedAt: new Date(),
     }

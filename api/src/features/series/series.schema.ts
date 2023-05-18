@@ -4,7 +4,10 @@ import { type Series } from '@/generated/db'
 import { NotFoundError } from '@/lib/errors'
 import { builder } from '@/schemaBuilder'
 
-import { getSeriesById, searchSeries } from './series.service'
+import {
+  getSeriesByIdAndFetchDetailsFromOmdb,
+  searchSeries,
+} from './series.service'
 
 export type SeriesType = Pick<
   Selectable<Series>,
@@ -56,7 +59,9 @@ builder.queryFields((t) => ({
       types: [NotFoundError],
     },
     resolve(_parent, args, ctx) {
-      return getSeriesById(ctx)(parseInt(String(args.id)))
+      return getSeriesByIdAndFetchDetailsFromOmdb(ctx)(
+        parseInt(String(args.id)),
+      )
     },
   }),
 }))

@@ -4,7 +4,25 @@ export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
   ? ColumnType<S, I | undefined, U>
   : ColumnType<T, T | undefined, T>
 
+export type Numeric = ColumnType<string, string | number, string | number>
+
 export type Timestamp = ColumnType<Date, Date | string, Date | string>
+
+export type Episode = {
+  id: Generated<number>
+  imdbId: string
+  seasonId: number
+  number: number
+  title: string
+  releasedAt: Timestamp
+  imdbRating: Numeric | null
+}
+
+export type Season = {
+  id: Generated<number>
+  seriesId: number
+  number: number
+}
 
 export type Series = {
   id: Generated<number>
@@ -15,6 +33,10 @@ export type Series = {
   endYear: number | null
   createdAt: Generated<Timestamp>
   updatedAt: Generated<Timestamp>
+  runtimeMinutes: number | null
+  plot: string | null
+  imdbRating: number | null
+  syncedAt: Timestamp | null
 }
 
 export type Session = {
@@ -38,6 +60,8 @@ export type User = {
 }
 
 export type DB = {
+  episode: Episode
+  season: Season
   series: Series
   session: Session
   user: User

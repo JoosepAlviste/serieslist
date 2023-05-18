@@ -18,6 +18,7 @@ const documents = {
     "\n          mutation login($input: LoginInput!) {\n            login(input: $input) {\n              __typename\n              ... on User {\n                id\n                name\n                email\n              }\n              ... on InvalidInputError {\n                fieldErrors {\n                  path\n                  message\n                }\n              }\n            }\n          }\n        ": types.LoginDocument,
     "\n          query me {\n            me {\n              __typename\n              ... on User {\n                id\n                name\n                email\n              }\n              ... on UnauthorizedError {\n                message\n              }\n            }\n          }\n        ": types.MeDocument,
     "\n          query seriesSearch($input: SeriesSearchInput!) {\n            seriesSearch(input: $input) {\n              id\n              title\n              imdbId\n              poster\n              startYear\n              endYear\n            }\n          }\n        ": types.SeriesSearchDocument,
+    "\n          query series($id: ID!) {\n            series(id: $id) {\n              __typename\n              ... on Series {\n                id\n                title\n              }\n              ... on NotFoundError {\n                message\n              }\n            }\n          }\n        ": types.SeriesDocument,
 };
 
 /**
@@ -54,6 +55,10 @@ export function graphql(source: "\n          query me {\n            me {\n     
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n          query seriesSearch($input: SeriesSearchInput!) {\n            seriesSearch(input: $input) {\n              id\n              title\n              imdbId\n              poster\n              startYear\n              endYear\n            }\n          }\n        "): (typeof documents)["\n          query seriesSearch($input: SeriesSearchInput!) {\n            seriesSearch(input: $input) {\n              id\n              title\n              imdbId\n              poster\n              startYear\n              endYear\n            }\n          }\n        "];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n          query series($id: ID!) {\n            series(id: $id) {\n              __typename\n              ... on Series {\n                id\n                title\n              }\n              ... on NotFoundError {\n                message\n              }\n            }\n          }\n        "): (typeof documents)["\n          query series($id: ID!) {\n            series(id: $id) {\n              __typename\n              ... on Series {\n                id\n                title\n              }\n              ... on NotFoundError {\n                message\n              }\n            }\n          }\n        "];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};
