@@ -1,6 +1,5 @@
 import { type Selectable } from 'kysely'
 import { nanoid } from 'nanoid'
-import { it, describe, expect } from 'vitest'
 
 import { userFactory } from '@/features/users'
 import { type User } from '@/generated/db'

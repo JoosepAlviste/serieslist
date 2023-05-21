@@ -1,5 +1,3 @@
-import { describe, it, expect } from 'vitest'
-
 import { graphql } from '@/generated/gql/index'
 import { executeOperation } from '@/test/testUtils'
 

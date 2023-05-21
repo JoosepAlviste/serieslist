@@ -1,7 +1,6 @@
 import { type TypedDocumentNode } from '@graphql-typed-document-node/core'
 import { type ExecutionResult, print } from 'graphql'
 import { createYoga } from 'graphql-yoga'
-import { vi } from 'vitest'
 
 import { userFactory } from '@/features/users'
 import { db } from '@/lib/db'

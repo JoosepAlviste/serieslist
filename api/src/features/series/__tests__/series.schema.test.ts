@@ -1,6 +1,5 @@
 import { nanoid } from 'nanoid'
 import nock, { type Body } from 'nock'
-import { describe, expect, it } from 'vitest'
 
 import { config } from '@/config'
 import { graphql } from '@/generated/gql'
