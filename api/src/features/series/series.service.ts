@@ -1,5 +1,4 @@
 import { addDays, isFuture, parse } from 'date-fns'
-import groupBy from 'lodash/groupBy'
 
 import {
   fetchSeasonDetailsFromOMDb,
@@ -13,6 +12,7 @@ import { parseOMDbSeriesYears } from '@/features/omdb'
 import { type SeriesSearchInput } from '@/generated/gql/graphql'
 import { NotFoundError } from '@/lib/errors'
 import { type Context } from '@/types/context'
+import { groupEntitiesByKeyToNestedArray } from '@/utils/groupEntitiesByKeyToNestedArray'
 
 const parseSeriesFromOMDbResponse = (
   omdbSeries: OMDbSearchSeries | OMDbSeries,
@@ -194,11 +194,28 @@ export const findSeasonsBySeriesIds =
   (ctx: Context) => async (seriesIds: number[]) => {
     const allSeasons = await ctx.db
       .selectFrom('season')
-      .where('seriesId', 'in', seriesIds)
       .selectAll()
+      .where('seriesId', 'in', seriesIds)
       .execute()
 
-    const seasonsBySeries = groupBy(allSeasons, 'seriesId')
+    return groupEntitiesByKeyToNestedArray({
+      entities: allSeasons,
+      ids: seriesIds,
+      fieldToGroupBy: 'seriesId',
+    })
+  }
 
-    return seriesIds.map((seriesId) => seasonsBySeries[seriesId] ?? [])
+export const findEpisodesBySeasonIds =
+  (ctx: Context) => async (seasonIds: number[]) => {
+    const allEpisodes = await ctx.db
+      .selectFrom('episode')
+      .selectAll()
+      .where('seasonId', 'in', seasonIds)
+      .execute()
+
+    return groupEntitiesByKeyToNestedArray({
+      entities: allEpisodes,
+      ids: seasonIds,
+      fieldToGroupBy: 'seasonId',
+    })
   }

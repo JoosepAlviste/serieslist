@@ -20,6 +20,7 @@ const documents = {
     "\n          query seriesSearch($input: SeriesSearchInput!) {\n            seriesSearch(input: $input) {\n              id\n              title\n              imdbId\n              poster\n              startYear\n              endYear\n            }\n          }\n        ": types.SeriesSearchDocument,
     "\n          query series($id: ID!) {\n            series(id: $id) {\n              __typename\n              ... on Series {\n                id\n                title\n              }\n              ... on NotFoundError {\n                message\n              }\n            }\n          }\n        ": types.SeriesDocument,
     "\n          query seriesTypeSeries($id: ID!) {\n            series(id: $id) {\n              __typename\n              ... on Series {\n                seasons {\n                  id\n                  number\n                }\n              }\n            }\n          }\n        ": types.SeriesTypeSeriesDocument,
+    "\n          query seriesTypeSeriesEpisodes($id: ID!) {\n            series(id: $id) {\n              __typename\n              ... on Series {\n                seasons {\n                  episodes {\n                    id\n                    imdbId\n                    number\n                    title\n                  }\n                }\n              }\n            }\n          }\n        ": types.SeriesTypeSeriesEpisodesDocument,
 };
 
 /**
@@ -64,6 +65,10 @@ export function graphql(source: "\n          query series($id: ID!) {\n         
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n          query seriesTypeSeries($id: ID!) {\n            series(id: $id) {\n              __typename\n              ... on Series {\n                seasons {\n                  id\n                  number\n                }\n              }\n            }\n          }\n        "): (typeof documents)["\n          query seriesTypeSeries($id: ID!) {\n            series(id: $id) {\n              __typename\n              ... on Series {\n                seasons {\n                  id\n                  number\n                }\n              }\n            }\n          }\n        "];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n          query seriesTypeSeriesEpisodes($id: ID!) {\n            series(id: $id) {\n              __typename\n              ... on Series {\n                seasons {\n                  episodes {\n                    id\n                    imdbId\n                    number\n                    title\n                  }\n                }\n              }\n            }\n          }\n        "): (typeof documents)["\n          query seriesTypeSeriesEpisodes($id: ID!) {\n            series(id: $id) {\n              __typename\n              ... on Series {\n                seasons {\n                  episodes {\n                    id\n                    imdbId\n                    number\n                    title\n                  }\n                }\n              }\n            }\n          }\n        "];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

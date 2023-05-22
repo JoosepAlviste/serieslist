@@ -1,14 +1,20 @@
 import { type Selectable } from 'kysely'
 
-import { type Season, type Series } from '@/generated/db'
+import { type Episode, type Season, type Series } from '@/generated/db'
 import { NotFoundError } from '@/lib/errors'
 import { builder } from '@/schemaBuilder'
 
 import {
+  findEpisodesBySeasonIds,
   findSeasonsBySeriesIds,
   getSeriesByIdAndFetchDetailsFromOmdb,
   searchSeries,
 } from './series.service'
+
+export type EpisodeType = Pick<
+  Selectable<Episode>,
+  'id' | 'imdbId' | 'number' | 'title'
+>
 
 export type SeasonType = Pick<Selectable<Season>, 'id' | 'number'>
 
@@ -17,12 +23,29 @@ export type SeriesType = Pick<
   'id' | 'imdbId' | 'title' | 'poster' | 'startYear' | 'endYear'
 >
 
+const EpisodeRef = builder.objectRef<EpisodeType>('Episode').implement({
+  fields: (t) => ({
+    id: t.id({
+      resolve: (parent) => String(parent.id),
+    }),
+    imdbId: t.exposeString('imdbId'),
+    number: t.exposeInt('number'),
+    title: t.exposeString('title'),
+  }),
+})
+
 const SeasonRef = builder.objectRef<SeasonType>('Season').implement({
   fields: (t) => ({
     id: t.id({
       resolve: (parent) => String(parent.id),
     }),
     number: t.exposeInt('number'),
+
+    episodes: t.loadableList({
+      type: EpisodeRef,
+      resolve: (parent) => parent.id,
+      load: (ids, ctx) => findEpisodesBySeasonIds(ctx)(ids),
+    }),
   }),
 })
 

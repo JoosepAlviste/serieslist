@@ -13,6 +13,7 @@ import { graphql } from '@/generated/gql'
 import { db } from '@/lib/db'
 import { checkErrors, executeOperation } from '@/test/testUtils'
 
+import { episodeFactory } from '../episode.factory'
 import { seasonFactory } from '../season.factory'
 import { seriesFactory } from '../series.factory'
 
@@ -381,6 +382,71 @@ describe('features/series/series.schema', () => {
       expect(resSeries.seasons[1]).toEqual({
         id: String(season2.id),
         number: 2,
+      })
+    })
+
+    it('allows fetching episodes for a series', async () => {
+      const series = await seriesFactory.create()
+      const season1 = await seasonFactory.create(
+        {},
+        { associations: { seriesId: series.id } },
+      )
+      const episode1 = await episodeFactory.create(
+        {
+          number: 1,
+          title: 'Episode one',
+          imdbRating: '1.2',
+        },
+        { associations: { seasonId: season1.id } },
+      )
+      const episode2 = await episodeFactory.create(
+        {
+          number: 2,
+          title: 'Episode two',
+          imdbRating: '2.3',
+        },
+        { associations: { seasonId: season1.id } },
+      )
+
+      const res = await executeOperation({
+        operation: graphql(`
+          query seriesTypeSeriesEpisodes($id: ID!) {
+            series(id: $id) {
+              __typename
+              ... on Series {
+                seasons {
+                  episodes {
+                    id
+                    imdbId
+                    number
+                    title
+                  }
+                }
+              }
+            }
+          }
+        `),
+        variables: {
+          id: String(series.id),
+        },
+      })
+      const resSeries = checkErrors(res.data?.series)
+
+      expect(resSeries.seasons).toHaveLength(1)
+      const episodes = resSeries.seasons[0]!.episodes
+
+      expect(episodes).toHaveLength(2)
+      expect(episodes[0]).toEqual({
+        id: String(episode1.id),
+        imdbId: episode1.imdbId,
+        number: 1,
+        title: 'Episode one',
+      })
+      expect(episodes[1]).toEqual({
+        id: String(episode2.id),
+        imdbId: episode2.imdbId,
+        number: 2,
+        title: 'Episode two',
       })
     })
   })
