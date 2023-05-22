@@ -1,18 +1,30 @@
 import { type Selectable } from 'kysely'
 
-import { type Series } from '@/generated/db'
+import { type Season, type Series } from '@/generated/db'
 import { NotFoundError } from '@/lib/errors'
 import { builder } from '@/schemaBuilder'
 
 import {
+  findSeasonsBySeriesIds,
   getSeriesByIdAndFetchDetailsFromOmdb,
   searchSeries,
 } from './series.service'
+
+export type SeasonType = Pick<Selectable<Season>, 'id' | 'number'>
 
 export type SeriesType = Pick<
   Selectable<Series>,
   'id' | 'imdbId' | 'title' | 'poster' | 'startYear' | 'endYear'
 >
+
+const SeasonRef = builder.objectRef<SeasonType>('Season').implement({
+  fields: (t) => ({
+    id: t.id({
+      resolve: (parent) => String(parent.id),
+    }),
+    number: t.exposeInt('number'),
+  }),
+})
 
 const SeriesRef = builder.objectRef<SeriesType>('Series').implement({
   fields: (t) => ({
@@ -27,6 +39,12 @@ const SeriesRef = builder.objectRef<SeriesType>('Series').implement({
     }),
     poster: t.exposeString('poster', {
       nullable: true,
+    }),
+
+    seasons: t.loadableList({
+      type: SeasonRef,
+      resolve: (parent) => parent.id,
+      load: (ids, ctx) => findSeasonsBySeriesIds(ctx)(ids),
     }),
   }),
 })

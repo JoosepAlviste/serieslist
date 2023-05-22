@@ -13,6 +13,7 @@ import { graphql } from '@/generated/gql'
 import { db } from '@/lib/db'
 import { checkErrors, executeOperation } from '@/test/testUtils'
 
+import { seasonFactory } from '../season.factory'
 import { seriesFactory } from '../series.factory'
 
 describe('features/series/series.schema', () => {
@@ -337,6 +338,50 @@ describe('features/series/series.schema', () => {
           imdbRating: '7.3',
         }),
       )
+    })
+  })
+
+  describe('Series type', () => {
+    it('allows fetching seasons for a series', async () => {
+      const series = await seriesFactory.create()
+      const season1 = await seasonFactory.create(
+        { number: 1 },
+        { associations: { seriesId: series.id } },
+      )
+      const season2 = await seasonFactory.create(
+        { number: 2 },
+        { associations: { seriesId: series.id } },
+      )
+
+      const res = await executeOperation({
+        operation: graphql(`
+          query seriesTypeSeries($id: ID!) {
+            series(id: $id) {
+              __typename
+              ... on Series {
+                seasons {
+                  id
+                  number
+                }
+              }
+            }
+          }
+        `),
+        variables: {
+          id: String(series.id),
+        },
+      })
+      const resSeries = checkErrors(res.data?.series)
+
+      expect(resSeries.seasons).toHaveLength(2)
+      expect(resSeries.seasons[0]).toEqual({
+        id: String(season1.id),
+        number: 1,
+      })
+      expect(resSeries.seasons[1]).toEqual({
+        id: String(season2.id),
+        number: 2,
+      })
     })
   })
 })

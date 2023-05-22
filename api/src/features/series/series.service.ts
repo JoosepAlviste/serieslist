@@ -1,4 +1,5 @@
 import { addDays, isFuture, parse } from 'date-fns'
+import groupBy from 'lodash/groupBy'
 
 import {
   fetchSeasonDetailsFromOMDb,
@@ -187,4 +188,17 @@ export const getSeriesByIdAndFetchDetailsFromOmdb =
     }
 
     return await syncSeriesDetailsFromOMDb(ctx)(series.imdbId)
+  }
+
+export const findSeasonsBySeriesIds =
+  (ctx: Context) => async (seriesIds: number[]) => {
+    const allSeasons = await ctx.db
+      .selectFrom('season')
+      .where('seriesId', 'in', seriesIds)
+      .selectAll()
+      .execute()
+
+    const seasonsBySeries = groupBy(allSeasons, 'seriesId')
+
+    return seriesIds.map((seriesId) => seasonsBySeries[seriesId] ?? [])
   }

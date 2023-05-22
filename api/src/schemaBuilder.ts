@@ -1,4 +1,5 @@
 import SchemaBuilder from '@pothos/core'
+import DataloaderPlugin from '@pothos/plugin-dataloader'
 import ErrorsPlugin from '@pothos/plugin-errors'
 import ScopeAuthPlugin from '@pothos/plugin-scope-auth'
 import TracingPlugin, {
@@ -22,7 +23,13 @@ export const builder = new SchemaBuilder<{
     admin: AuthenticatedContext
   }
 }>({
-  plugins: [TracingPlugin, ErrorsPlugin, ScopeAuthPlugin, ValidationPlugin],
+  plugins: [
+    TracingPlugin,
+    ErrorsPlugin,
+    ScopeAuthPlugin,
+    DataloaderPlugin,
+    ValidationPlugin,
+  ],
   authScopes: (context) => ({
     authenticated: !!context.currentUser,
     admin: !!context.currentUser?.isAdmin,

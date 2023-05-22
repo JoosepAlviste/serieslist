@@ -27,7 +27,7 @@ export const seriesFactory = Factory.define<Selectable<Series>>(
       endYear: null,
       imdbRating: null,
       plot: null,
-      syncedAt: null,
+      syncedAt: new Date(Date.now()),
       runtimeMinutes: null,
       createdAt: new Date(),
       updatedAt: new Date(),
