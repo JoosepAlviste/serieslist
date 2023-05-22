@@ -162,7 +162,8 @@ const syncSeriesDetailsFromOMDb = (ctx: Context) => async (imdbId: string) => {
               imdbId: episode.imdbID,
               number: parseInt(episode.Episode),
               title: episode.Title,
-              seasonId: seasonIdsByNumber[seasonNumber],
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              seasonId: seasonIdsByNumber[seasonNumber]!,
               releasedAt: parse(episode.Released, 'yyyy-MM-dd', new Date()),
               imdbRating: parseFloat(episode.imdbRating) || null,
             })),

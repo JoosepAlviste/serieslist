@@ -311,13 +311,13 @@ describe('features/series/series.schema', () => {
         .execute()
 
       expect(seasons).toHaveLength(1)
-      expect(seasons[0].number).toBe(1)
+      expect(seasons[0]!.number).toBe(1)
 
       // The episodes were saved into the database
       const episodes = await db
         .selectFrom('episode')
         .selectAll()
-        .where('seasonId', '=', seasons[0].id)
+        .where('seasonId', '=', seasons[0]!.id)
         .execute()
 
       expect(episodes).toHaveLength(2)

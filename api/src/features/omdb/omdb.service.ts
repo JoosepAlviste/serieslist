@@ -100,7 +100,13 @@ export const parseOMDbSeriesYears = (years: string) => {
   let endYear = years
   if (years.includes('–')) {
     // NOTE: This is not a regular dash, but an en-dash
-    ;[startYear, endYear] = years.split('–')
+    const yearsSplit = years.split('–')
+    if (yearsSplit[0] !== undefined) {
+      startYear = yearsSplit[0]
+    }
+    if (yearsSplit[1] !== undefined) {
+      endYear = yearsSplit[1]
+    }
   }
 
   return {
