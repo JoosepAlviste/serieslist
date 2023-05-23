@@ -11,17 +11,11 @@ import {
   searchSeries,
 } from './series.service'
 
-export type EpisodeType = Pick<
-  Selectable<Episode>,
-  'id' | 'imdbId' | 'number' | 'title'
->
+export type EpisodeType = Selectable<Episode>
 
-export type SeasonType = Pick<Selectable<Season>, 'id' | 'number'>
+export type SeasonType = Selectable<Season>
 
-export type SeriesType = Pick<
-  Selectable<Series>,
-  'id' | 'imdbId' | 'title' | 'poster' | 'startYear' | 'endYear'
->
+export type SeriesType = Selectable<Series>
 
 const EpisodeRef = builder.objectRef<EpisodeType>('Episode').implement({
   fields: (t) => ({

@@ -91,7 +91,7 @@ const createUser = (ctx: Context) => async (input: RegisterInput) => {
       email: input.email,
       password,
     })
-    .returning(['id', 'name', 'email'])
+    .returningAll()
     .executeTakeFirstOrThrow()
 }
 
@@ -121,7 +121,7 @@ export const register = (ctx: Context) => async (input: RegisterInput) => {
 export const login = (ctx: Context) => async (input: LoginInput) => {
   const user = await ctx.db
     .selectFrom('user')
-    .select(['id', 'name', 'email', 'password'])
+    .selectAll()
     .where('email', '=', input.email)
     .executeTakeFirst()
   if (!user) {

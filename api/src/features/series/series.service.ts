@@ -35,7 +35,7 @@ export const searchSeries =
 
     const existingSeries = await ctx.db
       .selectFrom('series')
-      .select(['id', 'imdbId', 'title', 'poster', 'startYear', 'endYear'])
+      .selectAll()
       .where(
         'imdbId',
         'in',
@@ -56,7 +56,7 @@ export const searchSeries =
       .values(
         newSeriesToAdd.map((series) => parseSeriesFromOMDbResponse(series)),
       )
-      .returning(['id', 'imdbId', 'title', 'poster', 'startYear', 'endYear'])
+      .returningAll()
       .execute()
 
     return [...existingSeries, ...newSeries]
