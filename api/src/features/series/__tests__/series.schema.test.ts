@@ -1,4 +1,4 @@
-import { subDays } from 'date-fns'
+import { parseISO, subDays } from 'date-fns'
 import { nanoid } from 'nanoid'
 import nock, { type Body } from 'nock'
 
@@ -396,6 +396,7 @@ describe('features/series/series.schema', () => {
           number: 1,
           title: 'Episode one',
           imdbRating: '1.2',
+          releasedAt: parseISO('2022-01-01'),
         },
         { associations: { seasonId: season1.id } },
       )
@@ -404,6 +405,7 @@ describe('features/series/series.schema', () => {
           number: 2,
           title: 'Episode two',
           imdbRating: '2.3',
+          releasedAt: parseISO('2022-01-02'),
         },
         { associations: { seasonId: season1.id } },
       )
@@ -420,6 +422,8 @@ describe('features/series/series.schema', () => {
                     imdbId
                     number
                     title
+                    imdbRating
+                    releasedAt
                   }
                 }
               }
@@ -441,12 +445,16 @@ describe('features/series/series.schema', () => {
         imdbId: episode1.imdbId,
         number: 1,
         title: 'Episode one',
+        imdbRating: 1.2,
+        releasedAt: '2022-01-01',
       })
       expect(episodes[1]).toEqual({
         id: String(episode2.id),
         imdbId: episode2.imdbId,
         number: 2,
         title: 'Episode two',
+        imdbRating: 2.3,
+        releasedAt: '2022-01-02',
       })
     })
   })

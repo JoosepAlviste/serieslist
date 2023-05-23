@@ -22,6 +22,12 @@ export const builder = new SchemaBuilder<{
     authenticated: AuthenticatedContext
     admin: AuthenticatedContext
   }
+  Scalars: {
+    Date: {
+      Input: string
+      Output: string
+    }
+  }
 }>({
   plugins: [
     TracingPlugin,

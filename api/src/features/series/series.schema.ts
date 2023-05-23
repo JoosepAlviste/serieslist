@@ -3,6 +3,7 @@ import { type Selectable } from 'kysely'
 import { type Episode, type Season, type Series } from '@/generated/db'
 import { NotFoundError } from '@/lib/errors'
 import { builder } from '@/schemaBuilder'
+import { exposeDate } from '@/utils/exposeDate'
 
 import {
   findEpisodesBySeasonIds,
@@ -25,6 +26,15 @@ const EpisodeRef = builder.objectRef<EpisodeType>('Episode').implement({
     imdbId: t.exposeString('imdbId'),
     number: t.exposeInt('number'),
     title: t.exposeString('title'),
+    releasedAt: t.field({
+      type: 'Date',
+      resolve: exposeDate('releasedAt'),
+    }),
+    imdbRating: t.field({
+      type: 'Float',
+      nullable: true,
+      resolve: ({ imdbRating }) => (imdbRating ? parseFloat(imdbRating) : null),
+    }),
   }),
 })
 

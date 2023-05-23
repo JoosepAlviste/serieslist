@@ -38,6 +38,7 @@
     "dotenv": "^16.0.3",
     "fastify": "^4.17.0",
     "graphql": "^16.6.0",
+    "graphql-scalars": "^1.22.0",
     "graphql-yoga": "^3.7.2",
     "jsonwebtoken": "^9.0.0",
     "kysely": "^0.24.2",
