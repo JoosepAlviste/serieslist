@@ -12,7 +12,7 @@ export async function up(db: Kysely<NotWorthIt>): Promise<void> {
     )
     .addColumn('number', 'int2', (col) => col.notNull())
     .addColumn('title', 'varchar(255)', (col) => col.notNull())
-    .addColumn('released_at', 'date', (col) => col.notNull())
+    .addColumn('released_at', 'date')
     .addColumn('imdb_rating', 'decimal')
     .execute()
 }

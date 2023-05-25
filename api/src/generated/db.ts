@@ -14,7 +14,7 @@ export type Episode = {
   seasonId: number
   number: number
   title: string
-  releasedAt: Timestamp
+  releasedAt: Timestamp | null
   imdbRating: Numeric | null
 }
 

@@ -164,6 +164,12 @@ describe('features/series/series.schema', () => {
               ... on Series {
                 id
                 title
+                seasons {
+                  id
+                  episodes {
+                    id
+                  }
+                }
               }
               ... on NotFoundError {
                 message
@@ -337,6 +343,58 @@ describe('features/series/series.schema', () => {
           title: 'Episode 2',
           imdbId: `${series.imdbId}s1e2`,
           imdbRating: '7.3',
+        }),
+      )
+    })
+
+    it('does not fail when syncing episodes with N/As', async () => {
+      const series = await seriesFactory.create({
+        imdbId: `tt${nanoid(8)}`,
+        syncedAt: null,
+      })
+
+      mockOMDbDetailsRequest(
+        series.imdbId,
+        omdbSeriesDetailsFactory.build({
+          imdbID: series.imdbId,
+          totalSeasons: '1',
+        }),
+      )
+
+      mockOMDbSeasonRequest(
+        {
+          imdbId: series.imdbId,
+          seasonNumber: 1,
+        },
+        {
+          Season: '1',
+          Episodes: [
+            omdbEpisodeFactory.build({
+              imdbID: `${series.imdbId}s1e1`,
+              Episode: '1',
+              Released: 'N/A',
+              imdbRating: 'N/A',
+            }),
+          ],
+        },
+      )
+
+      const res = await executeSeriesQuery(series.id)
+      const resSeries = checkErrors(res.data?.series)
+
+      const episodes = resSeries.seasons[0]?.episodes ?? []
+      expect(episodes).toHaveLength(1)
+
+      const episode = await db
+        .selectFrom('episode')
+        .where('id', '=', parseInt(episodes[0]!.id))
+        .selectAll()
+        .executeTakeFirstOrThrow()
+
+      expect(episode).toEqual(
+        expect.objectContaining({
+          imdbRating: null,
+          releasedAt: null,
         }),
       )
     })
