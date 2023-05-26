@@ -14,10 +14,17 @@ export const poster = style({
   alignItems: 'flex-start',
 })
 
+export const titleLine = style({
+  display: 'flex',
+  alignItems: 'center',
+  marginBottom: '0.25rem',
+})
+
 export const titleContainer = style({
   display: 'flex',
   alignItems: 'center',
   gap: '1rem',
+  flex: 1,
 })
 
 export const title = style({
@@ -32,7 +39,7 @@ export const imdbLogo = style({
 
 export const years = style({
   fontSize: '0.875rem',
-  marginBottom: '1rem',
+  marginBottom: '0.75rem',
   color: vars.color.slate500,
 })
 
@@ -76,6 +83,12 @@ export const seasonTrigger = style({
   ':hover': {
     background: vars.color.slate200,
     borderBottomColor: vars.color.slate200,
+  },
+
+  ':focus': {
+    background: vars.color.slate200,
+    borderBottomColor: vars.color.slate200,
+    outline: 'none',
   },
 
   selectors: {

@@ -2,6 +2,7 @@ import { AccessibleIcon } from '@radix-ui/react-accessible-icon'
 import classNames from 'classnames'
 import React, { type SVGAttributes } from 'react'
 
+import { ReactComponent as CheckIcon } from './Check.svg'
 import { ReactComponent as CrossIcon } from './Cross.svg'
 import * as s from './Icon.css'
 import { ReactComponent as LogoIcon } from './Logo.svg'
@@ -17,6 +18,7 @@ const icons = {
   user: UserIcon,
   search: SearchIcon,
   cross: CrossIcon,
+  check: CheckIcon,
 }
 
 type BaseIconProps = SVGAttributes<SVGElement> & {

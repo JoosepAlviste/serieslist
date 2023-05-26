@@ -38,6 +38,7 @@ export const [themeClass, vars] = createTheme({
   },
 
   shadow: {
+    md: 'rgba(0, 0, 0, 0.2) 0px 18px 50px -10px',
     xl: '0 5px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
   },
 })
