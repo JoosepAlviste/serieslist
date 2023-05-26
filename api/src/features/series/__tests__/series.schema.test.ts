@@ -433,6 +433,40 @@ describe('features/series/series.schema', () => {
         releasedAt: '2022-01-02',
       })
     })
+
+    it('allows fetching series status', async () => {
+      const user = await userFactory.create()
+      const series = await seriesFactory.create()
+
+      await db
+        .insertInto('userSeriesStatus')
+        .values({
+          seriesId: series.id,
+          userId: user.id,
+          status: UserSeriesStatus.Completed,
+        })
+        .execute()
+
+      const res = await executeOperation({
+        operation: graphql(`
+          query seriesTypeSeriesStatus($id: ID!) {
+            series(id: $id) {
+              __typename
+              ... on Series {
+                status
+              }
+            }
+          }
+        `),
+        variables: {
+          id: String(series.id),
+        },
+        user,
+      })
+      const resSeries = checkErrors(res.data?.series)
+
+      expect(resSeries.status).toBe(UserSeriesStatus.Completed)
+    })
   })
 
   describe('seriesUpdateStatus mutation', () => {

@@ -1,6 +1,6 @@
 import { sql, type Kysely } from 'kysely'
 
-import { UserSeriesStatus } from '@/features/series/constants'
+import { UserSeriesStatus } from '@/features/series'
 import { type NotWorthIt } from '@/types/utils'
 
 export async function up(db: Kysely<NotWorthIt>): Promise<void> {

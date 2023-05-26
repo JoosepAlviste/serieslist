@@ -9,6 +9,7 @@ import { UserSeriesStatus } from './constants'
 import {
   findEpisodesBySeasonIds,
   findSeasonsBySeriesIds,
+  findStatusForSeries,
   getSeriesByIdAndFetchDetailsFromOmdb,
   searchSeries,
   updateSeriesStatusForUser,
@@ -81,6 +82,15 @@ const SeriesRef = builder.objectRef<SeriesType>('Series').implement({
     }),
   }),
 })
+
+builder.objectField(SeriesRef, 'status', (t) =>
+  t.loadable({
+    type: UserSeriesStatus,
+    nullable: true,
+    load: (ids: number[], context) => findStatusForSeries(context)(ids),
+    resolve: (series) => series.id,
+  }),
+)
 
 const SeriesSearchInput = builder.inputType('SeriesSearchInput', {
   fields: (t) => ({

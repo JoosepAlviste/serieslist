@@ -1,4 +1,5 @@
 import { addDays, isFuture, parse } from 'date-fns'
+import keyBy from 'lodash/keyBy'
 import uniq from 'lodash/uniq'
 
 import {
@@ -275,4 +276,26 @@ export const updateSeriesStatusForUser =
       .execute()
 
     return series
+  }
+
+export const findStatusForSeries =
+  (ctx: Context) =>
+  async (seriesIds: number[]): Promise<(UserSeriesStatus | null)[]> => {
+    if (!ctx.currentUser) {
+      return seriesIds.map(() => null)
+    }
+
+    const allStatuses = await ctx.db
+      .selectFrom('userSeriesStatus')
+      .where('seriesId', 'in', seriesIds)
+      .where('userId', '=', ctx.currentUser.id)
+      .selectAll()
+      .execute()
+
+    const statusesBySeriesId = keyBy(allStatuses, 'seriesId')
+
+    return seriesIds.map((seriesId) => {
+      const status = statusesBySeriesId[seriesId]?.status
+      return status ? UserSeriesStatus[status] : null
+    })
   }
