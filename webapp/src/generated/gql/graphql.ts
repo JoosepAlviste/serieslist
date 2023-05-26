@@ -12,11 +12,23 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** A local date string (i.e., with no associated timezone) in `YYYY-MM-DD` format, e.g. `2020-01-01`. */
+  Date: any;
 };
 
 export type BaseError = Error & {
   __typename?: 'BaseError';
   message: Scalars['String'];
+};
+
+export type Episode = {
+  __typename?: 'Episode';
+  id: Scalars['ID'];
+  imdbId: Scalars['String'];
+  imdbRating?: Maybe<Scalars['Float']>;
+  number: Scalars['Int'];
+  releasedAt: Scalars['Date'];
+  title: Scalars['String'];
 };
 
 export type Error = {
@@ -61,10 +73,16 @@ export type MutationLoginResult = InvalidInputError | User;
 
 export type MutationRegisterResult = InvalidInputError | User;
 
+export type NotFoundError = Error & {
+  __typename?: 'NotFoundError';
+  message: Scalars['String'];
+};
+
 export type Query = {
   __typename?: 'Query';
   hello: Scalars['String'];
   me: QueryMeResult;
+  series: QuerySeriesResult;
   seriesSearch: Array<Series>;
 };
 
@@ -74,16 +92,30 @@ export type QueryHelloArgs = {
 };
 
 
+export type QuerySeriesArgs = {
+  id: Scalars['ID'];
+};
+
+
 export type QuerySeriesSearchArgs = {
   input: SeriesSearchInput;
 };
 
 export type QueryMeResult = UnauthorizedError | User;
 
+export type QuerySeriesResult = NotFoundError | Series;
+
 export type RegisterInput = {
   email: Scalars['String'];
   name: Scalars['String'];
   password: Scalars['String'];
+};
+
+export type Season = {
+  __typename?: 'Season';
+  episodes: Array<Episode>;
+  id: Scalars['ID'];
+  number: Scalars['Int'];
 };
 
 export type Series = {
@@ -92,6 +124,7 @@ export type Series = {
   id: Scalars['ID'];
   imdbId: Scalars['String'];
   poster?: Maybe<Scalars['String']>;
+  seasons: Array<Season>;
   startYear: Scalars['Int'];
   title: Scalars['String'];
 };
@@ -146,6 +179,13 @@ export type SearchQuery = { __typename?: 'Query', seriesSearch: Array<(
     & { ' $fragmentRefs'?: { 'SeriesPoster_SeriesFragmentFragment': SeriesPoster_SeriesFragmentFragment } }
   )> };
 
+export type SeriesDetailsPageQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type SeriesDetailsPageQuery = { __typename?: 'Query', series: { __typename: 'NotFoundError', message: string } | { __typename: 'Series', id: string, imdbId: string, title: string, poster?: string | null, startYear: number, endYear?: number | null, seasons: Array<{ __typename?: 'Season', id: string, number: number, episodes: Array<{ __typename?: 'Episode', id: string, imdbId: string, number: number, title: string, releasedAt: any, imdbRating?: number | null }> }> } };
+
 export type SeriesPoster_SeriesFragmentFragment = { __typename?: 'Series', poster?: string | null } & { ' $fragmentName'?: 'SeriesPoster_SeriesFragmentFragment' };
 
 export type AboutPageQueryVariables = Exact<{ [key: string]: never; }>;
@@ -164,5 +204,6 @@ export const RegisterDocument = {"kind":"Document","definitions":[{"kind":"Opera
 export const CurrentUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"currentUser"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"me"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]} as unknown as DocumentNode<CurrentUserQuery, CurrentUserQueryVariables>;
 export const LogOutDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"logOut"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"logOut"}}]}}]} as unknown as DocumentNode<LogOutMutation, LogOutMutationVariables>;
 export const SearchDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"search"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"SeriesSearchInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"seriesSearch"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"imdbId"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"startYear"}},{"kind":"Field","name":{"kind":"Name","value":"endYear"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"SeriesPoster_SeriesFragment"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"SeriesPoster_SeriesFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Series"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"poster"}}]}}]} as unknown as DocumentNode<SearchQuery, SearchQueryVariables>;
+export const SeriesDetailsPageDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"seriesDetailsPage"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"series"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"NotFoundError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"message"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Series"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"imdbId"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"poster"}},{"kind":"Field","name":{"kind":"Name","value":"startYear"}},{"kind":"Field","name":{"kind":"Name","value":"endYear"}},{"kind":"Field","name":{"kind":"Name","value":"seasons"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"number"}},{"kind":"Field","name":{"kind":"Name","value":"episodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"imdbId"}},{"kind":"Field","name":{"kind":"Name","value":"number"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"releasedAt"}},{"kind":"Field","name":{"kind":"Name","value":"imdbRating"}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<SeriesDetailsPageQuery, SeriesDetailsPageQueryVariables>;
 export const AboutPageDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"aboutPage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"me"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}}]}}]}}]} as unknown as DocumentNode<AboutPageQuery, AboutPageQueryVariables>;
 export const IndexPageDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"indexPage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hello"}}]}}]} as unknown as DocumentNode<IndexPageQuery, IndexPageQueryVariables>;

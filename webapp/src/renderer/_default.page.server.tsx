@@ -11,6 +11,7 @@ import type { PageContextServer } from './types'
 
 export const passToClient = [
   'pageProps',
+  'routeParams',
   'documentProps',
   'apolloInitialState',
   'currentUser',

@@ -1,11 +1,17 @@
 import React from 'react'
 
-export function Page({ is404 }: { is404: boolean }) {
+type ErrorPageProps = {
+  is404: boolean
+  errorInfo?: string
+}
+
+export const Page = ({ is404, errorInfo }: ErrorPageProps) => {
   if (is404) {
     return (
       <>
         <h1>404 Page Not Found</h1>
         <p>This page could not be found.</p>
+        {errorInfo && <p>{errorInfo}</p>}
       </>
     )
   } else {
