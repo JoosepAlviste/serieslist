@@ -10,10 +10,15 @@ import {
   parseOMDbSeriesRuntime,
 } from '@/features/omdb'
 import { parseOMDbSeriesYears } from '@/features/omdb'
-import { type SeriesSearchInput } from '@/generated/gql/graphql'
+import {
+  type SeriesUpdateStatusInput,
+  type SeriesSearchInput,
+} from '@/generated/gql/graphql'
 import { NotFoundError } from '@/lib/errors'
-import { type Context } from '@/types/context'
+import { type AuthenticatedContext, type Context } from '@/types/context'
 import { groupEntitiesByKeyToNestedArray } from '@/utils/groupEntitiesByKeyToNestedArray'
+
+import { STATUSES_FOR_DB } from './constants'
 
 const parseSeriesFromOMDbResponse = (
   omdbSeries: OMDbSearchSeries | OMDbSeries,
@@ -245,4 +250,29 @@ export const findEpisodesBySeasonIds =
       ids: seasonIds,
       fieldToGroupBy: 'seasonId',
     })
+  }
+
+export const updateSeriesStatusForUser =
+  (ctx: AuthenticatedContext) => async (input: SeriesUpdateStatusInput) => {
+    const series = await ctx.db
+      .selectFrom('series')
+      .where('id', '=', input.seriesId)
+      .selectAll()
+      .executeTakeFirst()
+    if (!series) {
+      throw new NotFoundError()
+    }
+
+    const status = input.status ? STATUSES_FOR_DB[input.status] : null
+
+    await ctx.db
+      .insertInto('userSeriesStatus')
+      .values({
+        userId: ctx.currentUser.id,
+        seriesId: input.seriesId,
+        status,
+      })
+      .execute()
+
+    return series
   }

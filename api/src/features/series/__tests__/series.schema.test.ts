@@ -4,10 +4,12 @@ import nock, { type Body } from 'nock'
 
 import { config } from '@/config'
 import { omdbSeriesDetailsFactory, omdbEpisodeFactory } from '@/features/omdb'
+import { userFactory } from '@/features/users'
 import { graphql } from '@/generated/gql'
 import { db } from '@/lib/db'
 import { checkErrors, executeOperation } from '@/test/testUtils'
 
+import { STATUSES_FOR_DB, UserSeriesStatus } from '../constants'
 import { episodeFactory } from '../episode.factory'
 import { seasonFactory } from '../season.factory'
 import { seriesFactory } from '../series.factory'
@@ -430,6 +432,39 @@ describe('features/series/series.schema', () => {
         imdbRating: 2.3,
         releasedAt: '2022-01-02',
       })
+    })
+  })
+
+  describe('seriesUpdateStatus mutation', () => {
+    it("allows updating the user's status of the series", async () => {
+      const series = await seriesFactory.create()
+      const user = await userFactory.create()
+
+      await executeOperation({
+        operation: graphql(`
+          mutation seriesUpdateStatus($input: SeriesUpdateStatusInput!) {
+            seriesUpdateStatus(input: $input) {
+              __typename
+            }
+          }
+        `),
+        variables: {
+          input: {
+            seriesId: series.id,
+            status: UserSeriesStatus.Completed,
+          },
+        },
+        user,
+      })
+
+      const seriesStatus = await db
+        .selectFrom('userSeriesStatus')
+        .where('seriesId', '=', series.id)
+        .where('userId', '=', user.id)
+        .selectAll()
+        .executeTakeFirst()
+      expect(seriesStatus).toBeTruthy()
+      expect(seriesStatus?.status).toBe(STATUSES_FOR_DB.Completed)
     })
   })
 })

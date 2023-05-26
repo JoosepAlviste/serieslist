@@ -8,6 +8,12 @@ export type Numeric = ColumnType<string, string | number, string | number>
 
 export type Timestamp = ColumnType<Date, Date | string, Date | string>
 
+export type UserSeriesStatusStatus =
+  | 'completed'
+  | 'in_progress'
+  | 'on_hold'
+  | 'plan_to_watch'
+
 export type Episode = {
   id: Generated<number>
   imdbId: string
@@ -59,10 +65,19 @@ export type User = {
   updatedAt: Generated<Timestamp>
 }
 
+export type UserSeriesStatus = {
+  seriesId: number
+  userId: number
+  status: UserSeriesStatusStatus | null
+  createdAt: Generated<Timestamp>
+  updatedAt: Generated<Timestamp>
+}
+
 export type DB = {
   episode: Episode
   season: Season
   series: Series
   session: Session
   user: User
+  userSeriesStatus: UserSeriesStatus
 }

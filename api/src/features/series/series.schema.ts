@@ -5,11 +5,13 @@ import { NotFoundError } from '@/lib/errors'
 import { builder } from '@/schemaBuilder'
 import { exposeDate } from '@/utils/exposeDate'
 
+import { UserSeriesStatus } from './constants'
 import {
   findEpisodesBySeasonIds,
   findSeasonsBySeriesIds,
   getSeriesByIdAndFetchDetailsFromOmdb,
   searchSeries,
+  updateSeriesStatusForUser,
 } from './series.service'
 
 export type EpisodeType = Selectable<Episode>
@@ -111,6 +113,46 @@ builder.queryFields((t) => ({
       return getSeriesByIdAndFetchDetailsFromOmdb(ctx)(
         parseInt(String(args.id)),
       )
+    },
+  }),
+}))
+
+builder.enumType(UserSeriesStatus, {
+  name: 'UserSeriesStatus',
+})
+
+const SeriesUpdateStatusInputRef = builder.inputType(
+  'SeriesUpdateStatusInput',
+  {
+    fields: (t) => ({
+      seriesId: t.int({
+        required: true,
+      }),
+      status: t.field({
+        type: UserSeriesStatus,
+      }),
+    }),
+  },
+)
+
+builder.mutationFields((t) => ({
+  seriesUpdateStatus: t.authField({
+    type: SeriesRef,
+    nullable: false,
+    authScopes: {
+      authenticated: true,
+    },
+    args: {
+      input: t.arg({
+        type: SeriesUpdateStatusInputRef,
+        required: true,
+      }),
+    },
+    errors: {
+      types: [NotFoundError],
+    },
+    resolve: (_parent, args, ctx) => {
+      return updateSeriesStatusForUser(ctx)(args.input)
     },
   }),
 }))
