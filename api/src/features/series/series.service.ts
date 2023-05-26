@@ -273,6 +273,9 @@ export const updateSeriesStatusForUser =
         seriesId: input.seriesId,
         status,
       })
+      .onConflict((oc) =>
+        oc.columns(['seriesId', 'userId']).doUpdateSet({ status }),
+      )
       .execute()
 
     return series

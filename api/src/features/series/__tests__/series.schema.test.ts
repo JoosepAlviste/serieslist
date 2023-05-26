@@ -1,11 +1,14 @@
 import { parseISO, subDays } from 'date-fns'
+import { type Selectable } from 'kysely'
 import { nanoid } from 'nanoid'
 import nock, { type Body } from 'nock'
 
 import { config } from '@/config'
 import { omdbSeriesDetailsFactory, omdbEpisodeFactory } from '@/features/omdb'
 import { userFactory } from '@/features/users'
+import { type User } from '@/generated/db'
 import { graphql } from '@/generated/gql'
+import { type SeriesUpdateStatusInput } from '@/generated/gql/graphql'
 import { db } from '@/lib/db'
 import { checkErrors, executeOperation } from '@/test/testUtils'
 
@@ -470,11 +473,14 @@ describe('features/series/series.schema', () => {
   })
 
   describe('seriesUpdateStatus mutation', () => {
-    it("allows updating the user's status of the series", async () => {
-      const series = await seriesFactory.create()
-      const user = await userFactory.create()
-
-      await executeOperation({
+    const executeSeriesUpdateStatus = async ({
+      seriesId,
+      status,
+      user,
+    }: SeriesUpdateStatusInput & {
+      user: Selectable<User>
+    }) => {
+      return await executeOperation({
         operation: graphql(`
           mutation seriesUpdateStatus($input: SeriesUpdateStatusInput!) {
             seriesUpdateStatus(input: $input) {
@@ -484,10 +490,21 @@ describe('features/series/series.schema', () => {
         `),
         variables: {
           input: {
-            seriesId: series.id,
-            status: UserSeriesStatus.Completed,
+            seriesId,
+            status,
           },
         },
+        user,
+      })
+    }
+
+    it("allows updating the user's status of the series", async () => {
+      const series = await seriesFactory.create()
+      const user = await userFactory.create()
+
+      await executeSeriesUpdateStatus({
+        seriesId: series.id,
+        status: UserSeriesStatus.Completed,
         user,
       })
 
@@ -499,6 +516,35 @@ describe('features/series/series.schema', () => {
         .executeTakeFirst()
       expect(seriesStatus).toBeTruthy()
       expect(seriesStatus?.status).toBe(UserSeriesStatus.Completed)
+    })
+
+    it('allows updating an existing status', async () => {
+      const series = await seriesFactory.create()
+      const user = await userFactory.create()
+
+      await db
+        .insertInto('userSeriesStatus')
+        .values({
+          seriesId: series.id,
+          userId: user.id,
+          status: UserSeriesStatus.Completed,
+        })
+        .execute()
+
+      await executeSeriesUpdateStatus({
+        seriesId: series.id,
+        status: UserSeriesStatus.InProgress,
+        user,
+      })
+
+      const seriesStatus = await db
+        .selectFrom('userSeriesStatus')
+        .where('seriesId', '=', series.id)
+        .where('userId', '=', user.id)
+        .selectAll()
+        .executeTakeFirst()
+      expect(seriesStatus).toBeTruthy()
+      expect(seriesStatus?.status).toBe(UserSeriesStatus.InProgress)
     })
   })
 })
