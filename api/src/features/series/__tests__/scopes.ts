@@ -1,7 +1,21 @@
 import nock from 'nock'
 
 import { config } from '@/config'
-import { type OMDbSeason } from '@/features/omdb'
+import { type OMDbSeries, type OMDbSeason } from '@/features/omdb'
+
+export const mockOMDbDetailsRequest = (
+  imdbId: string,
+  response: OMDbSeries,
+) => {
+  return nock(`${config.omdb.url}`)
+    .get('/')
+    .query({
+      apiKey: config.omdb.apiKey,
+      i: imdbId,
+      plot: 'full',
+    })
+    .reply(200, response)
+}
 
 export const mockOMDbSeasonRequest = (
   {

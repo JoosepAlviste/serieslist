@@ -3,11 +3,7 @@ import { nanoid } from 'nanoid'
 import nock, { type Body } from 'nock'
 
 import { config } from '@/config'
-import {
-  omdbSeriesDetailsFactory,
-  type OMDbSeries,
-  omdbEpisodeFactory,
-} from '@/features/omdb'
+import { omdbSeriesDetailsFactory, omdbEpisodeFactory } from '@/features/omdb'
 import { graphql } from '@/generated/gql'
 import { db } from '@/lib/db'
 import { checkErrors, executeOperation } from '@/test/testUtils'
@@ -16,7 +12,7 @@ import { episodeFactory } from '../episode.factory'
 import { seasonFactory } from '../season.factory'
 import { seriesFactory } from '../series.factory'
 
-import { mockOMDbSeasonRequest } from './scopes'
+import { mockOMDbDetailsRequest, mockOMDbSeasonRequest } from './scopes'
 
 describe('features/series/series.schema', () => {
   describe('seriesSearch query', () => {
@@ -182,17 +178,6 @@ describe('features/series/series.schema', () => {
           id: String(id),
         },
       })
-
-    const mockOMDbDetailsRequest = (imdbId: string, response: OMDbSeries) => {
-      return nock(`${config.omdb.url}`)
-        .get('/')
-        .query({
-          apiKey: config.omdb.apiKey,
-          i: imdbId,
-          plot: 'full',
-        })
-        .reply(200, response)
-    }
 
     it('allows fetching series details by its id', async () => {
       const series = await seriesFactory.create({

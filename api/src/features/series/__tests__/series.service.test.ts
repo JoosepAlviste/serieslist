@@ -1,15 +1,18 @@
 import { nanoid } from 'nanoid'
 
-import { omdbEpisodeFactory } from '@/features/omdb'
+import { omdbEpisodeFactory, omdbSeriesDetailsFactory } from '@/features/omdb'
 import { db } from '@/lib/db'
 import { createContext } from '@/test/testUtils'
 
 import { episodeFactory } from '../episode.factory'
 import { seasonFactory } from '../season.factory'
 import { seriesFactory } from '../series.factory'
-import { syncSeasonsAndEpisodesFromOMDb } from '../series.service'
+import {
+  syncSeasonsAndEpisodesFromOMDb,
+  syncSeriesDetailsFromOMDb,
+} from '../series.service'
 
-import { mockOMDbSeasonRequest } from './scopes'
+import { mockOMDbDetailsRequest, mockOMDbSeasonRequest } from './scopes'
 
 describe('features/series/series.service', () => {
   describe('syncSeasonsAndEpisodesFromOMDb', () => {
@@ -154,6 +157,22 @@ describe('features/series/series.service', () => {
         .execute()
       expect(episodes).toHaveLength(1)
       expect(episodes[0]?.id).toBe(existingEpisode.id)
+    })
+  })
+
+  describe('syncSeriesDetailsFromOMDb', () => {
+    it('does not sync seasons if there are none', async () => {
+      const series = await seriesFactory.create()
+
+      mockOMDbDetailsRequest(
+        series.imdbId,
+        omdbSeriesDetailsFactory.build({
+          imdbID: series.imdbId,
+          totalSeasons: 'N/A',
+        }),
+      )
+
+      await syncSeriesDetailsFromOMDb(createContext())(series.imdbId)
     })
   })
 })

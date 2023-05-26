@@ -175,28 +175,33 @@ export const syncSeasonsAndEpisodesFromOMDb =
  * This also syncs the seasons and episodes from OMDb, saving them into the
  * database if needed.
  */
-const syncSeriesDetailsFromOMDb = (ctx: Context) => async (imdbId: string) => {
-  const newSeries = await fetchSeriesDetailsFromOMDb(imdbId)
+export const syncSeriesDetailsFromOMDb =
+  (ctx: Context) => async (imdbId: string) => {
+    const newSeries = await fetchSeriesDetailsFromOMDb(imdbId)
 
-  const savedSeries = await ctx.db
-    .updateTable('series')
-    .where('imdbId', '=', imdbId)
-    .set({
-      ...parseSeriesFromOMDbResponse(newSeries),
-      syncedAt: new Date(Date.now()),
-      updatedAt: new Date(Date.now()),
-    })
-    .returningAll()
-    .executeTakeFirstOrThrow()
+    const savedSeries = await ctx.db
+      .updateTable('series')
+      .where('imdbId', '=', imdbId)
+      .set({
+        ...parseSeriesFromOMDbResponse(newSeries),
+        syncedAt: new Date(Date.now()),
+        updatedAt: new Date(Date.now()),
+      })
+      .returningAll()
+      .executeTakeFirstOrThrow()
 
-  await syncSeasonsAndEpisodesFromOMDb(ctx)({
-    imdbId: savedSeries.imdbId,
-    seriesId: savedSeries.id,
-    totalNumberOfSeasons: parseInt(newSeries.totalSeasons),
-  })
+    const totalNumberOfSeasons = parseInt(newSeries.totalSeasons)
 
-  return savedSeries
-}
+    if (totalNumberOfSeasons) {
+      await syncSeasonsAndEpisodesFromOMDb(ctx)({
+        imdbId: savedSeries.imdbId,
+        seriesId: savedSeries.id,
+        totalNumberOfSeasons,
+      })
+    }
+
+    return savedSeries
+  }
 
 export const getSeriesByIdAndFetchDetailsFromOmdb =
   (ctx: Context) => async (id: number) => {
