@@ -7,7 +7,9 @@ export const seriesFactory = Factory.define<Series>(({ sequence }) => ({
   id: String(sequence),
   imdbId: `tt${sequence}`,
   title: `Test Series ${sequence}`,
+  plot: 'This is a test plot',
   startYear: 1990 + sequence,
   endYear: null,
   poster: null,
+  seasons: [],
 }))
