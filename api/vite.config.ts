@@ -9,6 +9,7 @@ export default defineConfig({
       '@': path.resolve(__dirname, 'src'),
     },
     setupFiles: ['./src/test/testsSetup.ts'],
+    globalSetup: './src/test/testsGlobalSetup.ts',
     coverage: {
       all: true,
       include: ['src/**/*.ts'],

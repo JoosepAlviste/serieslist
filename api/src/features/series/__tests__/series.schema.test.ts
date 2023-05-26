@@ -201,6 +201,7 @@ describe('features/series/series.schema', () => {
       const scope = mockOMDbDetailsRequest(
         series.imdbId,
         omdbSeriesDetailsFactory.build({
+          imdbID: series.imdbId,
           Plot: 'Updated plot',
           totalSeasons: '0',
         }),
