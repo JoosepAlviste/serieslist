@@ -1,11 +1,17 @@
 import { sql, type Kysely } from 'kysely'
 
+import { UserSeriesStatus } from '@/features/series/constants'
 import { type NotWorthIt } from '@/types/utils'
 
 export async function up(db: Kysely<NotWorthIt>): Promise<void> {
   await db.schema
     .createType('user_series_status_status')
-    .asEnum(['in_progress', 'plan_to_watch', 'on_hold', 'completed'])
+    .asEnum([
+      UserSeriesStatus.InProgress,
+      UserSeriesStatus.PlanToWatch,
+      UserSeriesStatus.OnHold,
+      UserSeriesStatus.Completed,
+    ])
     .execute()
 
   await db.schema

@@ -9,10 +9,10 @@ export type Numeric = ColumnType<string, string | number, string | number>
 export type Timestamp = ColumnType<Date, Date | string, Date | string>
 
 export type UserSeriesStatusStatus =
-  | 'completed'
-  | 'in_progress'
-  | 'on_hold'
-  | 'plan_to_watch'
+  | 'Completed'
+  | 'InProgress'
+  | 'OnHold'
+  | 'PlanToWatch'
 
 export type Episode = {
   id: Generated<number>

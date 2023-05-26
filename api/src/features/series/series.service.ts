@@ -18,7 +18,7 @@ import { NotFoundError } from '@/lib/errors'
 import { type AuthenticatedContext, type Context } from '@/types/context'
 import { groupEntitiesByKeyToNestedArray } from '@/utils/groupEntitiesByKeyToNestedArray'
 
-import { STATUSES_FOR_DB } from './constants'
+import { UserSeriesStatus } from './constants'
 
 const parseSeriesFromOMDbResponse = (
   omdbSeries: OMDbSearchSeries | OMDbSeries,
@@ -263,7 +263,7 @@ export const updateSeriesStatusForUser =
       throw new NotFoundError()
     }
 
-    const status = input.status ? STATUSES_FOR_DB[input.status] : null
+    const status = input.status ? UserSeriesStatus[input.status] : null
 
     await ctx.db
       .insertInto('userSeriesStatus')

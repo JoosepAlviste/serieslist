@@ -9,7 +9,7 @@ import { graphql } from '@/generated/gql'
 import { db } from '@/lib/db'
 import { checkErrors, executeOperation } from '@/test/testUtils'
 
-import { STATUSES_FOR_DB, UserSeriesStatus } from '../constants'
+import { UserSeriesStatus } from '../constants'
 import { episodeFactory } from '../episode.factory'
 import { seasonFactory } from '../season.factory'
 import { seriesFactory } from '../series.factory'
@@ -464,7 +464,7 @@ describe('features/series/series.schema', () => {
         .selectAll()
         .executeTakeFirst()
       expect(seriesStatus).toBeTruthy()
-      expect(seriesStatus?.status).toBe(STATUSES_FOR_DB.Completed)
+      expect(seriesStatus?.status).toBe(UserSeriesStatus.Completed)
     })
   })
 })
