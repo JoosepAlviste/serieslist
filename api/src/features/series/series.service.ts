@@ -1,4 +1,5 @@
 import { addDays, isFuture, parse } from 'date-fns'
+import uniq from 'lodash/uniq'
 
 import {
   fetchSeasonDetailsFromOMDb,
@@ -77,6 +78,94 @@ const getSeriesById = (ctx: Context) => async (id: number) => {
 
 const RE_SYNC_AFTER_DAYS = 7
 
+export const syncSeasonsAndEpisodesFromOMDb =
+  (ctx: Context) =>
+  async ({
+    seriesId,
+    imdbId,
+    totalNumberOfSeasons,
+  }: {
+    seriesId: number
+    imdbId: string
+    totalNumberOfSeasons: number
+  }) => {
+    const existingSeasonsAndEpisodes = await ctx.db
+      .selectFrom('season')
+      .where('seriesId', '=', seriesId)
+      .leftJoin('episode', 'season.id', 'episode.seasonId')
+      .select(['episode.imdbId as episodeImdbId', 'season.id as seasonId'])
+      .orderBy('season.number')
+      .orderBy('episode.number')
+      .execute()
+
+    const existingSeasonIds = uniq(
+      existingSeasonsAndEpisodes.map(({ seasonId }) => seasonId),
+    )
+    const existingEpisodeImdbIds = new Set(
+      existingSeasonsAndEpisodes.map(({ episodeImdbId }) => episodeImdbId),
+    )
+
+    const seasonIdsByNumber: Record<number, number> = {}
+    existingSeasonIds.forEach((seasonId, index) => {
+      if (seasonId) {
+        seasonIdsByNumber[index + 1] = seasonId
+      }
+    })
+
+    const existingSeasonsCount = existingSeasonIds.length
+    const newSeasonsCount = totalNumberOfSeasons - existingSeasonsCount
+
+    if (newSeasonsCount > 0) {
+      const newSeasons = await ctx.db
+        .insertInto('season')
+        .values(
+          // eslint-disable-next-line prefer-spread
+          Array.apply(null, Array(newSeasonsCount))
+            .map((_, i) => i + 1 + existingSeasonsCount)
+            .map((number) => ({
+              number,
+              seriesId,
+            })),
+        )
+        .returningAll()
+        .execute()
+
+      newSeasons.forEach((season) => {
+        seasonIdsByNumber[season.number] = season.id
+      })
+    }
+
+    await Promise.all(
+      // eslint-disable-next-line prefer-spread
+      Array.apply(null, Array(totalNumberOfSeasons))
+        .map((_, i) => i + 1)
+        .map(async (seasonNumber) => {
+          const season = await fetchSeasonDetailsFromOMDb(imdbId, seasonNumber)
+          const notSavedEpisodes = season.Episodes.filter(
+            (episode) => !existingEpisodeImdbIds.has(episode.imdbID),
+          )
+
+          return await ctx.db
+            .insertInto('episode')
+            .values(
+              notSavedEpisodes.map((episode) => ({
+                imdbId: episode.imdbID,
+                number: parseInt(episode.Episode),
+                title: episode.Title,
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                seasonId: seasonIdsByNumber[seasonNumber]!,
+                releasedAt:
+                  episode.Released !== 'N/A'
+                    ? parse(episode.Released, 'yyyy-MM-dd', new Date())
+                    : null,
+                imdbRating: parseFloat(episode.imdbRating) || null,
+              })),
+            )
+            .execute()
+        }),
+    )
+  }
+
 /**
  * Update the details of the series with the given IMDB ID from the OMDb API.
  * This also syncs the seasons and episodes from OMDb, saving them into the
@@ -96,85 +185,11 @@ const syncSeriesDetailsFromOMDb = (ctx: Context) => async (imdbId: string) => {
     .returningAll()
     .executeTakeFirstOrThrow()
 
-  const existingSeasonsAndEpisodes = await ctx.db
-    .selectFrom('season')
-    .where('seriesId', '=', savedSeries.id)
-    .leftJoin('episode', 'season.id', 'episode.id')
-    .select(['episode.imdbId as episodeImdbId', 'season.id as seasonId'])
-    .orderBy('season.number')
-    .orderBy('episode.number')
-    .execute()
-
-  const existingSeasonIds = new Set(
-    existingSeasonsAndEpisodes.map(({ seasonId }) => seasonId),
-  )
-  const existingEpisodeImdbIds = new Set(
-    existingSeasonsAndEpisodes.map(({ episodeImdbId }) => episodeImdbId),
-  )
-
-  const seasonIdsByNumber: Record<number, number> = {}
-  existingSeasonIds.forEach((seasonId, index) => {
-    if (seasonId) {
-      seasonIdsByNumber[index + 1] = seasonId
-    }
+  await syncSeasonsAndEpisodesFromOMDb(ctx)({
+    imdbId: savedSeries.imdbId,
+    seriesId: savedSeries.id,
+    totalNumberOfSeasons: parseInt(newSeries.totalSeasons),
   })
-
-  const totalNumberOfSeasons = parseInt(newSeries.totalSeasons)
-  const existingSeasonsCount = existingSeasonIds.size
-  const newSeasonsCount = totalNumberOfSeasons - existingSeasonsCount
-
-  if (newSeasonsCount > 0) {
-    const newSeasons = await ctx.db
-      .insertInto('season')
-      .values(
-        // eslint-disable-next-line prefer-spread
-        Array.apply(null, Array(newSeasonsCount))
-          .map((_, i) => i + 1 + existingSeasonsCount)
-          .map((number) => ({
-            number,
-            seriesId: savedSeries.id,
-          })),
-      )
-      .returningAll()
-      .execute()
-
-    newSeasons.forEach((season) => {
-      seasonIdsByNumber[season.number] = season.id
-    })
-  }
-
-  await Promise.all(
-    // eslint-disable-next-line prefer-spread
-    Array.apply(null, Array(totalNumberOfSeasons))
-      .map((_, i) => i + 1)
-      .map(async (seasonNumber) => {
-        const season = await fetchSeasonDetailsFromOMDb(
-          savedSeries.imdbId,
-          seasonNumber,
-        )
-        const notSavedEpisodes = season.Episodes.filter(
-          (episode) => !existingEpisodeImdbIds.has(episode.imdbID),
-        )
-
-        return await ctx.db
-          .insertInto('episode')
-          .values(
-            notSavedEpisodes.map((episode) => ({
-              imdbId: episode.imdbID,
-              number: parseInt(episode.Episode),
-              title: episode.Title,
-              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-              seasonId: seasonIdsByNumber[seasonNumber]!,
-              releasedAt:
-                episode.Released !== 'N/A'
-                  ? parse(episode.Released, 'yyyy-MM-dd', new Date())
-                  : null,
-              imdbRating: parseFloat(episode.imdbRating) || null,
-            })),
-          )
-          .execute()
-      }),
-  )
 
   return savedSeries
 }

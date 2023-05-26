@@ -4,7 +4,6 @@ import nock, { type Body } from 'nock'
 
 import { config } from '@/config'
 import {
-  type OMDbSeason,
   omdbSeriesDetailsFactory,
   type OMDbSeries,
   omdbEpisodeFactory,
@@ -16,6 +15,8 @@ import { checkErrors, executeOperation } from '@/test/testUtils'
 import { episodeFactory } from '../episode.factory'
 import { seasonFactory } from '../season.factory'
 import { seriesFactory } from '../series.factory'
+
+import { mockOMDbSeasonRequest } from './scopes'
 
 describe('features/series/series.schema', () => {
   describe('seriesSearch query', () => {
@@ -193,25 +194,6 @@ describe('features/series/series.schema', () => {
         .reply(200, response)
     }
 
-    const mockOMDbSeasonRequest = (
-      {
-        imdbId,
-        seasonNumber,
-      }: {
-        imdbId: string
-        seasonNumber: number
-      },
-      response: OMDbSeason,
-    ) =>
-      nock(`${config.omdb.url}`)
-        .get('/')
-        .query({
-          apiKey: config.omdb.apiKey,
-          i: imdbId,
-          Season: seasonNumber,
-        })
-        .reply(200, response)
-
     it('allows fetching series details by its id', async () => {
       const series = await seriesFactory.create({
         title: 'Test Series',
@@ -343,58 +325,6 @@ describe('features/series/series.schema', () => {
           title: 'Episode 2',
           imdbId: `${series.imdbId}s1e2`,
           imdbRating: '7.3',
-        }),
-      )
-    })
-
-    it('does not fail when syncing episodes with N/As', async () => {
-      const series = await seriesFactory.create({
-        imdbId: `tt${nanoid(8)}`,
-        syncedAt: null,
-      })
-
-      mockOMDbDetailsRequest(
-        series.imdbId,
-        omdbSeriesDetailsFactory.build({
-          imdbID: series.imdbId,
-          totalSeasons: '1',
-        }),
-      )
-
-      mockOMDbSeasonRequest(
-        {
-          imdbId: series.imdbId,
-          seasonNumber: 1,
-        },
-        {
-          Season: '1',
-          Episodes: [
-            omdbEpisodeFactory.build({
-              imdbID: `${series.imdbId}s1e1`,
-              Episode: '1',
-              Released: 'N/A',
-              imdbRating: 'N/A',
-            }),
-          ],
-        },
-      )
-
-      const res = await executeSeriesQuery(series.id)
-      const resSeries = checkErrors(res.data?.series)
-
-      const episodes = resSeries.seasons[0]?.episodes ?? []
-      expect(episodes).toHaveLength(1)
-
-      const episode = await db
-        .selectFrom('episode')
-        .where('id', '=', parseInt(episodes[0]!.id))
-        .selectAll()
-        .executeTakeFirstOrThrow()
-
-      expect(episode).toEqual(
-        expect.objectContaining({
-          imdbRating: null,
-          releasedAt: null,
         }),
       )
     })

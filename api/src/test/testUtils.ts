@@ -1,11 +1,33 @@
 import { type TypedDocumentNode } from '@graphql-typed-document-node/core'
 import { type ExecutionResult, print } from 'graphql'
-import { createYoga } from 'graphql-yoga'
+import { createYoga, type YogaInitialContext } from 'graphql-yoga'
 
 import { userFactory } from '@/features/users'
 import { db } from '@/lib/db'
 import { schema } from '@/schema'
 import { type Context } from '@/types/context'
+import { type NotWorthIt } from '@/types/utils'
+
+export const createContext = ({
+  ctx = {},
+  currentUser,
+}: {
+  ctx?: Partial<YogaInitialContext>
+  currentUser?: Context['currentUser']
+} = {}): Context => ({
+  params: {},
+  // We can't really create the Fastify request and reply objects on their
+  // own, so we only mock the fields that we need from them
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  req: null as NotWorthIt,
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  reply: {
+    setCookie: vi.fn(),
+  } as NotWorthIt,
+  ...ctx,
+  db,
+  currentUser,
+})
 
 /**
  * A helper for making fully typed GraphQL requests in tests.
@@ -26,8 +48,6 @@ export async function executeOperation<TResult, TVariables>(
       // still requires giving the key.
       { variables: TVariables }),
 ): Promise<ExecutionResult<TResult>> {
-  const setCookieMock = vi.fn()
-
   const { operation, user } = params
 
   const authenticatedUser =
@@ -36,22 +56,11 @@ export async function executeOperation<TResult, TVariables>(
   // create a separate Yoga instance for tests so that we can customize the ctx
   const yoga = createYoga({
     schema,
-    context: (
-      ctx,
-    ): Omit<Context, 'req' | 'reply'> & {
-      // We can't really create the Fastify request and reply objects on their
-      // own, so we only mock the fields that we need from them
-      reply: {
-        setCookie: () => void
-      }
-    } => ({
-      ...ctx,
-      db,
-      reply: {
-        setCookie: setCookieMock,
-      },
-      currentUser: authenticatedUser ?? undefined,
-    }),
+    context: (ctx) =>
+      createContext({
+        ctx,
+        currentUser: authenticatedUser ?? undefined,
+      }),
   })
 
   const response = await Promise.resolve(

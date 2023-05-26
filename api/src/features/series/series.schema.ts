@@ -28,6 +28,7 @@ const EpisodeRef = builder.objectRef<EpisodeType>('Episode').implement({
     title: t.exposeString('title'),
     releasedAt: t.field({
       type: 'Date',
+      nullable: true,
       resolve: exposeDate('releasedAt'),
     }),
     imdbRating: t.field({
