@@ -68,6 +68,9 @@ const SeriesRef = builder.objectRef<SeriesType>('Series').implement({
     poster: t.exposeString('poster', {
       nullable: true,
     }),
+    plot: t.exposeString('plot', {
+      nullable: true,
+    }),
 
     seasons: t.loadableList({
       type: SeasonRef,
