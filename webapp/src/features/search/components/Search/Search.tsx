@@ -11,6 +11,7 @@ import React, {
   useCallback,
 } from 'react'
 import Highlighter from 'react-highlight-words'
+import { navigate } from 'vite-plugin-ssr/client/router'
 
 import { Icon, LoadingSpinner } from '@/components'
 import { SeriesPoster } from '@/features/series'
@@ -109,7 +110,7 @@ export const Search = ({ className, ...rest }: SearchProps) => {
 
   const [activeIndex, setActiveIndex] = useState(0)
 
-  const handleInputKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
+  const handleInputKeyUp = async (e: KeyboardEvent<HTMLInputElement>) => {
     let newIndex = activeIndex
 
     switch (e.key) {
@@ -124,12 +125,16 @@ export const Search = ({ className, ...rest }: SearchProps) => {
         e.preventDefault()
         break
       case 'Enter':
-        searchResultItemsRef.current[activeIndex]?.dispatchEvent(
-          new MouseEvent('click', {
-            ctrlKey: e.ctrlKey,
-            metaKey: e.metaKey,
-          }),
-        )
+        if (e.metaKey || e.ctrlKey) {
+          searchResultItemsRef.current[activeIndex]?.dispatchEvent(
+            new MouseEvent('click', {
+              ctrlKey: e.ctrlKey,
+              metaKey: e.metaKey,
+            }),
+          )
+        } else {
+          await navigateToSeriesDetails(searchResults[activeIndex].id)
+        }
         return
     }
 
@@ -166,6 +171,34 @@ export const Search = ({ className, ...rest }: SearchProps) => {
     }
   }, [])
 
+  /**
+   * Keep track of if the user has recently navigated to a series. This is
+   * necessary because we don't want to allow the search dropdown to be opened
+   * again instantly after navigating.
+   *
+   * Otherwise, if the user navigates, then the dropdown will stay open as the
+   * search input is focused again for some reason.
+   */
+  const [hasRecentlyNavigated, setHasRecentlyNavigated] = useState(false)
+  useEffect(() => {
+    if (hasRecentlyNavigated) {
+      setTimeout(() => {
+        setHasRecentlyNavigated(false)
+      }, 1000)
+    }
+  }, [hasRecentlyNavigated])
+
+  /**
+   * Navigate to the series details view and handle closing the dropdown without
+   * it opening again.
+   */
+  const navigateToSeriesDetails = async (seriesId: string) => {
+    inputRef.current?.blur()
+    setIsPopoverOpen(false)
+    setHasRecentlyNavigated(true)
+    await navigate(`/series/${seriesId}`)
+  }
+
   return (
     <Popover.Root
       open={Boolean(isPopoverOpen && keyword)}
@@ -192,8 +225,13 @@ export const Search = ({ className, ...rest }: SearchProps) => {
               setKeyword(e.target.value)
             }}
             onKeyDown={handleInputKeyUp}
-            onFocus={() => {
-              setIsPopoverOpen(true)
+            onFocus={(e) => {
+              if (hasRecentlyNavigated) {
+                // Do not allow focusing the input to avoid opening the dropdown
+                e.target.blur()
+              } else {
+                setIsPopoverOpen(true)
+              }
             }}
           />
           {loading ? (
@@ -252,13 +290,20 @@ export const Search = ({ className, ...rest }: SearchProps) => {
                         onMouseEnter={() => setActiveIndex(index)}
                       >
                         <a
-                          href={`https://imdb.com/title/${series.imdbId}`}
+                          href={`/series/${series.id}`}
                           className={classNames(s.searchResult, {
                             [s.searchResultActive]: activeIndex === index,
                           })}
                           ref={(el) => {
-                            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                            searchResultItemsRef.current[index] = el!
+                            if (el) {
+                              searchResultItemsRef.current[index] = el
+                            }
+                          }}
+                          onClick={async (e) => {
+                            if (!e.metaKey && !e.ctrlKey) {
+                              e.preventDefault()
+                              await navigateToSeriesDetails(series.id)
+                            }
                           }}
                         >
                           <SeriesPoster series={series} />
