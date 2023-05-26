@@ -115,10 +115,10 @@ export const createMockResolver = <
   T extends TypedDocumentNode<LiterallyAnything, LiterallyAnything>,
 >(
   document: T,
-  mockResponse: { data: ResultOf<T> },
+  mockResponse: { data: Omit<ResultOf<T>, '__typename'> },
 ) => {
   const handler = vi
-    .fn<[VariablesOf<T>], Promise<{ data: ResultOf<T> }>>()
+    .fn<[VariablesOf<T>], Promise<{ data: Omit<ResultOf<T>, '__typename'> }>>()
     .mockResolvedValue(mockResponse)
 
   return [document, handler] as const

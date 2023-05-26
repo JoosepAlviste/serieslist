@@ -13,21 +13,21 @@ export type Scalars = {
   Int: number;
   Float: number;
   /** A local date string (i.e., with no associated timezone) in `YYYY-MM-DD` format, e.g. `2020-01-01`. */
-  Date: any;
+  Date: string;
 };
 
 export type BaseError = Error & {
-  __typename?: 'BaseError';
+  __typename: 'BaseError';
   message: Scalars['String'];
 };
 
 export type Episode = {
-  __typename?: 'Episode';
+  __typename: 'Episode';
   id: Scalars['ID'];
   imdbId: Scalars['String'];
   imdbRating?: Maybe<Scalars['Float']>;
   number: Scalars['Int'];
-  releasedAt: Scalars['Date'];
+  releasedAt?: Maybe<Scalars['Date']>;
   title: Scalars['String'];
 };
 
@@ -36,13 +36,13 @@ export type Error = {
 };
 
 export type InvalidInputError = Error & {
-  __typename?: 'InvalidInputError';
+  __typename: 'InvalidInputError';
   fieldErrors: Array<InvalidInputErrorField>;
   message: Scalars['String'];
 };
 
 export type InvalidInputErrorField = {
-  __typename?: 'InvalidInputErrorField';
+  __typename: 'InvalidInputErrorField';
   message: Scalars['String'];
   path: Array<Scalars['String']>;
 };
@@ -53,7 +53,7 @@ export type LoginInput = {
 };
 
 export type Mutation = {
-  __typename?: 'Mutation';
+  __typename: 'Mutation';
   logOut: Scalars['Boolean'];
   login: MutationLoginResult;
   register: MutationRegisterResult;
@@ -74,12 +74,12 @@ export type MutationLoginResult = InvalidInputError | User;
 export type MutationRegisterResult = InvalidInputError | User;
 
 export type NotFoundError = Error & {
-  __typename?: 'NotFoundError';
+  __typename: 'NotFoundError';
   message: Scalars['String'];
 };
 
 export type Query = {
-  __typename?: 'Query';
+  __typename: 'Query';
   hello: Scalars['String'];
   me: QueryMeResult;
   series: QuerySeriesResult;
@@ -112,17 +112,18 @@ export type RegisterInput = {
 };
 
 export type Season = {
-  __typename?: 'Season';
+  __typename: 'Season';
   episodes: Array<Episode>;
   id: Scalars['ID'];
   number: Scalars['Int'];
 };
 
 export type Series = {
-  __typename?: 'Series';
+  __typename: 'Series';
   endYear?: Maybe<Scalars['Int']>;
   id: Scalars['ID'];
   imdbId: Scalars['String'];
+  plot?: Maybe<Scalars['String']>;
   poster?: Maybe<Scalars['String']>;
   seasons: Array<Season>;
   startYear: Scalars['Int'];
@@ -134,12 +135,12 @@ export type SeriesSearchInput = {
 };
 
 export type UnauthorizedError = Error & {
-  __typename?: 'UnauthorizedError';
+  __typename: 'UnauthorizedError';
   message: Scalars['String'];
 };
 
 export type User = {
-  __typename?: 'User';
+  __typename: 'User';
   email: Scalars['String'];
   id: Scalars['ID'];
   name: Scalars['String'];
@@ -150,32 +151,32 @@ export type LoginMutationVariables = Exact<{
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login: { __typename: 'InvalidInputError', message: string, fieldErrors: Array<{ __typename?: 'InvalidInputErrorField', path: Array<string>, message: string }> } | { __typename: 'User', id: string, email: string } };
+export type LoginMutation = { __typename: 'Mutation', login: { __typename: 'InvalidInputError', message: string, fieldErrors: Array<{ __typename: 'InvalidInputErrorField', path: Array<string>, message: string }> } | { __typename: 'User', id: string, email: string } };
 
 export type RegisterMutationVariables = Exact<{
   input: RegisterInput;
 }>;
 
 
-export type RegisterMutation = { __typename?: 'Mutation', register: { __typename: 'InvalidInputError', message: string, fieldErrors: Array<{ __typename?: 'InvalidInputErrorField', path: Array<string>, message: string }> } | { __typename: 'User', id: string, email: string } };
+export type RegisterMutation = { __typename: 'Mutation', register: { __typename: 'InvalidInputError', message: string, fieldErrors: Array<{ __typename: 'InvalidInputErrorField', path: Array<string>, message: string }> } | { __typename: 'User', id: string, email: string } };
 
 export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CurrentUserQuery = { __typename?: 'Query', me: { __typename: 'UnauthorizedError' } | { __typename: 'User', id: string, email: string, name: string } };
+export type CurrentUserQuery = { __typename: 'Query', me: { __typename: 'UnauthorizedError' } | { __typename: 'User', id: string, email: string, name: string } };
 
 export type LogOutMutationVariables = Exact<{ [key: string]: never; }>;
 
 
-export type LogOutMutation = { __typename?: 'Mutation', logOut: boolean };
+export type LogOutMutation = { __typename: 'Mutation', logOut: boolean };
 
 export type SearchQueryVariables = Exact<{
   input: SeriesSearchInput;
 }>;
 
 
-export type SearchQuery = { __typename?: 'Query', seriesSearch: Array<(
-    { __typename?: 'Series', id: string, imdbId: string, title: string, startYear: number, endYear?: number | null }
+export type SearchQuery = { __typename: 'Query', seriesSearch: Array<(
+    { __typename: 'Series', id: string, imdbId: string, title: string, startYear: number, endYear?: number | null }
     & { ' $fragmentRefs'?: { 'SeriesPoster_SeriesFragmentFragment': SeriesPoster_SeriesFragmentFragment } }
   )> };
 
@@ -184,19 +185,19 @@ export type SeriesDetailsPageQueryVariables = Exact<{
 }>;
 
 
-export type SeriesDetailsPageQuery = { __typename?: 'Query', series: { __typename: 'NotFoundError', message: string } | { __typename: 'Series', id: string, imdbId: string, title: string, poster?: string | null, startYear: number, endYear?: number | null, seasons: Array<{ __typename?: 'Season', id: string, number: number, episodes: Array<{ __typename?: 'Episode', id: string, imdbId: string, number: number, title: string, releasedAt: any, imdbRating?: number | null }> }> } };
+export type SeriesDetailsPageQuery = { __typename: 'Query', series: { __typename: 'NotFoundError', message: string } | { __typename: 'Series', id: string, imdbId: string, title: string, poster?: string | null, startYear: number, endYear?: number | null, seasons: Array<{ __typename: 'Season', id: string, number: number, episodes: Array<{ __typename: 'Episode', id: string, imdbId: string, number: number, title: string, releasedAt?: string | null, imdbRating?: number | null }> }> } };
 
-export type SeriesPoster_SeriesFragmentFragment = { __typename?: 'Series', poster?: string | null } & { ' $fragmentName'?: 'SeriesPoster_SeriesFragmentFragment' };
+export type SeriesPoster_SeriesFragmentFragment = { __typename: 'Series', poster?: string | null } & { ' $fragmentName'?: 'SeriesPoster_SeriesFragmentFragment' };
 
 export type AboutPageQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AboutPageQuery = { __typename?: 'Query', me: { __typename: 'UnauthorizedError' } | { __typename: 'User', id: string, email: string } };
+export type AboutPageQuery = { __typename: 'Query', me: { __typename: 'UnauthorizedError' } | { __typename: 'User', id: string, email: string } };
 
 export type IndexPageQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type IndexPageQuery = { __typename?: 'Query', hello: string };
+export type IndexPageQuery = { __typename: 'Query', hello: string };
 
 export const SeriesPoster_SeriesFragmentFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"SeriesPoster_SeriesFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Series"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"poster"}}]}}]} as unknown as DocumentNode<SeriesPoster_SeriesFragmentFragment, unknown>;
 export const LoginDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"login"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"LoginInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"login"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"InvalidInputError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"fieldErrors"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"path"}},{"kind":"Field","name":{"kind":"Name","value":"message"}}]}},{"kind":"Field","name":{"kind":"Name","value":"message"}}]}}]}}]}}]} as unknown as DocumentNode<LoginMutation, LoginMutationVariables>;
