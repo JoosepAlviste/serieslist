@@ -144,7 +144,11 @@ export const syncSeasonsAndEpisodesFromOMDb =
           const notSavedEpisodes = season.Episodes.filter(
             (episode) => !existingEpisodeImdbIds.has(episode.imdbID),
           )
+          if (!notSavedEpisodes.length) {
+            return
+          }
 
+          // TODO: Update existing episodes
           return await ctx.db
             .insertInto('episode')
             .values(

@@ -36,10 +36,10 @@ describe('features/series/series.service', () => {
         {
           Season: '1',
           Episodes: [
-            omdbEpisodeFactory.build({
-              imdbID: existingEpisode.imdbId,
-              Episode: '1',
-            }),
+            omdbEpisodeFactory.build(
+              {},
+              { transient: { savedEpisode: existingEpisode } },
+            ),
             newOMDbEpisode,
           ],
         },
@@ -105,6 +105,55 @@ describe('features/series/series.service', () => {
           releasedAt: null,
         }),
       )
+    })
+
+    it("does not fail when there's nothing to import", async () => {
+      const series = await seriesFactory.create()
+      const season = await seasonFactory.create({
+        seriesId: series.id,
+        number: 1,
+      })
+      const existingEpisode = await episodeFactory.create({
+        seasonId: season.id,
+        number: 1,
+      })
+
+      mockOMDbSeasonRequest(
+        {
+          imdbId: series.imdbId,
+          seasonNumber: 1,
+        },
+        {
+          Season: '1',
+          Episodes: [
+            omdbEpisodeFactory.build(
+              {},
+              { transient: { savedEpisode: existingEpisode } },
+            ),
+          ],
+        },
+      )
+
+      await syncSeasonsAndEpisodesFromOMDb(createContext())({
+        imdbId: series.imdbId,
+        seriesId: series.id,
+        totalNumberOfSeasons: 1,
+      })
+
+      const seasons = await db
+        .selectFrom('season')
+        .where('seriesId', '=', series.id)
+        .selectAll()
+        .execute()
+      expect(seasons).toHaveLength(1)
+
+      const episodes = await db
+        .selectFrom('episode')
+        .where('seasonId', '=', seasons[0]!.id)
+        .selectAll()
+        .execute()
+      expect(episodes).toHaveLength(1)
+      expect(episodes[0]?.id).toBe(existingEpisode.id)
     })
   })
 })
