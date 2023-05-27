@@ -1,14 +1,13 @@
-import { useMutation, useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import * as Tabs from '@radix-ui/react-tabs'
 import React from 'react'
 
-import { Select } from '@/components'
 import { useAuthenticatedUser } from '@/features/auth'
 import { graphql } from '@/generated/gql'
-import { UserSeriesStatus } from '@/generated/gql/graphql'
 
 import { formatEpisodeNumber } from '../../utils/formatEpisodeNumber'
 import { SeriesPoster } from '../SeriesPoster'
+import { SeriesStatusSelect } from '../SeriesStatusSelect'
 
 import { ReactComponent as ImdbLogo } from './ImdbLogo.svg'
 import * as s from './SeriesDetailsPage.css'
@@ -16,14 +15,6 @@ import * as s from './SeriesDetailsPage.css'
 type SeriesDetailsPageProps = {
   seriesId: string
 }
-
-const STATUS_LABELS = {
-  [UserSeriesStatus.InProgress]: 'In progress',
-  [UserSeriesStatus.Completed]: 'Completed',
-  [UserSeriesStatus.PlanToWatch]: 'Plan to watch',
-  [UserSeriesStatus.OnHold]: 'On hold',
-  default: 'No status',
-} as const
 
 export const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
   const { currentUser } = useAuthenticatedUser()
@@ -43,8 +34,8 @@ export const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
             startYear
             endYear
             plot
-            status
             ...SeriesPoster_SeriesFragment
+            ...SeriesStatusSelect_SeriesFragment
             seasons {
               id
               number
@@ -70,37 +61,6 @@ export const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
 
   const series = data?.series.__typename === 'Series' ? data.series : null
 
-  const [updateStatusMutate] = useMutation(
-    graphql(`
-      mutation seriesUpdateStatus($input: SeriesUpdateStatusInput!) {
-        seriesUpdateStatus(input: $input) {
-          __typename
-          ... on Series {
-            id
-            status
-          }
-        }
-      }
-    `),
-  )
-
-  const handleUpdateStatus = async (status: keyof typeof STATUS_LABELS) => {
-    if (!series) {
-      return
-    }
-
-    await updateStatusMutate({
-      variables: {
-        input: {
-          status: status !== 'default' ? status : null,
-          seriesId: parseInt(series.id),
-        },
-      },
-    })
-
-    // TODO: Show notification that it was successful
-  }
-
   return (
     <div>
       {loading && <div>Loading...</div>}
@@ -122,18 +82,7 @@ export const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
                 </a>
               </div>
 
-              {currentUser && (
-                <Select
-                  options={Object.entries(STATUS_LABELS).map(
-                    ([value, label]) => ({
-                      label,
-                      value,
-                    }),
-                  )}
-                  value={series.status ?? 'default'}
-                  onChange={handleUpdateStatus}
-                />
-              )}
+              {currentUser && <SeriesStatusSelect series={series} />}
             </div>
             <div className={s.years}>
               {series.startYear} – {series.endYear ?? '…'}

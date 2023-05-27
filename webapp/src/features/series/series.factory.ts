@@ -11,5 +11,6 @@ export const seriesFactory = Factory.define<Series>(({ sequence }) => ({
   startYear: 1990 + sequence,
   endYear: null,
   poster: null,
+  status: null,
   seasons: [],
 }))

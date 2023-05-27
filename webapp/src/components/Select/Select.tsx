@@ -13,6 +13,7 @@ type Option = {
 type SelectProps<T extends string = string> = {
   options: Option[]
   value: T
+  label: string
   onChange: (value: T) => void
 }
 
@@ -20,12 +21,13 @@ export const Select = <T extends string>({
   options,
   onChange,
   value,
+  label,
 }: SelectProps<T>) => {
   const selectedOption = options.find((option) => option.value === value)
 
   return (
     <BaseSelect.Root onValueChange={onChange} value={value}>
-      <BaseSelect.Trigger className={s.trigger}>
+      <BaseSelect.Trigger className={s.trigger} aria-label={label}>
         <BaseSelect.Value placeholder={selectedOption?.label} />
         <BaseSelect.Icon>
           <Icon size="s" name="triangle" aria-hidden className={s.triangle} />
