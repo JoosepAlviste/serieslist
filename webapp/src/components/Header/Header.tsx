@@ -34,6 +34,7 @@ export const Header = () => {
                   <Icon
                     name="triangle"
                     label="Expand"
+                    size="s"
                     className={s.dropdownIcon}
                   />
                 </Button.Icon>

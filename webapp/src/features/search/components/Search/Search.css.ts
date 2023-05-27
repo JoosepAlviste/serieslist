@@ -19,10 +19,6 @@ export const container = style({
   },
 })
 
-export const searchIcon = style({
-  fontSize: '1.5rem',
-})
-
 export const input = style({
   flex: 1,
   border: 'none',
@@ -44,11 +40,6 @@ export const inputAddonContainer = style({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-})
-
-export const clearIcon = style({
-  fontSize: '1.5rem',
-  cursor: 'pointer',
 })
 
 export const searchShortcut = style({

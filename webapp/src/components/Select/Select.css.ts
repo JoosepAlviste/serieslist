@@ -19,8 +19,6 @@ export const trigger = style({
 
 export const triangle = style({
   transform: 'rotate(90deg)',
-  width: '0.75rem',
-  height: '0.75rem',
 })
 
 export const content = style({
@@ -38,7 +36,7 @@ export const item = style({
   paddingTop: '0.5rem',
   paddingRight: '0.5rem',
   paddingBottom: '0.5rem',
-  paddingLeft: '2rem',
+  paddingLeft: '2.25rem',
   cursor: 'pointer',
   userSelect: 'none',
 
@@ -55,13 +53,11 @@ export const item = style({
 
 export const itemCheck = style({
   position: 'absolute',
-  left: '0.5rem',
+  left: '0.75rem',
   top: '50%',
   transform: 'translateY(-50%)',
 })
 
 export const itemCheckIcon = style({
-  width: '1rem',
-  height: '1rem',
   color: vars.color.indigo500,
 })

@@ -28,7 +28,7 @@ export const Select = <T extends string>({
       <BaseSelect.Trigger className={s.trigger}>
         <BaseSelect.Value placeholder={selectedOption?.label} />
         <BaseSelect.Icon>
-          <Icon name="triangle" aria-hidden className={s.triangle} />
+          <Icon size="s" name="triangle" aria-hidden className={s.triangle} />
         </BaseSelect.Icon>
       </BaseSelect.Trigger>
       <BaseSelect.Portal>
@@ -37,7 +37,12 @@ export const Select = <T extends string>({
             {options.map(({ value, label }) => (
               <BaseSelect.Item key={value} value={value} className={s.item}>
                 <BaseSelect.ItemIndicator className={s.itemCheck}>
-                  <Icon name="check" aria-hidden className={s.itemCheckIcon} />
+                  <Icon
+                    name="check"
+                    size="s"
+                    aria-hidden
+                    className={s.itemCheckIcon}
+                  />
                 </BaseSelect.ItemIndicator>
                 <BaseSelect.ItemText>{label}</BaseSelect.ItemText>
               </BaseSelect.Item>

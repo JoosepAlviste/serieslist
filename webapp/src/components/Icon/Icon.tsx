@@ -23,6 +23,7 @@ const icons = {
 
 type BaseIconProps = SVGAttributes<SVGElement> & {
   name: keyof typeof icons
+  size?: keyof typeof s.iconSize
 }
 
 type IconProps = BaseIconProps &
@@ -36,13 +37,22 @@ type IconProps = BaseIconProps &
       }
   )
 
-export const Icon = ({ name, label, className, ...rest }: IconProps) => {
+export const Icon = ({
+  name,
+  label,
+  size = 'm',
+  className,
+  ...rest
+}: IconProps) => {
   const Component = icons[name]
 
   if (label) {
     return (
       <AccessibleIcon label={label}>
-        <Component className={classNames(s.icon, className)} {...rest} />
+        <Component
+          className={classNames(s.icon, s.iconSize[size], className)}
+          {...rest}
+        />
       </AccessibleIcon>
     )
   }

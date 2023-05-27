@@ -47,19 +47,9 @@ export const navLinkLogo = style([
   },
 ])
 
-export const navIcon = style({
-  width: '1.75rem',
-  height: '1.75rem',
+export const navIconLogo = style({
+  color: 'white',
 })
-
-export const navIconLogo = style([
-  navIcon,
-  {
-    width: '1.5rem',
-    height: '1.5rem',
-    color: 'white',
-  },
-])
 
 export const container = style({
   display: 'flex',

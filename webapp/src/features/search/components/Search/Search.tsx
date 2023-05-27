@@ -214,7 +214,7 @@ export const Search = ({ className, ...rest }: SearchProps) => {
           className={classNames(s.container, className)}
           {...rest}
         >
-          <Icon name="search" aria-hidden className={s.searchIcon} />
+          <Icon name="search" aria-hidden />
           <input
             ref={inputRef}
             type="search"
@@ -241,7 +241,7 @@ export const Search = ({ className, ...rest }: SearchProps) => {
           ) : keyword.length ? (
             <div className={s.inputAddonContainer}>
               <button type="button" onClick={clearKeyword}>
-                <Icon name="cross" label="Clear" className={s.clearIcon} />
+                <Icon name="cross" label="Clear" />
               </button>
             </div>
           ) : (

@@ -30,9 +30,6 @@ export const search = style({
 })
 
 export const dropdownIcon = style({
-  width: '0.75rem',
-  height: '0.75rem',
-  color: vars.color.icon,
   transform: 'rotate(90deg)',
 })
 
@@ -96,7 +93,5 @@ export const headerItemContainer = style({
 })
 
 export const headerItemIcon = style({
-  width: '1.25rem',
-  height: '1.25rem',
   color: vars.color.icon,
 })
