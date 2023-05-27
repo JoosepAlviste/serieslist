@@ -25,4 +25,12 @@ export const onBeforeRender = async (pageContext: PageContext) => {
       },
     })
   }
+
+  return {
+    pageContext: {
+      documentProps: {
+        title: data.series.title,
+      },
+    },
+  }
 }
