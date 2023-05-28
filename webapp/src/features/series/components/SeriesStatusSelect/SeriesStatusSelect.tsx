@@ -4,6 +4,7 @@ import React from 'react'
 import { Select } from '@/components'
 import { type FragmentType, graphql, useFragment } from '@/generated/gql'
 import { UserSeriesStatus } from '@/generated/gql/graphql'
+import { useToast } from '@/hooks'
 
 const STATUS_LABELS = {
   [UserSeriesStatus.InProgress]: 'In progress',
@@ -43,8 +44,10 @@ export const SeriesStatusSelect = ({
     `),
   )
 
+  const { showToast } = useToast()
+
   const handleUpdateStatus = async (status: keyof typeof STATUS_LABELS) => {
-    await updateStatusMutate({
+    const { data } = await updateStatusMutate({
       variables: {
         input: {
           status: status !== 'default' ? status : null,
@@ -53,7 +56,12 @@ export const SeriesStatusSelect = ({
       },
     })
 
-    // TODO: Show notification that it was successful
+    if (data?.seriesUpdateStatus.__typename === 'Series') {
+      showToast({
+        id: 'status_change',
+        title: 'Series status changed',
+      })
+    }
   }
 
   return (

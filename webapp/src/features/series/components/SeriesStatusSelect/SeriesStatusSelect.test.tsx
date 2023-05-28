@@ -4,6 +4,7 @@ import React from 'react'
 
 import { makeFragmentData } from '@/generated/gql'
 import {
+  type Series,
   SeriesStatusSelect_SeriesFragmentFragmentDoc,
   SeriesUpdateStatusDocument,
   UserSeriesStatus,
@@ -15,40 +16,17 @@ import { seriesFactory } from '../../series.factory'
 import { SeriesStatusSelect } from './SeriesStatusSelect'
 
 describe('features/series/components/SeriesStatusSelect', () => {
-  it('shows the current status of the series', async () => {
-    const series = seriesFactory.build({
-      id: '1',
-      status: UserSeriesStatus.InProgress,
-    })
-
-    await render(
-      <SeriesStatusSelect
-        series={makeFragmentData(
-          series,
-          SeriesStatusSelect_SeriesFragmentFragmentDoc,
-        )}
-      />,
-    )
-
-    screen.getByText('In progress')
-  })
-
-  it('allows changing the status of the given series', async () => {
-    const series = seriesFactory.build({
-      id: '1',
-      status: UserSeriesStatus.InProgress,
-    })
-
+  const renderStatusSelect = async (
+    series: Series,
+    returnedSeries: Series = seriesFactory.build(),
+  ) => {
     const [doc, mockResolver] = createMockResolver(SeriesUpdateStatusDocument, {
       data: {
-        seriesUpdateStatus: {
-          ...series,
-          status: UserSeriesStatus.Completed,
-        },
+        seriesUpdateStatus: returnedSeries,
       },
     })
 
-    await render(
+    const utils = await render(
       <SeriesStatusSelect
         series={makeFragmentData(
           series,
@@ -59,6 +37,34 @@ describe('features/series/components/SeriesStatusSelect', () => {
         requestMocks: [[doc, mockResolver]],
       },
     )
+
+    return {
+      ...utils,
+      mockResolver,
+    }
+  }
+
+  it('shows the current status of the series', async () => {
+    const series = seriesFactory.build({
+      id: '1',
+      status: UserSeriesStatus.InProgress,
+    })
+
+    await renderStatusSelect(series)
+
+    screen.getByText('In progress')
+  })
+
+  it('allows changing the status of the given series', async () => {
+    const series = seriesFactory.build({
+      id: '1',
+      status: UserSeriesStatus.InProgress,
+    })
+
+    const { mockResolver } = await renderStatusSelect(series, {
+      ...series,
+      status: UserSeriesStatus.Completed,
+    })
 
     await userEvent.click(
       screen.getByRole('combobox', {
@@ -77,5 +83,27 @@ describe('features/series/components/SeriesStatusSelect', () => {
         status: UserSeriesStatus.Completed,
       },
     })
+  })
+
+  it('shows a toast when changing status', async () => {
+    const series = seriesFactory.build()
+
+    await renderStatusSelect(series, {
+      ...series,
+      status: UserSeriesStatus.Completed,
+    })
+
+    await userEvent.click(
+      screen.getByRole('combobox', {
+        name: 'Change status',
+      }),
+    )
+    await userEvent.click(
+      screen.getByRole('option', {
+        name: 'Completed',
+      }),
+    )
+
+    screen.getByText('Series status changed')
   })
 })

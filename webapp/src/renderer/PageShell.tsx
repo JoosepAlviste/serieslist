@@ -3,7 +3,7 @@ import React from 'react'
 
 import { Header, NavSidebar } from '@/components'
 import { AuthenticatedUserProvider } from '@/features/auth'
-import { PageContextProvider } from '@/hooks'
+import { PageContextProvider, ToastProvider } from '@/hooks'
 
 import * as s from './PageShell.css'
 import type { PageContext } from './types'
@@ -23,13 +23,15 @@ export function PageShell({
       <ApolloProvider client={pageContext.apollo}>
         <PageContextProvider pageContext={pageContext}>
           <AuthenticatedUserProvider>
-            <div className={s.pageContainer}>
-              <NavSidebar />
-              <main className={s.main}>
-                <Header />
-                {children}
-              </main>
-            </div>
+            <ToastProvider>
+              <div className={s.pageContainer}>
+                <NavSidebar />
+                <main className={s.main}>
+                  <Header />
+                  {children}
+                </main>
+              </div>
+            </ToastProvider>
           </AuthenticatedUserProvider>
         </PageContextProvider>
       </ApolloProvider>

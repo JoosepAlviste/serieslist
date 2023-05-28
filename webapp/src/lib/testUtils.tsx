@@ -20,7 +20,7 @@ import {
 } from '@/features/auth'
 import { userFactory } from '@/features/users'
 import { CurrentUserDocument } from '@/generated/gql/graphql'
-import { PageContextProvider } from '@/hooks'
+import { PageContextProvider, ToastProvider } from '@/hooks'
 import { type NotWorthIt, type LiterallyAnything } from '@/types/utils'
 import { wait } from '@/utils/misc'
 
@@ -34,7 +34,7 @@ type ExtraRenderOptions = {
    *
    * Use `createMockResolver` to easily create this in a type-safe manner.
    */
-  requestMocks?: [DocumentNode, RequestHandler][]
+  requestMocks?: (readonly [DocumentNode, RequestHandler])[]
 
   /**
    * The currently authenticated user. If `null` is passed in, then there is no
@@ -93,7 +93,9 @@ export const render = async (
           } as NotWorthIt
         }
       >
-        <AuthenticatedUserProvider>{ui}</AuthenticatedUserProvider>
+        <AuthenticatedUserProvider>
+          <ToastProvider>{ui}</ToastProvider>
+        </AuthenticatedUserProvider>
       </PageContextProvider>
     </ApolloProvider>,
     options,

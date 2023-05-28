@@ -21,8 +21,10 @@ const icons = {
   check: CheckIcon,
 }
 
+export type IconName = keyof typeof icons
+
 type BaseIconProps = SVGAttributes<SVGElement> & {
-  name: keyof typeof icons
+  name: IconName
   size?: keyof typeof s.iconSize
 }
 
