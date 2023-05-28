@@ -1,28 +1,11 @@
 import { useMutation, useQuery } from '@apollo/client'
-import React, {
-  createContext,
-  useContext,
-  type FC,
-  type ReactNode,
-} from 'react'
+import React, { type FC, type ReactNode } from 'react'
 import { navigate } from 'vite-plugin-ssr/client/router'
 
 import { graphql } from '@/generated/gql'
-import { type CurrentUserQuery } from '@/generated/gql/graphql'
 import { usePageContext } from '@/hooks'
 
-export type AuthenticatedUser = Exclude<
-  NonNullable<CurrentUserQuery['me']>,
-  { __typename: 'UnauthorizedError' }
->
-
-export const AuthenticatedUserContext = createContext<{
-  currentUser: AuthenticatedUser | undefined
-  logOut: () => Promise<void>
-}>({
-  currentUser: undefined,
-  logOut: () => Promise.resolve(undefined),
-})
+import { AuthenticatedUserContext } from '../context/AuthenticatedUserContext'
 
 type AuthenticatedUserProviderProps = {
   children: ReactNode
@@ -79,8 +62,4 @@ export const AuthenticatedUserProvider: FC<AuthenticatedUserProviderProps> = ({
       {children}
     </AuthenticatedUserContext.Provider>
   )
-}
-
-export const useAuthenticatedUser = () => {
-  return useContext(AuthenticatedUserContext)
 }

@@ -43,7 +43,7 @@ export const root = style({
   fontWeight: vars.fontWeight.medium,
   boxShadow: vars.shadow['2xl'],
   borderRadius: vars.radii.m,
-  padding: '2rem 3rem 2rem 2rem',
+  padding: '2rem 2rem 2rem 2rem',
   overflow: 'hidden',
 
   '::before': {

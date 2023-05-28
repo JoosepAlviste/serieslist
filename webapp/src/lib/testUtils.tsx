@@ -20,7 +20,8 @@ import {
 } from '@/features/auth'
 import { userFactory } from '@/features/users'
 import { CurrentUserDocument } from '@/generated/gql/graphql'
-import { PageContextProvider, ToastProvider } from '@/hooks'
+import { PageContextProvider } from '@/providers/PageContextProvider'
+import { ToastProvider } from '@/providers/ToastProvider'
 import { type NotWorthIt, type LiterallyAnything } from '@/types/utils'
 import { wait } from '@/utils/misc'
 
