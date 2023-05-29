@@ -3,10 +3,12 @@
 import './loadDotenv'
 
 import compression from 'compression'
+import cookieParser from 'cookie-parser'
 import express from 'express'
 import { renderPage } from 'vite-plugin-ssr'
 
 import { config } from '@/config'
+import { type Theme } from '@/utils/theme'
 
 import { makeApolloClient } from '../lib/apollo.js'
 import { type PageContext } from '../renderer/types.js'
@@ -20,6 +22,7 @@ void startServer()
 async function startServer() {
   const app = express()
 
+  app.use(cookieParser())
   app.use(compression())
 
   if (isProduction) {
@@ -42,9 +45,12 @@ async function startServer() {
       req,
     })
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+    const theme: Theme | undefined = req.cookies.theme
     const pageContextInit: Partial<PageContext> = {
       urlOriginal: req.originalUrl,
       apollo,
+      theme,
     }
     const pageContext = await renderPage(pageContextInit)
 

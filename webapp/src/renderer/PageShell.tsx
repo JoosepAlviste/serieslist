@@ -1,4 +1,5 @@
 import { ApolloProvider } from '@apollo/client'
+import { TooltipProvider } from '@radix-ui/react-tooltip'
 import React from 'react'
 
 import { Header, NavSidebar } from '@/components'
@@ -23,15 +24,17 @@ export function PageShell({
       <ApolloProvider client={pageContext.apollo}>
         <PageContextProvider pageContext={pageContext}>
           <AuthenticatedUserProvider>
-            <ToastProvider>
-              <div className={s.pageContainer}>
-                <NavSidebar />
-                <main className={s.main}>
-                  <Header />
-                  {children}
-                </main>
-              </div>
-            </ToastProvider>
+            <TooltipProvider>
+              <ToastProvider>
+                <div className={s.pageContainer}>
+                  <NavSidebar />
+                  <main className={s.main}>
+                    <Header />
+                    {children}
+                  </main>
+                </div>
+              </ToastProvider>
+            </TooltipProvider>
           </AuthenticatedUserProvider>
         </PageContextProvider>
       </ApolloProvider>

@@ -8,14 +8,14 @@ export const button = style({
   borderRadius: '50%',
 
   vars: {
-    [iconColorVar]: vars.color.slate400,
+    [iconColorVar]: vars.color.iconButtonColor,
   },
 
   ':hover': {
-    backgroundColor: vars.color.slate100,
+    backgroundColor: vars.color.inputBackground,
 
     vars: {
-      [iconColorVar]: vars.color.slate500,
+      [iconColorVar]: vars.color.iconButtonHoverColor,
     },
   },
 })

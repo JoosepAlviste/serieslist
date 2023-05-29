@@ -1,5 +1,6 @@
 import { style, styleVariants } from '@vanilla-extract/css'
 
+import { iconColorVar } from '@/styles/cssVariables'
 import { vars } from '@/styles/theme.css'
 
 const baseButton = style({
@@ -14,14 +15,15 @@ export const button = styleVariants({
   ghost: [
     baseButton,
     {
+      color: vars.color.text,
       backgroundColor: 'transparent',
 
       ':hover': {
-        backgroundColor: vars.color.slate100,
+        backgroundColor: vars.color.inputBackground,
       },
 
       ':focus-visible': {
-        backgroundColor: vars.color.slate100,
+        backgroundColor: vars.color.inputBackground,
       },
     },
   ],
@@ -30,7 +32,9 @@ export const button = styleVariants({
 export const buttonIcon = style({
   selectors: {
     [`${button.ghost} &`]: {
-      color: vars.color.icon,
+      vars: {
+        [iconColorVar]: vars.color.inputIconColor,
+      },
     },
   },
 })

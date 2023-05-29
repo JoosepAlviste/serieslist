@@ -38,18 +38,22 @@ export const root = style({
   display: 'flex',
   alignItems: 'center',
   gap: '1rem',
-  background: vars.color.white,
-  color: vars.color.green600,
+  background: vars.color.popoverBackground,
+  color: vars.color.textSuccess,
   fontWeight: vars.fontWeight.medium,
   boxShadow: vars.shadow['2xl'],
   borderRadius: vars.radii.m,
   padding: '2rem 2rem 2rem 2rem',
   overflow: 'hidden',
 
+  vars: {
+    [vars.color.inputBackground]: vars.color.inputRaisedBackground,
+  },
+
   '::before': {
     display: 'block',
     content: '',
-    backgroundColor: vars.color.green100,
+    backgroundColor: vars.color.notificationSuccessAccessory,
     width: '0.5rem',
     height: '100%',
     left: 0,
@@ -83,10 +87,10 @@ export const root = style({
 export const iconContainer = style({
   borderRadius: '50%',
   padding: '0.5rem',
-  background: vars.color.green100,
+  background: vars.color.notificationSuccessAccessory,
 
   vars: {
-    [iconColorVar]: vars.color.green600,
+    [iconColorVar]: vars.color.textSuccess,
   },
 })
 

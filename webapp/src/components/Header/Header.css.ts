@@ -29,13 +29,19 @@ export const search = style({
   maxWidth: '30rem',
 })
 
+export const headerRight = style({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '1rem',
+})
+
 export const dropdownIcon = style({
   transform: 'rotate(90deg)',
 })
 
 export const dropdownContent = style({
   minWidth: '14rem',
-  backgroundColor: vars.color.white,
+  backgroundColor: vars.color.popoverBackground,
   borderRadius: vars.radii.s,
   paddingTop: '0.5rem',
   paddingBottom: '0.5rem',
@@ -59,13 +65,13 @@ export const dropdownItem = style({
   cursor: 'pointer',
 
   ':hover': {
-    backgroundColor: vars.color.slate100,
+    backgroundColor: vars.color.popoverHoverBackground,
     outline: 'none',
   },
 
   selectors: {
     '&[data-highlighted]': {
-      backgroundColor: vars.color.slate100,
+      backgroundColor: vars.color.popoverHoverBackground,
       outline: 'none',
     },
   },
@@ -78,16 +84,16 @@ export const headerItemContainer = style({
   fontSize: '0.875rem',
   padding: '0.5rem',
   borderRadius: vars.radii.m,
-  color: vars.color.slate900,
+  color: vars.color.text,
   textDecoration: 'none',
 
   ':hover': {
-    backgroundColor: vars.color.slate100,
+    backgroundColor: vars.color.inputBackground,
   },
 
   selectors: {
     '&[data-state="open"]': {
-      backgroundColor: vars.color.slate100,
+      backgroundColor: vars.color.inputBackground,
     },
   },
 })

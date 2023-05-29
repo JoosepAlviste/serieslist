@@ -11,3 +11,8 @@ export type LiterallyAnything = any
  * Make some fields of the give object type required.
  */
 export type RequiredFields<T, K extends keyof T> = T & { [P in K]-?: T[P] }
+
+/**
+ * Get types of all values of an object (similar to keyof).
+ */
+export type ValueOf<T> = T[keyof T]

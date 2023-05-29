@@ -4,6 +4,7 @@ import type {
   TypedDocumentNode,
   VariablesOf,
 } from '@graphql-typed-document-node/core'
+import { Provider as TooltipProvider } from '@radix-ui/react-tooltip'
 import {
   act,
   fireEvent,
@@ -95,7 +96,9 @@ export const render = async (
         }
       >
         <AuthenticatedUserProvider>
-          <ToastProvider>{ui}</ToastProvider>
+          <ToastProvider>
+            <TooltipProvider>{ui}</TooltipProvider>
+          </ToastProvider>
         </AuthenticatedUserProvider>
       </PageContextProvider>
     </ApolloProvider>,

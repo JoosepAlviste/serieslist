@@ -12,7 +12,7 @@ export const NavSidebar = () => (
     <NavigationMenu.List className={s.container}>
       <NavigationMenu.Item className={s.navItemLogo}>
         <NavigationMenu.Link href="/" className={s.navLinkLogo}>
-          <Icon name="logo" size="l" className={s.navIconLogo} label="Home" />
+          <Icon name="logo" size="l" label="Home" />
         </NavigationMenu.Link>
       </NavigationMenu.Item>
 

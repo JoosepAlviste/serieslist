@@ -40,13 +40,13 @@ export const imdbLogo = style({
 export const years = style({
   fontSize: '0.875rem',
   marginBottom: '0.75rem',
-  color: vars.color.slate500,
+  color: vars.color.textTertiary,
 })
 
 export const description = style({
   maxWidth: '70ch',
   marginBottom: '2rem',
-  color: vars.color.slate700,
+  color: vars.color.textSecondary,
 })
 
 export const seasons = style({
@@ -74,27 +74,27 @@ export const seasonTrigger = style({
   paddingRight: '0.75rem',
   paddingBottom: 'calc(0.5rem - 2px)',
   paddingLeft: '0.75rem',
-  color: vars.color.slate700,
-  background: vars.color.slate100,
+  color: vars.color.textSecondary,
+  background: vars.color.inputBackground,
   borderBottomWidth: 2,
   borderBottomStyle: 'solid',
-  borderBottomColor: vars.color.slate100,
+  borderBottomColor: vars.color.inputBackground,
 
   ':hover': {
-    background: vars.color.slate200,
-    borderBottomColor: vars.color.slate200,
+    background: vars.color.inputRaisedBackground,
+    borderBottomColor: vars.color.inputRaisedBackground,
   },
 
   ':focus': {
-    background: vars.color.slate200,
-    borderBottomColor: vars.color.slate200,
+    background: vars.color.inputRaisedBackground,
+    borderBottomColor: vars.color.inputRaisedBackground,
     outline: 'none',
   },
 
   selectors: {
     '&[data-state="active"]': {
-      color: vars.color.indigo500,
-      borderBottomColor: vars.color.indigo500,
+      color: vars.color.primary,
+      borderBottomColor: vars.color.primary,
     },
   },
 })
@@ -114,8 +114,8 @@ export const episodesTitle = style({
 export const episode = style({
   display: 'flex',
   gap: '0.5rem',
-  background: vars.color.slate100,
-  color: vars.color.slate700,
+  background: vars.color.inputBackground,
+  color: vars.color.textSecondary,
   borderRadius: vars.radii.s,
   paddingTop: '0.5rem',
   paddingRight: '1rem',

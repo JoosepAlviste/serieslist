@@ -2,32 +2,135 @@ import { createTheme } from '@vanilla-extract/css'
 
 const colors = {
   white: '#ffffff',
+  black: '#000000',
 
   slate100: '#f1f5f9',
   slate200: '#e2e8f0',
   slate300: '#cbd5e1',
   slate400: '#94a3b8',
   slate500: '#64748b',
+  slate600: '#475569',
   slate700: '#334155',
+  slate800: '#1e293b',
   slate900: '#0f172a',
 
   indigo50: '#eef2ff',
   indigo100: '#e0e7ff',
   indigo200: '#c7d2fe',
+  indigo400: '#818cf8',
   indigo500: '#6366f1',
   indigo600: '#4f46e5',
+  indigo800: '#3730a3',
+  indigo900: '#312e81',
+  indigo950: '#1e1b4b',
 
   green100: '#dcfce7',
-  green500: '#22c55e',
+  green400: '#4ade80',
   green600: '#16a34a',
-  green700: '#15803d',
+  green950: '#052e16',
+
+  yellow500: '#eab308',
 }
 
-export const [themeClass, vars] = createTheme({
+export const [lightThemeClass, vars] = createTheme({
   color: {
     ...colors,
 
+    pageBackground: colors.white,
+    text: colors.slate900,
+    textSecondary: colors.slate700,
+    textTertiary: colors.slate500,
+    textSuccess: colors.green600,
+    textHighlightedBackground: colors.indigo100,
+    textHighlightedBackgroundDarker: colors.indigo200,
+
+    primary: colors.indigo500,
+
+    popoverBackground: colors.white,
+    popoverHoverBackground: colors.slate100,
+
+    inputBackground: colors.slate100,
+    inputRaisedBackground: colors.slate200,
+    inputAccessoryBackground: colors.slate200,
+    inputAccessoryColor: colors.slate500,
+    inputIconColor: colors.slate400,
+
     icon: colors.slate500,
+
+    tooltipBackground: colors.black,
+    tooltipText: colors.white,
+
+    navIconBackground: colors.slate100,
+    navIconHoverBackground: colors.slate200,
+    navIconActiveBackground: colors.slate900,
+    navIconActiveColor: colors.slate100,
+
+    iconButtonColor: colors.slate400,
+    iconButtonHoverColor: colors.slate500,
+
+    searchHighlightBackground: colors.indigo50,
+
+    notificationSuccessAccessory: colors.green100,
+  },
+
+  fontWeight: {
+    regular: '400',
+    medium: '500',
+    bold: '700',
+  },
+
+  radii: {
+    s: '0.5rem',
+    m: '0.75rem',
+    xl: '1.25rem',
+  },
+
+  shadow: {
+    md: 'rgba(0, 0, 0, 0.2) 0px 18px 50px -10px',
+    xl: '0 5px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
+    '2xl': '0 25px 50px -12px rgb(0 0 0 / 0.25)',
+  },
+})
+
+export const darkThemeClass = createTheme(vars, {
+  color: {
+    ...colors,
+
+    pageBackground: colors.black,
+    text: colors.white,
+    textSecondary: colors.slate200,
+    textTertiary: colors.slate400,
+    textSuccess: colors.green400,
+    textHighlightedBackground: colors.indigo900,
+    textHighlightedBackgroundDarker: colors.indigo800,
+
+    primary: colors.indigo400,
+
+    popoverBackground: colors.slate900,
+    popoverHoverBackground: colors.slate800,
+
+    inputBackground: colors.slate900,
+    inputRaisedBackground: colors.slate800,
+    inputAccessoryBackground: colors.slate800,
+    inputAccessoryColor: colors.slate400,
+    inputIconColor: colors.slate500,
+
+    icon: colors.slate400,
+
+    tooltipBackground: colors.slate800,
+    tooltipText: colors.white,
+
+    iconButtonColor: colors.slate500,
+    iconButtonHoverColor: colors.slate400,
+
+    navIconBackground: colors.slate900,
+    navIconHoverBackground: colors.slate800,
+    navIconActiveBackground: colors.slate700,
+    navIconActiveColor: colors.slate100,
+
+    searchHighlightBackground: colors.indigo950,
+
+    notificationSuccessAccessory: colors.green950,
   },
 
   fontWeight: {

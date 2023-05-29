@@ -6,6 +6,7 @@ import { Search } from '@/features/search'
 
 import { Button } from '../Button'
 import { Icon } from '../Icon'
+import { ThemeToggle } from '../ThemeToggle'
 
 import * as s from './Header.css'
 
@@ -17,7 +18,9 @@ export const Header = () => {
       <div className={s.searchContainer}>
         <Search className={s.search} />
       </div>
-      <div>
+      <div className={s.headerRight}>
+        <ThemeToggle />
+
         {currentUser ? (
           <DropdownMenu.Root>
             <DropdownMenu.Trigger asChild>

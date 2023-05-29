@@ -7,13 +7,13 @@ export const trigger = style({
   display: 'flex',
   alignItems: 'center',
   gap: '0.5rem',
-  background: vars.color.slate100,
+  background: vars.color.inputBackground,
   borderRadius: vars.radii.s,
   padding: '0.5rem 1rem',
-  color: vars.color.slate700,
+  color: vars.color.textSecondary,
 
   vars: {
-    [iconColorVar]: vars.color.slate400,
+    [iconColorVar]: vars.color.inputIconColor,
   },
 })
 
@@ -22,7 +22,7 @@ export const triangle = style({
 })
 
 export const content = style({
-  background: vars.color.white,
+  background: vars.color.popoverBackground,
   boxShadow: vars.shadow.md,
   borderRadius: vars.radii.s,
   paddingTop: '0.25rem',
@@ -46,7 +46,7 @@ export const item = style({
 
   selectors: {
     [`&[data-highlighted]`]: {
-      backgroundColor: vars.color.slate100,
+      backgroundColor: vars.color.popoverHoverBackground,
     },
   },
 })
@@ -59,5 +59,5 @@ export const itemCheck = style({
 })
 
 export const itemCheckIcon = style({
-  color: vars.color.indigo500,
+  color: vars.color.primary,
 })

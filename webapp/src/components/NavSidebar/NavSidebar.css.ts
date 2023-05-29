@@ -10,23 +10,23 @@ export const navLink = style({
   alignItems: 'center',
   justifyContent: 'center',
   borderRadius: vars.radii.m,
-  backgroundColor: vars.color.slate100,
-  color: vars.color.slate500,
+  backgroundColor: vars.color.navIconBackground,
+  color: vars.color.icon,
 
   ':hover': {
-    backgroundColor: vars.color.slate200,
+    backgroundColor: vars.color.navIconHoverBackground,
   },
 })
 
 export const navLinkIsActive = style({
-  backgroundColor: vars.color.slate900,
+  backgroundColor: vars.color.navIconActiveBackground,
 
   ':hover': {
-    backgroundColor: vars.color.slate900,
+    backgroundColor: vars.color.navIconActiveBackground,
   },
 
   vars: {
-    [iconColorVar]: vars.color.slate100,
+    [iconColorVar]: vars.color.navIconActiveColor,
   },
 })
 
@@ -39,17 +39,18 @@ export const navLinkLogo = style([
   {
     backgroundImage: `linear-gradient(135deg, ${vars.color.indigo500} 10%, ${vars.color.indigo600})`,
     outlineColor: vars.color.indigo200,
+    transition: 'none',
 
     ':hover': {
       backgroundColor: vars.color.indigo600,
       backgroundImage: 'none',
     },
+
+    vars: {
+      [iconColorVar]: vars.color.white,
+    },
   },
 ])
-
-export const navIconLogo = style({
-  color: 'white',
-})
 
 export const container = style({
   display: 'flex',

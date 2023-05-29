@@ -3,7 +3,8 @@ import React from 'react'
 import { escapeInject, dangerouslySkipEscape } from 'vite-plugin-ssr'
 
 import { CurrentUserDocument } from '@/generated/gql/graphql'
-import { themeClass } from '@/styles/theme.css'
+import { darkThemeClass, lightThemeClass } from '@/styles/theme.css'
+import { THEME } from '@/utils/theme'
 
 import logoUrl from './favicon.ico'
 import { PageShell } from './PageShell'
@@ -15,10 +16,11 @@ export const passToClient = [
   'documentProps',
   'apolloInitialState',
   'currentUser',
+  'theme',
 ]
 
 export async function render(pageContext: PageContextServer) {
-  const { Page, pageProps } = pageContext
+  const { Page, pageProps, theme } = pageContext
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!Page) {
     throw new Error('My render() hook expects pageContext.Page to be defined')
@@ -40,6 +42,8 @@ export async function render(pageContext: PageContextServer) {
   const { documentProps } = pageContext.exports
   const title = documentProps?.title ?? 'Serieslist'
   const desc = documentProps?.description ?? 'App using Vite + vite-plugin-ssr'
+
+  const themeClass = theme == THEME.DARK ? darkThemeClass : lightThemeClass
 
   const documentHtml = escapeInject`<!DOCTYPE html>
     <html lang="en">
