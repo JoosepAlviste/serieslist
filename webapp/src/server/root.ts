@@ -4,4 +4,7 @@ import { dirname } from 'path'
 import { fileURLToPath } from 'url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
-export const root = `${__dirname}/../..`
+export const root =
+  process.env.NODE_ENV === 'production'
+    ? `${__dirname}/../../..`
+    : `${__dirname}/../..`
