@@ -1,7 +1,7 @@
 import { type Selectable } from 'kysely'
 
 import { type Episode, type Season, type Series } from '@/generated/db'
-import { NotFoundError } from '@/lib/errors'
+import { NotFoundError, UnauthorizedError } from '@/lib/errors'
 import { builder } from '@/schemaBuilder'
 import { exposeDate } from '@/utils/exposeDate'
 
@@ -21,7 +21,7 @@ export type SeasonType = Selectable<Season>
 
 export type SeriesType = Selectable<Series>
 
-const EpisodeRef = builder.objectRef<EpisodeType>('Episode').implement({
+export const EpisodeRef = builder.objectRef<EpisodeType>('Episode').implement({
   fields: (t) => ({
     id: t.id({
       resolve: (parent) => String(parent.id),
@@ -159,7 +159,7 @@ builder.mutationFields((t) => ({
       }),
     },
     errors: {
-      types: [NotFoundError],
+      types: [NotFoundError, UnauthorizedError],
     },
     resolve: (_parent, args, ctx) => {
       return updateSeriesStatusForUser(ctx)(args.input)

@@ -58,6 +58,7 @@ export type Mutation = {
   login: MutationLoginResult;
   register: MutationRegisterResult;
   seriesUpdateStatus: MutationSeriesUpdateStatusResult;
+  toggleEpisodeSeen: MutationToggleEpisodeSeenResult;
 };
 
 
@@ -75,11 +76,18 @@ export type MutationSeriesUpdateStatusArgs = {
   input: SeriesUpdateStatusInput;
 };
 
+
+export type MutationToggleEpisodeSeenArgs = {
+  input: ToggleEpisodeSeenInput;
+};
+
 export type MutationLoginResult = InvalidInputError | User;
 
 export type MutationRegisterResult = InvalidInputError | User;
 
-export type MutationSeriesUpdateStatusResult = NotFoundError | Series;
+export type MutationSeriesUpdateStatusResult = NotFoundError | Series | UnauthorizedError;
+
+export type MutationToggleEpisodeSeenResult = Episode | NotFoundError | UnauthorizedError;
 
 export type NotFoundError = Error & {
   __typename?: 'NotFoundError';
@@ -146,6 +154,10 @@ export type SeriesSearchInput = {
 export type SeriesUpdateStatusInput = {
   seriesId: Scalars['Int'];
   status?: InputMaybe<UserSeriesStatus>;
+};
+
+export type ToggleEpisodeSeenInput = {
+  episodeId: Scalars['Int'];
 };
 
 export type UnauthorizedError = Error & {
@@ -231,7 +243,14 @@ export type SeriesUpdateStatusMutationVariables = Exact<{
 }>;
 
 
-export type SeriesUpdateStatusMutation = { __typename?: 'Mutation', seriesUpdateStatus: { __typename: 'NotFoundError' } | { __typename: 'Series' } };
+export type SeriesUpdateStatusMutation = { __typename?: 'Mutation', seriesUpdateStatus: { __typename: 'NotFoundError' } | { __typename: 'Series' } | { __typename: 'UnauthorizedError' } };
+
+export type ToggleEpisodeSeenMutationVariables = Exact<{
+  input: ToggleEpisodeSeenInput;
+}>;
+
+
+export type ToggleEpisodeSeenMutation = { __typename?: 'Mutation', toggleEpisodeSeen: { __typename: 'Episode', id: string } | { __typename: 'NotFoundError', message: string } | { __typename: 'UnauthorizedError', message: string } };
 
 
 export const HelloQueryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"HelloQuery"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hello"}}]}}]} as unknown as DocumentNode<HelloQueryQuery, HelloQueryQueryVariables>;
@@ -244,3 +263,4 @@ export const SeriesTypeSeriesDocument = {"kind":"Document","definitions":[{"kind
 export const SeriesTypeSeriesEpisodesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"seriesTypeSeriesEpisodes"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"series"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Series"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"seasons"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"episodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"imdbId"}},{"kind":"Field","name":{"kind":"Name","value":"number"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"imdbRating"}},{"kind":"Field","name":{"kind":"Name","value":"releasedAt"}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<SeriesTypeSeriesEpisodesQuery, SeriesTypeSeriesEpisodesQueryVariables>;
 export const SeriesTypeSeriesStatusDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"seriesTypeSeriesStatus"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"series"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Series"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"status"}}]}}]}}]}}]} as unknown as DocumentNode<SeriesTypeSeriesStatusQuery, SeriesTypeSeriesStatusQueryVariables>;
 export const SeriesUpdateStatusDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"seriesUpdateStatus"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"SeriesUpdateStatusInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"seriesUpdateStatus"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}}]}}]}}]} as unknown as DocumentNode<SeriesUpdateStatusMutation, SeriesUpdateStatusMutationVariables>;
+export const ToggleEpisodeSeenDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"toggleEpisodeSeen"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ToggleEpisodeSeenInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"toggleEpisodeSeen"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Error"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"message"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Episode"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]} as unknown as DocumentNode<ToggleEpisodeSeenMutation, ToggleEpisodeSeenMutationVariables>;

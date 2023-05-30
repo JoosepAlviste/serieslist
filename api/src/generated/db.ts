@@ -30,6 +30,12 @@ export type Season = {
   number: number
 }
 
+export type SeenEpisode = {
+  userId: number
+  episodeId: number
+  createdAt: Generated<Timestamp>
+}
+
 export type Series = {
   id: Generated<number>
   imdbId: string
@@ -76,6 +82,7 @@ export type UserSeriesStatus = {
 export type DB = {
   episode: Episode
   season: Season
+  seenEpisode: SeenEpisode
   series: Series
   session: Session
   user: User
