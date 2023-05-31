@@ -48,7 +48,8 @@ describe('features/series/series.service', () => {
         },
       )
 
-      await syncSeasonsAndEpisodesFromOMDb(createContext())({
+      await syncSeasonsAndEpisodesFromOMDb({
+        ctx: createContext(),
         imdbId: series.imdbId,
         seriesId: series.id,
         totalNumberOfSeasons: 1,
@@ -90,7 +91,8 @@ describe('features/series/series.service', () => {
         },
       )
 
-      await syncSeasonsAndEpisodesFromOMDb(createContext())({
+      await syncSeasonsAndEpisodesFromOMDb({
+        ctx: createContext(),
         seriesId: series.id,
         imdbId: series.imdbId,
         totalNumberOfSeasons: 1,
@@ -137,7 +139,8 @@ describe('features/series/series.service', () => {
         },
       )
 
-      await syncSeasonsAndEpisodesFromOMDb(createContext())({
+      await syncSeasonsAndEpisodesFromOMDb({
+        ctx: createContext(),
         imdbId: series.imdbId,
         seriesId: series.id,
         totalNumberOfSeasons: 1,
@@ -172,7 +175,10 @@ describe('features/series/series.service', () => {
         }),
       )
 
-      await syncSeriesDetailsFromOMDb(createContext())(series.imdbId)
+      await syncSeriesDetailsFromOMDb({
+        ctx: createContext(),
+        imdbId: series.imdbId,
+      })
     })
   })
 })

@@ -6,14 +6,7 @@ import { builder } from '@/schemaBuilder'
 import { exposeDate } from '@/utils/exposeDate'
 
 import { UserSeriesStatus } from './constants'
-import {
-  findEpisodesBySeasonIds,
-  findSeasonsBySeriesIds,
-  findStatusForSeries,
-  getSeriesByIdAndFetchDetailsFromOmdb,
-  searchSeries,
-  updateSeriesStatusForUser,
-} from './series.service'
+import * as seriesService from './series.service'
 
 export type EpisodeType = Selectable<Episode>
 
@@ -52,7 +45,8 @@ const SeasonRef = builder.objectRef<SeasonType>('Season').implement({
     episodes: t.loadableList({
       type: EpisodeRef,
       resolve: (parent) => parent.id,
-      load: (ids, ctx) => findEpisodesBySeasonIds(ctx)(ids),
+      load: (ids, ctx) =>
+        seriesService.findEpisodesBySeasonIds({ ctx, seasonIds: ids }),
     }),
   }),
 })
@@ -78,7 +72,8 @@ const SeriesRef = builder.objectRef<SeriesType>('Series').implement({
     seasons: t.loadableList({
       type: SeasonRef,
       resolve: (parent) => parent.id,
-      load: (ids, ctx) => findSeasonsBySeriesIds(ctx)(ids),
+      load: (ids, ctx) =>
+        seriesService.findSeasonsBySeriesIds({ ctx, seriesIds: ids }),
     }),
   }),
 })
@@ -87,7 +82,8 @@ builder.objectField(SeriesRef, 'status', (t) =>
   t.loadable({
     type: UserSeriesStatus,
     nullable: true,
-    load: (ids: number[], context) => findStatusForSeries(context)(ids),
+    load: (ids: number[], ctx) =>
+      seriesService.findStatusForSeries({ ctx, seriesIds: ids }),
     resolve: (series) => series.id,
   }),
 )
@@ -107,7 +103,7 @@ builder.queryFields((t) => ({
       input: t.arg({ type: SeriesSearchInput, required: true }),
     },
     resolve(_parent, args, ctx) {
-      return searchSeries(ctx)(args.input)
+      return seriesService.searchSeries({ ctx, input: args.input })
     },
   }),
 
@@ -120,9 +116,10 @@ builder.queryFields((t) => ({
       types: [NotFoundError],
     },
     resolve(_parent, args, ctx) {
-      return getSeriesByIdAndFetchDetailsFromOmdb(ctx)(
-        parseInt(String(args.id)),
-      )
+      return seriesService.getSeriesByIdAndFetchDetailsFromOmdb({
+        ctx,
+        id: parseInt(String(args.id)),
+      })
     },
   }),
 }))
@@ -162,7 +159,7 @@ builder.mutationFields((t) => ({
       types: [NotFoundError, UnauthorizedError],
     },
     resolve: (_parent, args, ctx) => {
-      return updateSeriesStatusForUser(ctx)(args.input)
+      return seriesService.updateSeriesStatusForUser({ ctx, input: args.input })
     },
   }),
 }))

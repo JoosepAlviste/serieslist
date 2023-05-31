@@ -5,10 +5,12 @@ import jwt from 'jsonwebtoken'
 import { ZodError } from 'zod'
 
 import { config } from '@/config'
+import { usersService } from '@/features/users'
 import { type LoginInput, type RegisterInput } from '@/generated/gql/graphql'
 import { type Context } from '@/types/context'
 
 import { ACCESS_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from './constants'
+import * as sessionRepository from './session.repository'
 import { type AccessTokenPayload, type RefreshTokenPayload } from './types'
 
 export const hashPassword = async (password: string): Promise<string> => {
@@ -21,7 +23,7 @@ export const hashPassword = async (password: string): Promise<string> => {
 /**
  * Create the access and refresh tokens for the given user.
  */
-export const createTokens = (sessionToken: string, userId: number) => {
+const createTokens = (sessionToken: string, userId: number) => {
   const refreshTokenPayload: RefreshTokenPayload = {
     sessionToken,
   }
@@ -39,68 +41,81 @@ export const createTokens = (sessionToken: string, userId: number) => {
 /**
  * Generate new access and refresh tokens for the user and save them into the cookies.
  */
-const refreshTokens =
-  (ctx: Context) => (sessionToken: string) => (userId: number) => {
-    const tokens = createTokens(sessionToken, userId)
+const refreshTokens = ({
+  ctx,
+  sessionToken,
+  userId,
+}: {
+  ctx: Context
+  sessionToken: string
+  userId: number
+}) => {
+  const tokens = createTokens(sessionToken, userId)
 
-    void ctx.reply.setCookie(ACCESS_TOKEN_COOKIE, tokens.accessToken, {
-      httpOnly: true,
-      path: '/',
-      domain: 'localhost',
-      secure: true,
-      sameSite: 'none',
-    })
+  void ctx.reply.setCookie(ACCESS_TOKEN_COOKIE, tokens.accessToken, {
+    httpOnly: true,
+    path: '/',
+    domain: 'localhost',
+    secure: true,
+    sameSite: 'none',
+  })
 
-    const now = new Date()
-    const refreshExpires = now.setDate(now.getDate() + 30)
-    void ctx.reply.setCookie(REFRESH_TOKEN_COOKIE, tokens.refreshToken, {
-      httpOnly: true,
-      path: '/',
-      domain: 'localhost',
-      expires: new Date(refreshExpires),
-      secure: true,
-      sameSite: 'none',
-    })
-  }
+  const now = new Date()
+  const refreshExpires = now.setDate(now.getDate() + 30)
+  void ctx.reply.setCookie(REFRESH_TOKEN_COOKIE, tokens.refreshToken, {
+    httpOnly: true,
+    path: '/',
+    domain: 'localhost',
+    expires: new Date(refreshExpires),
+    secure: true,
+    sameSite: 'none',
+  })
+}
 
 /**
  * Create a new session for the user and set token cookies.
  */
-const logUserIn = (ctx: Context) => async (userId: number) => {
+const logUserIn = async ({ ctx, userId }: { ctx: Context; userId: number }) => {
   const sessionToken = randomBytes(43).toString('hex')
 
-  await ctx.db
-    .insertInto('session')
-    .values({
+  await sessionRepository.createOne({
+    ctx,
+    session: {
       token: sessionToken,
       userId,
-    })
-    .returning(['userId', 'token'])
-    .executeTakeFirst()
+    },
+  })
 
-  refreshTokens(ctx)(sessionToken)(userId)
+  refreshTokens({ ctx, sessionToken, userId })
 }
 
-const createUser = (ctx: Context) => async (input: RegisterInput) => {
+const createUser = async ({
+  ctx,
+  input,
+}: {
+  ctx: Context
+  input: RegisterInput
+}) => {
   const password = await hashPassword(input.password)
 
-  return ctx.db
-    .insertInto('user')
-    .values({
+  return await usersService.createOne({
+    ctx,
+    user: {
       name: input.name,
       email: input.email,
       password,
-    })
-    .returningAll()
-    .executeTakeFirstOrThrow()
+    },
+  })
 }
 
-export const register = (ctx: Context) => async (input: RegisterInput) => {
-  const existingUser = await ctx.db
-    .selectFrom('user')
-    .select('id')
-    .where('email', '=', input.email)
-    .executeTakeFirst()
+export const register = async ({
+  ctx,
+  input,
+}: {
+  ctx: Context
+  input: RegisterInput
+}) => {
+  const existingUser = await usersService.findOne({ ctx, email: input.email })
   if (existingUser) {
     throw new ZodError([
       {
@@ -111,19 +126,21 @@ export const register = (ctx: Context) => async (input: RegisterInput) => {
     ])
   }
 
-  const user = await createUser(ctx)(input)
+  const user = await createUser({ ctx, input })
 
-  await logUserIn(ctx)(user.id)
+  await logUserIn({ ctx, userId: user.id })
 
   return user
 }
 
-export const login = (ctx: Context) => async (input: LoginInput) => {
-  const user = await ctx.db
-    .selectFrom('user')
-    .selectAll()
-    .where('email', '=', input.email)
-    .executeTakeFirst()
+export const login = async ({
+  ctx,
+  input,
+}: {
+  ctx: Context
+  input: LoginInput
+}) => {
+  const user = await usersService.findOne({ ctx, email: input.email })
   if (!user) {
     throw new ZodError([
       {
@@ -145,12 +162,16 @@ export const login = (ctx: Context) => async (input: LoginInput) => {
     ])
   }
 
-  await logUserIn(ctx)(user.id)
+  await logUserIn({ ctx, userId: user.id })
 
   return user
 }
 
-export const getAuthenticatedUserAndRefreshTokens = async (ctx: Context) => {
+export const getAuthenticatedUserAndRefreshTokens = async ({
+  ctx,
+}: {
+  ctx: Context
+}) => {
   const {
     [ACCESS_TOKEN_COOKIE]: accessToken,
     [REFRESH_TOKEN_COOKIE]: refreshToken,
@@ -162,11 +183,10 @@ export const getAuthenticatedUserAndRefreshTokens = async (ctx: Context) => {
       config.secretToken,
     ) as AccessTokenPayload
 
-    return await ctx.db
-      .selectFrom('user')
-      .selectAll()
-      .where('id', '=', decodedAccessToken.userId)
-      .executeTakeFirst()
+    return await usersService.findOne({
+      ctx,
+      userId: decodedAccessToken.userId,
+    })
   }
 
   if (refreshToken) {
@@ -175,23 +195,26 @@ export const getAuthenticatedUserAndRefreshTokens = async (ctx: Context) => {
       config.secretToken,
     ) as RefreshTokenPayload
 
-    const currentSession = await ctx.db
-      .selectFrom('session')
-      .selectAll()
-      .where('token', '=', sessionToken)
-      .executeTakeFirst()
+    const currentSession = await sessionRepository.findOne({
+      ctx,
+      sessionToken,
+    })
 
-    if (currentSession?.isValid) {
-      const currentUser = await ctx.db
-        .selectFrom('user')
-        .selectAll()
-        .where('id', '=', currentSession.userId)
-        .executeTakeFirst()
+    // TODO: Make session.userId non-nullable
+    if (currentSession?.isValid && currentSession.userId) {
+      const currentUser = await usersService.findOne({
+        ctx,
+        userId: currentSession.userId,
+      })
       if (!currentUser) {
         return undefined
       }
 
-      refreshTokens(ctx)(currentSession.token)(currentUser.id)
+      refreshTokens({
+        ctx,
+        sessionToken: currentSession.token,
+        userId: currentUser.id,
+      })
 
       return currentUser
     }
@@ -203,7 +226,7 @@ export const getAuthenticatedUserAndRefreshTokens = async (ctx: Context) => {
 /**
  * Logging the user out is as easy as clearing their auth tokens from the cookies.
  */
-export const logOut = (ctx: Context) => {
+export const logOut = ({ ctx }: { ctx: Context }) => {
   void ctx.reply.clearCookie(ACCESS_TOKEN_COOKIE)
   void ctx.reply.clearCookie(REFRESH_TOKEN_COOKIE)
 

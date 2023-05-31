@@ -3,14 +3,10 @@ import keyBy from 'lodash/keyBy'
 import uniq from 'lodash/uniq'
 
 import {
-  fetchSeasonDetailsFromOMDb,
-  fetchSeriesDetailsFromOMDb,
   type OMDbSearchSeries,
   type OMDbSeries,
-  searchSeriesFromOMDb,
-  parseOMDbSeriesRuntime,
+  omdbService,
 } from '@/features/omdb'
-import { parseOMDbSeriesYears } from '@/features/omdb'
 import {
   type SeriesUpdateStatusInput,
   type SeriesSearchInput,
@@ -20,6 +16,10 @@ import { type AuthenticatedContext, type Context } from '@/types/context'
 import { groupEntitiesByKeyToNestedArray } from '@/utils/groupEntitiesByKeyToNestedArray'
 
 import { UserSeriesStatus } from './constants'
+import * as episodeRepository from './episode.repository'
+import * as seasonRepository from './season.repository'
+import * as seriesRepository from './series.repository'
+import * as userSeriesStatusRepository from './userSeriesStatus.repository'
 
 const parseSeriesFromOMDbResponse = (
   omdbSeries: OMDbSearchSeries | OMDbSeries,
@@ -29,52 +29,49 @@ const parseSeriesFromOMDbResponse = (
   poster: omdbSeries.Poster,
   plot: 'Plot' in omdbSeries ? omdbSeries.Plot : null,
   runtimeMinutes:
-    'Runtime' in omdbSeries ? parseOMDbSeriesRuntime(omdbSeries.Runtime) : null,
-  ...parseOMDbSeriesYears(omdbSeries.Year),
+    'Runtime' in omdbSeries
+      ? omdbService.parseOMDbSeriesRuntime({ runtime: omdbSeries.Runtime })
+      : null,
+  ...omdbService.parseOMDbSeriesYears({ years: omdbSeries.Year }),
 })
 
-export const searchSeries =
-  (ctx: Context) => async (input: SeriesSearchInput) => {
-    const seriesFromOMDb = await searchSeriesFromOMDb(input.keyword)
-    if (!seriesFromOMDb.length) {
-      return []
-    }
-
-    const existingSeries = await ctx.db
-      .selectFrom('series')
-      .selectAll()
-      .where(
-        'imdbId',
-        'in',
-        seriesFromOMDb.map((series) => series.imdbID),
-      )
-      .execute()
-    const existingSeriesImdbIds = existingSeries.map((series) => series.imdbId)
-
-    const newSeriesToAdd = seriesFromOMDb.filter(
-      (series) => !existingSeriesImdbIds.includes(series.imdbID),
-    )
-    if (!newSeriesToAdd.length) {
-      return existingSeries
-    }
-
-    const newSeries = await ctx.db
-      .insertInto('series')
-      .values(
-        newSeriesToAdd.map((series) => parseSeriesFromOMDbResponse(series)),
-      )
-      .returningAll()
-      .execute()
-
-    return [...existingSeries, ...newSeries]
+export const searchSeries = async ({
+  ctx,
+  input,
+}: {
+  ctx: Context
+  input: SeriesSearchInput
+}) => {
+  const seriesFromOMDb = await omdbService.searchSeriesFromOMDb({
+    keyword: input.keyword,
+  })
+  if (!seriesFromOMDb.length) {
+    return []
   }
 
+  const existingSeries = await seriesRepository.findMany({
+    ctx,
+    imdbIds: seriesFromOMDb.map((series) => series.imdbID),
+  })
+  const existingSeriesImdbIds = existingSeries.map((series) => series.imdbId)
+
+  const newSeriesToAdd = seriesFromOMDb.filter(
+    (series) => !existingSeriesImdbIds.includes(series.imdbID),
+  )
+  if (!newSeriesToAdd.length) {
+    return existingSeries
+  }
+
+  const newSeries = await seriesRepository.createMany({
+    ctx,
+    series: newSeriesToAdd.map(parseSeriesFromOMDbResponse),
+  })
+
+  return [...existingSeries, ...newSeries]
+}
+
 const getSeriesById = (ctx: Context) => async (id: number) => {
-  const series = await ctx.db
-    .selectFrom('series')
-    .selectAll()
-    .where('id', '=', id)
-    .executeTakeFirst()
+  const series = await seriesRepository.findOne({ ctx, seriesId: id })
   if (!series) {
     throw new NotFoundError()
   }
@@ -84,221 +81,233 @@ const getSeriesById = (ctx: Context) => async (id: number) => {
 
 const RE_SYNC_AFTER_DAYS = 7
 
-export const syncSeasonsAndEpisodesFromOMDb =
-  (ctx: Context) =>
-  async ({
-    seriesId,
-    imdbId,
-    totalNumberOfSeasons,
-  }: {
-    seriesId: number
-    imdbId: string
-    totalNumberOfSeasons: number
-  }) => {
-    const existingSeasonsAndEpisodes = await ctx.db
-      .selectFrom('season')
-      .where('seriesId', '=', seriesId)
-      .leftJoin('episode', 'season.id', 'episode.seasonId')
-      .select(['episode.imdbId as episodeImdbId', 'season.id as seasonId'])
-      .orderBy('season.number')
-      .orderBy('episode.number')
-      .execute()
+export const syncSeasonsAndEpisodesFromOMDb = async ({
+  ctx,
+  seriesId,
+  imdbId,
+  totalNumberOfSeasons,
+}: {
+  ctx: Context
+  seriesId: number
+  imdbId: string
+  totalNumberOfSeasons: number
+}) => {
+  const existingSeasonsAndEpisodes =
+    await episodeRepository.findEpisodesAndSeasonsForSeries({ ctx, seriesId })
 
-    const existingSeasonIds = uniq(
-      existingSeasonsAndEpisodes.map(({ seasonId }) => seasonId),
-    )
-    const existingEpisodeImdbIds = new Set(
-      existingSeasonsAndEpisodes.map(({ episodeImdbId }) => episodeImdbId),
-    )
+  const existingSeasonIds = uniq(
+    existingSeasonsAndEpisodes.map(({ seasonId }) => seasonId),
+  )
+  const existingEpisodeImdbIds = new Set(
+    existingSeasonsAndEpisodes.map(({ episodeImdbId }) => episodeImdbId),
+  )
 
-    const seasonIdsByNumber: Record<number, number> = {}
-    existingSeasonIds.forEach((seasonId, index) => {
-      if (seasonId) {
-        seasonIdsByNumber[index + 1] = seasonId
-      }
+  const seasonIdsByNumber: Record<number, number> = {}
+  existingSeasonIds.forEach((seasonId, index) => {
+    if (seasonId) {
+      seasonIdsByNumber[index + 1] = seasonId
+    }
+  })
+
+  const existingSeasonsCount = existingSeasonIds.length
+  const newSeasonsCount = totalNumberOfSeasons - existingSeasonsCount
+
+  if (newSeasonsCount > 0) {
+    const newSeasons = await seasonRepository.createMany({
+      ctx,
+      // eslint-disable-next-line prefer-spread
+      seasons: Array.apply(null, Array(newSeasonsCount))
+        .map((_, i) => i + 1 + existingSeasonsCount)
+        .map((number) => ({
+          number,
+          seriesId,
+        })),
     })
 
-    const existingSeasonsCount = existingSeasonIds.length
-    const newSeasonsCount = totalNumberOfSeasons - existingSeasonsCount
-
-    if (newSeasonsCount > 0) {
-      const newSeasons = await ctx.db
-        .insertInto('season')
-        .values(
-          // eslint-disable-next-line prefer-spread
-          Array.apply(null, Array(newSeasonsCount))
-            .map((_, i) => i + 1 + existingSeasonsCount)
-            .map((number) => ({
-              number,
-              seriesId,
-            })),
-        )
-        .returningAll()
-        .execute()
-
-      newSeasons.forEach((season) => {
-        seasonIdsByNumber[season.number] = season.id
-      })
-    }
-
-    await Promise.all(
-      // eslint-disable-next-line prefer-spread
-      Array.apply(null, Array(totalNumberOfSeasons))
-        .map((_, i) => i + 1)
-        .map(async (seasonNumber) => {
-          const season = await fetchSeasonDetailsFromOMDb(imdbId, seasonNumber)
-          const notSavedEpisodes = season.Episodes.filter(
-            (episode) => !existingEpisodeImdbIds.has(episode.imdbID),
-          )
-          if (!notSavedEpisodes.length) {
-            return
-          }
-
-          // TODO: Update existing episodes
-          return await ctx.db
-            .insertInto('episode')
-            .values(
-              notSavedEpisodes.map((episode) => ({
-                imdbId: episode.imdbID,
-                number: parseInt(episode.Episode),
-                title: episode.Title,
-                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                seasonId: seasonIdsByNumber[seasonNumber]!,
-                releasedAt:
-                  episode.Released !== 'N/A'
-                    ? parse(episode.Released, 'yyyy-MM-dd', new Date())
-                    : null,
-                imdbRating: parseFloat(episode.imdbRating) || null,
-              })),
-            )
-            .execute()
-        }),
-    )
+    newSeasons.forEach((season) => {
+      seasonIdsByNumber[season.number] = season.id
+    })
   }
+
+  await Promise.all(
+    // eslint-disable-next-line prefer-spread
+    Array.apply(null, Array(totalNumberOfSeasons))
+      .map((_, i) => i + 1)
+      .map(async (seasonNumber) => {
+        const season = await omdbService.fetchSeasonDetailsFromOMDb({
+          imdbId,
+          seasonNumber,
+        })
+        const notSavedEpisodes = season.Episodes.filter(
+          (episode) => !existingEpisodeImdbIds.has(episode.imdbID),
+        )
+        if (!notSavedEpisodes.length) {
+          return
+        }
+
+        // TODO: Update existing episodes
+        return await episodeRepository.createMany({
+          ctx,
+          episodes: notSavedEpisodes.map((episode) => ({
+            imdbId: episode.imdbID,
+            number: parseInt(episode.Episode),
+            title: episode.Title,
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            seasonId: seasonIdsByNumber[seasonNumber]!,
+            releasedAt:
+              episode.Released !== 'N/A'
+                ? parse(episode.Released, 'yyyy-MM-dd', new Date())
+                : null,
+            imdbRating: parseFloat(episode.imdbRating) || null,
+          })),
+        })
+      }),
+  )
+}
 
 /**
  * Update the details of the series with the given IMDB ID from the OMDb API.
  * This also syncs the seasons and episodes from OMDb, saving them into the
  * database if needed.
  */
-export const syncSeriesDetailsFromOMDb =
-  (ctx: Context) => async (imdbId: string) => {
-    const newSeries = await fetchSeriesDetailsFromOMDb(imdbId)
+export const syncSeriesDetailsFromOMDb = async ({
+  ctx,
+  imdbId,
+}: {
+  ctx: Context
+  imdbId: string
+}) => {
+  const newSeries = await omdbService.fetchSeriesDetailsFromOMDb({ imdbId })
 
-    const savedSeries = await ctx.db
-      .updateTable('series')
-      .where('imdbId', '=', imdbId)
-      .set({
-        ...parseSeriesFromOMDbResponse(newSeries),
-        syncedAt: new Date(Date.now()),
-        updatedAt: new Date(Date.now()),
-      })
-      .returningAll()
-      .executeTakeFirstOrThrow()
-
-    const totalNumberOfSeasons = parseInt(newSeries.totalSeasons)
-
-    if (totalNumberOfSeasons) {
-      await syncSeasonsAndEpisodesFromOMDb(ctx)({
-        imdbId: savedSeries.imdbId,
-        seriesId: savedSeries.id,
-        totalNumberOfSeasons,
-      })
-    }
-
-    return savedSeries
+  const savedSeries = await seriesRepository.updateOneByIMDbId({
+    ctx,
+    imdbId,
+    series: {
+      ...parseSeriesFromOMDbResponse(newSeries),
+      syncedAt: new Date(Date.now()),
+      updatedAt: new Date(Date.now()),
+    },
+  })
+  if (!savedSeries) {
+    throw new NotFoundError()
   }
 
-export const getSeriesByIdAndFetchDetailsFromOmdb =
-  (ctx: Context) => async (id: number) => {
-    const series = await getSeriesById(ctx)(id)
+  const totalNumberOfSeasons = parseInt(newSeries.totalSeasons)
 
-    if (
-      series.syncedAt &&
-      isFuture(addDays(series.syncedAt, RE_SYNC_AFTER_DAYS))
-    ) {
-      return series
-    }
-
-    return await syncSeriesDetailsFromOMDb(ctx)(series.imdbId)
-  }
-
-export const findSeasonsBySeriesIds =
-  (ctx: Context) => async (seriesIds: number[]) => {
-    const allSeasons = await ctx.db
-      .selectFrom('season')
-      .selectAll()
-      .where('seriesId', 'in', seriesIds)
-      .execute()
-
-    return groupEntitiesByKeyToNestedArray({
-      entities: allSeasons,
-      ids: seriesIds,
-      fieldToGroupBy: 'seriesId',
+  if (totalNumberOfSeasons) {
+    await syncSeasonsAndEpisodesFromOMDb({
+      ctx,
+      imdbId: savedSeries.imdbId,
+      seriesId: savedSeries.id,
+      totalNumberOfSeasons,
     })
   }
 
-export const findEpisodesBySeasonIds =
-  (ctx: Context) => async (seasonIds: number[]) => {
-    const allEpisodes = await ctx.db
-      .selectFrom('episode')
-      .selectAll()
-      .where('seasonId', 'in', seasonIds)
-      .execute()
+  return savedSeries
+}
 
-    return groupEntitiesByKeyToNestedArray({
-      entities: allEpisodes,
-      ids: seasonIds,
-      fieldToGroupBy: 'seasonId',
-    })
-  }
+export const getSeriesByIdAndFetchDetailsFromOmdb = async ({
+  ctx,
+  id,
+}: {
+  ctx: Context
+  id: number
+}) => {
+  const series = await getSeriesById(ctx)(id)
 
-export const updateSeriesStatusForUser =
-  (ctx: AuthenticatedContext) => async (input: SeriesUpdateStatusInput) => {
-    const series = await ctx.db
-      .selectFrom('series')
-      .where('id', '=', input.seriesId)
-      .selectAll()
-      .executeTakeFirst()
-    if (!series) {
-      throw new NotFoundError()
-    }
-
-    const status = input.status ? UserSeriesStatus[input.status] : null
-
-    await ctx.db
-      .insertInto('userSeriesStatus')
-      .values({
-        userId: ctx.currentUser.id,
-        seriesId: input.seriesId,
-        status,
-      })
-      .onConflict((oc) =>
-        oc.columns(['seriesId', 'userId']).doUpdateSet({ status }),
-      )
-      .execute()
-
+  if (
+    series.syncedAt &&
+    isFuture(addDays(series.syncedAt, RE_SYNC_AFTER_DAYS))
+  ) {
     return series
   }
 
-export const findStatusForSeries =
-  (ctx: Context) =>
-  async (seriesIds: number[]): Promise<(UserSeriesStatus | null)[]> => {
-    if (!ctx.currentUser) {
-      return seriesIds.map(() => null)
-    }
+  return await syncSeriesDetailsFromOMDb({ ctx, imdbId: series.imdbId })
+}
 
-    const allStatuses = await ctx.db
-      .selectFrom('userSeriesStatus')
-      .where('seriesId', 'in', seriesIds)
-      .where('userId', '=', ctx.currentUser.id)
-      .selectAll()
-      .execute()
+export const findSeasonsBySeriesIds = async ({
+  ctx,
+  seriesIds,
+}: {
+  ctx: Context
+  seriesIds: number[]
+}) => {
+  const allSeasons = await seasonRepository.findMany({ ctx, seriesIds })
 
-    const statusesBySeriesId = keyBy(allStatuses, 'seriesId')
+  return groupEntitiesByKeyToNestedArray({
+    entities: allSeasons,
+    ids: seriesIds,
+    fieldToGroupBy: 'seriesId',
+  })
+}
 
-    return seriesIds.map((seriesId) => {
-      const status = statusesBySeriesId[seriesId]?.status
-      return status ? UserSeriesStatus[status] : null
-    })
+export const findEpisodesBySeasonIds = async ({
+  ctx,
+  seasonIds,
+}: {
+  ctx: Context
+  seasonIds: number[]
+}) => {
+  const allEpisodes = await episodeRepository.findMany({
+    ctx,
+    seasonIds,
+  })
+
+  return groupEntitiesByKeyToNestedArray({
+    entities: allEpisodes,
+    ids: seasonIds,
+    fieldToGroupBy: 'seasonId',
+  })
+}
+
+export const updateSeriesStatusForUser = async ({
+  ctx,
+  input,
+}: {
+  ctx: AuthenticatedContext
+  input: SeriesUpdateStatusInput
+}) => {
+  const series = await seriesRepository.findOne({
+    ctx,
+    seriesId: input.seriesId,
+  })
+  if (!series) {
+    throw new NotFoundError()
   }
+
+  const status = input.status ? UserSeriesStatus[input.status] : null
+
+  await userSeriesStatusRepository.createOrUpdate({
+    ctx,
+    userId: ctx.currentUser.id,
+    seriesId: series.id,
+    status,
+  })
+
+  return series
+}
+
+export const findStatusForSeries = async ({
+  ctx,
+  seriesIds,
+}: {
+  ctx: Context
+  seriesIds: number[]
+}): Promise<(UserSeriesStatus | null)[]> => {
+  if (!ctx.currentUser) {
+    return seriesIds.map(() => null)
+  }
+
+  const allStatuses = await userSeriesStatusRepository.findMany({
+    ctx,
+    seriesIds,
+    userId: ctx.currentUser.id,
+  })
+
+  const statusesBySeriesId = keyBy(allStatuses, 'seriesId')
+
+  return seriesIds.map((seriesId) => {
+    const status = statusesBySeriesId[seriesId]?.status
+    return status ? UserSeriesStatus[status] : null
+  })
+}

@@ -4,7 +4,7 @@ import { UserRef } from '@/features/users'
 import { UnauthorizedError } from '@/lib/errors'
 import { builder } from '@/schemaBuilder'
 
-import { login, logOut, register } from './auth.service'
+import * as authService from './auth.service'
 
 const RegisterInput = builder.inputType('RegisterInput', {
   fields: (t) => ({
@@ -57,7 +57,7 @@ builder.mutationType({
         types: [ZodError],
       },
       resolve: (_parent, args, ctx) => {
-        return register(ctx)(args.input)
+        return authService.register({ ctx, input: args.input })
       },
     }),
 
@@ -70,14 +70,14 @@ builder.mutationType({
         types: [ZodError],
       },
       resolve: (_parent, args, ctx) => {
-        return login(ctx)(args.input)
+        return authService.login({ ctx, input: args.input })
       },
     }),
 
     logOut: t.field({
       type: 'Boolean',
       resolve: (_parent, _args, ctx) => {
-        return logOut(ctx)
+        return authService.logOut({ ctx })
       },
     }),
   }),

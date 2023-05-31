@@ -1,1 +1,1 @@
-export { getAuthenticatedUserAndRefreshTokens } from './auth.service'
+export * as authService from './auth.service'

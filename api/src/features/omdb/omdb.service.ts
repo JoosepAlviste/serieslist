@@ -40,9 +40,11 @@ const makeOMDbRequest = async <T>(
 /**
  * Make a request to search for series from the OMDb API.
  */
-export const searchSeriesFromOMDb = async (
-  keyword: string,
-): Promise<OMDbSearchSeries[]> => {
+export const searchSeriesFromOMDb = async ({
+  keyword,
+}: {
+  keyword: string
+}): Promise<OMDbSearchSeries[]> => {
   const seriesSearchResponse = await makeOMDbRequest(
     {
       type: 'series',
@@ -62,7 +64,11 @@ export const searchSeriesFromOMDb = async (
   return seriesSearchResponse.Search
 }
 
-export const fetchSeriesDetailsFromOMDb = async (imdbId: string) => {
+export const fetchSeriesDetailsFromOMDb = async ({
+  imdbId,
+}: {
+  imdbId: string
+}) => {
   const seriesDetails = await makeOMDbRequest(
     {
       i: imdbId,
@@ -77,10 +83,13 @@ export const fetchSeriesDetailsFromOMDb = async (imdbId: string) => {
   return seriesDetails
 }
 
-export const fetchSeasonDetailsFromOMDb = async (
-  imdbId: string,
-  seasonNumber: number,
-) => {
+export const fetchSeasonDetailsFromOMDb = async ({
+  imdbId,
+  seasonNumber,
+}: {
+  imdbId: string
+  seasonNumber: number
+}) => {
   const season = await makeOMDbRequest(
     {
       i: imdbId,
@@ -95,7 +104,7 @@ export const fetchSeasonDetailsFromOMDb = async (
   return season
 }
 
-export const parseOMDbSeriesYears = (years: string) => {
+export const parseOMDbSeriesYears = ({ years }: { years: string }) => {
   let startYear = years
   let endYear = years
   if (years.includes('–')) {
@@ -115,7 +124,11 @@ export const parseOMDbSeriesYears = (years: string) => {
   }
 }
 
-export const parseOMDbSeriesRuntime = (runtime: string): number | null => {
+export const parseOMDbSeriesRuntime = ({
+  runtime,
+}: {
+  runtime: string
+}): number | null => {
   const match = runtime.match(/(\d+)/g)
   if (!match) {
     return null

@@ -2,7 +2,7 @@ import { EpisodeRef } from '@/features/series'
 import { NotFoundError, UnauthorizedError } from '@/lib/errors'
 import { builder } from '@/schemaBuilder'
 
-import { toggleEpisodeSeen } from './seriesProgress.service'
+import * as seriesProgressService from './seriesProgress.service'
 
 const ToggleEpisodeSeenInputRef = builder.inputType('ToggleEpisodeSeenInput', {
   fields: (t) => ({
@@ -26,7 +26,10 @@ builder.mutationFields((t) => ({
       types: [NotFoundError, UnauthorizedError],
     },
     resolve(_parent, args, ctx) {
-      return toggleEpisodeSeen(ctx)(args.input.episodeId)
+      return seriesProgressService.toggleEpisodeSeen({
+        ctx,
+        episodeId: args.input.episodeId,
+      })
     },
   }),
 }))

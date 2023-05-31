@@ -9,7 +9,7 @@ describe('features/omdb/omdb.service', () => {
     ])(
       'parses %j as start: %j, end: %j',
       (years, expectedStart, expectedEnd) => {
-        expect(parseOMDbSeriesYears(years)).toEqual({
+        expect(parseOMDbSeriesYears({ years })).toEqual({
           startYear: expectedStart,
           endYear: expectedEnd,
         })
@@ -19,7 +19,7 @@ describe('features/omdb/omdb.service', () => {
 
   describe('parseOMDbSeriesRuntime', () => {
     it('parses the number of minutes from the runtime', () => {
-      expect(parseOMDbSeriesRuntime('25 mins')).toBe(25)
+      expect(parseOMDbSeriesRuntime({ runtime: '25 mins' })).toBe(25)
     })
   })
 })

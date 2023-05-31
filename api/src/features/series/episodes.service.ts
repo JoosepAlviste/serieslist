@@ -1,9 +1,13 @@
 import { type Context } from '@/types/context'
 
-export const findEpisodeById = (ctx: Context) => async (episodeId: number) => {
-  return await ctx.db
-    .selectFrom('episode')
-    .where('id', '=', episodeId)
-    .selectAll()
-    .executeTakeFirst()
+import * as episodeRepository from './episode.repository'
+
+export const findOne = ({
+  ctx,
+  episodeId,
+}: {
+  ctx: Context
+  episodeId: number
+}) => {
+  return episodeRepository.findOne({ ctx, episodeId })
 }
