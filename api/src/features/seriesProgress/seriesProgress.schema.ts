@@ -33,3 +33,16 @@ builder.mutationFields((t) => ({
     },
   }),
 }))
+
+builder.objectField(EpisodeRef, 'isSeen', (t) =>
+  t.loadable({
+    type: 'Boolean',
+    resolve: (episode) => episode.id,
+    load: (ids: number[], ctx) => {
+      return seriesProgressService.findIsSeenForEpisodes({
+        ctx,
+        episodeIds: ids,
+      })
+    },
+  }),
+)

@@ -19,6 +19,23 @@ export const findOne = ({
     .executeTakeFirst()
 }
 
+export const findMany = ({
+  ctx,
+  userId,
+  episodeIds,
+}: {
+  ctx: Context
+  userId: number
+  episodeIds: number[]
+}) => {
+  return ctx.db
+    .selectFrom('seenEpisode')
+    .where('userId', '=', userId)
+    .where('episodeId', 'in', episodeIds)
+    .selectAll()
+    .execute()
+}
+
 export const createOne = ({
   ctx,
   seenEpisode,

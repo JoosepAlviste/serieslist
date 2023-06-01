@@ -1,12 +1,12 @@
 import { type Selectable } from 'kysely'
 
-import { episodeFactory } from '@/features/series'
+import { episodeFactory, seasonFactory, seriesFactory } from '@/features/series'
 import { userFactory } from '@/features/users'
 import { type User } from '@/generated/db'
 import { graphql } from '@/generated/gql'
 import { type ToggleEpisodeSeenInput } from '@/generated/gql/graphql'
 import { db } from '@/lib/db'
-import { executeOperation } from '@/test/testUtils'
+import { checkErrors, executeOperation } from '@/test/testUtils'
 
 import { seenEpisodeFactory } from '../seenEpisode.factory'
 
@@ -73,6 +73,51 @@ describe('features/seriesProgress/seriesProgress.schema', () => {
         .where('userId', '=', user.id)
         .executeTakeFirst()
       expect(seenEpisode).toBeFalsy()
+    })
+  })
+
+  describe('Episode type', () => {
+    it('allows querying if the episode is seen', async () => {
+      const user = await userFactory.create()
+
+      const series = await seriesFactory.create()
+      const episode = await episodeFactory.create({
+        seasonId: (
+          await seasonFactory.create({
+            seriesId: series.id,
+          })
+        ).id,
+      })
+
+      await seenEpisodeFactory.create({
+        userId: user.id,
+        episodeId: episode.id,
+      })
+
+      const res = await executeOperation({
+        operation: graphql(`
+          query seriesProgressEpisodeIsSeen($id: ID!) {
+            series(id: $id) {
+              __typename
+              ... on Series {
+                seasons {
+                  episodes {
+                    id
+                    isSeen
+                  }
+                }
+              }
+            }
+          }
+        `),
+        variables: {
+          id: String(series.id),
+        },
+        user,
+      })
+      const resSeries = checkErrors(res.data?.series)
+
+      expect(resSeries.seasons[0]?.episodes[0]?.isSeen).toBeTruthy()
     })
   })
 })
