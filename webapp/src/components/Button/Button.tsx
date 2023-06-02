@@ -12,6 +12,7 @@ import * as s from './Button.css'
 
 type ButtonBaseProps = {
   variant: keyof typeof s.button
+  size?: keyof typeof s.buttonSize
 }
 
 type ButtonButtonProps = ComponentPropsWithoutRef<'button'> & ButtonBaseProps
@@ -20,7 +21,7 @@ type ButtonLinkProps = LinkProps & ButtonBaseProps
 type ButtonProps = ButtonButtonProps | ButtonLinkProps
 
 const isLinkProps = (
-  props: Omit<ButtonProps, 'variant'>,
+  props: Omit<ButtonProps, 'variant' | 'size'>,
 ): props is ButtonLinkProps => {
   return 'href' in props
 }
@@ -28,7 +29,7 @@ const isLinkProps = (
 const ButtonBase = forwardRef<
   HTMLButtonElement | HTMLAnchorElement,
   ButtonProps
->(function Button({ variant, className, ...rest }, ref) {
+>(function Button({ variant, className, size = 'm', ...rest }, ref) {
   if (isLinkProps(rest)) {
     return (
       <Link
@@ -42,7 +43,7 @@ const ButtonBase = forwardRef<
   return (
     <button
       ref={ref as ForwardedRef<HTMLButtonElement>}
-      className={classNames(s.button[variant], className)}
+      className={classNames(s.button[variant], s.buttonSize[size], className)}
       type="button"
       {...(rest as ComponentPropsWithoutRef<'button'>)}
     />

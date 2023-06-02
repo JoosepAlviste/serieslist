@@ -29,6 +29,11 @@ const colors = {
   green600: '#16a34a',
   green950: '#052e16',
 
+  red100: '#fee2e2',
+  red400: '#f87171',
+  red600: '#dc2626',
+  red950: '#450a0a',
+
   yellow500: '#eab308',
 }
 
@@ -41,6 +46,7 @@ export const [lightThemeClass, vars] = createTheme({
     textSecondary: colors.slate700,
     textTertiary: colors.slate500,
     textSuccess: colors.green600,
+    textError: colors.red600,
     textHighlightedBackground: colors.indigo100,
     textHighlightedBackgroundDarker: colors.indigo200,
 
@@ -54,6 +60,10 @@ export const [lightThemeClass, vars] = createTheme({
     inputAccessoryBackground: colors.slate200,
     inputAccessoryColor: colors.slate500,
     inputIconColor: colors.slate400,
+
+    buttonPrimaryHoverBackground: colors.indigo600,
+    buttonSecondaryBackground: colors.slate200,
+    buttonSecondaryHoverBackground: colors.slate300,
 
     icon: colors.slate500,
 
@@ -70,7 +80,8 @@ export const [lightThemeClass, vars] = createTheme({
 
     searchHighlightBackground: colors.indigo50,
 
-    notificationSuccessAccessory: colors.green100,
+    toastSuccessAccessory: colors.green100,
+    toastErrorAccessory: colors.red100,
   },
 
   fontWeight: {
@@ -101,6 +112,7 @@ export const darkThemeClass = createTheme(vars, {
     textSecondary: colors.slate200,
     textTertiary: colors.slate400,
     textSuccess: colors.green400,
+    textError: colors.red400,
     textHighlightedBackground: colors.indigo900,
     textHighlightedBackgroundDarker: colors.indigo800,
 
@@ -114,6 +126,10 @@ export const darkThemeClass = createTheme(vars, {
     inputAccessoryBackground: colors.slate800,
     inputAccessoryColor: colors.slate400,
     inputIconColor: colors.slate500,
+
+    buttonPrimaryHoverBackground: colors.indigo500,
+    buttonSecondaryBackground: colors.slate800,
+    buttonSecondaryHoverBackground: colors.slate700,
 
     icon: colors.slate400,
 
@@ -130,7 +146,8 @@ export const darkThemeClass = createTheme(vars, {
 
     searchHighlightBackground: colors.indigo950,
 
-    notificationSuccessAccessory: colors.green950,
+    toastSuccessAccessory: colors.green950,
+    toastErrorAccessory: colors.red950,
   },
 
   fontWeight: {

@@ -25,9 +25,9 @@ export const ToastProvider = ({ children }: ToastProviderProps) => {
 
     const existingToast = toasts.find((t) => t.id === toast.id)
     if (existingToast) {
-      setIsToastOpen(toast.id, false)
+      updateToast(toast.id, { isOpen: false })
       setTimeout(() => {
-        setIsToastOpen(toast.id, true)
+        updateToast(toast.id, { ...toast, isOpen: true })
       }, 100)
     } else {
       setToasts([
@@ -40,15 +40,27 @@ export const ToastProvider = ({ children }: ToastProviderProps) => {
     }
   }
 
+  const showErrorToast = (toast?: Partial<Toast>) => {
+    showToast({
+      variant: 'error',
+      id: 'something_went_wrong',
+      title: 'Something went wrong',
+      ...toast,
+    })
+  }
+
   const clearTimerRef = useRef(0)
 
-  const setIsToastOpen = (toastId: string, isOpen: boolean) => {
+  const updateToast = (
+    toastId: string,
+    updatedToast: Partial<ToastInternal>,
+  ) => {
     setToasts(
       toasts.map((toast) => {
         if (toast.id === toastId) {
           return {
             ...toast,
-            isOpen,
+            ...updatedToast,
           }
         } else {
           return toast
@@ -56,7 +68,7 @@ export const ToastProvider = ({ children }: ToastProviderProps) => {
       }),
     )
 
-    if (!isOpen) {
+    if (!updatedToast.isOpen) {
       window.clearTimeout(clearTimerRef.current)
       clearTimerRef.current = window.setTimeout(() => {
         setToasts((toasts) => {
@@ -74,6 +86,7 @@ export const ToastProvider = ({ children }: ToastProviderProps) => {
         value={{
           toasts,
           showToast,
+          showErrorToast,
         }}
       >
         {children}
@@ -82,8 +95,9 @@ export const ToastProvider = ({ children }: ToastProviderProps) => {
           <ToastComponent
             key={toast.id}
             isOpen={toast.isOpen}
+            variant={toast.variant}
             title={toast.title}
-            onOpenChange={(isOpen) => setIsToastOpen(toast.id, isOpen)}
+            onOpenChange={(isOpen) => updateToast(toast.id, { isOpen })}
           />
         ))}
       </ToastContext.Provider>

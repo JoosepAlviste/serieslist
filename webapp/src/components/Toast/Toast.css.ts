@@ -1,4 +1,4 @@
-import { keyframes, style } from '@vanilla-extract/css'
+import { keyframes, style, styleVariants } from '@vanilla-extract/css'
 
 import { iconColorVar } from '@/styles/cssVariables'
 import { vars } from '@/styles/theme.css'
@@ -39,7 +39,6 @@ export const root = style({
   alignItems: 'center',
   gap: '1rem',
   background: vars.color.popoverBackground,
-  color: vars.color.textSuccess,
   fontWeight: vars.fontWeight.medium,
   boxShadow: vars.shadow['2xl'],
   borderRadius: vars.radii.m,
@@ -53,7 +52,6 @@ export const root = style({
   '::before': {
     display: 'block',
     content: '',
-    backgroundColor: vars.color.notificationSuccessAccessory,
     width: '0.5rem',
     height: '100%',
     left: 0,
@@ -84,13 +82,43 @@ export const root = style({
   },
 })
 
+export const toastVariant = styleVariants({
+  success: {
+    color: vars.color.textSuccess,
+
+    '::before': {
+      backgroundColor: vars.color.toastSuccessAccessory,
+    },
+  },
+
+  error: {
+    color: vars.color.textError,
+
+    '::before': {
+      backgroundColor: vars.color.toastErrorAccessory,
+    },
+  },
+})
+
 export const iconContainer = style({
   borderRadius: '50%',
   padding: '0.5rem',
-  background: vars.color.notificationSuccessAccessory,
 
-  vars: {
-    [iconColorVar]: vars.color.textSuccess,
+  selectors: {
+    [`${toastVariant.success} &`]: {
+      vars: {
+        [iconColorVar]: vars.color.textSuccess,
+      },
+
+      background: vars.color.toastSuccessAccessory,
+    },
+    [`${toastVariant.error} &`]: {
+      vars: {
+        [iconColorVar]: vars.color.textError,
+      },
+
+      background: vars.color.toastErrorAccessory,
+    },
   },
 })
 

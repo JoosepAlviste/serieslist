@@ -5,7 +5,7 @@ import React from 'react'
 import { useAuthenticatedUser } from '@/features/auth'
 import { graphql } from '@/generated/gql'
 
-import { formatEpisodeNumber } from '../../utils/formatEpisodeNumber'
+import { EpisodeLine } from '../EpisodeLine'
 import { SeriesPoster } from '../SeriesPoster'
 import { SeriesStatusSelect } from '../SeriesStatusSelect'
 
@@ -41,12 +41,9 @@ export const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
               number
               episodes {
                 id
-                imdbId
-                number
-                title
-                releasedAt
-                imdbRating
+                ...EpisodeLine_EpisodeFragment
               }
+              ...EpisodeLine_SeasonFragment
             }
           }
         }
@@ -115,12 +112,11 @@ export const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
 
                   <ol className={s.episodesContainer}>
                     {season.episodes.map((episode) => (
-                      <li key={episode.id} className={s.episode}>
-                        <div className={s.episodeNumber}>
-                          {formatEpisodeNumber(season.number, episode.number)}
-                        </div>
-                        {episode.title}
-                      </li>
+                      <EpisodeLine
+                        key={episode.id}
+                        episode={episode}
+                        season={season}
+                      />
                     ))}
                   </ol>
                 </Tabs.Content>

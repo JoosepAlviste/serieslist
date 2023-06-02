@@ -110,19 +110,3 @@ export const episodesTitle = style({
   fontWeight: vars.fontWeight.medium,
   marginBottom: '0.5rem',
 })
-
-export const episode = style({
-  display: 'flex',
-  gap: '0.5rem',
-  background: vars.color.inputBackground,
-  color: vars.color.textSecondary,
-  borderRadius: vars.radii.s,
-  paddingTop: '0.5rem',
-  paddingRight: '1rem',
-  paddingBottom: '0.5rem',
-  paddingLeft: '1rem',
-})
-
-export const episodeNumber = style({
-  fontWeight: vars.fontWeight.bold,
-})

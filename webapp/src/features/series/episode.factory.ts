@@ -10,5 +10,6 @@ export const episodeFactory = Factory.define<Episode>(({ sequence }) => ({
   title: 'Test Episode',
   imdbId: 'tt123',
   imdbRating: 4.4,
+  isSeen: false,
   releasedAt: format(new Date(Date.now()), 'yyyy-MM-dd'),
 }))

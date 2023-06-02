@@ -7,8 +7,19 @@ const baseButton = style({
   display: 'flex',
   alignItems: 'center',
   gap: '0.5rem',
-  padding: '0.5rem',
-  borderRadius: vars.radii.m,
+})
+
+export const buttonSize = styleVariants({
+  s: {
+    fontSize: '0.875rem',
+    padding: '0.375rem 1rem',
+    borderRadius: vars.radii.s,
+  },
+  m: {
+    fontSize: '1rem',
+    padding: '0.5rem 1rem',
+    borderRadius: vars.radii.m,
+  },
 })
 
 export const button = styleVariants({
@@ -24,6 +35,36 @@ export const button = styleVariants({
 
       ':focus-visible': {
         backgroundColor: vars.color.inputBackground,
+      },
+    },
+  ],
+  primary: [
+    baseButton,
+    {
+      color: vars.color.white,
+      backgroundColor: vars.color.primary,
+
+      ':hover': {
+        backgroundColor: vars.color.buttonPrimaryHoverBackground,
+      },
+
+      ':focus-visible': {
+        backgroundColor: vars.color.buttonPrimaryHoverBackground,
+      },
+    },
+  ],
+  secondary: [
+    baseButton,
+    {
+      color: vars.color.text,
+      backgroundColor: vars.color.buttonSecondaryBackground,
+
+      ':hover': {
+        backgroundColor: vars.color.buttonSecondaryHoverBackground,
+      },
+
+      ':focus-visible': {
+        backgroundColor: vars.color.buttonSecondaryHoverBackground,
       },
     },
   ],
