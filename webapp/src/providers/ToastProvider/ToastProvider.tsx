@@ -69,7 +69,7 @@ export const ToastProvider = ({ children }: ToastProviderProps) => {
   }
 
   return (
-    <BaseToastProvider>
+    <BaseToastProvider swipeDirection="left">
       <ToastContext.Provider
         value={{
           toasts,

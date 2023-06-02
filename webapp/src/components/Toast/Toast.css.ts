@@ -5,7 +5,7 @@ import { vars } from '@/styles/theme.css'
 
 const slideIn = keyframes({
   from: {
-    transform: 'translateX(100%)',
+    transform: 'translateX(-100%)',
   },
 
   to: {
@@ -29,7 +29,7 @@ const swipeOut = keyframes({
   },
 
   to: {
-    transform: 'translateX(100%)',
+    transform: 'translateX(-100%)',
   },
 })
 

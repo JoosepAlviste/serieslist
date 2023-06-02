@@ -6,7 +6,7 @@ export const viewport = style({
   gap: '1rem',
   position: 'fixed',
   bottom: 0,
-  right: 0,
+  left: 0,
   padding: '2rem',
   margin: 0,
   width: '30rem',
