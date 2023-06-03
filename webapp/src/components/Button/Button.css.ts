@@ -9,6 +9,10 @@ const baseButton = style({
   gap: '0.5rem',
 })
 
+export const disabled = style({
+  cursor: 'not-allowed',
+})
+
 export const buttonSize = styleVariants({
   s: {
     fontSize: '0.875rem',
@@ -29,12 +33,14 @@ export const button = styleVariants({
       color: vars.color.text,
       backgroundColor: 'transparent',
 
-      ':hover': {
-        backgroundColor: vars.color.inputBackground,
-      },
+      selectors: {
+        [`&:not(${disabled}):hover`]: {
+          backgroundColor: vars.color.inputBackground,
+        },
 
-      ':focus-visible': {
-        backgroundColor: vars.color.inputBackground,
+        [`&:not(${disabled}):focus-visible`]: {
+          backgroundColor: vars.color.inputBackground,
+        },
       },
     },
   ],
@@ -44,12 +50,18 @@ export const button = styleVariants({
       color: vars.color.white,
       backgroundColor: vars.color.primary,
 
-      ':hover': {
-        backgroundColor: vars.color.buttonPrimaryHoverBackground,
-      },
+      selectors: {
+        [`&${disabled}`]: {
+          backgroundColor: vars.color.buttonPrimaryDisabledBackground,
+        },
 
-      ':focus-visible': {
-        backgroundColor: vars.color.buttonPrimaryHoverBackground,
+        [`&:not(${disabled}):hover`]: {
+          backgroundColor: vars.color.buttonPrimaryHoverBackground,
+        },
+
+        [`&:not(${disabled}):focus-visible`]: {
+          backgroundColor: vars.color.buttonPrimaryHoverBackground,
+        },
       },
     },
   ],
@@ -59,12 +71,14 @@ export const button = styleVariants({
       color: vars.color.text,
       backgroundColor: vars.color.buttonSecondaryBackground,
 
-      ':hover': {
-        backgroundColor: vars.color.buttonSecondaryHoverBackground,
-      },
+      selectors: {
+        [`&:not(${disabled}):hover`]: {
+          backgroundColor: vars.color.buttonSecondaryHoverBackground,
+        },
 
-      ':focus-visible': {
-        backgroundColor: vars.color.buttonSecondaryHoverBackground,
+        [`&:not(${disabled}):focus-visible`]: {
+          backgroundColor: vars.color.buttonSecondaryHoverBackground,
+        },
       },
     },
   ],

@@ -2,7 +2,10 @@ import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import { SeriesDetailsPageDocument } from '@/generated/gql/graphql'
+import {
+  MarkSeasonEpisodesAsSeenDocument,
+  SeriesDetailsPageDocument,
+} from '@/generated/gql/graphql'
 import { createMockResolver, render } from '@/lib/testUtils'
 
 import { episodeFactory } from '../../episode.factory'
@@ -121,5 +124,63 @@ describe('features/series/components/SeriesDetailsPage', () => {
     screen.getByText('Season two episode')
     // And the first ones aren't
     expect(screen.queryByText('Season one episode')).not.toBeInTheDocument()
+  })
+
+  it('allows marking a season as seen', async () => {
+    const season = seasonFactory.build({
+      episodes: [
+        episodeFactory.build({
+          isSeen: false,
+        }),
+        episodeFactory.build({
+          isSeen: false,
+        }),
+      ],
+    })
+    const series = seriesFactory.build({
+      seasons: [season],
+    })
+
+    const [doc, mockResolver] = createMockResolver(
+      MarkSeasonEpisodesAsSeenDocument,
+      {
+        data: {
+          markSeasonEpisodesAsSeen: {
+            ...season,
+            episodes: season.episodes.map((episode) => ({
+              ...episode,
+              isSeen: true,
+            })),
+          },
+        },
+      },
+    )
+
+    await render(<SeriesDetailsPage seriesId={series.id} />, {
+      requestMocks: [
+        createMockResolver(SeriesDetailsPageDocument, {
+          data: {
+            series,
+          },
+        }),
+        [doc, mockResolver],
+      ],
+    })
+
+    await userEvent.click(
+      screen.getByRole('button', {
+        name: 'Mark season as seen',
+      }),
+    )
+
+    // The mutation was made
+    expect(mockResolver).toHaveBeenCalledWith({
+      input: {
+        seasonId: parseInt(season.id),
+      },
+    })
+
+    // And the episode buttons now show that they have been seen
+    expect(screen.getAllByRole('button', { name: 'Seen' })).toHaveLength(3)
   })
 })

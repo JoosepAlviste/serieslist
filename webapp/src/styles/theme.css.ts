@@ -17,6 +17,7 @@ const colors = {
   indigo50: '#eef2ff',
   indigo100: '#e0e7ff',
   indigo200: '#c7d2fe',
+  indigo300: '#a5b4fc',
   indigo400: '#818cf8',
   indigo500: '#6366f1',
   indigo600: '#4f46e5',
@@ -62,6 +63,7 @@ export const [lightThemeClass, vars] = createTheme({
     inputIconColor: colors.slate400,
 
     buttonPrimaryHoverBackground: colors.indigo600,
+    buttonPrimaryDisabledBackground: colors.indigo400,
     buttonSecondaryBackground: colors.slate200,
     buttonSecondaryHoverBackground: colors.slate300,
 
@@ -128,6 +130,7 @@ export const darkThemeClass = createTheme(vars, {
     inputIconColor: colors.slate500,
 
     buttonPrimaryHoverBackground: colors.indigo500,
+    buttonPrimaryDisabledBackground: colors.indigo300,
     buttonSecondaryBackground: colors.slate800,
     buttonSecondaryHoverBackground: colors.slate700,
 

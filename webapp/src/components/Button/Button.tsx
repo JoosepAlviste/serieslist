@@ -13,6 +13,7 @@ import * as s from './Button.css'
 type ButtonBaseProps = {
   variant: keyof typeof s.button
   size?: keyof typeof s.buttonSize
+  isDisabled?: boolean
 }
 
 type ButtonButtonProps = ComponentPropsWithoutRef<'button'> & ButtonBaseProps
@@ -29,12 +30,22 @@ const isLinkProps = (
 const ButtonBase = forwardRef<
   HTMLButtonElement | HTMLAnchorElement,
   ButtonProps
->(function Button({ variant, className, size = 'm', ...rest }, ref) {
+>(function Button(
+  { variant, className, size = 'm', isDisabled = false, ...rest },
+  ref,
+) {
   if (isLinkProps(rest)) {
     return (
       <Link
         ref={ref as ForwardedRef<HTMLAnchorElement>}
-        className={classNames(s.button[variant], className)}
+        className={classNames(
+          s.button[variant],
+          s.buttonSize[size],
+          className,
+          {
+            [s.disabled]: isDisabled,
+          },
+        )}
         {...rest}
       />
     )
@@ -43,8 +54,11 @@ const ButtonBase = forwardRef<
   return (
     <button
       ref={ref as ForwardedRef<HTMLButtonElement>}
-      className={classNames(s.button[variant], s.buttonSize[size], className)}
+      className={classNames(s.button[variant], s.buttonSize[size], className, {
+        [s.disabled]: isDisabled,
+      })}
       type="button"
+      disabled={isDisabled}
       {...(rest as ComponentPropsWithoutRef<'button'>)}
     />
   )

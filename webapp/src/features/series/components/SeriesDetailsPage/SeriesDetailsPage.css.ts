@@ -61,7 +61,7 @@ export const seasonsTitle = style({
 
 export const seasonTabsContainer = style({
   display: 'flex',
-  marginBottom: '1rem',
+  marginBottom: '2rem',
 })
 
 export const seasonTabs = style({
@@ -105,7 +105,14 @@ export const episodesContainer = style({
   gap: '0.75rem',
 })
 
+export const episodesTitleRow = style({
+  display: 'flex',
+  marginBottom: '0.5rem',
+  paddingRight: '1rem',
+})
+
 export const episodesTitle = style({
+  flex: 1,
   fontSize: '1rem',
   fontWeight: vars.fontWeight.medium,
   marginBottom: '0.5rem',

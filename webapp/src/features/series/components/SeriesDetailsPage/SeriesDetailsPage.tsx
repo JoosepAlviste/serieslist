@@ -1,9 +1,11 @@
-import { useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import * as Tabs from '@radix-ui/react-tabs'
 import React from 'react'
 
+import { Button } from '@/components'
 import { useAuthenticatedUser } from '@/features/auth'
 import { graphql } from '@/generated/gql'
+import { useToast } from '@/hooks'
 
 import { EpisodeLine } from '../EpisodeLine'
 import { SeriesPoster } from '../SeriesPoster'
@@ -17,6 +19,7 @@ type SeriesDetailsPageProps = {
 }
 
 export const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
+  const { showToast, showErrorToast } = useToast()
   const { currentUser } = useAuthenticatedUser()
 
   const { data, loading } = useQuery(
@@ -41,6 +44,7 @@ export const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
               number
               episodes {
                 id
+                isSeen
                 ...EpisodeLine_EpisodeFragment
               }
               ...EpisodeLine_SeasonFragment
@@ -57,6 +61,47 @@ export const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
   )
 
   const series = data?.series.__typename === 'Series' ? data.series : null
+
+  const [markSeasonEpisodesAsSeenMutate] = useMutation(
+    graphql(`
+      mutation markSeasonEpisodesAsSeen(
+        $input: MarkSeasonEpisodesAsSeenInput!
+      ) {
+        markSeasonEpisodesAsSeen(input: $input) {
+          __typename
+          ... on Error {
+            message
+          }
+          ... on Season {
+            id
+            episodes {
+              id
+              isSeen
+            }
+          }
+        }
+      }
+    `),
+  )
+
+  const handleMarkSeasonAsSeenClicked = async (seasonId: string) => {
+    const res = await markSeasonEpisodesAsSeenMutate({
+      variables: {
+        input: {
+          seasonId: parseInt(seasonId),
+        },
+      },
+    })
+
+    if (res.data?.markSeasonEpisodesAsSeen.__typename === 'Season') {
+      showToast({
+        id: 'mark_season_as_seen',
+        title: 'Season marked as seen',
+      })
+    } else {
+      showErrorToast()
+    }
+  }
 
   return (
     <div>
@@ -106,21 +151,40 @@ export const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
                 </Tabs.List>
               </div>
 
-              {series.seasons.map((season) => (
-                <Tabs.Content key={season.id} value={season.id}>
-                  <h3 className={s.episodesTitle}>Season {season.number}</h3>
+              {series.seasons.map((season) => {
+                const areAllEpisodesSeen = season.episodes.every(
+                  (episode) => episode.isSeen,
+                )
 
-                  <ol className={s.episodesContainer}>
-                    {season.episodes.map((episode) => (
-                      <EpisodeLine
-                        key={episode.id}
-                        episode={episode}
-                        season={season}
-                      />
-                    ))}
-                  </ol>
-                </Tabs.Content>
-              ))}
+                return (
+                  <Tabs.Content key={season.id} value={season.id}>
+                    <div className={s.episodesTitleRow}>
+                      <h3 className={s.episodesTitle}>
+                        Season {season.number}
+                      </h3>
+
+                      <Button
+                        onClick={() => handleMarkSeasonAsSeenClicked(season.id)}
+                        variant={areAllEpisodesSeen ? 'primary' : 'secondary'}
+                        size="s"
+                        isDisabled={areAllEpisodesSeen}
+                      >
+                        {areAllEpisodesSeen ? 'Seen' : 'Mark season as seen'}
+                      </Button>
+                    </div>
+
+                    <ol className={s.episodesContainer}>
+                      {season.episodes.map((episode) => (
+                        <EpisodeLine
+                          key={episode.id}
+                          episode={episode}
+                          season={season}
+                        />
+                      ))}
+                    </ol>
+                  </Tabs.Content>
+                )
+              })}
             </Tabs.Root>
           </div>
         </div>
