@@ -16,6 +16,7 @@ import { UserSeriesStatus } from '../constants'
 import { episodeFactory } from '../episode.factory'
 import { seasonFactory } from '../season.factory'
 import { seriesFactory } from '../series.factory'
+import { userSeriesStatusFactory } from '../userSeriesStatus.factory'
 
 import { mockOMDbDetailsRequest, mockOMDbSeasonRequest } from './scopes'
 
@@ -318,6 +319,79 @@ describe('features/series/series.schema', () => {
           imdbRating: '7.3',
         }),
       )
+    })
+  })
+
+  describe('userSeriesList query', () => {
+    const executeUserSeriesListQuery = ({
+      user,
+    }: {
+      user: Selectable<User>
+    }) => {
+      return executeOperation({
+        operation: graphql(`
+          query seriesSchemaUserSeriesList {
+            userSeriesList {
+              __typename
+              ... on Error {
+                message
+              }
+              ... on QueryUserSeriesListSuccess {
+                data {
+                  id
+                }
+              }
+            }
+          }
+        `),
+        user,
+      })
+    }
+
+    it('returns series that the user has set a status for', async () => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const [series1, series2, _series3] = await seriesFactory.createList(3)
+      const user = await userFactory.create()
+
+      await userSeriesStatusFactory.create({
+        userId: user.id,
+        seriesId: series1!.id,
+      })
+      await userSeriesStatusFactory.create({
+        userId: user.id,
+        seriesId: series2!.id,
+      })
+      // The third series does not have a status set
+
+      const res = await executeUserSeriesListQuery({
+        user,
+      })
+      const resData = checkErrors(res.data?.userSeriesList)
+
+      // There is an extra object that contains the list of series because the
+      // errors plugin's `directResult` only removes the result object type
+      // from non-list fields.
+      expect(resData.data).toHaveLength(2)
+      expect(resData.data[0]!.id).toBe(String(series1!.id))
+      expect(resData.data[1]!.id).toBe(String(series2!.id))
+    })
+
+    it('does not return series for other users', async () => {
+      const series = await seriesFactory.create()
+      const user = await userFactory.create()
+      const anotherUser = await userFactory.create()
+
+      await userSeriesStatusFactory.create({
+        userId: anotherUser.id,
+        seriesId: series.id,
+      })
+
+      const res = await executeUserSeriesListQuery({
+        user,
+      })
+      const resData = checkErrors(res.data?.userSeriesList)
+
+      expect(resData.data).toHaveLength(0)
     })
   })
 

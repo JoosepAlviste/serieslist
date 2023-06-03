@@ -6,6 +6,7 @@ import { builder } from '@/schemaBuilder'
 import { exposeDate } from '@/utils/exposeDate'
 
 import { UserSeriesStatus } from './constants'
+import * as episodesService from './episodes.service'
 import * as seasonService from './season.service'
 import * as seriesService from './series.service'
 
@@ -47,7 +48,7 @@ export const SeasonRef = builder.objectRef<SeasonType>('Season').implement({
       type: EpisodeRef,
       resolve: (parent) => parent.id,
       load: (ids, ctx) =>
-        seriesService.findEpisodesBySeasonIds({ ctx, seasonIds: ids }),
+        episodesService.findEpisodesBySeasonIds({ ctx, seasonIds: ids }),
     }),
   }),
 })
@@ -121,6 +122,20 @@ builder.queryFields((t) => ({
         ctx,
         id: parseInt(String(args.id)),
       })
+    },
+  }),
+
+  userSeriesList: t.authField({
+    type: [SeriesRef],
+    nullable: false,
+    authScopes: {
+      authenticated: true,
+    },
+    errors: {
+      types: [UnauthorizedError],
+    },
+    resolve(_parent, _args, ctx) {
+      return seriesService.findUserSeries({ ctx })
     },
   }),
 }))

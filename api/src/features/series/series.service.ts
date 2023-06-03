@@ -13,7 +13,6 @@ import {
 } from '@/generated/gql/graphql'
 import { NotFoundError } from '@/lib/errors'
 import { type AuthenticatedContext, type Context } from '@/types/context'
-import { groupEntitiesByKeyToNestedArray } from '@/utils/groupEntitiesByKeyToNestedArray'
 
 import { UserSeriesStatus } from './constants'
 import * as episodeRepository from './episode.repository'
@@ -225,25 +224,6 @@ export const getSeriesByIdAndFetchDetailsFromOmdb = async ({
   return await syncSeriesDetailsFromOMDb({ ctx, imdbId: series.imdbId })
 }
 
-export const findEpisodesBySeasonIds = async ({
-  ctx,
-  seasonIds,
-}: {
-  ctx: Context
-  seasonIds: number[]
-}) => {
-  const allEpisodes = await episodeRepository.findMany({
-    ctx,
-    seasonIds,
-  })
-
-  return groupEntitiesByKeyToNestedArray({
-    entities: allEpisodes,
-    ids: seasonIds,
-    fieldToGroupBy: 'seasonId',
-  })
-}
-
 export const updateSeriesStatusForUser = async ({
   ctx,
   input,
@@ -302,5 +282,12 @@ export const findStatusForSeries = async ({
   return seriesIds.map((seriesId) => {
     const status = statusesBySeriesId[seriesId]?.status
     return status ? UserSeriesStatus[status] : null
+  })
+}
+
+export const findUserSeries = ({ ctx }: { ctx: AuthenticatedContext }) => {
+  return seriesRepository.findManyForUser({
+    ctx,
+    userId: ctx.currentUser.id,
   })
 }

@@ -40,6 +40,21 @@ export const findMany = ({
     .execute()
 }
 
+export const findManyForUser = ({
+  ctx,
+  userId,
+}: {
+  ctx: Context
+  userId: number
+}) => {
+  return ctx.db
+    .selectFrom('series')
+    .innerJoin('userSeriesStatus', 'series.id', 'userSeriesStatus.seriesId')
+    .where('userSeriesStatus.userId', '=', userId)
+    .selectAll('series')
+    .execute()
+}
+
 export const createMany = ({
   ctx,
   series,
