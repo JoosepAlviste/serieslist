@@ -40,3 +40,19 @@ export const createOrUpdate = ({
     )
     .execute()
 }
+
+export const deleteOne = ({
+  ctx,
+  seriesId,
+  userId,
+}: {
+  ctx: Context
+  seriesId: number
+  userId: number
+}) => {
+  return ctx.db
+    .deleteFrom('userSeriesStatus')
+    .where('userId', '=', userId)
+    .where('seriesId', '=', seriesId)
+    .execute()
+}

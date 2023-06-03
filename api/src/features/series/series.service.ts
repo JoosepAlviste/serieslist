@@ -259,7 +259,16 @@ export const updateSeriesStatusForUser = async ({
     throw new NotFoundError()
   }
 
-  const status = input.status ? UserSeriesStatus[input.status] : null
+  if (!input.status) {
+    await userSeriesStatusRepository.deleteOne({
+      ctx,
+      seriesId: series.id,
+      userId: ctx.currentUser.id,
+    })
+    return series
+  }
+
+  const status = UserSeriesStatus[input.status]
 
   await userSeriesStatusRepository.createOrUpdate({
     ctx,

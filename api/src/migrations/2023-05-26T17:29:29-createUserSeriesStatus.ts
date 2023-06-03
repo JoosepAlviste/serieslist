@@ -22,7 +22,7 @@ export async function up(db: Kysely<NotWorthIt>): Promise<void> {
     .addColumn('user_id', 'integer', (col) =>
       col.references('user.id').onDelete('cascade').notNull(),
     )
-    .addColumn('status', sql`user_series_status_status`)
+    .addColumn('status', sql`user_series_status_status`, (col) => col.notNull())
     .addColumn('created_at', 'timestamptz', (col) =>
       col.defaultTo(sql`NOW()`).notNull(),
     )
