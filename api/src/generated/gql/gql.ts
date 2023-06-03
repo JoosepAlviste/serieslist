@@ -24,6 +24,7 @@ const documents = {
     "\n          query seriesTypeSeriesStatus($id: ID!) {\n            series(id: $id) {\n              __typename\n              ... on Series {\n                status\n              }\n            }\n          }\n        ": types.SeriesTypeSeriesStatusDocument,
     "\n          mutation seriesUpdateStatus($input: SeriesUpdateStatusInput!) {\n            seriesUpdateStatus(input: $input) {\n              __typename\n            }\n          }\n        ": types.SeriesUpdateStatusDocument,
     "\n          mutation toggleEpisodeSeen($input: ToggleEpisodeSeenInput!) {\n            toggleEpisodeSeen(input: $input) {\n              __typename\n              ... on Error {\n                message\n              }\n              ... on Episode {\n                id\n              }\n            }\n          }\n        ": types.ToggleEpisodeSeenDocument,
+    "\n          mutation markSeasonEpisodesAsSeen(\n            $input: MarkSeasonEpisodesAsSeenInput!\n          ) {\n            markSeasonEpisodesAsSeen(input: $input) {\n              __typename\n              ... on Season {\n                episodes {\n                  id\n                  isSeen\n                }\n              }\n            }\n          }\n        ": types.MarkSeasonEpisodesAsSeenDocument,
     "\n          query seriesProgressEpisodeIsSeen($id: ID!) {\n            series(id: $id) {\n              __typename\n              ... on Series {\n                seasons {\n                  episodes {\n                    id\n                    isSeen\n                  }\n                }\n              }\n            }\n          }\n        ": types.SeriesProgressEpisodeIsSeenDocument,
 };
 
@@ -85,6 +86,10 @@ export function graphql(source: "\n          mutation seriesUpdateStatus($input:
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n          mutation toggleEpisodeSeen($input: ToggleEpisodeSeenInput!) {\n            toggleEpisodeSeen(input: $input) {\n              __typename\n              ... on Error {\n                message\n              }\n              ... on Episode {\n                id\n              }\n            }\n          }\n        "): (typeof documents)["\n          mutation toggleEpisodeSeen($input: ToggleEpisodeSeenInput!) {\n            toggleEpisodeSeen(input: $input) {\n              __typename\n              ... on Error {\n                message\n              }\n              ... on Episode {\n                id\n              }\n            }\n          }\n        "];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n          mutation markSeasonEpisodesAsSeen(\n            $input: MarkSeasonEpisodesAsSeenInput!\n          ) {\n            markSeasonEpisodesAsSeen(input: $input) {\n              __typename\n              ... on Season {\n                episodes {\n                  id\n                  isSeen\n                }\n              }\n            }\n          }\n        "): (typeof documents)["\n          mutation markSeasonEpisodesAsSeen(\n            $input: MarkSeasonEpisodesAsSeenInput!\n          ) {\n            markSeasonEpisodesAsSeen(input: $input) {\n              __typename\n              ... on Season {\n                episodes {\n                  id\n                  isSeen\n                }\n              }\n            }\n          }\n        "];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

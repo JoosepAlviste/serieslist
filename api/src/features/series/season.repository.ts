@@ -3,6 +3,20 @@ import { type InsertObject } from 'kysely'
 import { type DB } from '@/generated/db'
 import { type Context } from '@/types/context'
 
+export const findOne = ({
+  ctx,
+  seasonId,
+}: {
+  ctx: Context
+  seasonId: number
+}) => {
+  return ctx.db
+    .selectFrom('season')
+    .selectAll()
+    .where('id', '=', seasonId)
+    .executeTakeFirst()
+}
+
 export const findMany = ({
   ctx,
   seriesIds,

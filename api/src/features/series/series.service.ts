@@ -225,22 +225,6 @@ export const getSeriesByIdAndFetchDetailsFromOmdb = async ({
   return await syncSeriesDetailsFromOMDb({ ctx, imdbId: series.imdbId })
 }
 
-export const findSeasonsBySeriesIds = async ({
-  ctx,
-  seriesIds,
-}: {
-  ctx: Context
-  seriesIds: number[]
-}) => {
-  const allSeasons = await seasonRepository.findMany({ ctx, seriesIds })
-
-  return groupEntitiesByKeyToNestedArray({
-    entities: allSeasons,
-    ids: seriesIds,
-    fieldToGroupBy: 'seriesId',
-  })
-}
-
 export const findEpisodesBySeasonIds = async ({
   ctx,
   seasonIds,

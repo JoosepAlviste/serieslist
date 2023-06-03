@@ -53,10 +53,15 @@ export type LoginInput = {
   password: Scalars['String'];
 };
 
+export type MarkSeasonEpisodesAsSeenInput = {
+  seasonId: Scalars['Int'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   logOut: Scalars['Boolean'];
   login: MutationLoginResult;
+  markSeasonEpisodesAsSeen: MutationMarkSeasonEpisodesAsSeenResult;
   register: MutationRegisterResult;
   seriesUpdateStatus: MutationSeriesUpdateStatusResult;
   toggleEpisodeSeen: MutationToggleEpisodeSeenResult;
@@ -65,6 +70,11 @@ export type Mutation = {
 
 export type MutationLoginArgs = {
   input: LoginInput;
+};
+
+
+export type MutationMarkSeasonEpisodesAsSeenArgs = {
+  input: MarkSeasonEpisodesAsSeenInput;
 };
 
 
@@ -83,6 +93,8 @@ export type MutationToggleEpisodeSeenArgs = {
 };
 
 export type MutationLoginResult = InvalidInputError | User;
+
+export type MutationMarkSeasonEpisodesAsSeenResult = NotFoundError | Season | UnauthorizedError;
 
 export type MutationRegisterResult = InvalidInputError | User;
 
@@ -253,6 +265,13 @@ export type ToggleEpisodeSeenMutationVariables = Exact<{
 
 export type ToggleEpisodeSeenMutation = { __typename?: 'Mutation', toggleEpisodeSeen: { __typename: 'Episode', id: string } | { __typename: 'NotFoundError', message: string } | { __typename: 'UnauthorizedError', message: string } };
 
+export type MarkSeasonEpisodesAsSeenMutationVariables = Exact<{
+  input: MarkSeasonEpisodesAsSeenInput;
+}>;
+
+
+export type MarkSeasonEpisodesAsSeenMutation = { __typename?: 'Mutation', markSeasonEpisodesAsSeen: { __typename: 'NotFoundError' } | { __typename: 'Season', episodes: Array<{ __typename?: 'Episode', id: string, isSeen: boolean }> } | { __typename: 'UnauthorizedError' } };
+
 export type SeriesProgressEpisodeIsSeenQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
@@ -272,4 +291,5 @@ export const SeriesTypeSeriesEpisodesDocument = {"kind":"Document","definitions"
 export const SeriesTypeSeriesStatusDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"seriesTypeSeriesStatus"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"series"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Series"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"status"}}]}}]}}]}}]} as unknown as DocumentNode<SeriesTypeSeriesStatusQuery, SeriesTypeSeriesStatusQueryVariables>;
 export const SeriesUpdateStatusDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"seriesUpdateStatus"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"SeriesUpdateStatusInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"seriesUpdateStatus"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}}]}}]}}]} as unknown as DocumentNode<SeriesUpdateStatusMutation, SeriesUpdateStatusMutationVariables>;
 export const ToggleEpisodeSeenDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"toggleEpisodeSeen"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ToggleEpisodeSeenInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"toggleEpisodeSeen"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Error"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"message"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Episode"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]} as unknown as DocumentNode<ToggleEpisodeSeenMutation, ToggleEpisodeSeenMutationVariables>;
+export const MarkSeasonEpisodesAsSeenDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"markSeasonEpisodesAsSeen"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"MarkSeasonEpisodesAsSeenInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"markSeasonEpisodesAsSeen"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Season"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"episodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"isSeen"}}]}}]}}]}}]}}]} as unknown as DocumentNode<MarkSeasonEpisodesAsSeenMutation, MarkSeasonEpisodesAsSeenMutationVariables>;
 export const SeriesProgressEpisodeIsSeenDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"seriesProgressEpisodeIsSeen"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"series"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Series"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"seasons"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"episodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"isSeen"}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<SeriesProgressEpisodeIsSeenQuery, SeriesProgressEpisodeIsSeenQueryVariables>;

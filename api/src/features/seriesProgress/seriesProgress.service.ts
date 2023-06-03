@@ -1,6 +1,6 @@
 import keyBy from 'lodash/keyBy'
 
-import { episodesService } from '@/features/series'
+import { episodesService, seasonService } from '@/features/series'
 import { NotFoundError } from '@/lib/errors'
 import { type Context, type AuthenticatedContext } from '@/types/context'
 
@@ -41,6 +41,37 @@ export const toggleEpisodeSeen = async ({
   }
 
   return episode
+}
+
+export const markSeasonEpisodesAsSeen = async ({
+  ctx,
+  seasonId,
+}: {
+  ctx: AuthenticatedContext
+  seasonId: number
+}) => {
+  const season = await seasonService.findOne({
+    ctx,
+    seasonId,
+  })
+  if (!season) {
+    throw new NotFoundError()
+  }
+
+  const episodes = await episodesService.findMany({
+    ctx,
+    seasonIds: [seasonId],
+  })
+
+  await seenEpisodeRepository.createMany({
+    ctx,
+    seenEpisodes: episodes.map((episode) => ({
+      episodeId: episode.id,
+      userId: ctx.currentUser.id,
+    })),
+  })
+
+  return season
 }
 
 export const findIsSeenForEpisodes = async ({

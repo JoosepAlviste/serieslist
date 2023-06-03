@@ -49,6 +49,20 @@ export const createOne = ({
     .executeTakeFirstOrThrow()
 }
 
+export const createMany = ({
+  ctx,
+  seenEpisodes,
+}: {
+  ctx: Context
+  seenEpisodes: InsertObject<DB, 'seenEpisode'>[]
+}) => {
+  return ctx.db
+    .insertInto('seenEpisode')
+    .values(seenEpisodes)
+    .onConflict((oc) => oc.columns(['episodeId', 'userId']).doNothing())
+    .execute()
+}
+
 export const deleteOne = ({
   ctx,
   userId,

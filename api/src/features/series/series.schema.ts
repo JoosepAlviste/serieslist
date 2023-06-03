@@ -6,6 +6,7 @@ import { builder } from '@/schemaBuilder'
 import { exposeDate } from '@/utils/exposeDate'
 
 import { UserSeriesStatus } from './constants'
+import * as seasonService from './season.service'
 import * as seriesService from './series.service'
 
 export type EpisodeType = Selectable<Episode>
@@ -35,7 +36,7 @@ export const EpisodeRef = builder.objectRef<EpisodeType>('Episode').implement({
   }),
 })
 
-const SeasonRef = builder.objectRef<SeasonType>('Season').implement({
+export const SeasonRef = builder.objectRef<SeasonType>('Season').implement({
   fields: (t) => ({
     id: t.id({
       resolve: (parent) => String(parent.id),
@@ -73,7 +74,7 @@ const SeriesRef = builder.objectRef<SeriesType>('Series').implement({
       type: SeasonRef,
       resolve: (parent) => parent.id,
       load: (ids, ctx) =>
-        seriesService.findSeasonsBySeriesIds({ ctx, seriesIds: ids }),
+        seasonService.findSeasonsBySeriesIds({ ctx, seriesIds: ids }),
     }),
   }),
 })

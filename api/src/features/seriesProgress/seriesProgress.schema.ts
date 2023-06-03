@@ -1,4 +1,4 @@
-import { EpisodeRef } from '@/features/series'
+import { EpisodeRef, SeasonRef } from '@/features/series'
 import { NotFoundError, UnauthorizedError } from '@/lib/errors'
 import { builder } from '@/schemaBuilder'
 
@@ -11,6 +11,17 @@ const ToggleEpisodeSeenInputRef = builder.inputType('ToggleEpisodeSeenInput', {
     }),
   }),
 })
+
+const MarkSeasonEpisodesAsSeenInputRef = builder.inputType(
+  'MarkSeasonEpisodesAsSeenInput',
+  {
+    fields: (t) => ({
+      seasonId: t.int({
+        required: true,
+      }),
+    }),
+  },
+)
 
 builder.mutationFields((t) => ({
   toggleEpisodeSeen: t.authField({
@@ -29,6 +40,26 @@ builder.mutationFields((t) => ({
       return seriesProgressService.toggleEpisodeSeen({
         ctx,
         episodeId: args.input.episodeId,
+      })
+    },
+  }),
+
+  markSeasonEpisodesAsSeen: t.authField({
+    type: SeasonRef,
+    nullable: false,
+    authScopes: {
+      authenticated: true,
+    },
+    args: {
+      input: t.arg({ type: MarkSeasonEpisodesAsSeenInputRef, required: true }),
+    },
+    errors: {
+      types: [NotFoundError, UnauthorizedError],
+    },
+    resolve(_parent, args, ctx) {
+      return seriesProgressService.markSeasonEpisodesAsSeen({
+        ctx,
+        seasonId: args.input.seasonId,
       })
     },
   }),

@@ -4,7 +4,10 @@ import { episodeFactory, seasonFactory, seriesFactory } from '@/features/series'
 import { userFactory } from '@/features/users'
 import { type User } from '@/generated/db'
 import { graphql } from '@/generated/gql'
-import { type ToggleEpisodeSeenInput } from '@/generated/gql/graphql'
+import {
+  type MarkSeasonEpisodesAsSeenInput,
+  type ToggleEpisodeSeenInput,
+} from '@/generated/gql/graphql'
 import { db } from '@/lib/db'
 import { checkErrors, executeOperation } from '@/test/testUtils'
 
@@ -73,6 +76,97 @@ describe('features/seriesProgress/seriesProgress.schema', () => {
         .where('userId', '=', user.id)
         .executeTakeFirst()
       expect(seenEpisode).toBeFalsy()
+    })
+  })
+
+  describe('markSeasonEpisodesAsSeen mutation', () => {
+    const executeMutation = async ({
+      seasonId,
+      user,
+    }: MarkSeasonEpisodesAsSeenInput & {
+      user: Selectable<User>
+    }) =>
+      await executeOperation({
+        operation: graphql(`
+          mutation markSeasonEpisodesAsSeen(
+            $input: MarkSeasonEpisodesAsSeenInput!
+          ) {
+            markSeasonEpisodesAsSeen(input: $input) {
+              __typename
+              ... on Season {
+                episodes {
+                  id
+                  isSeen
+                }
+              }
+            }
+          }
+        `),
+        variables: { input: { seasonId } },
+        user,
+      })
+
+    it('allows marking all episodes in a season as seen', async () => {
+      const season = await seasonFactory.create()
+      const episode1 = await episodeFactory.create({
+        seasonId: season.id,
+      })
+      const episode2 = await episodeFactory.create({
+        seasonId: season.id,
+      })
+      const user = await userFactory.create()
+
+      const res = await executeMutation({
+        seasonId: season.id,
+        user,
+      })
+      const resSeason = checkErrors(res.data?.markSeasonEpisodesAsSeen)
+
+      // Both returned episodes are seen
+      expect(resSeason.episodes).toEqual([
+        expect.objectContaining({
+          isSeen: true,
+        }),
+        expect.objectContaining({
+          isSeen: true,
+        }),
+      ])
+
+      // And the episodes are updated in the db as well
+      const seenEpisode = await db
+        .selectFrom('seenEpisode')
+        .where('episodeId', 'in', [episode1.id, episode2.id])
+        .where('userId', '=', user.id)
+        .execute()
+      expect(seenEpisode).toHaveLength(2)
+    })
+
+    it('does not fail if one of the episodes is already marked as seen', async () => {
+      const season = await seasonFactory.create()
+      const episode1 = await episodeFactory.create({
+        seasonId: season.id,
+      })
+      const episode2 = await episodeFactory.create({
+        seasonId: season.id,
+      })
+      const user = await userFactory.create()
+
+      await seenEpisodeFactory.create({
+        episodeId: episode1.id,
+        userId: user.id,
+      })
+
+      await executeMutation({
+        seasonId: season.id,
+        user,
+      })
+
+      const seenEpisode = await db
+        .selectFrom('seenEpisode')
+        .where('episodeId', 'in', [episode1.id, episode2.id])
+        .where('userId', '=', user.id)
+        .execute()
+      expect(seenEpisode).toHaveLength(2)
     })
   })
 

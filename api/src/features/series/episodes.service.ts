@@ -11,3 +11,13 @@ export const findOne = ({
 }) => {
   return episodeRepository.findOne({ ctx, episodeId })
 }
+
+export const findMany = ({
+  ctx,
+  seasonIds,
+}: {
+  ctx: Context
+  seasonIds: number[]
+}) => {
+  return episodeRepository.findMany({ ctx, seasonIds })
+}
