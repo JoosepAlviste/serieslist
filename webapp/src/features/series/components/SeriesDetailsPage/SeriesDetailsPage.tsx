@@ -2,7 +2,7 @@ import { useMutation, useQuery } from '@apollo/client'
 import * as Tabs from '@radix-ui/react-tabs'
 import React from 'react'
 
-import { Button } from '@/components'
+import { Button, Tooltip } from '@/components'
 import { useAuthenticatedUser } from '@/features/auth'
 import { graphql } from '@/generated/gql'
 import { useToast } from '@/hooks'
@@ -163,14 +163,24 @@ export const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
                         Season {season.number}
                       </h3>
 
-                      <Button
-                        onClick={() => handleMarkSeasonAsSeenClicked(season.id)}
-                        variant={areAllEpisodesSeen ? 'primary' : 'secondary'}
-                        size="s"
-                        isDisabled={areAllEpisodesSeen}
+                      <Tooltip
+                        text={
+                          areAllEpisodesSeen
+                            ? 'All episodes are already seen'
+                            : undefined
+                        }
                       >
-                        {areAllEpisodesSeen ? 'Seen' : 'Mark season as seen'}
-                      </Button>
+                        <Button
+                          onClick={() =>
+                            handleMarkSeasonAsSeenClicked(season.id)
+                          }
+                          variant={areAllEpisodesSeen ? 'primary' : 'secondary'}
+                          size="s"
+                          isDisabled={areAllEpisodesSeen}
+                        >
+                          {areAllEpisodesSeen ? 'Seen' : 'Mark season as seen'}
+                        </Button>
+                      </Tooltip>
                     </div>
 
                     <ol className={s.episodesContainer}>
