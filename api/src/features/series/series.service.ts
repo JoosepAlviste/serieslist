@@ -285,9 +285,16 @@ export const findStatusForSeries = async ({
   })
 }
 
-export const findUserSeries = ({ ctx }: { ctx: AuthenticatedContext }) => {
+export const findUserSeries = ({
+  ctx,
+  status,
+}: {
+  ctx: AuthenticatedContext
+  status?: UserSeriesStatus
+}) => {
   return seriesRepository.findManyForUser({
     ctx,
     userId: ctx.currentUser.id,
+    status,
   })
 }

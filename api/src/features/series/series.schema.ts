@@ -98,6 +98,15 @@ const SeriesSearchInput = builder.inputType('SeriesSearchInput', {
   }),
 })
 
+const UserSeriesListInput = builder.inputType('UserSeriesListInput', {
+  fields: (t) => ({
+    status: t.field({
+      type: UserSeriesStatus,
+      required: false,
+    }),
+  }),
+})
+
 builder.queryFields((t) => ({
   seriesSearch: t.field({
     type: [SeriesRef],
@@ -134,8 +143,14 @@ builder.queryFields((t) => ({
     errors: {
       types: [UnauthorizedError],
     },
-    resolve(_parent, _args, ctx) {
-      return seriesService.findUserSeries({ ctx })
+    args: {
+      input: t.arg({ type: UserSeriesListInput, required: true }),
+    },
+    resolve(_parent, args, ctx) {
+      return seriesService.findUserSeries({
+        ctx,
+        status: args.input.status ?? undefined,
+      })
     },
   }),
 }))

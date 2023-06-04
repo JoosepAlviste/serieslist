@@ -4,6 +4,8 @@ import { type InsertObject } from 'kysely/dist/cjs/parser/insert-values-parser'
 import { type DB } from '@/generated/db'
 import { type Context } from '@/types/context'
 
+import { type UserSeriesStatus } from './constants'
+
 export const findOne = ({
   ctx,
   seriesId,
@@ -43,16 +45,23 @@ export const findMany = ({
 export const findManyForUser = ({
   ctx,
   userId,
+  status,
 }: {
   ctx: Context
   userId: number
+  status?: UserSeriesStatus
 }) => {
-  return ctx.db
+  let query = ctx.db
     .selectFrom('series')
     .innerJoin('userSeriesStatus', 'series.id', 'userSeriesStatus.seriesId')
     .where('userSeriesStatus.userId', '=', userId)
     .selectAll('series')
-    .execute()
+
+  if (status) {
+    query = query.where('userSeriesStatus.status', '=', status)
+  }
+
+  return query.execute()
 }
 
 export const createMany = ({

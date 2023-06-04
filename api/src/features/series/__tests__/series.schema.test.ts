@@ -325,13 +325,15 @@ describe('features/series/series.schema', () => {
   describe('userSeriesList query', () => {
     const executeUserSeriesListQuery = ({
       user,
+      status,
     }: {
       user: Selectable<User>
+      status?: UserSeriesStatus
     }) => {
       return executeOperation({
         operation: graphql(`
-          query seriesSchemaUserSeriesList {
-            userSeriesList {
+          query seriesSchemaUserSeriesList($input: UserSeriesListInput!) {
+            userSeriesList(input: $input) {
               __typename
               ... on Error {
                 message
@@ -345,6 +347,11 @@ describe('features/series/series.schema', () => {
           }
         `),
         user,
+        variables: {
+          input: {
+            status,
+          },
+        },
       })
     }
 
@@ -392,6 +399,31 @@ describe('features/series/series.schema', () => {
       const resData = checkErrors(res.data?.userSeriesList)
 
       expect(resData.data).toHaveLength(0)
+    })
+
+    it('allows filtering series by status', async () => {
+      const [series1, series2] = await seriesFactory.createList(2)
+      const user = await userFactory.create()
+
+      await userSeriesStatusFactory.create({
+        userId: user.id,
+        seriesId: series1!.id,
+        status: UserSeriesStatus.InProgress,
+      })
+      await userSeriesStatusFactory.create({
+        userId: user.id,
+        seriesId: series2!.id,
+        status: UserSeriesStatus.Completed,
+      })
+
+      const res = await executeUserSeriesListQuery({
+        user,
+        status: UserSeriesStatus.InProgress,
+      })
+      const resData = checkErrors(res.data?.userSeriesList)
+
+      expect(resData.data).toHaveLength(1)
+      expect(resData.data[0]!.id).toBe(String(series1!.id))
     })
   })
 
