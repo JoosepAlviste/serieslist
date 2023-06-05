@@ -20,7 +20,11 @@ export const NavSidebar = () => (
 
       <Tooltip text="My series list" side="right">
         <NavigationMenu.Item>
-          <NavigationMenu.Link href="/about" className={s.navLink} asChild>
+          <NavigationMenu.Link
+            href="/series/list"
+            className={s.navLink}
+            asChild
+          >
             <Link activeClass={s.navLinkIsActive}>
               <Icon name="series" size="l" label="Series" />
             </Link>

@@ -53,6 +53,8 @@ export const [lightThemeClass, vars] = createTheme({
 
     primary: colors.indigo500,
 
+    separator: colors.slate200,
+
     popoverBackground: colors.white,
     popoverHoverBackground: colors.slate100,
 
@@ -117,6 +119,8 @@ export const darkThemeClass = createTheme(vars, {
     textError: colors.red400,
     textHighlightedBackground: colors.indigo900,
     textHighlightedBackgroundDarker: colors.indigo800,
+
+    separator: colors.slate800,
 
     primary: colors.indigo400,
 
