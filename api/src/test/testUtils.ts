@@ -1,6 +1,7 @@
 import { type TypedDocumentNode } from '@graphql-typed-document-node/core'
 import { type ExecutionResult, print } from 'graphql'
 import { createYoga, type YogaInitialContext } from 'graphql-yoga'
+import { type Selectable } from 'kysely'
 
 import { episodeFactory, seasonFactory, seriesFactory } from '@/features/series'
 import { seenEpisodeFactory } from '@/features/seriesProgress'
@@ -9,29 +10,30 @@ import { type Episode, type Season, type Series } from '@/generated/db'
 import { createArrayOfLength } from '@/lib/createArrayOfLength'
 import { db } from '@/lib/db'
 import { schema } from '@/schema'
-import { type Context } from '@/types/context'
+import { type AuthenticatedContext, type Context } from '@/types/context'
 import { type NotWorthIt } from '@/types/utils'
 
-export const createContext = ({
+export const createContext = <T extends Context['currentUser']>({
   ctx = {},
   currentUser,
 }: {
   ctx?: Partial<YogaInitialContext>
-  currentUser?: Context['currentUser']
-} = {}): Context => ({
-  params: {},
-  // We can't really create the Fastify request and reply objects on their
-  // own, so we only mock the fields that we need from them
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  req: null as NotWorthIt,
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  reply: {
-    setCookie: vi.fn(),
-  } as NotWorthIt,
-  ...ctx,
-  db,
-  currentUser,
-})
+  currentUser?: T
+} = {}): T extends undefined ? Context : AuthenticatedContext =>
+  ({
+    params: {},
+    // We can't really create the Fastify request and reply objects on their
+    // own, so we only mock the fields that we need from them
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    req: null as NotWorthIt,
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    reply: {
+      setCookie: vi.fn(),
+    } as NotWorthIt,
+    ...ctx,
+    db,
+    currentUser,
+  } as T extends undefined ? Context : AuthenticatedContext)
 
 /**
  * A helper for making fully typed GraphQL requests in tests.

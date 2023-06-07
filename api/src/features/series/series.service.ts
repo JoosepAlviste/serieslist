@@ -298,3 +298,17 @@ export const findUserSeries = ({
     status,
   })
 }
+
+export const findOne = ({
+  ctx,
+  seriesId,
+  imdbId,
+  episodeId,
+}: {
+  ctx: Context
+  seriesId?: number
+  imdbId?: string
+  episodeId?: number
+}) => {
+  return seriesRepository.findOne({ ctx, seriesId, imdbId, episodeId })
+}

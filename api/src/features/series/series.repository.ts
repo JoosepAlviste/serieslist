@@ -10,12 +10,14 @@ export const findOne = ({
   ctx,
   seriesId,
   imdbId,
+  episodeId,
 }: {
   ctx: Context
   seriesId?: number
   imdbId?: string
+  episodeId?: number
 }) => {
-  let query = ctx.db.selectFrom('series').selectAll()
+  let query = ctx.db.selectFrom('series').selectAll('series')
 
   if (seriesId) {
     query = query.where('id', '=', seriesId)
@@ -23,6 +25,13 @@ export const findOne = ({
 
   if (imdbId) {
     query = query.where('imdbId', '=', imdbId)
+  }
+
+  if (episodeId) {
+    query = query
+      .innerJoin('season', 'series.id', 'season.seriesId')
+      .innerJoin('episode', 'season.id', 'episode.seasonId')
+      .where('episode.id', '=', episodeId)
   }
 
   return query.executeTakeFirst()

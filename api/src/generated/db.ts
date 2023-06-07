@@ -51,6 +51,15 @@ export type Series = {
   syncedAt: Timestamp | null
 }
 
+export type SeriesProgress = {
+  userId: number
+  seriesId: number
+  latestSeenEpisodeId: number
+  nextEpisodeId: number | null
+  createdAt: Generated<Timestamp>
+  updatedAt: Generated<Timestamp>
+}
+
 export type Session = {
   token: string
   userId: number | null
@@ -74,7 +83,7 @@ export type User = {
 export type UserSeriesStatus = {
   seriesId: number
   userId: number
-  status: UserSeriesStatusStatus | null
+  status: UserSeriesStatusStatus
   createdAt: Generated<Timestamp>
   updatedAt: Generated<Timestamp>
 }
@@ -84,6 +93,7 @@ export type DB = {
   season: Season
   seenEpisode: SeenEpisode
   series: Series
+  seriesProgress: SeriesProgress
   session: Session
   user: User
   userSeriesStatus: UserSeriesStatus

@@ -5,6 +5,7 @@ import { NotFoundError } from '@/lib/errors'
 import { type Context, type AuthenticatedContext } from '@/types/context'
 
 import * as seenEpisodeRepository from './seenEpisode.repository'
+import * as seriesProgressRepository from './seriesProgress.repository'
 
 export const toggleEpisodeSeen = async ({
   ctx,
@@ -32,11 +33,21 @@ export const toggleEpisodeSeen = async ({
         userId: ctx.currentUser.id,
       },
     })
+
+    await advanceSeriesProgress({
+      ctx,
+      latestSeenEpisodeId: episode.id,
+    })
   } else {
     await seenEpisodeRepository.deleteOne({
       ctx,
       userId: ctx.currentUser.id,
       episodeId: episode.id,
+    })
+
+    await decreaseSeriesProgress({
+      ctx,
+      previousLatestSeenEpisodeId: episode.id,
     })
   }
 
@@ -96,4 +107,79 @@ export const findIsSeenForEpisodes = async ({
   return episodeIds.map((episodeId) => {
     return Boolean(seenEpisodesByEpisodeId[episodeId])
   })
+}
+
+export const advanceSeriesProgress = async ({
+  ctx,
+  latestSeenEpisodeId,
+}: {
+  ctx: AuthenticatedContext
+  latestSeenEpisodeId: number
+}) => {
+  const latestEpisode = await episodesService.findOneWithSeasonAndSeriesInfo({
+    ctx,
+    episodeId: latestSeenEpisodeId,
+  })
+  if (!latestEpisode) {
+    throw new NotFoundError()
+  }
+
+  const nextEpisode = await episodesService.findNextEpisode({
+    ctx,
+    seriesId: latestEpisode.seriesId,
+    seasonNumber: latestEpisode.seasonNumber,
+    episodeNumber: latestEpisode.number,
+  })
+
+  await seriesProgressRepository.createOrUpdateOne({
+    ctx,
+    seriesProgress: {
+      seriesId: latestEpisode.seriesId,
+      userId: ctx.currentUser.id,
+      latestSeenEpisodeId: latestSeenEpisodeId,
+      nextEpisodeId: nextEpisode?.id,
+    },
+  })
+}
+
+export const decreaseSeriesProgress = async ({
+  ctx,
+  previousLatestSeenEpisodeId,
+}: {
+  ctx: AuthenticatedContext
+  previousLatestSeenEpisodeId: number
+}) => {
+  const previousLatestEpisode =
+    await episodesService.findOneWithSeasonAndSeriesInfo({
+      ctx,
+      episodeId: previousLatestSeenEpisodeId,
+    })
+  if (!previousLatestEpisode) {
+    throw new NotFoundError()
+  }
+
+  const previousEpisode = await episodesService.findPreviousEpisode({
+    ctx,
+    episode: previousLatestEpisode,
+    seasonNumber: previousLatestEpisode.seasonNumber,
+    seriesId: previousLatestEpisode.seriesId,
+  })
+
+  if (previousEpisode) {
+    await seriesProgressRepository.createOrUpdateOne({
+      ctx,
+      seriesProgress: {
+        seriesId: previousLatestEpisode.seriesId,
+        userId: ctx.currentUser.id,
+        nextEpisodeId: previousLatestSeenEpisodeId,
+        latestSeenEpisodeId: previousEpisode.id,
+      },
+    })
+  } else {
+    await seriesProgressRepository.deleteOne({
+      ctx,
+      seriesId: previousLatestEpisode.seriesId,
+      userId: ctx.currentUser.id,
+    })
+  }
 }

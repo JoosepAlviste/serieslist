@@ -38,6 +38,94 @@ export const findOne = ({
     .executeTakeFirst()
 }
 
+export const findOneByNumber = ({
+  ctx,
+  seriesId,
+  seasonNumber,
+  episodeNumber,
+}: {
+  ctx: Context
+  seriesId: number
+  seasonNumber: number
+  episodeNumber: number
+}) => {
+  return ctx.db
+    .selectFrom('episode')
+    .innerJoin('season', 'season.id', 'episode.seasonId')
+    .where('seriesId', '=', seriesId)
+    .where('season.number', '=', seasonNumber)
+    .where('episode.number', '=', episodeNumber)
+    .selectAll('episode')
+    .executeTakeFirst()
+}
+
+export const findOneWithSeasonAndSeriesInfo = ({
+  ctx,
+  episodeId,
+}: {
+  ctx: Context
+  episodeId: number
+}) => {
+  return ctx.db
+    .selectFrom('episode')
+    .innerJoin('season', 'season.id', 'episode.seasonId')
+    .where('episode.id', '=', episodeId)
+    .selectAll('episode')
+    .select(['season.number as seasonNumber', 'season.seriesId as seriesId'])
+    .executeTakeFirst()
+}
+
+export const findLastEpisodeOfSeason = ({
+  ctx,
+  seriesId,
+  seasonNumber,
+}: {
+  ctx: Context
+  seriesId: number
+  seasonNumber: number
+}) => {
+  return ctx.db
+    .selectFrom('episode')
+    .innerJoin('season', 'episode.seasonId', 'season.id')
+    .where('season.number', '=', seasonNumber)
+    .where('season.seriesId', '=', seriesId)
+    .orderBy('episode.number', 'desc')
+    .limit(1)
+    .selectAll('episode')
+    .executeTakeFirst()
+}
+
+export const findNextEpisode = async ({
+  ctx,
+  seriesId,
+  seasonNumber,
+  episodeNumber,
+}: {
+  ctx: Context
+  seriesId: number
+  seasonNumber: number
+  episodeNumber: number
+}) => {
+  return ctx.db
+    .selectFrom('episode')
+    .innerJoin('season', 'season.id', 'episode.seasonId')
+    .where('seriesId', '=', seriesId)
+    .where(({ and, or, cmpr }) =>
+      or([
+        and([
+          cmpr('season.number', '=', seasonNumber),
+          cmpr('episode.number', '=', episodeNumber + 1),
+        ]),
+        and([
+          cmpr('season.number', '=', seasonNumber + 1),
+          cmpr('episode.number', '=', 1),
+        ]),
+      ]),
+    )
+    .selectAll('episode')
+    .executeTakeFirst()
+}
+
 export const findMany = ({
   ctx,
   seasonIds,
