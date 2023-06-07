@@ -110,9 +110,11 @@ export const parseOMDbSeriesYears = ({ years }: { years: string }) => {
   if (years.includes('–')) {
     // NOTE: This is not a regular dash, but an en-dash
     const yearsSplit = years.split('–')
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (yearsSplit[0] !== undefined) {
       startYear = yearsSplit[0]
     }
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (yearsSplit[1] !== undefined) {
       endYear = yearsSplit[1]
     }

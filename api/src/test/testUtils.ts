@@ -2,7 +2,11 @@ import { type TypedDocumentNode } from '@graphql-typed-document-node/core'
 import { type ExecutionResult, print } from 'graphql'
 import { createYoga, type YogaInitialContext } from 'graphql-yoga'
 
+import { episodeFactory, seasonFactory, seriesFactory } from '@/features/series'
+import { seenEpisodeFactory } from '@/features/seriesProgress'
 import { userFactory } from '@/features/users'
+import { type Episode, type Season, type Series } from '@/generated/db'
+import { createArrayOfLength } from '@/lib/createArrayOfLength'
 import { db } from '@/lib/db'
 import { schema } from '@/schema'
 import { type Context } from '@/types/context'
@@ -147,4 +151,62 @@ export const expectErrors = <
   }
 
   return result as Extract<T, { __typename: ErrorKey }>
+}
+
+/**
+ * Create series, seasons, and episodes in the database for testing.
+ * @param seasonEpisodesCount A list of seasons with the number of episodes
+ * to create.
+ */
+export const createSeriesWithEpisodesAndSeasons = async (
+  seasonEpisodesCount: number[],
+): Promise<{
+  series: Selectable<Series>
+  seasons: {
+    season: Selectable<Season>
+    episodes: Selectable<Episode>[]
+  }[]
+}> => {
+  const series = await seriesFactory.create()
+
+  const seasons = await Promise.all(
+    seasonEpisodesCount.map(async (episodesCount, seasonIndex) => {
+      const season = await seasonFactory.create({
+        seriesId: series.id,
+        number: seasonIndex + 1,
+      })
+      const episodes = await Promise.all(
+        createArrayOfLength(episodesCount).map((_, index) => {
+          return episodeFactory.create({
+            seasonId: season.id,
+            number: index + 1,
+          })
+        }),
+      )
+
+      return {
+        season,
+        episodes,
+      }
+    }),
+  )
+
+  return { series, seasons }
+}
+
+/**
+ * A helper to create multiple seen episodes in the db for the user.
+ */
+export const createSeenEpisodesForUser = (
+  userId: number,
+  episodeIds: number[],
+) => {
+  return Promise.all(
+    episodeIds.map((episodeId) =>
+      seenEpisodeFactory.create({
+        episodeId: episodeId,
+        userId: userId,
+      }),
+    ),
+  )
 }

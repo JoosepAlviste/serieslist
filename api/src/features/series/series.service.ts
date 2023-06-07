@@ -11,6 +11,7 @@ import {
   type SeriesUpdateStatusInput,
   type SeriesSearchInput,
 } from '@/generated/gql/graphql'
+import { createArrayOfLength } from '@/lib/createArrayOfLength'
 import { NotFoundError } from '@/lib/errors'
 import { type AuthenticatedContext, type Context } from '@/types/context'
 
@@ -114,8 +115,7 @@ export const syncSeasonsAndEpisodesFromOMDb = async ({
   if (newSeasonsCount > 0) {
     const newSeasons = await seasonRepository.createMany({
       ctx,
-      // eslint-disable-next-line prefer-spread
-      seasons: Array.apply(null, Array(newSeasonsCount))
+      seasons: createArrayOfLength(newSeasonsCount)
         .map((_, i) => i + 1 + existingSeasonsCount)
         .map((number) => ({
           number,
@@ -129,8 +129,7 @@ export const syncSeasonsAndEpisodesFromOMDb = async ({
   }
 
   await Promise.all(
-    // eslint-disable-next-line prefer-spread
-    Array.apply(null, Array(totalNumberOfSeasons))
+    createArrayOfLength(totalNumberOfSeasons)
       .map((_, i) => i + 1)
       .map(async (seasonNumber) => {
         const season = await omdbService.fetchSeasonDetailsFromOMDb({
@@ -280,7 +279,8 @@ export const findStatusForSeries = async ({
   const statusesBySeriesId = keyBy(allStatuses, 'seriesId')
 
   return seriesIds.map((seriesId) => {
-    const status = statusesBySeriesId[seriesId]?.status
+    const status = statusesBySeriesId[seriesId].status
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     return status ? UserSeriesStatus[status] : null
   })
 }

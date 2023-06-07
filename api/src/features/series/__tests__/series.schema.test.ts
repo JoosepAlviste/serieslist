@@ -362,11 +362,11 @@ describe('features/series/series.schema', () => {
 
       await userSeriesStatusFactory.create({
         userId: user.id,
-        seriesId: series1!.id,
+        seriesId: series1.id,
       })
       await userSeriesStatusFactory.create({
         userId: user.id,
-        seriesId: series2!.id,
+        seriesId: series2.id,
       })
       // The third series does not have a status set
 
@@ -379,8 +379,8 @@ describe('features/series/series.schema', () => {
       // errors plugin's `directResult` only removes the result object type
       // from non-list fields.
       expect(resData.data).toHaveLength(2)
-      expect(resData.data[0]!.id).toBe(String(series1!.id))
-      expect(resData.data[1]!.id).toBe(String(series2!.id))
+      expect(resData.data[0]!.id).toBe(String(series1.id))
+      expect(resData.data[1]!.id).toBe(String(series2.id))
     })
 
     it('does not return series for other users', async () => {
@@ -407,12 +407,12 @@ describe('features/series/series.schema', () => {
 
       await userSeriesStatusFactory.create({
         userId: user.id,
-        seriesId: series1!.id,
+        seriesId: series1.id,
         status: UserSeriesStatus.InProgress,
       })
       await userSeriesStatusFactory.create({
         userId: user.id,
-        seriesId: series2!.id,
+        seriesId: series2.id,
         status: UserSeriesStatus.Completed,
       })
 
@@ -423,7 +423,7 @@ describe('features/series/series.schema', () => {
       const resData = checkErrors(res.data?.userSeriesList)
 
       expect(resData.data).toHaveLength(1)
-      expect(resData.data[0]!.id).toBe(String(series1!.id))
+      expect(resData.data[0]!.id).toBe(String(series1.id))
     })
   })
 

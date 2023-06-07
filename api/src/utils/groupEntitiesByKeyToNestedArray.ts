@@ -17,5 +17,6 @@ export const groupEntitiesByKeyToNestedArray = <
 }) => {
   const groupedById = groupBy(entities, fieldToGroupBy)
 
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   return ids.map((id) => groupedById[id] ?? [])
 }

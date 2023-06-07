@@ -1,6 +1,6 @@
 import { type Selectable } from 'kysely'
 
-import { episodeFactory, seasonFactory, seriesFactory } from '@/features/series'
+import { episodeFactory } from '@/features/series'
 import { userFactory } from '@/features/users'
 import { type User } from '@/generated/db'
 import { graphql } from '@/generated/gql'
@@ -9,7 +9,11 @@ import {
   type ToggleEpisodeSeenInput,
 } from '@/generated/gql/graphql'
 import { db } from '@/lib/db'
-import { checkErrors, executeOperation } from '@/test/testUtils'
+import {
+  checkErrors,
+  createSeriesWithEpisodesAndSeasons,
+  executeOperation,
+} from '@/test/testUtils'
 
 import { seenEpisodeFactory } from '../seenEpisode.factory'
 
@@ -107,13 +111,14 @@ describe('features/seriesProgress/seriesProgress.schema', () => {
       })
 
     it('allows marking all episodes in a season as seen', async () => {
-      const season = await seasonFactory.create()
-      const episode1 = await episodeFactory.create({
-        seasonId: season.id,
-      })
-      const episode2 = await episodeFactory.create({
-        seasonId: season.id,
-      })
+      const {
+        seasons: [
+          {
+            season,
+            episodes: [episode1, episode2],
+          },
+        ],
+      } = await createSeriesWithEpisodesAndSeasons([2])
       const user = await userFactory.create()
 
       const res = await executeMutation({
@@ -142,13 +147,14 @@ describe('features/seriesProgress/seriesProgress.schema', () => {
     })
 
     it('does not fail if one of the episodes is already marked as seen', async () => {
-      const season = await seasonFactory.create()
-      const episode1 = await episodeFactory.create({
-        seasonId: season.id,
-      })
-      const episode2 = await episodeFactory.create({
-        seasonId: season.id,
-      })
+      const {
+        seasons: [
+          {
+            season,
+            episodes: [episode1, episode2],
+          },
+        ],
+      } = await createSeriesWithEpisodesAndSeasons([2])
       const user = await userFactory.create()
 
       await seenEpisodeFactory.create({
@@ -174,14 +180,14 @@ describe('features/seriesProgress/seriesProgress.schema', () => {
     it('allows querying if the episode is seen', async () => {
       const user = await userFactory.create()
 
-      const series = await seriesFactory.create()
-      const episode = await episodeFactory.create({
-        seasonId: (
-          await seasonFactory.create({
-            seriesId: series.id,
-          })
-        ).id,
-      })
+      const {
+        series,
+        seasons: [
+          {
+            episodes: [episode],
+          },
+        ],
+      } = await createSeriesWithEpisodesAndSeasons([1])
 
       await seenEpisodeFactory.create({
         userId: user.id,

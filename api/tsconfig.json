@@ -8,7 +8,6 @@
       "ESNext"
     ],
     "strict": true,
-    "noUncheckedIndexedAccess": true,
     "isolatedModules": true,
     "skipLibCheck": true,
     "outDir": "dist",
