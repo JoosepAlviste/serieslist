@@ -20,15 +20,23 @@ export const findOne = ({
 export const findMany = ({
   ctx,
   seriesIds,
+  seasonIds,
 }: {
   ctx: Context
-  seriesIds: number[]
+  seriesIds?: number[]
+  seasonIds?: number[]
 }) => {
-  return ctx.db
-    .selectFrom('season')
-    .selectAll()
-    .where('seriesId', 'in', seriesIds)
-    .execute()
+  let query = ctx.db.selectFrom('season').selectAll()
+
+  if (seriesIds) {
+    query = query.where('seriesId', 'in', seriesIds)
+  }
+
+  if (seasonIds) {
+    query = query.where('id', 'in', seasonIds)
+  }
+
+  return query.execute()
 }
 
 export const createMany = ({

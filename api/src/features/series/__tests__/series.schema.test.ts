@@ -10,7 +10,11 @@ import { type User } from '@/generated/db'
 import { graphql } from '@/generated/gql'
 import { type SeriesUpdateStatusInput } from '@/generated/gql/graphql'
 import { db } from '@/lib/db'
-import { checkErrors, executeOperation } from '@/test/testUtils'
+import {
+  checkErrors,
+  createSeriesWithEpisodesAndSeasons,
+  executeOperation,
+} from '@/test/testUtils'
 
 import { UserSeriesStatus } from '../constants'
 import { episodeFactory } from '../episode.factory'
@@ -568,6 +572,42 @@ describe('features/series/series.schema', () => {
       const resSeries = checkErrors(res.data?.series)
 
       expect(resSeries.status).toBe(UserSeriesStatus.Completed)
+    })
+  })
+
+  describe('Episode type', () => {
+    it('allows querying the season for an episode', async () => {
+      const {
+        series,
+        seasons: [{ season }],
+      } = await createSeriesWithEpisodesAndSeasons([1])
+
+      const res = await executeOperation({
+        operation: graphql(`
+          query episodeTypeSeason($id: ID!) {
+            series(id: $id) {
+              __typename
+              ... on Series {
+                seasons {
+                  id
+                  episodes {
+                    id
+                    season {
+                      id
+                    }
+                  }
+                }
+              }
+            }
+          }
+        `),
+        variables: {
+          id: String(series.id),
+        },
+      })
+      const resSeries = checkErrors(res.data?.series)
+
+      expect(resSeries.seasons[0].episodes[0].season.id).toBe(String(season.id))
     })
   })
 

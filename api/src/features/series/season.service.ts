@@ -13,6 +13,25 @@ export const findOne = async ({
   return seasonRepository.findOne({ ctx, seasonId })
 }
 
+export const findMany = async ({
+  ctx,
+  seasonIds,
+  seriesIds,
+}: {
+  ctx: Context
+  seriesIds?: number[]
+  seasonIds?: number[]
+}) => {
+  const seasons = await seasonRepository.findMany({ ctx, seriesIds, seasonIds })
+  if (seasonIds) {
+    return seasons
+      .slice()
+      .sort((a, b) => seasonIds.indexOf(a.id) - seasonIds.indexOf(b.id))
+  }
+
+  return seasons
+}
+
 export const findSeasonsBySeriesIds = async ({
   ctx,
   seriesIds,

@@ -3,6 +3,7 @@ import { type Selectable } from 'kysely'
 import { type Episode, type Season, type Series } from '@/generated/db'
 import { NotFoundError, UnauthorizedError } from '@/lib/errors'
 import { builder } from '@/schemaBuilder'
+import { type Context } from '@/types/context'
 import { exposeDate } from '@/utils/exposeDate'
 
 import { UserSeriesStatus } from './constants'
@@ -16,7 +17,8 @@ export type SeasonType = Selectable<Season>
 
 export type SeriesType = Selectable<Series>
 
-export const EpisodeRef = builder.objectRef<EpisodeType>('Episode').implement({
+export const EpisodeRef = builder.objectRef<EpisodeType>('Episode')
+EpisodeRef.implement({
   fields: (t) => ({
     id: t.id({
       resolve: (parent) => String(parent.id),
@@ -34,10 +36,18 @@ export const EpisodeRef = builder.objectRef<EpisodeType>('Episode').implement({
       nullable: true,
       resolve: ({ imdbRating }) => (imdbRating ? parseFloat(imdbRating) : null),
     }),
+
+    season: t.field({
+      type: SeasonRef,
+      resolve: (parent) => parent.seasonId,
+    }),
   }),
 })
 
-export const SeasonRef = builder.objectRef<SeasonType>('Season').implement({
+export const SeasonRef = builder.loadableObject('Season', {
+  load: (seasonIds: number[], ctx: Context) => {
+    return seasonService.findMany({ ctx, seasonIds })
+  },
   fields: (t) => ({
     id: t.id({
       resolve: (parent) => String(parent.id),
