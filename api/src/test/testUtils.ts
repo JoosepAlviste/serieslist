@@ -6,7 +6,12 @@ import { type Selectable } from 'kysely'
 import { episodeFactory, seasonFactory, seriesFactory } from '@/features/series'
 import { seenEpisodeFactory } from '@/features/seriesProgress'
 import { userFactory } from '@/features/users'
-import { type Episode, type Season, type Series } from '@/generated/db'
+import {
+  type User,
+  type Episode,
+  type Season,
+  type Series,
+} from '@/generated/db'
 import { createArrayOfLength } from '@/lib/createArrayOfLength'
 import { db } from '@/lib/db'
 import { schema } from '@/schema'
@@ -199,16 +204,23 @@ export const createSeriesWithEpisodesAndSeasons = async (
 /**
  * A helper to create multiple seen episodes in the db for the user.
  */
-export const createSeenEpisodesForUser = (
-  userId: number,
+export const createSeenEpisodesForUser = async (
   episodeIds: number[],
+  user?: Selectable<User>,
 ) => {
-  return Promise.all(
+  const usedUser = user ?? (await userFactory.create())
+
+  const seenEpisodes = await Promise.all(
     episodeIds.map((episodeId) =>
       seenEpisodeFactory.create({
         episodeId: episodeId,
-        userId: userId,
+        userId: usedUser.id,
       }),
     ),
   )
+
+  return {
+    user: usedUser,
+    seenEpisodes,
+  }
 }

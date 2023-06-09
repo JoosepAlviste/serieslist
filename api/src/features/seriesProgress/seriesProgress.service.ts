@@ -3,6 +3,7 @@ import keyBy from 'lodash/keyBy'
 import { episodesService, seasonService } from '@/features/series'
 import { NotFoundError } from '@/lib/errors'
 import { type Context, type AuthenticatedContext } from '@/types/context'
+import { isTruthy } from '@/utils/isTruthy'
 
 import * as seenEpisodeRepository from './seenEpisode.repository'
 import * as seriesProgressRepository from './seriesProgress.repository'
@@ -182,4 +183,70 @@ export const decreaseSeriesProgress = async ({
       userId: ctx.currentUser.id,
     })
   }
+}
+
+export const findLatestSeenEpisodesForSeries = async ({
+  ctx,
+  seriesIds,
+}: {
+  ctx: AuthenticatedContext
+  seriesIds: number[]
+}) => {
+  const seenEpisodes = await seriesProgressRepository.findMany({
+    ctx,
+    seriesIds,
+    userId: ctx.currentUser.id,
+  })
+  const seenEpisodesBySeriesIds = keyBy(seenEpisodes, 'seriesId')
+
+  const episodeIds = seenEpisodes
+    .map((seenEpisode) => seenEpisode.latestSeenEpisodeId)
+    .filter(isTruthy)
+  if (!episodeIds.length) {
+    return seriesIds.map(() => null)
+  }
+
+  const episodes = await episodesService.findMany({
+    ctx,
+    episodeIds,
+  })
+  const episodesByIds = keyBy(episodes, 'id')
+
+  return seriesIds.map((seriesId) => {
+    const { latestSeenEpisodeId } = seenEpisodesBySeriesIds[seriesId]
+    return latestSeenEpisodeId ? episodesByIds[latestSeenEpisodeId] : null
+  })
+}
+
+export const findNextEpisodesForSeries = async ({
+  ctx,
+  seriesIds,
+}: {
+  ctx: AuthenticatedContext
+  seriesIds: number[]
+}) => {
+  const seenEpisodes = await seriesProgressRepository.findMany({
+    ctx,
+    seriesIds,
+    userId: ctx.currentUser.id,
+  })
+  const seenEpisodesBySeriesIds = keyBy(seenEpisodes, 'seriesId')
+
+  const episodeIds = seenEpisodes
+    .map((seenEpisode) => seenEpisode.nextEpisodeId)
+    .filter(isTruthy)
+  if (!episodeIds.length) {
+    return seriesIds.map(() => null)
+  }
+
+  const episodes = await episodesService.findMany({
+    ctx,
+    episodeIds,
+  })
+  const episodesByIds = keyBy(episodes, 'id')
+
+  return seriesIds.map((seriesId) => {
+    const { nextEpisodeId } = seenEpisodesBySeriesIds[seriesId]
+    return nextEpisodeId ? episodesByIds[nextEpisodeId] : null
+  })
 }

@@ -118,7 +118,7 @@ describe('features/seriesProgress/seriesProgress.service', () => {
         ],
       } = await createSeriesWithEpisodesAndSeasons([2])
 
-      await createSeenEpisodesForUser(user.id, [s1e1.id, s1e2.id])
+      await createSeenEpisodesForUser([s1e1.id, s1e2.id], user)
 
       await decreaseSeriesProgress({
         ctx: createContext({

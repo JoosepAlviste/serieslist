@@ -11,11 +11,13 @@ import {
 import { db } from '@/lib/db'
 import {
   checkErrors,
+  createSeenEpisodesForUser,
   createSeriesWithEpisodesAndSeasons,
   executeOperation,
 } from '@/test/testUtils'
 
 import { seenEpisodeFactory } from '../seenEpisode.factory'
+import { seriesProgressFactory } from '../seriesProgress.factory'
 
 describe('features/seriesProgress/seriesProgress.schema', () => {
   describe('toggleEpisodeSeen mutation', () => {
@@ -177,6 +179,36 @@ describe('features/seriesProgress/seriesProgress.schema', () => {
   })
 
   describe('Episode type', () => {
+    const queryEpisode = (seriesId: number, user: Selectable<User>) => {
+      return executeOperation({
+        operation: graphql(`
+          query seriesProgressEpisode($id: ID!) {
+            series(id: $id) {
+              __typename
+              ... on Series {
+                seasons {
+                  episodes {
+                    id
+                    isSeen
+                  }
+                }
+                latestSeenEpisode {
+                  id
+                }
+                nextEpisode {
+                  id
+                }
+              }
+            }
+          }
+        `),
+        variables: {
+          id: String(seriesId),
+        },
+        user,
+      })
+    }
+
     it('allows querying if the episode is seen', async () => {
       const user = await userFactory.create()
 
@@ -194,30 +226,93 @@ describe('features/seriesProgress/seriesProgress.schema', () => {
         episodeId: episode.id,
       })
 
-      const res = await executeOperation({
-        operation: graphql(`
-          query seriesProgressEpisodeIsSeen($id: ID!) {
-            series(id: $id) {
-              __typename
-              ... on Series {
-                seasons {
-                  episodes {
-                    id
-                    isSeen
-                  }
-                }
-              }
-            }
-          }
-        `),
-        variables: {
-          id: String(series.id),
-        },
-        user,
-      })
+      const res = await queryEpisode(series.id, user)
       const resSeries = checkErrors(res.data?.series)
 
       expect(resSeries.seasons[0]?.episodes[0]?.isSeen).toBeTruthy()
+    })
+
+    it('allows querying the latest seen episode of a series', async () => {
+      const {
+        series,
+        seasons: [
+          {
+            episodes: [s1e1, s1e2],
+          },
+        ],
+      } = await createSeriesWithEpisodesAndSeasons([2])
+
+      const { user } = await createSeenEpisodesForUser([s1e1.id])
+      await seriesProgressFactory.create({
+        userId: user.id,
+        seriesId: series.id,
+        latestSeenEpisodeId: s1e1.id,
+        nextEpisodeId: s1e2.id,
+      })
+
+      const res = await queryEpisode(series.id, user)
+      const resSeries = checkErrors(res.data?.series)
+
+      expect(resSeries.latestSeenEpisode?.id).toBe(String(s1e1.id))
+    })
+
+    it('returns null if there is no latest seen episode', async () => {
+      const { series } = await createSeriesWithEpisodesAndSeasons([1])
+
+      const user = await userFactory.create()
+
+      const res = await queryEpisode(series.id, user)
+      const resSeries = checkErrors(res.data?.series)
+
+      expect(resSeries.latestSeenEpisode).toBe(null)
+    })
+
+    it('allows querying the next episode of a series', async () => {
+      const {
+        series,
+        seasons: [
+          {
+            episodes: [s1e1, s1e2],
+          },
+        ],
+      } = await createSeriesWithEpisodesAndSeasons([2])
+
+      const { user } = await createSeenEpisodesForUser([s1e1.id])
+      await seriesProgressFactory.create({
+        userId: user.id,
+        seriesId: series.id,
+        latestSeenEpisodeId: s1e1.id,
+        nextEpisodeId: s1e2.id,
+      })
+
+      const res = await queryEpisode(series.id, user)
+      const resSeries = checkErrors(res.data?.series)
+
+      expect(resSeries.nextEpisode?.id).toBe(String(s1e2.id))
+    })
+
+    it('returns null if there is no next episode', async () => {
+      const {
+        series,
+        seasons: [
+          {
+            episodes: [s1e1],
+          },
+        ],
+      } = await createSeriesWithEpisodesAndSeasons([1])
+
+      const { user } = await createSeenEpisodesForUser([s1e1.id])
+      await seriesProgressFactory.create({
+        userId: user.id,
+        seriesId: series.id,
+        latestSeenEpisodeId: s1e1.id,
+        nextEpisodeId: null,
+      })
+
+      const res = await queryEpisode(series.id, user)
+      const resSeries = checkErrors(res.data?.series)
+
+      expect(resSeries.nextEpisode).toBe(null)
     })
   })
 })

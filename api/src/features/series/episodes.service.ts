@@ -19,11 +19,13 @@ export const findOne = ({
 export const findMany = ({
   ctx,
   seasonIds,
+  episodeIds,
 }: {
   ctx: Context
-  seasonIds: number[]
+  seasonIds?: number[]
+  episodeIds?: number[]
 }) => {
-  return episodeRepository.findMany({ ctx, seasonIds })
+  return episodeRepository.findMany({ ctx, seasonIds, episodeIds })
 }
 
 export const findEpisodesBySeasonIds = async ({

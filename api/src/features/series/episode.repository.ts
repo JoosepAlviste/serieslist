@@ -129,15 +129,23 @@ export const findNextEpisode = async ({
 export const findMany = ({
   ctx,
   seasonIds,
+  episodeIds,
 }: {
   ctx: Context
-  seasonIds: number[]
+  seasonIds?: number[]
+  episodeIds?: number[]
 }) => {
-  return ctx.db
-    .selectFrom('episode')
-    .selectAll()
-    .where('seasonId', 'in', seasonIds)
-    .execute()
+  let query = ctx.db.selectFrom('episode').selectAll()
+
+  if (seasonIds) {
+    query = query.where('seasonId', 'in', seasonIds)
+  }
+
+  if (episodeIds) {
+    query = query.where('id', 'in', episodeIds)
+  }
+
+  return query.execute()
 }
 
 export const createMany = ({

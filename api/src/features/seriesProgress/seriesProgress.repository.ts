@@ -3,6 +3,23 @@ import { type InsertObject } from 'kysely'
 import { type DB } from '@/generated/db'
 import { type Context } from '@/types/context'
 
+export const findMany = ({
+  ctx,
+  seriesIds,
+  userId,
+}: {
+  ctx: Context
+  seriesIds: number[]
+  userId: number
+}) => {
+  return ctx.db
+    .selectFrom('seriesProgress')
+    .where('userId', '=', userId)
+    .where('seriesId', 'in', seriesIds)
+    .selectAll()
+    .execute()
+}
+
 export const createOrUpdateOne = ({
   ctx,
   seriesProgress,

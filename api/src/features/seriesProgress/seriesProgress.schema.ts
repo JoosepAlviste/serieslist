@@ -1,4 +1,4 @@
-import { EpisodeRef, SeasonRef } from '@/features/series'
+import { EpisodeRef, SeasonRef, SeriesRef } from '@/features/series'
 import { NotFoundError, UnauthorizedError } from '@/lib/errors'
 import { builder } from '@/schemaBuilder'
 
@@ -76,4 +76,40 @@ builder.objectField(EpisodeRef, 'isSeen', (t) =>
       })
     },
   }),
+)
+
+builder.objectField(SeriesRef, 'latestSeenEpisode', (t) =>
+  t
+    .withAuth({
+      authenticated: true,
+    })
+    .loadable({
+      type: EpisodeRef,
+      nullable: true,
+      resolve: (parent) => parent.id,
+      load: (ids: number[], ctx) => {
+        return seriesProgressService.findLatestSeenEpisodesForSeries({
+          ctx,
+          seriesIds: ids,
+        })
+      },
+    }),
+)
+
+builder.objectField(SeriesRef, 'nextEpisode', (t) =>
+  t
+    .withAuth({
+      authenticated: true,
+    })
+    .loadable({
+      type: EpisodeRef,
+      nullable: true,
+      resolve: (parent) => parent.id,
+      load: (ids: number[], ctx) => {
+        return seriesProgressService.findNextEpisodesForSeries({
+          ctx,
+          seriesIds: ids,
+        })
+      },
+    }),
 )

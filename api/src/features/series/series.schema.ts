@@ -53,7 +53,7 @@ export const SeasonRef = builder.objectRef<SeasonType>('Season').implement({
   }),
 })
 
-const SeriesRef = builder.objectRef<SeriesType>('Series').implement({
+export const SeriesRef = builder.objectRef<SeriesType>('Series').implement({
   fields: (t) => ({
     id: t.id({
       resolve: (parent) => String(parent.id),
