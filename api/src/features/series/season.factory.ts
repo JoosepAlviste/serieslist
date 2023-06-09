@@ -7,27 +7,15 @@ import { db } from '@/lib/db'
 import { seriesFactory } from './series.factory'
 
 export const seasonFactory = Factory.define<Selectable<Season>>(
-  ({ sequence, onCreate, associations, params }) => {
+  ({ sequence, onCreate, params }) => {
     onCreate(async (season) => {
-      const seriesId =
-        associations.seriesId ??
-        params.seriesId ??
-        (
-          await db
-            .selectFrom('series')
-            .selectAll()
-            .where('id', '=', season.seriesId)
-            .executeTakeFirst()
-        )?.id ??
-        (await seriesFactory.create()).id
-
       return db
         .insertInto('season')
         .returningAll()
         .values({
           ...season,
           id: undefined,
-          seriesId,
+          seriesId: params.seriesId ?? (await seriesFactory.create()).id,
         })
         .executeTakeFirstOrThrow()
     })
@@ -35,7 +23,7 @@ export const seasonFactory = Factory.define<Selectable<Season>>(
     return {
       id: sequence,
       number: sequence,
-      seriesId: associations.seriesId ?? seriesFactory.build().id,
+      seriesId: params.seriesId ?? seriesFactory.build().id,
     }
   },
 )

@@ -8,27 +8,15 @@ import { db } from '@/lib/db'
 import { seasonFactory } from './season.factory'
 
 export const episodeFactory = Factory.define<Selectable<Episode>>(
-  ({ sequence, onCreate, associations, params }) => {
+  ({ sequence, onCreate, params }) => {
     onCreate(async (episode) => {
-      const seasonId =
-        associations.seasonId ??
-        params.seasonId ??
-        (
-          await db
-            .selectFrom('season')
-            .selectAll()
-            .where('id', '=', episode.seasonId)
-            .executeTakeFirst()
-        )?.id ??
-        (await seasonFactory.create()).id
-
       return db
         .insertInto('episode')
         .returningAll()
         .values({
           ...episode,
           id: undefined,
-          seasonId,
+          seasonId: params.seasonId ?? (await seasonFactory.create()).id,
         })
         .executeTakeFirstOrThrow()
     })
@@ -40,7 +28,7 @@ export const episodeFactory = Factory.define<Selectable<Episode>>(
       number: sequence,
       imdbRating: '7.6',
       releasedAt: new Date(Date.now()),
-      seasonId: associations.seasonId ?? seasonFactory.build().id,
+      seasonId: params.seasonId ?? seasonFactory.build().id,
     }
   },
 )

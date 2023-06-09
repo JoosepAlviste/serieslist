@@ -9,35 +9,13 @@ import { db } from '@/lib/db'
 export const seenEpisodeFactory = Factory.define<Selectable<SeenEpisode>>(
   ({ onCreate, params }) => {
     onCreate(async (seenEpisode) => {
-      const userId =
-        params.userId ??
-        (
-          await db
-            .selectFrom('user')
-            .selectAll()
-            .where('id', '=', seenEpisode.userId)
-            .executeTakeFirst()
-        )?.id ??
-        (await userFactory.create()).id
-
-      const episodeId =
-        params.episodeId ??
-        (
-          await db
-            .selectFrom('episode')
-            .selectAll()
-            .where('id', '=', seenEpisode.episodeId)
-            .executeTakeFirst()
-        )?.id ??
-        (await episodeFactory.create()).id
-
       return db
         .insertInto('seenEpisode')
         .returningAll()
         .values({
           ...seenEpisode,
-          userId,
-          episodeId,
+          userId: params.userId ?? (await userFactory.create()).id,
+          episodeId: params.episodeId ?? (await episodeFactory.create()).id,
         })
         .executeTakeFirstOrThrow()
     })

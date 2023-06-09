@@ -430,14 +430,14 @@ describe('features/series/series.schema', () => {
   describe('Series type', () => {
     it('allows fetching seasons for a series', async () => {
       const series = await seriesFactory.create()
-      const season1 = await seasonFactory.create(
-        { number: 1 },
-        { associations: { seriesId: series.id } },
-      )
-      const season2 = await seasonFactory.create(
-        { number: 2 },
-        { associations: { seriesId: series.id } },
-      )
+      const season1 = await seasonFactory.create({
+        number: 1,
+        seriesId: series.id,
+      })
+      const season2 = await seasonFactory.create({
+        number: 2,
+        seriesId: series.id,
+      })
 
       const res = await executeOperation({
         operation: graphql(`
@@ -472,28 +472,21 @@ describe('features/series/series.schema', () => {
 
     it('allows fetching episodes for a series', async () => {
       const series = await seriesFactory.create()
-      const season1 = await seasonFactory.create(
-        {},
-        { associations: { seriesId: series.id } },
-      )
-      const episode1 = await episodeFactory.create(
-        {
-          number: 1,
-          title: 'Episode one',
-          imdbRating: '1.2',
-          releasedAt: parseISO('2022-01-01'),
-        },
-        { associations: { seasonId: season1.id } },
-      )
-      const episode2 = await episodeFactory.create(
-        {
-          number: 2,
-          title: 'Episode two',
-          imdbRating: '2.3',
-          releasedAt: parseISO('2022-01-02'),
-        },
-        { associations: { seasonId: season1.id } },
-      )
+      const season1 = await seasonFactory.create({ seriesId: series.id })
+      const episode1 = await episodeFactory.create({
+        number: 1,
+        title: 'Episode one',
+        imdbRating: '1.2',
+        releasedAt: parseISO('2022-01-01'),
+        seasonId: season1.id,
+      })
+      const episode2 = await episodeFactory.create({
+        number: 2,
+        title: 'Episode two',
+        imdbRating: '2.3',
+        releasedAt: parseISO('2022-01-02'),
+        seasonId: season1.id,
+      })
 
       const res = await executeOperation({
         operation: graphql(`

@@ -13,35 +13,13 @@ export const userSeriesStatusFactory = Factory.define<
   Selectable<UserSeriesStatus>
 >(({ params, onCreate }) => {
   onCreate(async (userSeriesStatus) => {
-    const userId =
-      params.userId ??
-      (
-        await db
-          .selectFrom('user')
-          .selectAll()
-          .where('id', '=', userSeriesStatus.userId)
-          .executeTakeFirst()
-      )?.id ??
-      (await userFactory.create()).id
-
-    const seriesId =
-      params.seriesId ??
-      (
-        await db
-          .selectFrom('series')
-          .selectAll()
-          .where('id', '=', userSeriesStatus.seriesId)
-          .executeTakeFirst()
-      )?.id ??
-      (await seriesFactory.create()).id
-
     return db
       .insertInto('userSeriesStatus')
       .returningAll()
       .values({
         ...userSeriesStatus,
-        userId,
-        seriesId,
+        userId: params.userId ?? (await userFactory.create()).id,
+        seriesId: params.seriesId ?? (await seriesFactory.create()).id,
       })
       .executeTakeFirstOrThrow()
   })
