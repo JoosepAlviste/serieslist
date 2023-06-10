@@ -1,3 +1,4 @@
+import { seriesFactory } from '@/features/series'
 import { userFactory } from '@/features/users'
 import { db } from '@/lib/db'
 import {
@@ -6,9 +7,12 @@ import {
   createSeriesWithEpisodesAndSeasons,
 } from '@/test/testUtils'
 
+import { seriesProgressFactory } from '../seriesProgress.factory'
 import {
   advanceSeriesProgress,
   decreaseSeriesProgress,
+  findLatestSeenEpisodesForSeries,
+  findNextEpisodesForSeries,
 } from '../seriesProgress.service'
 
 describe('features/seriesProgress/seriesProgress.service', () => {
@@ -198,6 +202,62 @@ describe('features/seriesProgress/seriesProgress.service', () => {
         .executeTakeFirst()
 
       expect(seriesProgress).toBeFalsy()
+    })
+  })
+
+  describe('findLatestSeenEpisodesForSeries', () => {
+    it('does not fail if there is no progress one of the series', async () => {
+      const series1 = await seriesFactory.create()
+      const {
+        series: series2,
+        seasons: [
+          {
+            episodes: [s1e1],
+          },
+        ],
+      } = await createSeriesWithEpisodesAndSeasons([1])
+      const { user } = await createSeenEpisodesForUser([s1e1.id])
+      await seriesProgressFactory.create({
+        userId: user.id,
+        seriesId: series2.id,
+        latestSeenEpisodeId: s1e1.id,
+        nextEpisodeId: null,
+      })
+
+      const res = await findLatestSeenEpisodesForSeries({
+        ctx: createContext({ currentUser: user }),
+        seriesIds: [series1.id, series2.id],
+      })
+
+      expect(res[0]).toBeNull()
+    })
+  })
+
+  describe('findNextEpisodesForSeries', () => {
+    it('does not fail if there is no progress one of the series', async () => {
+      const series1 = await seriesFactory.create()
+      const {
+        series: series2,
+        seasons: [
+          {
+            episodes: [s1e1, s1e2],
+          },
+        ],
+      } = await createSeriesWithEpisodesAndSeasons([2])
+      const { user } = await createSeenEpisodesForUser([s1e1.id])
+      await seriesProgressFactory.create({
+        userId: user.id,
+        seriesId: series2.id,
+        latestSeenEpisodeId: s1e1.id,
+        nextEpisodeId: s1e2.id,
+      })
+
+      const res = await findNextEpisodesForSeries({
+        ctx: createContext({ currentUser: user }),
+        seriesIds: [series1.id, series2.id],
+      })
+
+      expect(res[0]).toBeNull()
     })
   })
 })

@@ -147,7 +147,7 @@ export const advanceSeriesProgress = async ({
       seriesId: latestEpisode.seriesId,
       userId: ctx.currentUser.id,
       latestSeenEpisodeId: latestSeenEpisodeId,
-      nextEpisodeId: nextEpisode?.id,
+      nextEpisodeId: nextEpisode?.id ?? null,
     },
   })
 }
@@ -222,8 +222,11 @@ export const findLatestSeenEpisodesForSeries = async ({
   const episodesByIds = keyBy(episodes, 'id')
 
   return seriesIds.map((seriesId) => {
-    const { latestSeenEpisodeId } = seenEpisodesBySeriesIds[seriesId]
-    return latestSeenEpisodeId ? episodesByIds[latestSeenEpisodeId] : null
+    const progress = seenEpisodesBySeriesIds[seriesId]
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    return progress?.latestSeenEpisodeId
+      ? episodesByIds[progress.latestSeenEpisodeId]
+      : null
   })
 }
 
@@ -255,7 +258,10 @@ export const findNextEpisodesForSeries = async ({
   const episodesByIds = keyBy(episodes, 'id')
 
   return seriesIds.map((seriesId) => {
-    const { nextEpisodeId } = seenEpisodesBySeriesIds[seriesId]
-    return nextEpisodeId ? episodesByIds[nextEpisodeId] : null
+    const progress = seenEpisodesBySeriesIds[seriesId]
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    return progress?.nextEpisodeId
+      ? episodesByIds[progress.nextEpisodeId]
+      : null
   })
 }
