@@ -29,6 +29,7 @@ export const tableHeadCellPoster = style({
 
 export const tableHeadCell = style({
   padding: '0.5rem 1rem',
+  whiteSpace: 'nowrap',
 })
 
 export const cell = style({

@@ -6,6 +6,7 @@ import { ReactComponent as CheckIcon } from './Check.svg'
 import { ReactComponent as CrossIcon } from './Cross.svg'
 import * as s from './Icon.css'
 import { ReactComponent as LogoIcon } from './Logo.svg'
+import { ReactComponent as PlusIcon } from './Plus.svg'
 import { ReactComponent as SearchIcon } from './Search.svg'
 import { ReactComponent as SeriesIcon } from './Series.svg'
 import { ReactComponent as TriangleIcon } from './Triangle.svg'
@@ -19,6 +20,7 @@ const icons = {
   search: SearchIcon,
   cross: CrossIcon,
   check: CheckIcon,
+  plus: PlusIcon,
 }
 
 export type IconName = keyof typeof icons

@@ -53,6 +53,9 @@ export const [lightThemeClass, vars] = createTheme({
 
     primary: colors.indigo500,
 
+    link: colors.indigo500,
+    linkHover: colors.indigo600,
+
     separator: colors.slate200,
 
     popoverBackground: colors.white,
@@ -81,6 +84,7 @@ export const [lightThemeClass, vars] = createTheme({
 
     iconButtonColor: colors.slate400,
     iconButtonHoverColor: colors.slate500,
+    iconButtonPrimaryHoverColor: colors.indigo600,
 
     searchHighlightBackground: colors.indigo50,
 
@@ -124,6 +128,9 @@ export const darkThemeClass = createTheme(vars, {
 
     primary: colors.indigo400,
 
+    link: colors.indigo400,
+    linkHover: colors.indigo300,
+
     popoverBackground: colors.slate900,
     popoverHoverBackground: colors.slate800,
 
@@ -145,6 +152,7 @@ export const darkThemeClass = createTheme(vars, {
 
     iconButtonColor: colors.slate500,
     iconButtonHoverColor: colors.slate400,
+    iconButtonPrimaryHoverColor: colors.indigo300,
 
     navIconBackground: colors.slate900,
     navIconHoverBackground: colors.slate800,

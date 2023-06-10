@@ -9,15 +9,19 @@ import * as s from './IconButton.css'
 type IconButtonProps = ComponentPropsWithoutRef<'button'> & {
   name: IconName
   label: string
+  variant?: keyof typeof s.variant
 }
 
 export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
-  function IconButton({ name, label, className, ...rest }, ref) {
+  function IconButton(
+    { name, label, variant = 'default', className, ...rest },
+    ref,
+  ) {
     return (
       <button
         ref={ref}
         type="button"
-        className={classNames(s.button, className)}
+        className={classNames(s.button, s.variant[variant], className)}
         {...rest}
       >
         <Icon name={name} label={label} />

@@ -2,13 +2,14 @@ import { useQuery } from '@apollo/client'
 import classNames from 'classnames'
 import React from 'react'
 
-import { LoadingSpinner } from '@/components'
+import { Link, LoadingSpinner } from '@/components'
 import { graphql } from '@/generated/gql/gql'
 import { type UserSeriesStatus } from '@/generated/gql/graphql'
 
 import { SeriesPoster } from '../SeriesPoster'
 
 import { ReactComponent as EmptyList } from './EmptyList.svg'
+import { LatestSeenEpisodeCell } from './LatestSeenEpisodeCell'
 import * as s from './SeriesList.css'
 
 type SeriesListProps = {
@@ -29,6 +30,7 @@ export const SeriesList = ({ status }: SeriesListProps) => {
               id
               title
               ...SeriesPoster_SeriesFragment
+              ...LatestSeenEpisodeCell_SeriesFragment
             }
           }
         }
@@ -57,6 +59,7 @@ export const SeriesList = ({ status }: SeriesListProps) => {
               <tr>
                 <th className={s.tableHeadCellPoster} />
                 <th className={s.tableHeadCell}>Title</th>
+                <th className={s.tableHeadCell}>Latest episode</th>
               </tr>
             </thead>
             <tbody>
@@ -65,7 +68,14 @@ export const SeriesList = ({ status }: SeriesListProps) => {
                   <td className={classNames(s.cell, s.cellPoster)}>
                     <SeriesPoster series={oneSeries} />
                   </td>
-                  <td className={s.cell}>{oneSeries.title}</td>
+                  <td className={s.cell}>
+                    <Link href={`/series/${oneSeries.id}`}>
+                      {oneSeries.title}
+                    </Link>
+                  </td>
+                  <td className={s.cell}>
+                    <LatestSeenEpisodeCell series={oneSeries} />
+                  </td>
                 </tr>
               ))}
             </tbody>

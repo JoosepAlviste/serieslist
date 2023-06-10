@@ -7,6 +7,8 @@ import React, {
 
 import { usePageContext } from '@/hooks'
 
+import * as s from './Link.css'
+
 export type LinkProps = ComponentPropsWithoutRef<'a'> & {
   activeClass?: string
   children: ReactNode
@@ -21,6 +23,7 @@ export const Link = forwardRef<HTMLAnchorElement, LinkProps>(function Link(
   return (
     <a
       className={classNames(
+        s.link,
         {
           [activeClass ?? '']:
             activeClass && pageContext.urlPathname === rest.href,
