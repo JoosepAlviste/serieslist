@@ -44,10 +44,12 @@ EpisodeRef.implement({
   }),
 })
 
-export const SeasonRef = builder.loadableObject('Season', {
+export const SeasonRef = builder.loadableObjectRef('Season', {
   load: (seasonIds: number[], ctx: Context) => {
     return seasonService.findMany({ ctx, seasonIds })
   },
+})
+SeasonRef.implement({
   fields: (t) => ({
     id: t.id({
       resolve: (parent) => String(parent.id),
@@ -60,10 +62,18 @@ export const SeasonRef = builder.loadableObject('Season', {
       load: (ids, ctx) =>
         episodesService.findEpisodesBySeasonIds({ ctx, seasonIds: ids }),
     }),
+
+    series: t.field({
+      type: SeriesRef,
+      resolve: (parent) => parent.seriesId,
+    }),
   }),
 })
 
-export const SeriesRef = builder.objectRef<SeriesType>('Series').implement({
+export const SeriesRef = builder.loadableObject('Series', {
+  load: (seriesIds: number[], ctx: Context) => {
+    return seriesService.findMany({ ctx, seriesIds })
+  },
   fields: (t) => ({
     id: t.id({
       resolve: (parent) => String(parent.id),

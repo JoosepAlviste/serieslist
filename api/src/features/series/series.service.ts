@@ -312,3 +312,23 @@ export const findOne = ({
 }) => {
   return seriesRepository.findOne({ ctx, seriesId, imdbId, episodeId })
 }
+
+export const findMany = async ({
+  ctx,
+  imdbIds,
+  seriesIds,
+}: {
+  ctx: Context
+  imdbIds?: string[]
+  seriesIds?: number[]
+}) => {
+  const series = await seriesRepository.findMany({ ctx, imdbIds, seriesIds })
+
+  if (seriesIds) {
+    return series
+      .slice()
+      .sort((a, b) => seriesIds.indexOf(a.id) - seriesIds.indexOf(b.id))
+  }
+
+  return series
+}

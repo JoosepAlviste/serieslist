@@ -40,15 +40,23 @@ export const findOne = ({
 export const findMany = ({
   ctx,
   imdbIds,
+  seriesIds,
 }: {
   ctx: Context
-  imdbIds: string[]
+  imdbIds?: string[]
+  seriesIds?: number[]
 }) => {
-  return ctx.db
-    .selectFrom('series')
-    .selectAll()
-    .where('imdbId', 'in', imdbIds)
-    .execute()
+  let query = ctx.db.selectFrom('series').selectAll()
+
+  if (imdbIds) {
+    query = query.where('imdbId', 'in', imdbIds)
+  }
+
+  if (seriesIds) {
+    query = query.where('id', 'in', seriesIds)
+  }
+
+  return query.execute()
 }
 
 export const findManyForUser = ({
