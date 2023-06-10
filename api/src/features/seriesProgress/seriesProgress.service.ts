@@ -1,4 +1,5 @@
 import keyBy from 'lodash/keyBy'
+import maxBy from 'lodash/maxBy'
 
 import { episodesService, seasonService } from '@/features/series'
 import { NotFoundError } from '@/lib/errors'
@@ -82,6 +83,14 @@ export const markSeasonEpisodesAsSeen = async ({
       userId: ctx.currentUser.id,
     })),
   })
+
+  const lastEpisode = maxBy(episodes, (episode) => episode.number)
+  if (lastEpisode) {
+    await advanceSeriesProgress({
+      ctx,
+      latestSeenEpisodeId: lastEpisode.id,
+    })
+  }
 
   return season
 }
