@@ -279,7 +279,8 @@ export const findStatusForSeries = async ({
   const statusesBySeriesId = keyBy(allStatuses, 'seriesId')
 
   return seriesIds.map((seriesId) => {
-    const status = statusesBySeriesId[seriesId].status
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    const status = statusesBySeriesId[seriesId]?.status
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     return status ? UserSeriesStatus[status] : null
   })

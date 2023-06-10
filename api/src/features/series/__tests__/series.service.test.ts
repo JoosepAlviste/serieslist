@@ -1,6 +1,7 @@
 import { nanoid } from 'nanoid'
 
 import { omdbEpisodeFactory, omdbSeriesDetailsFactory } from '@/features/omdb'
+import { userFactory } from '@/features/users'
 import { db } from '@/lib/db'
 import { createContext } from '@/test/testUtils'
 
@@ -8,6 +9,7 @@ import { episodeFactory } from '../episode.factory'
 import { seasonFactory } from '../season.factory'
 import { seriesFactory } from '../series.factory'
 import {
+  findStatusForSeries,
   syncSeasonsAndEpisodesFromOMDb,
   syncSeriesDetailsFromOMDb,
 } from '../series.service'
@@ -179,6 +181,22 @@ describe('features/series/series.service', () => {
         ctx: createContext(),
         imdbId: series.imdbId,
       })
+    })
+  })
+
+  describe('findStatusForSeries', () => {
+    it('returns null if there is no status for the user', async () => {
+      const series = await seriesFactory.create()
+      const user = await userFactory.create()
+
+      const status = await findStatusForSeries({
+        ctx: createContext({
+          currentUser: user,
+        }),
+        seriesIds: [series.id],
+      })
+
+      expect(status[0]).toBeNull()
     })
   })
 })
