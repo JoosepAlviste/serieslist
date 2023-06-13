@@ -1,7 +1,9 @@
+import { type UpdateObject, type InsertObject } from 'kysely'
 import keyBy from 'lodash/keyBy'
 import maxBy from 'lodash/maxBy'
 
 import { episodesService, seasonService } from '@/features/series'
+import { type DB } from '@/generated/db'
 import { NotFoundError } from '@/lib/errors'
 import { type Context, type AuthenticatedContext } from '@/types/context'
 import { isTruthy } from '@/utils/isTruthy'
@@ -263,5 +265,24 @@ export const findNextEpisodesForSeries = async ({
     return progress?.nextEpisodeId
       ? episodesByIds[progress.nextEpisodeId]
       : null
+  })
+}
+
+export const updateMany = ({
+  ctx,
+  seriesId,
+  nextEpisodeId,
+  seriesProgress,
+}: {
+  ctx: Context
+  seriesId: number
+  nextEpisodeId: number | null
+  seriesProgress: UpdateObject<DB, 'seriesProgress'>
+}) => {
+  return seriesProgressRepository.updateMany({
+    ctx,
+    seriesId,
+    nextEpisodeId,
+    seriesProgress,
   })
 }

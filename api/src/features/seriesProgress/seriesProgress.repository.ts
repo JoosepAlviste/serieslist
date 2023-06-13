@@ -1,4 +1,4 @@
-import { type InsertObject } from 'kysely'
+import { type UpdateObject, type InsertObject } from 'kysely'
 
 import { type DB } from '@/generated/db'
 import { type Context } from '@/types/context'
@@ -37,6 +37,26 @@ export const createOrUpdateOne = ({
         updatedAt: new Date(Date.now()),
       }),
     )
+    .execute()
+}
+
+export const updateMany = ({
+  ctx,
+  seriesId,
+  nextEpisodeId,
+  seriesProgress,
+}: {
+  ctx: Context
+  seriesId: number
+  nextEpisodeId: number | null
+  seriesProgress: UpdateObject<DB, 'seriesProgress'>
+}) => {
+  return ctx.db
+    .updateTable('seriesProgress')
+    .where('seriesId', '=', seriesId)
+    .where('nextEpisodeId', 'is', nextEpisodeId)
+    .set(seriesProgress)
+    .returningAll()
     .execute()
 }
 

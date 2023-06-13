@@ -1,4 +1,5 @@
 import { addDays, isFuture, parse } from 'date-fns'
+import { type Selectable } from 'kysely'
 import keyBy from 'lodash/keyBy'
 import uniq from 'lodash/uniq'
 
@@ -7,6 +8,8 @@ import {
   type OMDbSeries,
   omdbService,
 } from '@/features/omdb'
+import { seriesProgressService } from '@/features/seriesProgress'
+import { type Episode } from '@/generated/db'
 import {
   type SeriesUpdateStatusInput,
   type SeriesSearchInput,
@@ -128,6 +131,12 @@ export const syncSeasonsAndEpisodesFromOMDb = async ({
     })
   }
 
+  const newEpisodes: {
+    episodeId: number
+    seasonNumber: number
+    episodeNumber: number
+  }[] = []
+
   await Promise.all(
     createArrayOfLength(totalNumberOfSeasons)
       .map((_, i) => i + 1)
@@ -144,7 +153,7 @@ export const syncSeasonsAndEpisodesFromOMDb = async ({
         }
 
         // TODO: Update existing episodes
-        return await episodeRepository.createMany({
+        const savedNewEpisodes = await episodeRepository.createMany({
           ctx,
           episodes: notSavedEpisodes.map((episode) => ({
             imdbId: episode.imdbID,
@@ -159,8 +168,39 @@ export const syncSeasonsAndEpisodesFromOMDb = async ({
             imdbRating: parseFloat(episode.imdbRating) || null,
           })),
         })
+
+        savedNewEpisodes.forEach((newEpisode) => {
+          newEpisodes.push({
+            episodeId: newEpisode.id,
+            episodeNumber: newEpisode.number,
+            seasonNumber,
+          })
+        })
+
+        return savedNewEpisodes
       }),
   )
+
+  if (newEpisodes.length) {
+    newEpisodes.sort((a, b) => {
+      if (a.seasonNumber < b.seasonNumber) {
+        return -1
+      } else if (a.episodeNumber < b.episodeNumber) {
+        return -1
+      }
+      return 1
+    })
+    const firstNewEpisode = newEpisodes[0]
+
+    await seriesProgressService.updateMany({
+      ctx,
+      seriesId,
+      nextEpisodeId: null,
+      seriesProgress: {
+        nextEpisodeId: firstNewEpisode.episodeId,
+      },
+    })
+  }
 }
 
 /**

@@ -155,5 +155,5 @@ export const createMany = ({
   ctx: Context
   episodes: InsertObject<DB, 'episode'>[]
 }) => {
-  return ctx.db.insertInto('episode').values(episodes).execute()
+  return ctx.db.insertInto('episode').values(episodes).returningAll().execute()
 }
