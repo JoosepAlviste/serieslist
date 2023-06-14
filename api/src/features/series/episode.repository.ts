@@ -196,12 +196,24 @@ export const findMany = ({
   return query.execute()
 }
 
-export const createMany = ({
+export const createOrUpdateMany = ({
   ctx,
   episodes,
 }: {
   ctx: Context
   episodes: InsertObject<DB, 'episode'>[]
 }) => {
-  return ctx.db.insertInto('episode').values(episodes).returningAll().execute()
+  return ctx.db
+    .insertInto('episode')
+    .values(episodes)
+    .returningAll()
+    .onConflict((oc) =>
+      oc.column('imdbId').doUpdateSet({
+        title: (eb) => eb.ref('excluded.title'),
+        number: (eb) => eb.ref('excluded.number'),
+        imdbRating: (eb) => eb.ref('excluded.imdbRating'),
+        releasedAt: (eb) => eb.ref('excluded.releasedAt'),
+      }),
+    )
+    .execute()
 }

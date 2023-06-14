@@ -6,6 +6,7 @@ import {
   type OMDbSearchSeries,
   type OMDbSeries,
   omdbService,
+  OMDbEpisode,
 } from '@/features/omdb'
 import { seriesProgressService } from '@/features/seriesProgress'
 import {
@@ -143,39 +144,38 @@ export const syncSeasonsAndEpisodesFromOMDb = async ({
           imdbId,
           seasonNumber,
         })
-        const notSavedEpisodes = season.Episodes.filter(
-          (episode) => !existingEpisodeImdbIds.has(episode.imdbID),
-        )
-        if (!notSavedEpisodes.length) {
+        if (!season.Episodes.length) {
           return
         }
 
-        // TODO: Update existing episodes
-        const savedNewEpisodes = await episodeRepository.createMany({
-          ctx,
-          episodes: notSavedEpisodes.map((episode) => ({
-            imdbId: episode.imdbID,
-            number: parseInt(episode.Episode),
-            title: episode.Title,
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            seasonId: seasonIdsByNumber[seasonNumber]!,
-            releasedAt:
-              episode.Released !== 'N/A'
-                ? parse(episode.Released, 'yyyy-MM-dd', new Date())
-                : null,
-            imdbRating: parseFloat(episode.imdbRating) || null,
-          })),
-        })
-
-        savedNewEpisodes.forEach((newEpisode) => {
-          newEpisodes.push({
-            episodeId: newEpisode.id,
-            episodeNumber: newEpisode.number,
-            seasonNumber,
+        const savedAndUpdatedEpisodes =
+          await episodeRepository.createOrUpdateMany({
+            ctx,
+            episodes: season.Episodes.map((episode) => ({
+              imdbId: episode.imdbID,
+              number: parseInt(episode.Episode),
+              title: episode.Title,
+              seasonId: seasonIdsByNumber[seasonNumber],
+              releasedAt:
+                episode.Released !== 'N/A'
+                  ? parse(episode.Released, 'yyyy-MM-dd', new Date())
+                  : null,
+              imdbRating: parseFloat(episode.imdbRating) || null,
+            })),
           })
+
+        savedAndUpdatedEpisodes.forEach((episode) => {
+          // Only add actually new episodes to the newEpisodes, not updated ones
+          if (!existingEpisodeImdbIds.has(episode.imdbId)) {
+            newEpisodes.push({
+              episodeId: episode.id,
+              episodeNumber: episode.number,
+              seasonNumber,
+            })
+          }
         })
 
-        return savedNewEpisodes
+        return savedAndUpdatedEpisodes
       }),
   )
 

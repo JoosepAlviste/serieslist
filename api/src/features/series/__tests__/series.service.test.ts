@@ -1,3 +1,4 @@
+import { format } from 'date-fns'
 import { nanoid } from 'nanoid'
 
 import { omdbEpisodeFactory, omdbSeriesDetailsFactory } from '@/features/omdb'
@@ -77,6 +78,55 @@ describe('features/series/series.service', () => {
       expect(episodes).toHaveLength(2)
       expect(episodes[0]?.id).toBe(existingEpisode.id)
       expect(episodes[1]?.imdbId).toBe(newOMDbEpisode.imdbID)
+    })
+
+    it('updates existing episodes', async () => {
+      const {
+        series,
+        seasons: [
+          {
+            season,
+            episodes: [s1e1],
+          },
+        ],
+      } = await createSeriesWithEpisodesAndSeasons([1])
+
+      const omdbEpisodeWithNewData = omdbEpisodeFactory.build(
+        {
+          Title: 'An updated title',
+          imdbRating: '9.8',
+          Released: '2023-01-10',
+        },
+        {
+          transient: { savedEpisode: s1e1 },
+        },
+      )
+      mockOMDbSeasonRequest(
+        {
+          imdbId: series.imdbId,
+          seasonNumber: 1,
+        },
+        {
+          Season: '1',
+          Episodes: [omdbEpisodeWithNewData],
+        },
+      )
+
+      await syncSeasonsAndEpisodesFromOMDb({
+        ctx: createContext(),
+        imdbId: series.imdbId,
+        seriesId: series.id,
+        totalNumberOfSeasons: 1,
+      })
+
+      const episode = await db
+        .selectFrom('episode')
+        .where('imdbId', '=', s1e1.imdbId)
+        .selectAll()
+        .executeTakeFirstOrThrow()
+      expect(episode.title).toBe('An updated title')
+      expect(episode.imdbRating).toBe('9.8')
+      expect(format(episode.releasedAt!, 'yyyy-MM-dd')).toBe('2023-01-10')
     })
 
     it('does not fail when syncing episodes with N/As', async () => {
