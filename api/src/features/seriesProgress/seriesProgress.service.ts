@@ -1,6 +1,5 @@
-import { type UpdateObject, type InsertObject } from 'kysely'
+import { type UpdateObject } from 'kysely'
 import keyBy from 'lodash/keyBy'
-import maxBy from 'lodash/maxBy'
 
 import { episodesService, seasonService } from '@/features/series'
 import { type DB } from '@/generated/db'
@@ -18,7 +17,10 @@ export const toggleEpisodeSeen = async ({
   ctx: AuthenticatedContext
   episodeId: number
 }) => {
-  const episode = await episodesService.findOne({ ctx, episodeId })
+  const episode = await episodesService.findOneWithSeasonAndSeriesInfo({
+    ctx,
+    episodeId,
+  })
   if (!episode) {
     throw new NotFoundError()
   }
@@ -38,9 +40,9 @@ export const toggleEpisodeSeen = async ({
       },
     })
 
-    await advanceSeriesProgress({
+    await recalculateSeriesProgress({
       ctx,
-      latestSeenEpisodeId: episode.id,
+      seriesId: episode.seriesId,
     })
   } else {
     await seenEpisodeRepository.deleteOne({
@@ -49,9 +51,9 @@ export const toggleEpisodeSeen = async ({
       episodeId: episode.id,
     })
 
-    await decreaseSeriesProgress({
+    await recalculateSeriesProgress({
       ctx,
-      previousLatestSeenEpisodeId: episode.id,
+      seriesId: episode.seriesId,
     })
   }
 
@@ -86,11 +88,10 @@ export const markSeasonEpisodesAsSeen = async ({
     })),
   })
 
-  const lastEpisode = maxBy(episodes, (episode) => episode.number)
-  if (lastEpisode) {
-    await advanceSeriesProgress({
+  if (episodes.length) {
+    await recalculateSeriesProgress({
       ctx,
-      latestSeenEpisodeId: lastEpisode.id,
+      seriesId: season.seriesId,
     })
   }
 
@@ -121,79 +122,49 @@ export const findIsSeenForEpisodes = async ({
   })
 }
 
-export const advanceSeriesProgress = async ({
+export const recalculateSeriesProgress = async ({
   ctx,
-  latestSeenEpisodeId,
+  seriesId,
 }: {
   ctx: AuthenticatedContext
-  latestSeenEpisodeId: number
+  seriesId: number
 }) => {
-  const latestEpisode = await episodesService.findOneWithSeasonAndSeriesInfo({
-    ctx,
-    episodeId: latestSeenEpisodeId,
-  })
-  if (!latestEpisode) {
-    throw new NotFoundError()
-  }
+  const firstNotSeenEpisode =
+    await episodesService.findFirstNotSeenEpisodeInSeriesForUser({
+      ctx,
+      seriesId,
+      userId: ctx.currentUser.id,
+    })
 
-  const nextEpisode = await episodesService.findNextEpisode({
-    ctx,
-    seriesId: latestEpisode.seriesId,
-    seasonNumber: latestEpisode.seasonNumber,
-    episodeNumber: latestEpisode.number,
-  })
+  const lastSeenEpisode = firstNotSeenEpisode
+    ? await episodesService.findPreviousEpisode({
+        ctx,
+        seriesId,
+        seasonNumber: firstNotSeenEpisode.seasonNumber,
+        episode: firstNotSeenEpisode,
+      })
+    : await episodesService.findLastEpisodeOfSeries({
+        ctx,
+        seriesId,
+      })
+  if (!lastSeenEpisode) {
+    await seriesProgressRepository.deleteOne({
+      ctx,
+      seriesId,
+      userId: ctx.currentUser.id,
+    })
+    return
+  }
 
   await seriesProgressRepository.createOrUpdateOne({
     ctx,
     seriesProgress: {
-      seriesId: latestEpisode.seriesId,
+      seriesId,
       userId: ctx.currentUser.id,
-      latestSeenEpisodeId: latestSeenEpisodeId,
-      nextEpisodeId: nextEpisode?.id ?? null,
+      latestSeenEpisodeId: lastSeenEpisode.id,
+      nextEpisodeId: firstNotSeenEpisode?.id ?? null,
     },
   })
-}
-
-export const decreaseSeriesProgress = async ({
-  ctx,
-  previousLatestSeenEpisodeId,
-}: {
-  ctx: AuthenticatedContext
-  previousLatestSeenEpisodeId: number
-}) => {
-  const previousLatestEpisode =
-    await episodesService.findOneWithSeasonAndSeriesInfo({
-      ctx,
-      episodeId: previousLatestSeenEpisodeId,
-    })
-  if (!previousLatestEpisode) {
-    throw new NotFoundError()
-  }
-
-  const previousEpisode = await episodesService.findPreviousEpisode({
-    ctx,
-    episode: previousLatestEpisode,
-    seasonNumber: previousLatestEpisode.seasonNumber,
-    seriesId: previousLatestEpisode.seriesId,
-  })
-
-  if (previousEpisode) {
-    await seriesProgressRepository.createOrUpdateOne({
-      ctx,
-      seriesProgress: {
-        seriesId: previousLatestEpisode.seriesId,
-        userId: ctx.currentUser.id,
-        nextEpisodeId: previousLatestSeenEpisodeId,
-        latestSeenEpisodeId: previousEpisode.id,
-      },
-    })
-  } else {
-    await seriesProgressRepository.deleteOne({
-      ctx,
-      seriesId: previousLatestEpisode.seriesId,
-      userId: ctx.currentUser.id,
-    })
-  }
 }
 
 export const findLatestSeenEpisodesForSeries = async ({

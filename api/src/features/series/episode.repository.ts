@@ -95,6 +95,54 @@ export const findLastEpisodeOfSeason = ({
     .executeTakeFirst()
 }
 
+export const findLastEpisodeOfSeries = ({
+  ctx,
+  seriesId,
+}: {
+  ctx: Context
+  seriesId: number
+}) => {
+  return ctx.db
+    .selectFrom('episode')
+    .innerJoin('season', 'episode.seasonId', 'season.id')
+    .where('season.seriesId', '=', seriesId)
+    .orderBy('season.number', 'desc')
+    .orderBy('episode.number', 'desc')
+    .limit(1)
+    .selectAll('episode')
+    .executeTakeFirst()
+}
+
+export const findFirstNotSeenEpisodeInSeriesForUser = async ({
+  ctx,
+  seriesId,
+  userId,
+}: {
+  ctx: Context
+  seriesId: number
+  userId: number
+}) => {
+  return ctx.db
+    .selectFrom('episode')
+    .innerJoin('season', 'season.id', 'episode.seasonId')
+    .where(({ not, exists, selectFrom }) =>
+      not(
+        exists(
+          selectFrom('seenEpisode')
+            .where('seenEpisode.userId', '=', userId)
+            .whereRef('seenEpisode.episodeId', '=', 'episode.id'),
+        ),
+      ),
+    )
+    .where('season.seriesId', '=', seriesId)
+    .selectAll('episode')
+    .select(['season.number as seasonNumber'])
+    .orderBy('seasonNumber', 'asc')
+    .orderBy('episode.number', 'asc')
+    .limit(1)
+    .executeTakeFirst()
+}
+
 export const findNextEpisode = async ({
   ctx,
   seriesId,

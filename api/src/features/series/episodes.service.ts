@@ -110,3 +110,32 @@ export const findPreviousEpisode = async ({
 
   return previousSeasonLastEpisode
 }
+
+export const findLastEpisodeOfSeries = ({
+  ctx,
+  seriesId,
+}: {
+  ctx: Context
+  seriesId: number
+}) => {
+  return episodeRepository.findLastEpisodeOfSeries({
+    ctx,
+    seriesId,
+  })
+}
+
+export const findFirstNotSeenEpisodeInSeriesForUser = async ({
+  ctx,
+  seriesId,
+  userId,
+}: {
+  ctx: Context
+  seriesId: number
+  userId: number
+}) => {
+  return episodeRepository.findFirstNotSeenEpisodeInSeriesForUser({
+    ctx,
+    seriesId,
+    userId,
+  })
+}

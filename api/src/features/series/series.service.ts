@@ -1,5 +1,4 @@
 import { addDays, isFuture, parse } from 'date-fns'
-import { type Selectable } from 'kysely'
 import keyBy from 'lodash/keyBy'
 import uniq from 'lodash/uniq'
 
@@ -9,7 +8,6 @@ import {
   omdbService,
 } from '@/features/omdb'
 import { seriesProgressService } from '@/features/seriesProgress'
-import { type Episode } from '@/generated/db'
 import {
   type SeriesUpdateStatusInput,
   type SeriesSearchInput,
