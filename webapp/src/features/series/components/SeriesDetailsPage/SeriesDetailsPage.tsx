@@ -78,6 +78,10 @@ export const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
               id
               isSeen
             }
+            series {
+              id
+              ...LatestSeenEpisodeCell_SeriesFragment
+            }
           }
         }
       }

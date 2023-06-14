@@ -49,6 +49,13 @@ export const EpisodeLine = ({
           ... on Episode {
             id
             isSeen
+            season {
+              id
+              series {
+                id
+                ...LatestSeenEpisodeCell_SeriesFragment
+              }
+            }
           }
         }
       }

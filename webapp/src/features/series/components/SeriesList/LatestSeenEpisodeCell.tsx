@@ -53,17 +53,7 @@ export const LatestSeenEpisodeCell = ({
               id
               series {
                 id
-                latestSeenEpisode {
-                  id
-                  number
-                  season {
-                    id
-                    number
-                  }
-                }
-                nextEpisode {
-                  id
-                }
+                ...LatestSeenEpisodeCell_SeriesFragment
               }
             }
           }
