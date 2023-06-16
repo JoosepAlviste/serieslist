@@ -8,6 +8,7 @@ import express from 'express'
 import { renderPage } from 'vite-plugin-ssr'
 
 import { config } from '@/config'
+import { CurrentUserDocument } from '@/generated/gql/graphql'
 import { type Theme } from '@/utils/theme'
 
 import { makeApolloClient } from '../lib/apollo.js'
@@ -44,6 +45,9 @@ async function startServer() {
       ssr: true,
       req,
     })
+    const currentUserResponse = await apollo.query({
+      query: CurrentUserDocument,
+    })
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
     const theme: Theme | undefined = req.cookies.theme
@@ -51,6 +55,10 @@ async function startServer() {
       urlOriginal: req.originalUrl,
       apollo,
       theme,
+      currentUser:
+        currentUserResponse.data.me.__typename === 'User'
+          ? currentUserResponse.data.me
+          : undefined,
     }
     const pageContext = await renderPage(pageContextInit)
 
