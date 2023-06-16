@@ -2,6 +2,7 @@ import { useMutation } from '@apollo/client'
 import React from 'react'
 
 import { Button } from '@/components'
+import { useAuthenticatedUser } from '@/features/auth'
 import { type FragmentType, graphql, useFragment } from '@/generated/gql'
 import { useToast } from '@/hooks'
 
@@ -36,6 +37,7 @@ export const EpisodeLine = ({
   const episode = useFragment(EpisodeLine_EpisodeFragment, episodeOriginal)
   const season = useFragment(EpisodeLine_SeasonFragment, seasonOriginal)
 
+  const { currentUser } = useAuthenticatedUser()
   const { showToast, showErrorToast } = useToast()
 
   const [toggleEpisodeSeen] = useMutation(
@@ -89,13 +91,15 @@ export const EpisodeLine = ({
         {formatEpisodeNumber(season.number, episode.number)}
       </div>
       <div className={s.episodeTitle}>{episode.title}</div>
-      <Button
-        variant={episode.isSeen ? 'primary' : 'secondary'}
-        size="s"
-        onClick={handleToggleEpisodeSeenClick}
-      >
-        {episode.isSeen ? 'Seen' : 'Mark as seen'}
-      </Button>
+      {currentUser && (
+        <Button
+          variant={episode.isSeen ? 'primary' : 'secondary'}
+          size="s"
+          onClick={handleToggleEpisodeSeenClick}
+        >
+          {episode.isSeen ? 'Seen' : 'Mark as seen'}
+        </Button>
+      )}
     </li>
   )
 }

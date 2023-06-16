@@ -167,24 +167,30 @@ export const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
                         Season {season.number}
                       </h3>
 
-                      <Tooltip
-                        text={
-                          areAllEpisodesSeen
-                            ? 'All episodes are already seen'
-                            : undefined
-                        }
-                      >
-                        <Button
-                          onClick={() =>
-                            handleMarkSeasonAsSeenClicked(season.id)
+                      {currentUser && (
+                        <Tooltip
+                          text={
+                            areAllEpisodesSeen
+                              ? 'All episodes are already seen'
+                              : undefined
                           }
-                          variant={areAllEpisodesSeen ? 'primary' : 'secondary'}
-                          size="s"
-                          isDisabled={areAllEpisodesSeen}
                         >
-                          {areAllEpisodesSeen ? 'Seen' : 'Mark season as seen'}
-                        </Button>
-                      </Tooltip>
+                          <Button
+                            onClick={() =>
+                              handleMarkSeasonAsSeenClicked(season.id)
+                            }
+                            variant={
+                              areAllEpisodesSeen ? 'primary' : 'secondary'
+                            }
+                            size="s"
+                            isDisabled={areAllEpisodesSeen}
+                          >
+                            {areAllEpisodesSeen
+                              ? 'Seen'
+                              : 'Mark season as seen'}
+                          </Button>
+                        </Tooltip>
+                      )}
                     </div>
 
                     <ol className={s.episodesContainer}>
