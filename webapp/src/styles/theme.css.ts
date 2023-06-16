@@ -94,6 +94,8 @@ export const [lightThemeClass, vars] = createTheme({
 
     toastSuccessAccessory: colors.green100,
     toastErrorAccessory: colors.red100,
+
+    drawingColor: colors.slate300,
   },
 
   fontWeight: {
@@ -170,6 +172,8 @@ export const darkThemeClass = createTheme(vars, {
 
     toastSuccessAccessory: colors.green950,
     toastErrorAccessory: colors.red950,
+
+    drawingColor: colors.slate700,
   },
 
   fontWeight: {

@@ -31,11 +31,7 @@ export const Header = ({ className }: HeaderProps) => {
             <DropdownMenu.Trigger asChild>
               <Button variant="ghost">
                 <Button.Icon>
-                  <Icon
-                    name="user"
-                    label="Current User"
-                    className={s.headerItemIcon}
-                  />
+                  <Icon name="user" label="Current User" />
                 </Button.Icon>
                 {currentUser.name}
                 <Button.Icon>
@@ -58,13 +54,9 @@ export const Header = ({ className }: HeaderProps) => {
             </DropdownMenu.Portal>
           </DropdownMenu.Root>
         ) : (
-          <Button
-            href="/login"
-            className={s.headerItemContainer}
-            variant="ghost"
-          >
+          <Button href="/login" variant="ghost">
             <Button.Icon>
-              <Icon name="user" aria-hidden className={s.headerItemIcon} />
+              <Icon name="user" aria-hidden />
             </Button.Icon>
             Log in
           </Button>

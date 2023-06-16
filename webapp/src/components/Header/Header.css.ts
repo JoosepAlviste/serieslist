@@ -76,28 +76,3 @@ export const dropdownItem = style({
     },
   },
 })
-
-export const headerItemContainer = style({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '0.5rem',
-  fontSize: '0.875rem',
-  padding: '0.5rem',
-  borderRadius: vars.radii.m,
-  color: vars.color.text,
-  textDecoration: 'none',
-
-  ':hover': {
-    backgroundColor: vars.color.inputSecondaryBackground,
-  },
-
-  selectors: {
-    '&[data-state="open"]': {
-      backgroundColor: vars.color.inputSecondaryBackground,
-    },
-  },
-})
-
-export const headerItemIcon = style({
-  color: vars.color.icon,
-})
