@@ -1,4 +1,5 @@
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
+import classNames from 'classnames'
 import React from 'react'
 
 import { useAuthenticatedUser } from '@/features/auth'
@@ -10,11 +11,15 @@ import { ThemeToggle } from '../ThemeToggle'
 
 import * as s from './Header.css'
 
-export const Header = () => {
+type HeaderProps = {
+  className?: string
+}
+
+export const Header = ({ className }: HeaderProps) => {
   const { currentUser, logOut } = useAuthenticatedUser()
 
   return (
-    <header className={s.header}>
+    <header className={classNames(s.header, className)}>
       <div className={s.searchContainer}>
         <Search className={s.search} />
       </div>

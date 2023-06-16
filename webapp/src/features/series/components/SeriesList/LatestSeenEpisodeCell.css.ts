@@ -9,6 +9,6 @@ export const container = style({
   gap: '0.5rem',
 
   vars: {
-    [vars.color.inputBackground]: vars.color.inputRaisedBackground,
+    [vars.color.inputSecondaryBackground]: vars.color.inputRaisedBackground,
   },
 })

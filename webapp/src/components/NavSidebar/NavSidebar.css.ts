@@ -58,5 +58,4 @@ export const container = style({
   alignItems: 'center',
   padding: '1rem',
   paddingRight: '2rem',
-  minHeight: '100vh',
 })

@@ -10,7 +10,7 @@ export const container = style({
 
 export const tabs = style({
   display: 'flex',
-  background: vars.color.inputBackground,
+  background: vars.color.inputSecondaryBackground,
   borderRadius: vars.radii.m,
   marginBottom: '2rem',
 })
@@ -18,7 +18,7 @@ export const tabs = style({
 export const tab = style({
   flex: 1,
   padding: '0.75rem',
-  borderColor: vars.color.inputBackground,
+  borderColor: vars.color.inputSecondaryBackground,
   borderStyle: 'solid',
   borderTopWidth: 0,
   borderLeftWidth: 0,

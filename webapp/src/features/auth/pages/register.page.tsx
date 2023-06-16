@@ -2,16 +2,17 @@ import React from 'react'
 
 import { Link } from '@/components'
 
+import { AuthLayout } from '../components'
 import { RegisterForm } from '../components/RegisterForm'
 
 export const Page = () => (
-  <>
-    <h1>Register</h1>
-
+  <AuthLayout
+    otherAction={
+      <>
+        Already have an account? <Link href="/login">Log in here</Link>
+      </>
+    }
+  >
     <RegisterForm />
-
-    <div>
-      Already have an account? <Link href="/login">Log in here</Link>
-    </div>
-  </>
+  </AuthLayout>
 )

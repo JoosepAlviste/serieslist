@@ -3,9 +3,11 @@ import React from 'react'
 import { navigate } from 'vite-plugin-ssr/client/router'
 import { z } from 'zod'
 
-import { Field } from '@/components'
+import { Button, Error, Field } from '@/components'
 import { graphql } from '@/generated/gql'
 import { useForm } from '@/lib/forms'
+
+import * as s from './LoginForm.css'
 
 type FormData = {
   email: string
@@ -71,10 +73,15 @@ export const LoginForm = () => {
   })
 
   return (
-    <form onSubmit={onSubmit}>
-      {errors.root && <p>Root error: {errors.root.message}</p>}
+    <form onSubmit={onSubmit} className={s.form}>
+      {errors.root && <Error>{errors.root.message}</Error>}
 
-      <Field label="Email" error={errors.email} {...register('email')} />
+      <Field
+        label="Email"
+        type="email"
+        error={errors.email}
+        {...register('email')}
+      />
 
       <Field
         label="Password"
@@ -83,7 +90,9 @@ export const LoginForm = () => {
         {...register('password')}
       />
 
-      <button type="submit">Log in</button>
+      <Button variant="primary" type="submit" className={s.button} size="l">
+        Log in
+      </Button>
     </form>
   )
 }

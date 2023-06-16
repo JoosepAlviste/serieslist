@@ -46,7 +46,7 @@ export const root = style({
   overflow: 'hidden',
 
   vars: {
-    [vars.color.inputBackground]: vars.color.inputRaisedBackground,
+    [vars.color.inputSecondaryBackground]: vars.color.inputRaisedBackground,
   },
 
   '::before': {

@@ -27,11 +27,9 @@ export function PageShell({
             <TooltipProvider>
               <ToastProvider>
                 <div className={s.pageContainer}>
-                  <NavSidebar />
-                  <main className={s.main}>
-                    <Header />
-                    {children}
-                  </main>
+                  <Header className={s.header} />
+                  <NavSidebar className={s.nav} />
+                  <main className={s.main}>{children}</main>
                 </div>
               </ToastProvider>
             </TooltipProvider>

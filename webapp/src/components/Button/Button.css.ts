@@ -6,6 +6,7 @@ import { vars } from '@/styles/theme.css'
 const baseButton = style({
   display: 'flex',
   alignItems: 'center',
+  justifyContent: 'center',
   gap: '0.5rem',
 })
 
@@ -24,6 +25,11 @@ export const buttonSize = styleVariants({
     padding: '0.5rem 1rem',
     borderRadius: vars.radii.m,
   },
+  l: {
+    fontSize: '1rem',
+    padding: '0.75rem 1rem',
+    borderRadius: vars.radii.m,
+  },
 })
 
 export const button = styleVariants({
@@ -35,11 +41,11 @@ export const button = styleVariants({
 
       selectors: {
         [`&:not(${disabled}):hover`]: {
-          backgroundColor: vars.color.inputBackground,
+          backgroundColor: vars.color.inputSecondaryBackground,
         },
 
         [`&:not(${disabled}):focus-visible`]: {
-          backgroundColor: vars.color.inputBackground,
+          backgroundColor: vars.color.inputSecondaryBackground,
         },
       },
     },

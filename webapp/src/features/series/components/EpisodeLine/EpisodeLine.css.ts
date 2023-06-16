@@ -6,7 +6,7 @@ export const episode = style({
   display: 'flex',
   alignItems: 'center',
   gap: '0.5rem',
-  background: vars.color.inputBackground,
+  background: vars.color.inputSecondaryBackground,
   color: vars.color.textSecondary,
   borderRadius: vars.radii.s,
   paddingTop: '0.5rem',

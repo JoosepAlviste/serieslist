@@ -8,7 +8,7 @@ export const button = style({
   borderRadius: '50%',
 
   ':hover': {
-    backgroundColor: vars.color.inputBackground,
+    backgroundColor: vars.color.inputSecondaryBackground,
   },
 })
 

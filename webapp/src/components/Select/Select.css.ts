@@ -7,7 +7,7 @@ export const trigger = style({
   display: 'flex',
   alignItems: 'center',
   gap: '0.5rem',
-  background: vars.color.inputBackground,
+  background: vars.color.inputSecondaryBackground,
   borderRadius: vars.radii.s,
   padding: '0.5rem 1rem',
   color: vars.color.textSecondary,

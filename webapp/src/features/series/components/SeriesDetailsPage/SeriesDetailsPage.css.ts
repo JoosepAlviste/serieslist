@@ -75,10 +75,10 @@ export const seasonTrigger = style({
   paddingBottom: 'calc(0.5rem - 2px)',
   paddingLeft: '0.75rem',
   color: vars.color.textSecondary,
-  background: vars.color.inputBackground,
+  background: vars.color.inputSecondaryBackground,
   borderBottomWidth: 2,
   borderBottomStyle: 'solid',
-  borderBottomColor: vars.color.inputBackground,
+  borderBottomColor: vars.color.inputSecondaryBackground,
 
   ':hover': {
     background: vars.color.inputRaisedBackground,

@@ -88,12 +88,12 @@ export const headerItemContainer = style({
   textDecoration: 'none',
 
   ':hover': {
-    backgroundColor: vars.color.inputBackground,
+    backgroundColor: vars.color.inputSecondaryBackground,
   },
 
   selectors: {
     '&[data-state="open"]': {
-      backgroundColor: vars.color.inputBackground,
+      backgroundColor: vars.color.inputSecondaryBackground,
     },
   },
 })

@@ -7,7 +7,7 @@ export const container = style({
   alignItems: 'center',
   gap: '0.25rem',
   borderRadius: vars.radii.m,
-  backgroundColor: vars.color.inputBackground,
+  backgroundColor: vars.color.inputSecondaryBackground,
   paddingTop: '0.5rem',
   paddingRight: '0.75rem',
   paddingBottom: '0.5rem',
@@ -21,8 +21,6 @@ export const container = style({
 
 export const input = style({
   flex: 1,
-  border: 'none',
-  backgroundColor: 'transparent',
   lineHeight: 1,
   color: vars.color.text,
 

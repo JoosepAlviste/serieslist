@@ -1,4 +1,5 @@
 import * as NavigationMenu from '@radix-ui/react-navigation-menu'
+import classNames from 'classnames'
 import React from 'react'
 
 import { Link, Tooltip } from '@/components'
@@ -7,8 +8,12 @@ import { Icon } from '../Icon'
 
 import * as s from './NavSidebar.css'
 
-export const NavSidebar = () => (
-  <NavigationMenu.Root orientation="vertical">
+type NavSidebarProps = {
+  className?: string
+}
+
+export const NavSidebar = ({ className }: NavSidebarProps) => (
+  <NavigationMenu.Root orientation="vertical" className={classNames(className)}>
     <NavigationMenu.List className={s.container}>
       <Tooltip text="Home" side="right">
         <NavigationMenu.Item className={s.navItemLogo}>

@@ -32,6 +32,7 @@ const colors = {
 
   red100: '#fee2e2',
   red400: '#f87171',
+  red500: '#ef4444',
   red600: '#dc2626',
   red950: '#450a0a',
 
@@ -52,6 +53,7 @@ export const [lightThemeClass, vars] = createTheme({
     textHighlightedBackgroundDarker: colors.indigo200,
 
     primary: colors.indigo500,
+    error: colors.red500,
 
     link: colors.indigo500,
     linkHover: colors.indigo600,
@@ -61,7 +63,9 @@ export const [lightThemeClass, vars] = createTheme({
     popoverBackground: colors.white,
     popoverHoverBackground: colors.slate100,
 
-    inputBackground: colors.slate100,
+    inputBackground: colors.white,
+    inputBorder: colors.slate300,
+    inputSecondaryBackground: colors.slate100,
     inputRaisedBackground: colors.slate200,
     inputAccessoryBackground: colors.slate200,
     inputAccessoryColor: colors.slate500,
@@ -127,6 +131,7 @@ export const darkThemeClass = createTheme(vars, {
     separator: colors.slate800,
 
     primary: colors.indigo400,
+    error: colors.red400,
 
     link: colors.indigo400,
     linkHover: colors.indigo300,
@@ -135,6 +140,8 @@ export const darkThemeClass = createTheme(vars, {
     popoverHoverBackground: colors.slate800,
 
     inputBackground: colors.slate900,
+    inputBorder: colors.slate900,
+    inputSecondaryBackground: colors.slate900,
     inputRaisedBackground: colors.slate800,
     inputAccessoryBackground: colors.slate800,
     inputAccessoryColor: colors.slate400,
