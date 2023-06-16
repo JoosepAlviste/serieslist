@@ -83,8 +83,8 @@ export const [lightThemeClass, vars] = createTheme({
 
     navIconBackground: colors.slate100,
     navIconHoverBackground: colors.slate200,
-    navIconActiveBackground: colors.slate900,
-    navIconActiveColor: colors.slate100,
+    navIconActiveBackground: colors.slate200,
+    navIconActiveColor: colors.slate500,
 
     iconButtonColor: colors.slate400,
     iconButtonHoverColor: colors.slate500,

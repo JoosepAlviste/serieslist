@@ -4,6 +4,7 @@ import React, { type SVGAttributes } from 'react'
 
 import { ReactComponent as CheckIcon } from './Check.svg'
 import { ReactComponent as CrossIcon } from './Cross.svg'
+import { ReactComponent as GitHubIcon } from './GitHub.svg'
 import * as s from './Icon.css'
 import { ReactComponent as LogoIcon } from './Logo.svg'
 import { ReactComponent as PlusIcon } from './Plus.svg'
@@ -21,6 +22,7 @@ const icons = {
   cross: CrossIcon,
   check: CheckIcon,
   plus: PlusIcon,
+  github: GitHubIcon,
 }
 
 export type IconName = keyof typeof icons

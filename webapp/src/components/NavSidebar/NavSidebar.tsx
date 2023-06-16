@@ -19,9 +19,9 @@ export const NavSidebar = ({ className }: NavSidebarProps) => {
   return (
     <NavigationMenu.Root
       orientation="vertical"
-      className={classNames(className)}
+      className={classNames(s.container, className)}
     >
-      <NavigationMenu.List className={s.container}>
+      <NavigationMenu.List className={s.list}>
         <Tooltip text="Home" side="right">
           <NavigationMenu.Item className={s.navItemLogo}>
             <NavigationMenu.Link href="/" className={s.navLinkLogo}>
@@ -34,7 +34,7 @@ export const NavSidebar = ({ className }: NavSidebarProps) => {
           <Tooltip text="My series list" side="right">
             <NavigationMenu.Item>
               <NavigationMenu.Link
-                href="/series/list"
+                href="/series/list/in-progress"
                 className={s.navLink}
                 asChild
               >
@@ -45,6 +45,20 @@ export const NavSidebar = ({ className }: NavSidebarProps) => {
             </NavigationMenu.Item>
           </Tooltip>
         )}
+
+        <div className={s.spacer} />
+
+        <Tooltip text="Check out the code on GitHub" side="right">
+          <NavigationMenu.Item>
+            <NavigationMenu.Link
+              href="https://github.com/JoosepAlviste/serieslist"
+              className={s.navLink}
+              target="_blank"
+            >
+              <Icon name="github" size="l" label="GitHub" />
+            </NavigationMenu.Link>
+          </NavigationMenu.Item>
+        </Tooltip>
       </NavigationMenu.List>
     </NavigationMenu.Root>
   )

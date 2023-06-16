@@ -1,7 +1,13 @@
-import { style } from '@vanilla-extract/css'
+import { globalStyle, style } from '@vanilla-extract/css'
 
 import { iconColorVar } from '@/styles/cssVariables'
 import { vars } from '@/styles/theme.css'
+
+export const container = style({})
+
+globalStyle(`${container} > div`, {
+  height: '100%',
+})
 
 export const navLink = style({
   width: '3rem',
@@ -52,10 +58,15 @@ export const navLinkLogo = style([
   },
 ])
 
-export const container = style({
+export const list = style({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
+  height: '100%',
   padding: '1rem',
   paddingRight: '2rem',
+})
+
+export const spacer = style({
+  flex: 1,
 })
