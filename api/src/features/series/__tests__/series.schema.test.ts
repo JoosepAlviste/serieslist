@@ -212,6 +212,7 @@ describe('features/series/series.schema', () => {
         series.imdbId,
         omdbSeriesDetailsFactory.build({
           imdbID: series.imdbId,
+          imdbRating: '8.9',
           Plot: 'Updated plot',
           totalSeasons: '0',
         }),
@@ -227,6 +228,7 @@ describe('features/series/series.schema', () => {
       scope.isDone()
 
       expect(resSeries.plot).toBe('Updated plot')
+      expect(resSeries.imdbRating).toBe('8.9')
       expect(resSeries.syncedAt).not.toBeNull()
     })
 

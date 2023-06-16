@@ -47,7 +47,7 @@ export type Series = {
   updatedAt: Generated<Timestamp>
   runtimeMinutes: number | null
   plot: string | null
-  imdbRating: number | null
+  imdbRating: Numeric | null
   syncedAt: Timestamp | null
 }
 

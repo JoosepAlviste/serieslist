@@ -34,6 +34,8 @@ const parseSeriesFromOMDbResponse = (
     'Runtime' in omdbSeries
       ? omdbService.parseOMDbSeriesRuntime({ runtime: omdbSeries.Runtime })
       : null,
+  imdbRating:
+    'imdbRating' in omdbSeries ? parseFloat(omdbSeries.imdbRating) : null,
   ...omdbService.parseOMDbSeriesYears({ years: omdbSeries.Year }),
 })
 

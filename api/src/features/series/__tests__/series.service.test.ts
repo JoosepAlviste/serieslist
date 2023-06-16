@@ -85,7 +85,6 @@ describe('features/series/series.service', () => {
         series,
         seasons: [
           {
-            season,
             episodes: [s1e1],
           },
         ],
