@@ -1,6 +1,5 @@
 import { useMutation, useQuery } from '@apollo/client'
 import React, { type FC, type ReactNode } from 'react'
-import { navigate } from 'vite-plugin-ssr/client/router'
 
 import { graphql } from '@/generated/gql'
 import { usePageContext } from '@/hooks'
@@ -49,7 +48,7 @@ export const AuthenticatedUserProvider: FC<AuthenticatedUserProviderProps> = ({
     await logOutMutate()
     await refetch()
 
-    await navigate(window.location.pathname)
+    window.location.reload()
   }
 
   return (
