@@ -1,18 +1,34 @@
 import { style } from '@vanilla-extract/css'
 
-import { vars } from '@/styles/theme.css'
+import { responsive, vars } from '@/styles/theme.css'
 
 export const container = style({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
   minHeight: '100%',
+
+  '@media': {
+    [responsive.m]: {
+      flexDirection: 'column',
+    },
+  },
 })
 
 export const titleSide = style({
   flex: 1,
   padding: '1.75rem 2rem',
   marginBottom: '10rem',
+
+  '@media': {
+    [responsive.m]: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      marginBottom: 0,
+      paddingBottom: 0,
+    },
+  },
 })
 
 export const title = style({
@@ -38,6 +54,12 @@ export const background = style({
   inset: 0,
   zIndex: -1,
   background: `radial-gradient(circle at 77% 100%, rgba(99,102,241,0.2) 0%, rgba(99,102,241,0) 60%)`,
+
+  '@media': {
+    [responsive.m]: {
+      background: `radial-gradient(circle at 50% 100%, rgba(99,102,241,0.2) 0%, rgba(99,102,241,0) 60%)`,
+    },
+  },
 })
 
 export const illustration = style({
@@ -53,6 +75,12 @@ const drawing = style({
   height: '4rem',
   color: vars.color.drawingColor,
   position: 'absolute',
+
+  '@media': {
+    [responsive.m]: {
+      display: 'none',
+    },
+  },
 })
 
 export const drawing1 = style([
@@ -79,4 +107,13 @@ export const heartfulMessage = style({
   position: 'absolute',
   bottom: '2rem',
   right: '4rem',
+
+  '@media': {
+    [responsive.m]: {
+      bottom: '1rem',
+      right: 0,
+      left: 0,
+      textAlign: 'center',
+    },
+  },
 })
