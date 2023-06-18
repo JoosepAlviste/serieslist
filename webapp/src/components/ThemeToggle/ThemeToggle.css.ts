@@ -11,6 +11,11 @@ export const toggle = style({
   borderRadius: '50%',
   background: vars.color.yellow500,
   transition: 'all 0.3s ease-in-out',
+  opacity: 0.8,
+
+  ':hover': {
+    opacity: 1,
+  },
 })
 
 export const toggleDark = style({
