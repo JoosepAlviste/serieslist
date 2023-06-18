@@ -194,3 +194,9 @@ export const darkThemeClass = createTheme(vars, {
     '2xl': '0 25px 50px -12px rgb(0 0 0 / 0.25)',
   },
 })
+
+export const responsive = {
+  s: 'screen and (max-width: 320px)',
+  m: 'screen and (max-width: 768px)',
+  l: 'screen and (max-width: 1200px)',
+}

@@ -20,7 +20,10 @@ import { useDebouncedCallback } from '@/hooks'
 
 import * as s from './Search.css'
 
-type SearchProps = HTMLAttributes<HTMLLabelElement>
+type SearchProps = HTMLAttributes<HTMLLabelElement> & {
+  hideKeyboardShortcuts?: boolean
+  onResultSelected?: () => void
+}
 
 /**
  * The OMDb API does not return any results if the keyword is less than 3 chars.
@@ -40,7 +43,12 @@ const Search_Query = graphql(`
   }
 `)
 
-export const Search = ({ className, ...rest }: SearchProps) => {
+export const Search = ({
+  hideKeyboardShortcuts = false,
+  onResultSelected,
+  className,
+  ...rest
+}: SearchProps) => {
   const [seriesSearch, { loading, data, previousData }] =
     useLazyQuery(Search_Query)
 
@@ -196,6 +204,7 @@ export const Search = ({ className, ...rest }: SearchProps) => {
     inputRef.current?.blur()
     setIsPopoverOpen(false)
     setHasRecentlyNavigated(true)
+    onResultSelected?.()
     await navigate(`/series/${seriesId}`)
   }
 
@@ -244,13 +253,13 @@ export const Search = ({ className, ...rest }: SearchProps) => {
                 <Icon name="cross" label="Clear" />
               </button>
             </div>
-          ) : (
+          ) : !hideKeyboardShortcuts ? (
             <div
               className={classNames(s.inputAddonContainer, s.searchShortcut)}
             >
               /
             </div>
-          )}
+          ) : null}
         </label>
       </Popover.Trigger>
 

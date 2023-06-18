@@ -40,24 +40,6 @@ export const navItemLogo = style({
   marginBottom: '2rem',
 })
 
-export const navLinkLogo = style([
-  navLink,
-  {
-    backgroundImage: `linear-gradient(135deg, ${vars.color.indigo500} 10%, ${vars.color.indigo600})`,
-    outlineColor: vars.color.indigo200,
-    transition: 'none',
-
-    ':hover': {
-      backgroundColor: vars.color.indigo600,
-      backgroundImage: 'none',
-    },
-
-    vars: {
-      [iconColorVar]: vars.color.white,
-    },
-  },
-])
-
 export const list = style({
   display: 'flex',
   flexDirection: 'column',

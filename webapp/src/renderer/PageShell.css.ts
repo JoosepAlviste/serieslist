@@ -1,5 +1,7 @@
 import { style } from '@vanilla-extract/css'
 
+import { responsive } from '@/styles/theme.css'
+
 export const pageContainer = style({
   display: 'grid',
   gridTemplateRows: 'min-content auto',
@@ -13,6 +15,12 @@ export const header = style({
 
 export const nav = style({
   gridArea: '1 / 1 / 3 / 2',
+
+  '@media': {
+    [responsive.m]: {
+      display: 'none',
+    },
+  },
 })
 
 export const main = style({

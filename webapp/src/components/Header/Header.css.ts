@@ -1,6 +1,6 @@
 import { keyframes, style } from '@vanilla-extract/css'
 
-import { vars } from '@/styles/theme.css'
+import { responsive, vars } from '@/styles/theme.css'
 
 const slideUpAndFade = keyframes({
   from: {
@@ -19,10 +19,24 @@ export const header = style({
   paddingTop: '1rem',
   paddingRight: '1.5rem',
   paddingBottom: '1rem',
+  gap: '1rem',
+
+  '@media': {
+    [responsive.m]: {
+      justifyContent: 'space-between',
+      paddingLeft: '1.5rem',
+    },
+  },
 })
 
 export const searchContainer = style({
   flex: 1,
+
+  '@media': {
+    [responsive.m]: {
+      display: 'none',
+    },
+  },
 })
 
 export const search = style({
@@ -33,6 +47,12 @@ export const headerRight = style({
   display: 'flex',
   alignItems: 'center',
   gap: '1rem',
+
+  '@media': {
+    [responsive.m]: {
+      display: 'none',
+    },
+  },
 })
 
 export const dropdownIcon = style({
@@ -73,6 +93,16 @@ export const dropdownItem = style({
     '&[data-highlighted]': {
       backgroundColor: vars.color.popoverHoverBackground,
       outline: 'none',
+    },
+  },
+})
+
+export const mobileOnly = style({
+  display: 'none',
+
+  '@media': {
+    [responsive.m]: {
+      display: 'block',
     },
   },
 })

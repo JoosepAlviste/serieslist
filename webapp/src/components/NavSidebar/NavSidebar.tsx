@@ -3,9 +3,11 @@ import classNames from 'classnames'
 import React from 'react'
 
 import { Link, Tooltip } from '@/components'
+import { GITHUB_URL } from '@/constants'
 import { useAuthenticatedUser } from '@/features/auth'
 
 import { Icon } from '../Icon'
+import { Logo } from '../Logo'
 
 import * as s from './NavSidebar.css'
 
@@ -24,8 +26,8 @@ export const NavSidebar = ({ className }: NavSidebarProps) => {
       <NavigationMenu.List className={s.list}>
         <Tooltip text="Home" side="right">
           <NavigationMenu.Item className={s.navItemLogo}>
-            <NavigationMenu.Link href="/" className={s.navLinkLogo}>
-              <Icon name="logo" size="l" label="Home" />
+            <NavigationMenu.Link href="/">
+              <Logo />
             </NavigationMenu.Link>
           </NavigationMenu.Item>
         </Tooltip>
@@ -51,7 +53,7 @@ export const NavSidebar = ({ className }: NavSidebarProps) => {
         <Tooltip text="Check out the code on GitHub" side="right">
           <NavigationMenu.Item>
             <NavigationMenu.Link
-              href="https://github.com/JoosepAlviste/serieslist"
+              href={GITHUB_URL}
               className={s.navLink}
               target="_blank"
             >

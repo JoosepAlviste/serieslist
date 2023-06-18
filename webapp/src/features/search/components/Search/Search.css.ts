@@ -58,6 +58,7 @@ export const popoverContent = style({
   boxShadow: vars.shadow.xl,
   borderRadius: vars.radii.m,
   width: '30rem',
+  maxWidth: '100vw',
   overflowY: 'auto',
 })
 
