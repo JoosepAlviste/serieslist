@@ -1,11 +1,18 @@
 import { style } from '@vanilla-extract/css'
 
-import { vars } from '@/styles/theme.css'
+import { responsive, vars } from '@/styles/theme.css'
 
 export const container = style({
   marginTop: '1.5rem',
   marginLeft: '5rem',
   marginRight: '5rem',
+
+  '@media': {
+    [responsive.m]: {
+      marginLeft: 0,
+      marginRight: 0,
+    },
+  },
 })
 
 export const tabs = style({
@@ -13,6 +20,17 @@ export const tabs = style({
   background: vars.color.inputSecondaryBackground,
   borderRadius: vars.radii.m,
   marginBottom: '2rem',
+  whiteSpace: 'nowrap',
+  overflowX: 'auto',
+
+  '@media': {
+    [responsive.m]: {
+      borderRadius: 0,
+      marginBottom: 0,
+      paddingLeft: '1rem',
+      paddingRight: '1rem',
+    },
+  },
 })
 
 export const tab = style({
@@ -45,6 +63,20 @@ export const tab = style({
       color: vars.color.primary,
       borderColor: vars.color.primary,
       fontWeight: vars.fontWeight.medium,
+    },
+  },
+
+  '@media': {
+    [responsive.m]: {
+      ':first-of-type': {
+        borderTopLeftRadius: 0,
+        borderBottomLeftRadius: 0,
+      },
+
+      ':last-of-type': {
+        borderTopRightRadius: 0,
+        borderBottomRightRadius: 0,
+      },
     },
   },
 })

@@ -59,7 +59,7 @@ export const SeriesList = ({ status }: SeriesListProps) => {
               <tr>
                 <th className={s.tableHeadCellPoster} />
                 <th className={s.tableHeadCell}>Title</th>
-                <th className={s.tableHeadCell}>Latest episode</th>
+                <th className={s.tableHeadCell}>Latest</th>
               </tr>
             </thead>
             <tbody>
