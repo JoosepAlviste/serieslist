@@ -13,6 +13,7 @@ export const icon = style({
   color: fallbackVar(iconColorVar, vars.color.icon),
   width: '1em',
   height: '1em',
+  minWidth: '1em',
 })
 
 export const iconSize = styleVariants({

@@ -1,30 +1,52 @@
 import { style } from '@vanilla-extract/css'
 
-import { vars } from '@/styles/theme.css'
+import { responsive, vars } from '@/styles/theme.css'
 
 export const container = style({
-  display: 'flex',
-  gap: '2rem',
+  display: 'grid',
+  gridTemplateColumns: 'auto 1fr auto',
+  gridTemplateRows: 'auto auto auto 1fr',
+  gap: '1rem 2rem',
   marginTop: '1.5rem',
   marginBottom: '1.5rem',
   paddingRight: '3rem',
+
+  '@media': {
+    [responsive.m]: {
+      gridTemplateColumns: 'auto auto auto',
+      gridTemplateRows: 'auto auto auto auto 1fr',
+      marginTop: '0.5rem',
+      paddingLeft: '1rem',
+      paddingRight: '1rem',
+    },
+  },
 })
 
 export const poster = style({
   alignItems: 'flex-start',
-})
+  gridArea: '1 / 1 / 5 / 2',
 
-export const titleLine = style({
-  display: 'flex',
-  alignItems: 'center',
-  marginBottom: '0.25rem',
+  '@media': {
+    [responsive.m]: {
+      gridArea: '4 / 1 / 5 / 2',
+      width: '100%',
+      height: 'auto',
+    },
+  },
 })
 
 export const titleContainer = style({
+  gridArea: '1 / 2 / 2 / 3',
   display: 'flex',
   alignItems: 'center',
   gap: '1rem',
-  flex: 1,
+
+  '@media': {
+    [responsive.m]: {
+      gridArea: '1 / 1 / 2 / 4',
+      marginBottom: '-1rem',
+    },
+  },
 })
 
 export const title = style({
@@ -35,22 +57,62 @@ export const title = style({
 export const imdbLogo = style({
   height: '2rem',
   width: '2rem',
+  minWidth: '2rem',
+})
+
+export const statusSelectContainer = style({
+  '@media': {
+    [responsive.m]: {
+      gridArea: '3 / 1 / 4 / 4',
+    },
+  },
 })
 
 export const years = style({
   fontSize: '0.875rem',
-  marginBottom: '0.75rem',
   color: vars.color.textTertiary,
+  gridArea: '2 / 2 / 3 / 4',
+
+  '@media': {
+    [responsive.m]: {
+      gridArea: '2 / 1 / 3 / 2',
+    },
+  },
+})
+
+export const descriptionContainer = style({
+  gridArea: '3 / 2 / 4 / 4',
+  maxWidth: '70ch',
+
+  '@media': {
+    [responsive.m]: {
+      gridArea: '4 / 2 / 5 / 4',
+    },
+  },
 })
 
 export const description = style({
-  maxWidth: '70ch',
-  marginBottom: '2rem',
   color: vars.color.textSecondary,
+
+  '@media': {
+    [responsive.m]: {
+      WebkitLineClamp: 5,
+      display: '-webkit-box',
+      WebkitBoxOrient: 'vertical',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+    },
+  },
 })
 
 export const seasons = style({
-  marginBottom: '2rem',
+  gridArea: '4 / 2 / 5 / 4',
+
+  '@media': {
+    [responsive.m]: {
+      gridArea: '5 / 1 / 5 / 4',
+    },
+  },
 })
 
 export const seasonsTitle = style({

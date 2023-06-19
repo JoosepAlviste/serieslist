@@ -60,6 +60,7 @@ export const popoverContent = style({
   width: '30rem',
   maxWidth: '100vw',
   overflowY: 'auto',
+  zIndex: 2,
 })
 
 export const searchTitle = style({

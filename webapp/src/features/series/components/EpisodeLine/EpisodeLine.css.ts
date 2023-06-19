@@ -1,9 +1,11 @@
 import { style } from '@vanilla-extract/css'
 
-import { vars } from '@/styles/theme.css'
+import { responsive, vars } from '@/styles/theme.css'
 
 export const episode = style({
-  display: 'flex',
+  display: 'grid',
+  gridTemplateColumns: 'auto 1fr auto',
+  gridTemplateRows: 'auto',
   alignItems: 'center',
   gap: '0.5rem',
   background: vars.color.inputSecondaryBackground,
@@ -13,6 +15,13 @@ export const episode = style({
   paddingRight: '1rem',
   paddingBottom: '0.5rem',
   paddingLeft: '1rem',
+
+  '@media': {
+    [responsive.m]: {
+      gridTemplateColumns: '1fr auto',
+      gridTemplateRows: 'auto auto',
+    },
+  },
 })
 
 export const episodeNumber = style({
@@ -20,5 +29,5 @@ export const episodeNumber = style({
 })
 
 export const episodeTitle = style({
-  flex: 1,
+  gridArea: '2 / 1 / 3 / 3',
 })

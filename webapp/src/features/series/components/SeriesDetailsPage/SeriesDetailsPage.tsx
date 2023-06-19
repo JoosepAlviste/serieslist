@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from '@apollo/client'
 import * as Tabs from '@radix-ui/react-tabs'
+import classNames from 'classnames'
 import React from 'react'
 
 import { Button, Tooltip } from '@/components'
@@ -16,6 +17,10 @@ import * as s from './SeriesDetailsPage.css'
 
 type SeriesDetailsPageProps = {
   seriesId: string
+}
+
+const truncate = (str: string, length: number, end = '...') => {
+  return str.slice(0, Math.max(0, length - end.length)) + end
 }
 
 export const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
@@ -114,99 +119,94 @@ export const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
       {series && (
         <div className={s.container}>
           <SeriesPoster series={series} size="l" className={s.poster} />
-          <div>
-            <div className={s.titleLine}>
-              <div className={s.titleContainer}>
-                <h1 className={s.title}>{series.title}</h1>
-                <a
-                  href={`https://imdb.com/title/${series.imdbId}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label="IMDb page"
-                >
-                  <ImdbLogo className={s.imdbLogo} />
-                </a>
-              </div>
 
-              {currentUser && <SeriesStatusSelect series={series} />}
-            </div>
-            <div className={s.years}>
-              {series.startYear} – {series.endYear ?? '…'}
-            </div>
-            <div className={s.description}>{series.plot}</div>
-
-            <Tabs.Root
-              defaultValue={series.seasons[0]?.id}
-              className={s.seasons}
+          <div className={s.titleContainer}>
+            <h1 className={s.title}>{series.title}</h1>
+            <a
+              href={`https://imdb.com/title/${series.imdbId}`}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="IMDb page"
             >
-              <h2 className={s.seasonsTitle}>Seasons</h2>
-
-              <div className={s.seasonTabsContainer}>
-                <Tabs.List className={s.seasonTabs}>
-                  {series.seasons.map((season) => (
-                    <Tabs.Trigger
-                      key={season.id}
-                      value={season.id}
-                      className={s.seasonTrigger}
-                    >
-                      {season.number}
-                    </Tabs.Trigger>
-                  ))}
-                </Tabs.List>
-              </div>
-
-              {series.seasons.map((season) => {
-                const areAllEpisodesSeen = season.episodes.every(
-                  (episode) => episode.isSeen,
-                )
-
-                return (
-                  <Tabs.Content key={season.id} value={season.id}>
-                    <div className={s.episodesTitleRow}>
-                      <h3 className={s.episodesTitle}>
-                        Season {season.number}
-                      </h3>
-
-                      {currentUser && (
-                        <Tooltip
-                          text={
-                            areAllEpisodesSeen
-                              ? 'All episodes are already seen'
-                              : undefined
-                          }
-                        >
-                          <Button
-                            onClick={() =>
-                              handleMarkSeasonAsSeenClicked(season.id)
-                            }
-                            variant={
-                              areAllEpisodesSeen ? 'primary' : 'secondary'
-                            }
-                            size="s"
-                            isDisabled={areAllEpisodesSeen}
-                          >
-                            {areAllEpisodesSeen
-                              ? 'Seen'
-                              : 'Mark season as seen'}
-                          </Button>
-                        </Tooltip>
-                      )}
-                    </div>
-
-                    <ol className={s.episodesContainer}>
-                      {season.episodes.map((episode) => (
-                        <EpisodeLine
-                          key={episode.id}
-                          episode={episode}
-                          season={season}
-                        />
-                      ))}
-                    </ol>
-                  </Tabs.Content>
-                )
-              })}
-            </Tabs.Root>
+              <ImdbLogo className={s.imdbLogo} />
+            </a>
           </div>
+
+          {currentUser && (
+            <div className={s.statusSelectContainer}>
+              <SeriesStatusSelect series={series} />
+            </div>
+          )}
+
+          <div className={s.years}>
+            {series.startYear} – {series.endYear ?? '…'}
+          </div>
+          <div className={s.descriptionContainer}>
+            <div className={s.description}>{series.plot}</div>
+          </div>
+
+          <Tabs.Root defaultValue={series.seasons[0]?.id} className={s.seasons}>
+            <h2 className={s.seasonsTitle}>Seasons</h2>
+
+            <div className={s.seasonTabsContainer}>
+              <Tabs.List className={s.seasonTabs}>
+                {series.seasons.map((season) => (
+                  <Tabs.Trigger
+                    key={season.id}
+                    value={season.id}
+                    className={s.seasonTrigger}
+                  >
+                    {season.number}
+                  </Tabs.Trigger>
+                ))}
+              </Tabs.List>
+            </div>
+
+            {series.seasons.map((season) => {
+              const areAllEpisodesSeen = season.episodes.every(
+                (episode) => episode.isSeen,
+              )
+
+              return (
+                <Tabs.Content key={season.id} value={season.id}>
+                  <div className={s.episodesTitleRow}>
+                    <h3 className={s.episodesTitle}>Season {season.number}</h3>
+
+                    {currentUser && (
+                      <Tooltip
+                        text={
+                          areAllEpisodesSeen
+                            ? 'All episodes are already seen'
+                            : undefined
+                        }
+                      >
+                        <Button
+                          onClick={() =>
+                            handleMarkSeasonAsSeenClicked(season.id)
+                          }
+                          variant={areAllEpisodesSeen ? 'primary' : 'secondary'}
+                          size="s"
+                          isDisabled={areAllEpisodesSeen}
+                        >
+                          {areAllEpisodesSeen ? 'Seen' : 'Mark season as seen'}
+                        </Button>
+                      </Tooltip>
+                    )}
+                  </div>
+
+                  <ol className={s.episodesContainer}>
+                    {season.episodes.map((episode) => (
+                      <EpisodeLine
+                        key={episode.id}
+                        episode={episode}
+                        season={season}
+                      />
+                    ))}
+                  </ol>
+                </Tabs.Content>
+              )
+            })}
+          </Tabs.Root>
         </div>
       )}
     </div>
