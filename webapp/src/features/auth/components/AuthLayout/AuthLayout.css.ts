@@ -1,6 +1,6 @@
 import { style } from '@vanilla-extract/css'
 
-import { vars } from '@/styles/theme.css'
+import { responsive, vars } from '@/styles/theme.css'
 
 export const container = style({
   display: 'flex',
@@ -14,7 +14,6 @@ export const formSide = style({
   marginTop: 'auto',
   marginBottom: 'auto',
   padding: '1.75rem 1rem',
-  minWidth: '25rem',
 })
 
 export const title = style({
@@ -56,6 +55,12 @@ export const illustrationSide = style({
   padding: '1.75rem 1rem',
   marginTop: 'auto',
   marginBottom: 'auto',
+
+  '@media': {
+    [responsive.m]: {
+      display: 'none',
+    },
+  },
 })
 
 export const illustration = style({

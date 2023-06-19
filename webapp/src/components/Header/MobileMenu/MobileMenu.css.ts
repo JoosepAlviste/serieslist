@@ -14,7 +14,7 @@ export const mobileMenu = style({
   top: 80,
   background: vars.color.pageBackground,
   padding: '1.5rem',
-  zIndex: 1,
+  zIndex: 2,
 
   '@media': {
     [responsive.m]: {

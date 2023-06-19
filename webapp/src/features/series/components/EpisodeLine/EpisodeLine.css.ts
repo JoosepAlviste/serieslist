@@ -29,5 +29,9 @@ export const episodeNumber = style({
 })
 
 export const episodeTitle = style({
-  gridArea: '2 / 1 / 3 / 3',
+  '@media': {
+    [responsive.m]: {
+      gridArea: '2 / 1 / 3 / 3',
+    },
+  },
 })
