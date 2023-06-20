@@ -26,7 +26,7 @@ export const findMany = ({
   seriesIds?: number[]
   seasonIds?: number[]
 }) => {
-  let query = ctx.db.selectFrom('season').selectAll()
+  let query = ctx.db.selectFrom('season').selectAll().orderBy('number')
 
   if (seriesIds) {
     query = query.where('seriesId', 'in', seriesIds)
