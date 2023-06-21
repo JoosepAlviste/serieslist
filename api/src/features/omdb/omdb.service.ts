@@ -1,7 +1,10 @@
+import { parse } from 'date-fns'
+import { type Insertable } from 'kysely'
 import fetch from 'node-fetch'
 import { type z } from 'zod'
 
 import { config } from '@/config'
+import { type Series } from '@/generated/db'
 import { NotFoundError } from '@/lib/errors'
 import { app } from '@/lib/fastify'
 
@@ -10,7 +13,7 @@ import {
   omdbSeriesSchema,
   omdbSeriesSearchResponseSchema,
 } from './omdb.schemas'
-import { type OMDbSearchSeries } from './types'
+import { type OMDbSeries, type OMDbSearchSeries } from './types'
 
 const makeOMDbRequest = async <T>(
   data: Record<string, string>,
@@ -28,23 +31,42 @@ const makeOMDbRequest = async <T>(
   try {
     return schema.parse(json)
   } catch (e) {
-    app.log.warn('OMDb API response did not match the schema.', {
-      url,
-      json,
-    })
+    app.log.warn(
+      {
+        url,
+        json,
+      },
+      'OMDb API response did not match the schema.',
+    )
 
     return null
   }
 }
 
+const parseSeriesFromOMDbResponse = (
+  omdbSeries: OMDbSearchSeries | OMDbSeries,
+): Insertable<Series> => ({
+  imdbId: omdbSeries.imdbID,
+  title: omdbSeries.Title,
+  poster: omdbSeries.Poster,
+  plot: 'Plot' in omdbSeries ? omdbSeries.Plot : null,
+  runtimeMinutes:
+    'Runtime' in omdbSeries
+      ? parseOMDbSeriesRuntime({ runtime: omdbSeries.Runtime })
+      : null,
+  imdbRating:
+    'imdbRating' in omdbSeries ? parseFloat(omdbSeries.imdbRating) : null,
+  ...parseOMDbSeriesYears({ years: omdbSeries.Year }),
+})
+
 /**
  * Make a request to search for series from the OMDb API.
  */
-export const searchSeriesFromOMDb = async ({
+export const searchSeries = async ({
   keyword,
 }: {
   keyword: string
-}): Promise<OMDbSearchSeries[]> => {
+}): Promise<Insertable<Series>[]> => {
   const seriesSearchResponse = await makeOMDbRequest(
     {
       type: 'series',
@@ -61,14 +83,14 @@ export const searchSeriesFromOMDb = async ({
     return []
   }
 
-  return seriesSearchResponse.Search
+  return seriesSearchResponse.Search.map(parseSeriesFromOMDbResponse)
 }
 
-export const fetchSeriesDetailsFromOMDb = async ({
+export const fetchSeriesDetails = async ({
   imdbId,
 }: {
   imdbId: string
-}) => {
+}): Promise<{ series: Insertable<Series>; totalSeasons: number }> => {
   const seriesDetails = await makeOMDbRequest(
     {
       i: imdbId,
@@ -80,10 +102,13 @@ export const fetchSeriesDetailsFromOMDb = async ({
     throw new NotFoundError()
   }
 
-  return seriesDetails
+  return {
+    series: parseSeriesFromOMDbResponse(seriesDetails),
+    totalSeasons: parseInt(seriesDetails.totalSeasons),
+  }
 }
 
-export const fetchSeasonDetailsFromOMDb = async ({
+export const fetchEpisodesForSeason = async ({
   imdbId,
   seasonNumber,
 }: {
@@ -101,7 +126,19 @@ export const fetchSeasonDetailsFromOMDb = async ({
     throw new NotFoundError()
   }
 
-  return season
+  return {
+    seasonNumber: parseInt(season.Season),
+    episodes: season.Episodes.map((episode) => ({
+      imdbId: episode.imdbID,
+      number: parseInt(episode.Episode),
+      title: episode.Title,
+      releasedAt:
+        episode.Released !== 'N/A'
+          ? parse(episode.Released, 'yyyy-MM-dd', new Date())
+          : null,
+      imdbRating: parseFloat(episode.imdbRating) || null,
+    })),
+  }
 }
 
 export const parseOMDbSeriesYears = ({ years }: { years: string }) => {

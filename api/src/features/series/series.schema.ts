@@ -1,6 +1,6 @@
 import { type Selectable } from 'kysely'
 
-import { type Episode, type Season, type Series } from '@/generated/db'
+import { type Episode } from '@/generated/db'
 import { NotFoundError, UnauthorizedError } from '@/lib/errors'
 import { builder } from '@/schemaBuilder'
 import { type Context } from '@/types/context'
@@ -11,13 +11,7 @@ import * as episodesService from './episodes.service'
 import * as seasonService from './season.service'
 import * as seriesService from './series.service'
 
-export type EpisodeType = Selectable<Episode>
-
-export type SeasonType = Selectable<Season>
-
-export type SeriesType = Selectable<Series>
-
-export const EpisodeRef = builder.objectRef<EpisodeType>('Episode')
+export const EpisodeRef = builder.objectRef<Selectable<Episode>>('Episode')
 EpisodeRef.implement({
   fields: (t) => ({
     id: t.id({
@@ -70,10 +64,12 @@ SeasonRef.implement({
   }),
 })
 
-export const SeriesRef = builder.loadableObject('Series', {
+export const SeriesRef = builder.loadableObjectRef('Series', {
   load: (seriesIds: number[], ctx: Context) => {
     return seriesService.findMany({ ctx, seriesIds })
   },
+})
+SeriesRef.implement({
   fields: (t) => ({
     id: t.id({
       resolve: (parent) => String(parent.id),

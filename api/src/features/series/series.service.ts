@@ -1,13 +1,8 @@
-import { addDays, isFuture, parse } from 'date-fns'
+import { addDays, isFuture } from 'date-fns'
 import keyBy from 'lodash/keyBy'
 import uniq from 'lodash/uniq'
 
-import {
-  type OMDbSearchSeries,
-  type OMDbSeries,
-  omdbService,
-  OMDbEpisode,
-} from '@/features/omdb'
+import { omdbService } from '@/features/omdb'
 import { seriesProgressService } from '@/features/seriesProgress'
 import {
   type SeriesUpdateStatusInput,
@@ -23,22 +18,6 @@ import * as seasonRepository from './season.repository'
 import * as seriesRepository from './series.repository'
 import * as userSeriesStatusRepository from './userSeriesStatus.repository'
 
-const parseSeriesFromOMDbResponse = (
-  omdbSeries: OMDbSearchSeries | OMDbSeries,
-) => ({
-  imdbId: omdbSeries.imdbID,
-  title: omdbSeries.Title,
-  poster: omdbSeries.Poster,
-  plot: 'Plot' in omdbSeries ? omdbSeries.Plot : null,
-  runtimeMinutes:
-    'Runtime' in omdbSeries
-      ? omdbService.parseOMDbSeriesRuntime({ runtime: omdbSeries.Runtime })
-      : null,
-  imdbRating:
-    'imdbRating' in omdbSeries ? parseFloat(omdbSeries.imdbRating) : null,
-  ...omdbService.parseOMDbSeriesYears({ years: omdbSeries.Year }),
-})
-
 export const searchSeries = async ({
   ctx,
   input,
@@ -46,7 +25,7 @@ export const searchSeries = async ({
   ctx: Context
   input: SeriesSearchInput
 }) => {
-  const seriesFromOMDb = await omdbService.searchSeriesFromOMDb({
+  const seriesFromOMDb = await omdbService.searchSeries({
     keyword: input.keyword,
   })
   if (!seriesFromOMDb.length) {
@@ -55,12 +34,12 @@ export const searchSeries = async ({
 
   const existingSeries = await seriesRepository.findMany({
     ctx,
-    imdbIds: seriesFromOMDb.map((series) => series.imdbID),
+    imdbIds: seriesFromOMDb.map((series) => series.imdbId),
   })
   const existingSeriesImdbIds = existingSeries.map((series) => series.imdbId)
 
   const newSeriesToAdd = seriesFromOMDb.filter(
-    (series) => !existingSeriesImdbIds.includes(series.imdbID),
+    (series) => !existingSeriesImdbIds.includes(series.imdbId),
   )
   if (!newSeriesToAdd.length) {
     return existingSeries
@@ -68,7 +47,7 @@ export const searchSeries = async ({
 
   const newSeries = await seriesRepository.createMany({
     ctx,
-    series: newSeriesToAdd.map(parseSeriesFromOMDbResponse),
+    series: newSeriesToAdd,
   })
 
   return [...existingSeries, ...newSeries]
@@ -142,27 +121,20 @@ export const syncSeasonsAndEpisodesFromOMDb = async ({
     createArrayOfLength(totalNumberOfSeasons)
       .map((_, i) => i + 1)
       .map(async (seasonNumber) => {
-        const season = await omdbService.fetchSeasonDetailsFromOMDb({
+        const { episodes } = await omdbService.fetchEpisodesForSeason({
           imdbId,
           seasonNumber,
         })
-        if (!season.Episodes.length) {
+        if (!episodes.length) {
           return
         }
 
         const savedAndUpdatedEpisodes =
           await episodeRepository.createOrUpdateMany({
             ctx,
-            episodes: season.Episodes.map((episode) => ({
-              imdbId: episode.imdbID,
-              number: parseInt(episode.Episode),
-              title: episode.Title,
+            episodes: episodes.map((episode) => ({
+              ...episode,
               seasonId: seasonIdsByNumber[seasonNumber],
-              releasedAt:
-                episode.Released !== 'N/A'
-                  ? parse(episode.Released, 'yyyy-MM-dd', new Date())
-                  : null,
-              imdbRating: parseFloat(episode.imdbRating) || null,
             })),
           })
 
@@ -215,13 +187,14 @@ export const syncSeriesDetailsFromOMDb = async ({
   ctx: Context
   imdbId: string
 }) => {
-  const newSeries = await omdbService.fetchSeriesDetailsFromOMDb({ imdbId })
+  const { series: newSeries, totalSeasons } =
+    await omdbService.fetchSeriesDetails({ imdbId })
 
   const savedSeries = await seriesRepository.updateOneByIMDbId({
     ctx,
     imdbId,
     series: {
-      ...parseSeriesFromOMDbResponse(newSeries),
+      ...newSeries,
       syncedAt: new Date(Date.now()),
       updatedAt: new Date(Date.now()),
     },
@@ -230,14 +203,12 @@ export const syncSeriesDetailsFromOMDb = async ({
     throw new NotFoundError()
   }
 
-  const totalNumberOfSeasons = parseInt(newSeries.totalSeasons)
-
-  if (totalNumberOfSeasons) {
+  if (totalSeasons) {
     await syncSeasonsAndEpisodesFromOMDb({
       ctx,
       imdbId: savedSeries.imdbId,
       seriesId: savedSeries.id,
-      totalNumberOfSeasons,
+      totalNumberOfSeasons: totalSeasons,
     })
   }
 
