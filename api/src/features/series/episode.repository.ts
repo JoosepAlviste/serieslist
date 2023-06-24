@@ -140,6 +140,7 @@ export const findFirstNotSeenEpisodeInSeriesForUser = async ({
       ),
     )
     .where('season.seriesId', '=', seriesId)
+    .where('season.number', '>', 0)
     .selectAll('episode')
     .select(['season.number as seasonNumber'])
     .orderBy('seasonNumber', 'asc')
