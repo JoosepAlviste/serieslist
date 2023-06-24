@@ -42,6 +42,7 @@ export const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
             seasons {
               id
               number
+              title
               episodes {
                 id
                 isSeen
@@ -174,7 +175,7 @@ export const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
               return (
                 <Tabs.Content key={season.id} value={season.id}>
                   <div className={s.episodesTitleRow}>
-                    <h3 className={s.episodesTitle}>Season {season.number}</h3>
+                    <h3 className={s.episodesTitle}>{season.title}</h3>
 
                     {currentUser && (
                       <Tooltip

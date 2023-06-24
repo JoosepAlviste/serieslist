@@ -169,7 +169,8 @@ export const episodesContainer = style({
 
 export const episodesTitleRow = style({
   display: 'flex',
-  marginBottom: '0.5rem',
+  alignItems: 'center',
+  marginBottom: '1rem',
   paddingRight: '1rem',
 })
 
@@ -177,5 +178,4 @@ export const episodesTitle = style({
   flex: 1,
   fontSize: '1rem',
   fontWeight: vars.fontWeight.medium,
-  marginBottom: '0.5rem',
 })
