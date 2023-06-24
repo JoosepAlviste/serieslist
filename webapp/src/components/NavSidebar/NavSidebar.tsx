@@ -50,6 +50,16 @@ export const NavSidebar = ({ className }: NavSidebarProps) => {
 
         <div className={s.spacer} />
 
+        <Tooltip text="About" side="right">
+          <NavigationMenu.Item>
+            <NavigationMenu.Link href="/about" className={s.navLink} asChild>
+              <Link activeClass={s.navLinkIsActive}>
+                <Icon name="about" size="l" label="About" />
+              </Link>
+            </NavigationMenu.Link>
+          </NavigationMenu.Item>
+        </Tooltip>
+
         <Tooltip text="Check out the code on GitHub" side="right">
           <NavigationMenu.Item>
             <NavigationMenu.Link

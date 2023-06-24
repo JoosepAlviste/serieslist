@@ -4,8 +4,8 @@ import { responsive } from '@/styles/theme.css'
 
 export const pageContainer = style({
   display: 'grid',
-  gridTemplateRows: 'min-content auto',
-  gridTemplateColumns: 'min-content auto',
+  gridTemplateRows: 'min-content 1fr',
+  gridTemplateColumns: 'min-content 1fr',
   height: '100vh',
 })
 

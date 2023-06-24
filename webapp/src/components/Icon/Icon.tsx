@@ -2,6 +2,7 @@ import { AccessibleIcon } from '@radix-ui/react-accessible-icon'
 import classNames from 'classnames'
 import React, { type SVGAttributes } from 'react'
 
+import { ReactComponent as AboutIcon } from './About.svg'
 import { ReactComponent as CheckIcon } from './Check.svg'
 import { ReactComponent as CrossIcon } from './Cross.svg'
 import { ReactComponent as GitHubIcon } from './GitHub.svg'
@@ -23,6 +24,7 @@ const icons = {
   check: CheckIcon,
   plus: PlusIcon,
   github: GitHubIcon,
+  about: AboutIcon,
 }
 
 export type IconName = keyof typeof icons

@@ -37,13 +37,14 @@ export const navLinkIsActive = style({
 })
 
 export const navItemLogo = style({
-  marginBottom: '2rem',
+  marginBottom: '1rem',
 })
 
 export const list = style({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
+  gap: '1rem',
   height: '100%',
   padding: '1rem',
   paddingRight: '2rem',

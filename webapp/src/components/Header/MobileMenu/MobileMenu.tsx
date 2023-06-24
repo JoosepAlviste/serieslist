@@ -50,6 +50,12 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
             </NavigationMenu.Item>
           )}
 
+          <NavigationMenu.Item>
+            <NavigationMenu.Link href="/about" asChild onSelect={onClose}>
+              <Link className={s.link}>About</Link>
+            </NavigationMenu.Link>
+          </NavigationMenu.Item>
+
           {currentUser ? (
             <NavigationMenu.Item>
               <NavigationMenu.Link
