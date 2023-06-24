@@ -107,6 +107,10 @@ export const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
     }
   }
 
+  const firstNonZeroSeason = series?.seasons.find(
+    (season) => season.number !== 0,
+  )
+
   return (
     <div>
       {loading && <div>Loading...</div>}
@@ -142,7 +146,10 @@ export const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
             <div className={s.description}>{series.plot}</div>
           </div>
 
-          <Tabs.Root defaultValue={series.seasons[0]?.id} className={s.seasons}>
+          <Tabs.Root
+            defaultValue={firstNonZeroSeason?.id}
+            className={s.seasons}
+          >
             <h2 className={s.seasonsTitle}>Seasons</h2>
 
             <div className={s.seasonTabsContainer}>
