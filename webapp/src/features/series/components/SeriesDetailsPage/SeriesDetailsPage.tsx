@@ -1,6 +1,5 @@
 import { useMutation, useQuery } from '@apollo/client'
 import * as Tabs from '@radix-ui/react-tabs'
-import classNames from 'classnames'
 import React from 'react'
 
 import { Button, Tooltip } from '@/components'
@@ -17,10 +16,6 @@ import * as s from './SeriesDetailsPage.css'
 
 type SeriesDetailsPageProps = {
   seriesId: string
-}
-
-const truncate = (str: string, length: number, end = '...') => {
-  return str.slice(0, Math.max(0, length - end.length)) + end
 }
 
 export const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
@@ -122,14 +117,16 @@ export const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
 
           <div className={s.titleContainer}>
             <h1 className={s.title}>{series.title}</h1>
-            <a
-              href={`https://imdb.com/title/${series.imdbId}`}
-              target="_blank"
-              rel="noreferrer"
-              aria-label="IMDb page"
-            >
-              <ImdbLogo className={s.imdbLogo} />
-            </a>
+            {series.imdbId && (
+              <a
+                href={`https://imdb.com/title/${series.imdbId}`}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="IMDb page"
+              >
+                <ImdbLogo className={s.imdbLogo} />
+              </a>
+            )}
           </div>
 
           {currentUser && (

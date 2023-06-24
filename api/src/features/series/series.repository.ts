@@ -39,17 +39,17 @@ export const findOne = ({
 
 export const findMany = ({
   ctx,
-  imdbIds,
+  tmdbIds,
   seriesIds,
 }: {
   ctx: Context
-  imdbIds?: string[]
+  tmdbIds?: number[]
   seriesIds?: number[]
 }) => {
   let query = ctx.db.selectFrom('series').selectAll()
 
-  if (imdbIds) {
-    query = query.where('imdbId', 'in', imdbIds)
+  if (tmdbIds) {
+    query = query.where('tmdbId', 'in', tmdbIds)
   }
 
   if (seriesIds) {
@@ -91,18 +91,18 @@ export const createMany = ({
   return ctx.db.insertInto('series').values(series).returningAll().execute()
 }
 
-export const updateOneByIMDbId = ({
+export const updateOneByTMDbId = ({
   ctx,
-  imdbId,
+  tmdbId,
   series,
 }: {
   ctx: Context
-  imdbId: string
+  tmdbId: number
   series: UpdateObject<DB, 'series'>
 }) => {
   return ctx.db
     .updateTable('series')
-    .where('imdbId', '=', imdbId)
+    .where('tmdbId', '=', tmdbId)
     .set(series)
     .returningAll()
     .executeTakeFirst()

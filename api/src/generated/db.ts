@@ -16,18 +16,21 @@ export type UserSeriesStatusStatus =
 
 export type Episode = {
   id: Generated<number>
-  imdbId: string
+  imdbId: string | null
   seasonId: number
   number: number
   title: string
   releasedAt: Timestamp | null
   imdbRating: Numeric | null
+  tmdbId: number
 }
 
 export type Season = {
   id: Generated<number>
   seriesId: number
   number: number
+  tmdbId: number
+  title: string
 }
 
 export type SeenEpisode = {
@@ -38,10 +41,10 @@ export type SeenEpisode = {
 
 export type Series = {
   id: Generated<number>
-  imdbId: string
+  imdbId: string | null
   title: string
   poster: string | null
-  startYear: number
+  startYear: number | null
   endYear: number | null
   createdAt: Generated<Timestamp>
   updatedAt: Generated<Timestamp>
@@ -49,6 +52,7 @@ export type Series = {
   plot: string | null
   imdbRating: Numeric | null
   syncedAt: Timestamp | null
+  tmdbId: number
 }
 
 export type SeriesProgress = {

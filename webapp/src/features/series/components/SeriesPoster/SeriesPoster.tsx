@@ -31,7 +31,11 @@ export const SeriesPoster = ({
   return (
     <div className={classNames(s.posterContainer[size], className)} {...rest}>
       <img
-        src={series.poster ?? posterPlaceholder}
+        src={
+          series.poster
+            ? `http://image.tmdb.org/t/p/w780${series.poster}`
+            : posterPlaceholder
+        }
         className={s.poster}
         alt={`Poster for ${series.title}`}
       />

@@ -36,8 +36,8 @@ export const config = {
     }`,
   },
 
-  omdb: {
-    url: 'http://www.omdbapi.com',
-    apiKey: process.env.OMDB_API_KEY!,
+  tmdb: {
+    url: 'https://api.themoviedb.org',
+    apiToken: process.env.TMDB_API_TOKEN!,
   },
 }

@@ -17,8 +17,8 @@ cd ..
 ./bin/generate-secret-token.sh
 ```
 
-Next, [generate a new OMDb API token](https://www.omdbapi.com/apikey.aspx) and 
-add it into the [`.env`](.env) file.
+Next, [generate a new TMDB API token](https://www.themoviedb.org/settings/api) 
+and add it into the [`.env`](.env) file.
 
 
 ## Production

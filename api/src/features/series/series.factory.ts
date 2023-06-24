@@ -4,6 +4,7 @@ import { nanoid } from 'nanoid'
 
 import { type Series } from '@/generated/db'
 import { db } from '@/lib/db'
+import { generateRandomInt } from '@/utils/generateRandomInt'
 
 export const seriesFactory = Factory.define<Selectable<Series>>(
   ({ sequence, onCreate }) => {
@@ -20,6 +21,7 @@ export const seriesFactory = Factory.define<Selectable<Series>>(
 
     return {
       id: sequence,
+      tmdbId: generateRandomInt(1, 9999999),
       imdbId: `tt${nanoid(12)}`,
       title: 'Testing Series',
       startYear: 2020,

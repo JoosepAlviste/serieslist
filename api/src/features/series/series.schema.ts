@@ -17,7 +17,9 @@ EpisodeRef.implement({
     id: t.id({
       resolve: (parent) => String(parent.id),
     }),
-    imdbId: t.exposeString('imdbId'),
+    imdbId: t.exposeString('imdbId', {
+      nullable: true,
+    }),
     number: t.exposeInt('number'),
     title: t.exposeString('title'),
     releasedAt: t.field({
@@ -49,6 +51,7 @@ SeasonRef.implement({
       resolve: (parent) => String(parent.id),
     }),
     number: t.exposeInt('number'),
+    title: t.exposeString('title'),
 
     episodes: t.loadableList({
       type: EpisodeRef,
@@ -75,8 +78,12 @@ SeriesRef.implement({
       resolve: (parent) => String(parent.id),
     }),
     title: t.exposeString('title'),
-    imdbId: t.exposeString('imdbId'),
-    startYear: t.exposeInt('startYear'),
+    imdbId: t.exposeString('imdbId', {
+      nullable: true,
+    }),
+    startYear: t.exposeInt('startYear', {
+      nullable: true,
+    }),
     endYear: t.exposeInt('endYear', {
       nullable: true,
     }),
@@ -143,7 +150,7 @@ builder.queryFields((t) => ({
       types: [NotFoundError],
     },
     resolve(_parent, args, ctx) {
-      return seriesService.getSeriesByIdAndFetchDetailsFromOmdb({
+      return seriesService.getSeriesByIdAndFetchDetailsFromTMDB({
         ctx,
         id: parseInt(String(args.id)),
       })

@@ -1,14 +1,15 @@
 import { addDays, isFuture } from 'date-fns'
+import { type Insertable } from 'kysely'
 import keyBy from 'lodash/keyBy'
 import uniq from 'lodash/uniq'
 
-import { omdbService } from '@/features/omdb'
 import { seriesProgressService } from '@/features/seriesProgress'
+import { tmdbService } from '@/features/tmdb'
+import { type Season } from '@/generated/db'
 import {
   type SeriesUpdateStatusInput,
   type SeriesSearchInput,
 } from '@/generated/gql/graphql'
-import { createArrayOfLength } from '@/lib/createArrayOfLength'
 import { NotFoundError } from '@/lib/errors'
 import { type AuthenticatedContext, type Context } from '@/types/context'
 
@@ -25,21 +26,21 @@ export const searchSeries = async ({
   ctx: Context
   input: SeriesSearchInput
 }) => {
-  const seriesFromOMDb = await omdbService.searchSeries({
+  const seriesFromTMDB = await tmdbService.searchSeries({
     keyword: input.keyword,
   })
-  if (!seriesFromOMDb.length) {
+  if (!seriesFromTMDB.length) {
     return []
   }
 
   const existingSeries = await seriesRepository.findMany({
     ctx,
-    imdbIds: seriesFromOMDb.map((series) => series.imdbId),
+    tmdbIds: seriesFromTMDB.map((series) => series.tmdbId),
   })
-  const existingSeriesImdbIds = existingSeries.map((series) => series.imdbId)
+  const existingSeriesTmdbIds = existingSeries.map((series) => series.tmdbId)
 
-  const newSeriesToAdd = seriesFromOMDb.filter(
-    (series) => !existingSeriesImdbIds.includes(series.imdbId),
+  const newSeriesToAdd = seriesFromTMDB.filter(
+    (series) => !existingSeriesTmdbIds.includes(series.tmdbId),
   )
   if (!newSeriesToAdd.length) {
     return existingSeries
@@ -64,50 +65,51 @@ const getSeriesById = (ctx: Context) => async (id: number) => {
 
 const RE_SYNC_AFTER_DAYS = 7
 
-export const syncSeasonsAndEpisodesFromOMDb = async ({
+export const syncSeasonsAndEpisodes = async ({
   ctx,
   seriesId,
-  imdbId,
-  totalNumberOfSeasons,
+  tmdbId,
+  seasons,
 }: {
   ctx: Context
   seriesId: number
-  imdbId: string
-  totalNumberOfSeasons: number
+  tmdbId: number
+  seasons: Omit<Insertable<Season>, 'seriesId'>[]
 }) => {
   const existingSeasonsAndEpisodes =
     await episodeRepository.findEpisodesAndSeasonsForSeries({ ctx, seriesId })
 
-  const existingSeasonIds = uniq(
-    existingSeasonsAndEpisodes.map(({ seasonId }) => seasonId),
+  const seasonsByNumber = keyBy(existingSeasonsAndEpisodes, 'seasonNumber')
+
+  const existingSeasonTmdbIds = uniq(
+    existingSeasonsAndEpisodes.map(({ seasonTmdbId }) => seasonTmdbId),
   )
-  const existingEpisodeImdbIds = new Set(
-    existingSeasonsAndEpisodes.map(({ episodeImdbId }) => episodeImdbId),
+  const existingEpisodeTmdbIds = new Set(
+    existingSeasonsAndEpisodes.map(({ episodeTmdbId }) => episodeTmdbId),
   )
 
-  const seasonIdsByNumber: Record<number, number> = {}
-  existingSeasonIds.forEach((seasonId, index) => {
-    if (seasonId) {
-      seasonIdsByNumber[index + 1] = seasonId
-    }
-  })
+  const newSeasons = seasons.filter(
+    (season) => !existingSeasonTmdbIds.includes(season.tmdbId),
+  )
 
-  const existingSeasonsCount = existingSeasonIds.length
-  const newSeasonsCount = totalNumberOfSeasons - existingSeasonsCount
-
-  if (newSeasonsCount > 0) {
-    const newSeasons = await seasonRepository.createMany({
+  if (newSeasons.length > 0) {
+    const savedNewSeasons = await seasonRepository.createMany({
       ctx,
-      seasons: createArrayOfLength(newSeasonsCount)
-        .map((_, i) => i + 1 + existingSeasonsCount)
-        .map((number) => ({
-          number,
-          seriesId,
-        })),
+      seasons: newSeasons.map((season) => ({
+        tmdbId: season.tmdbId,
+        number: season.number,
+        title: season.title,
+        seriesId,
+      })),
     })
 
-    newSeasons.forEach((season) => {
-      seasonIdsByNumber[season.number] = season.id
+    savedNewSeasons.forEach((season) => {
+      seasonsByNumber[season.number] = {
+        seasonId: season.id,
+        seasonTmdbId: season.tmdbId,
+        seasonNumber: season.number,
+        episodeTmdbId: null,
+      }
     })
   }
 
@@ -118,39 +120,37 @@ export const syncSeasonsAndEpisodesFromOMDb = async ({
   }[] = []
 
   await Promise.all(
-    createArrayOfLength(totalNumberOfSeasons)
-      .map((_, i) => i + 1)
-      .map(async (seasonNumber) => {
-        const { episodes } = await omdbService.fetchEpisodesForSeason({
-          imdbId,
-          seasonNumber,
-        })
-        if (!episodes.length) {
-          return
-        }
+    Object.keys(seasonsByNumber).map(async (seasonNumber) => {
+      const { episodes } = await tmdbService.fetchEpisodesForSeason({
+        tmdbId,
+        seasonNumber: parseInt(seasonNumber),
+      })
+      if (!episodes.length) {
+        return
+      }
 
-        const savedAndUpdatedEpisodes =
-          await episodeRepository.createOrUpdateMany({
-            ctx,
-            episodes: episodes.map((episode) => ({
-              ...episode,
-              seasonId: seasonIdsByNumber[seasonNumber],
-            })),
+      const savedAndUpdatedEpisodes =
+        await episodeRepository.createOrUpdateMany({
+          ctx,
+          episodes: episodes.map((episode) => ({
+            ...episode,
+            seasonId: seasonsByNumber[seasonNumber].seasonId,
+          })),
+        })
+
+      savedAndUpdatedEpisodes.forEach((episode) => {
+        // Only add actually new episodes to the newEpisodes, not updated ones
+        if (!existingEpisodeTmdbIds.has(episode.tmdbId)) {
+          newEpisodes.push({
+            episodeId: episode.id,
+            episodeNumber: episode.number,
+            seasonNumber: parseInt(seasonNumber),
           })
+        }
+      })
 
-        savedAndUpdatedEpisodes.forEach((episode) => {
-          // Only add actually new episodes to the newEpisodes, not updated ones
-          if (!existingEpisodeImdbIds.has(episode.imdbId)) {
-            newEpisodes.push({
-              episodeId: episode.id,
-              episodeNumber: episode.number,
-              seasonNumber,
-            })
-          }
-        })
-
-        return savedAndUpdatedEpisodes
-      }),
+      return savedAndUpdatedEpisodes
+    }),
   )
 
   if (newEpisodes.length) {
@@ -176,23 +176,26 @@ export const syncSeasonsAndEpisodesFromOMDb = async ({
 }
 
 /**
- * Update the details of the series with the given IMDB ID from the OMDb API.
- * This also syncs the seasons and episodes from OMDb, saving them into the
+ * Update the details of the series with the given TMDB ID from the TMDB API.
+ * This also syncs the seasons and episodes from TMDB, saving them into the
  * database if needed.
  */
-export const syncSeriesDetailsFromOMDb = async ({
+export const syncSeriesDetails = async ({
   ctx,
-  imdbId,
+  tmdbId,
 }: {
   ctx: Context
-  imdbId: string
+  tmdbId: number
 }) => {
-  const { series: newSeries, totalSeasons } =
-    await omdbService.fetchSeriesDetails({ imdbId })
+  const {
+    series: newSeries,
+    totalSeasons,
+    seasons,
+  } = await tmdbService.fetchSeriesDetails({ tmdbId })
 
-  const savedSeries = await seriesRepository.updateOneByIMDbId({
+  const savedSeries = await seriesRepository.updateOneByTMDbId({
     ctx,
-    imdbId,
+    tmdbId,
     series: {
       ...newSeries,
       syncedAt: new Date(Date.now()),
@@ -204,18 +207,18 @@ export const syncSeriesDetailsFromOMDb = async ({
   }
 
   if (totalSeasons) {
-    await syncSeasonsAndEpisodesFromOMDb({
+    await syncSeasonsAndEpisodes({
       ctx,
-      imdbId: savedSeries.imdbId,
+      tmdbId: savedSeries.tmdbId,
       seriesId: savedSeries.id,
-      totalNumberOfSeasons: totalSeasons,
+      seasons,
     })
   }
 
   return savedSeries
 }
 
-export const getSeriesByIdAndFetchDetailsFromOmdb = async ({
+export const getSeriesByIdAndFetchDetailsFromTMDB = async ({
   ctx,
   id,
 }: {
@@ -231,7 +234,7 @@ export const getSeriesByIdAndFetchDetailsFromOmdb = async ({
     return series
   }
 
-  return await syncSeriesDetailsFromOMDb({ ctx, imdbId: series.imdbId })
+  return await syncSeriesDetails({ ctx, tmdbId: series.tmdbId })
 }
 
 export const updateSeriesStatusForUser = async ({
@@ -311,30 +314,16 @@ export const findUserSeries = ({
   })
 }
 
-export const findOne = ({
-  ctx,
-  seriesId,
-  imdbId,
-  episodeId,
-}: {
-  ctx: Context
-  seriesId?: number
-  imdbId?: string
-  episodeId?: number
-}) => {
-  return seriesRepository.findOne({ ctx, seriesId, imdbId, episodeId })
-}
-
 export const findMany = async ({
   ctx,
-  imdbIds,
+  tmdbIds,
   seriesIds,
 }: {
   ctx: Context
-  imdbIds?: string[]
+  tmdbIds?: number[]
   seriesIds?: number[]
 }) => {
-  const series = await seriesRepository.findMany({ ctx, imdbIds, seriesIds })
+  const series = await seriesRepository.findMany({ ctx, tmdbIds, seriesIds })
 
   if (seriesIds) {
     return series

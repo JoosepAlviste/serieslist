@@ -4,7 +4,7 @@ import { type DB } from '@/generated/db'
 import { type Context } from '@/types/context'
 
 /**
- * Return the episode IMDb IDs and season IDs ordered by the season and
+ * Return the episode TMDB IDs and season IDs ordered by the season and
  * episode numbers.
  */
 export const findEpisodesAndSeasonsForSeries = ({
@@ -18,7 +18,12 @@ export const findEpisodesAndSeasonsForSeries = ({
     .selectFrom('season')
     .where('seriesId', '=', seriesId)
     .leftJoin('episode', 'season.id', 'episode.seasonId')
-    .select(['episode.imdbId as episodeImdbId', 'episode.seasonId as seasonId'])
+    .select([
+      'episode.tmdbId as episodeTmdbId',
+      'season.id as seasonId',
+      'season.tmdbId as seasonTmdbId',
+      'season.number as seasonNumber',
+    ])
     .orderBy('season.number')
     .orderBy('episode.number')
     .execute()
@@ -208,7 +213,7 @@ export const createOrUpdateMany = ({
     .values(episodes)
     .returningAll()
     .onConflict((oc) =>
-      oc.column('imdbId').doUpdateSet({
+      oc.column('tmdbId').doUpdateSet({
         title: (eb) => eb.ref('excluded.title'),
         number: (eb) => eb.ref('excluded.number'),
         imdbRating: (eb) => eb.ref('excluded.imdbRating'),

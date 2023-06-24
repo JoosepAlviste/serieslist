@@ -1,10 +1,12 @@
 import { parseISO, subDays } from 'date-fns'
 import { type Selectable } from 'kysely'
 import { nanoid } from 'nanoid'
-import nock, { type Body } from 'nock'
 
-import { config } from '@/config'
-import { omdbSeriesDetailsFactory, omdbEpisodeFactory } from '@/features/omdb'
+import {
+  tmdbEpisodeFactory,
+  tmdbSeasonFactory,
+  tmdbSeriesDetailsFactory,
+} from '@/features/tmdb'
 import { userFactory } from '@/features/users'
 import { type User } from '@/generated/db'
 import { graphql } from '@/generated/gql'
@@ -15,6 +17,7 @@ import {
   createSeriesWithEpisodesAndSeasons,
   executeOperation,
 } from '@/test/testUtils'
+import { type NotWorthIt } from '@/types/utils'
 
 import { UserSeriesStatus } from '../constants'
 import { episodeFactory } from '../episode.factory'
@@ -22,21 +25,14 @@ import { seasonFactory } from '../season.factory'
 import { seriesFactory } from '../series.factory'
 import { userSeriesStatusFactory } from '../userSeriesStatus.factory'
 
-import { mockOMDbDetailsRequest, mockOMDbSeasonRequest } from './scopes'
+import {
+  mockTMDbDetailsRequest,
+  mockTMDbSearchRequest,
+  mockTMDbSeasonRequest,
+} from './scopes'
 
 describe('features/series/series.schema', () => {
   describe('seriesSearch query', () => {
-    const mockOMDbSearchRequest = (keyword: string, response: Body) => {
-      return nock(`${config.omdb.url}`)
-        .get('/')
-        .query({
-          apiKey: config.omdb.apiKey,
-          type: 'series',
-          s: keyword,
-        })
-        .reply(200, response)
-    }
-
     const executeSearch = (keyword = 'testing') =>
       executeOperation({
         operation: graphql(`
@@ -58,21 +54,20 @@ describe('features/series/series.schema', () => {
         },
       })
 
-    it('searches series from the OMDb API', async () => {
-      const scope = mockOMDbSearchRequest('testing*', {
-        Search: [
-          omdbSeriesDetailsFactory.build({
-            Title: 'Testing Series',
-            Year: '2022–2023',
-            imdbID: 'tt1337',
-            Poster: 'foo.jpg',
+    it('searches series from the TMDB API', async () => {
+      const scope = mockTMDbSearchRequest('testing', {
+        results: [
+          tmdbSeriesDetailsFactory.build({
+            name: 'Testing Series',
+            first_air_date: '2022-04-05',
+            poster_path: 'foo.jpg',
           }),
         ],
       })
 
       const res = await executeSearch('testing')
 
-      // The request to OMDb API was made
+      // The request to TMDB API was made
       scope.done()
 
       // And the series is returned in the response
@@ -80,71 +75,63 @@ describe('features/series/series.schema', () => {
       expect(res.data?.seriesSearch[0]).toEqual(
         expect.objectContaining({
           title: 'Testing Series',
-          imdbId: 'tt1337',
           poster: 'foo.jpg',
           startYear: 2022,
-          endYear: 2023,
         }),
       )
     })
 
-    it('returns an empty list if the OMDb request fails', async () => {
-      const scope = mockOMDbSearchRequest('testing*', {
+    it('returns an empty list if the TMDB request fails', async () => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      const scope = mockTMDbSearchRequest('testing', {
         incorrect: 'response format',
-      })
+      } as NotWorthIt)
 
       const res = await executeSearch('testing')
 
-      // The request to OMDb API was made
+      // The request to TMDB API was made
       scope.done()
 
       expect(res.data?.seriesSearch).toHaveLength(0)
     })
 
     it('saves new series to the database', async () => {
-      mockOMDbSearchRequest('testing*', {
-        Search: [
-          omdbSeriesDetailsFactory.build({
-            Title: 'Testing Series',
-            Year: '2022–2023',
-            imdbID: 'tt1337',
-            Poster: 'foo.jpg',
-          }),
-        ],
+      const tmdbSeries = tmdbSeriesDetailsFactory.build({
+        name: 'Testing Series',
+        first_air_date: '2022-04-05',
+        poster_path: 'foo.jpg',
+      })
+      mockTMDbSearchRequest('testing', {
+        results: [tmdbSeries],
       })
 
       await executeSearch('testing')
 
       const savedSeries = await db
         .selectFrom('series')
-        .select(['title', 'poster', 'startYear', 'endYear'])
-        .where('imdbId', '=', 'tt1337')
+        .select(['title', 'poster', 'startYear'])
+        .where('tmdbId', '=', tmdbSeries.id)
         .executeTakeFirst()
 
       expect(savedSeries).toEqual({
         title: 'Testing Series',
         startYear: 2022,
-        endYear: 2023,
         poster: 'foo.jpg',
       })
     })
 
     it('does not duplicate an existing series', async () => {
-      const imdbId = `tt${nanoid(12)}`
       const title = `testing-${nanoid()}`
 
-      await seriesFactory.create({
-        imdbId,
+      const originalSeries = await seriesFactory.create({
         title,
       })
 
-      mockOMDbSearchRequest('testing*', {
-        Search: [
-          omdbSeriesDetailsFactory.build({
-            Title: title,
-            Year: '2022–2023',
-            imdbID: imdbId,
-            Poster: 'foo.jpg',
+      mockTMDbSearchRequest('testing', {
+        results: [
+          tmdbSeriesDetailsFactory.build({
+            name: title,
+            id: originalSeries.tmdbId,
           }),
         ],
       })
@@ -202,19 +189,17 @@ describe('features/series/series.schema', () => {
       expect(resSeries.title).toBe('Test Series')
     })
 
-    it('updates series details from OMDb', async () => {
+    it('updates series details from TMDB', async () => {
       const series = await seriesFactory.create({
         plot: null,
         syncedAt: null,
       })
 
-      const scope = mockOMDbDetailsRequest(
-        series.imdbId,
-        omdbSeriesDetailsFactory.build({
-          imdbID: series.imdbId,
-          imdbRating: '8.9',
-          Plot: 'Updated plot',
-          totalSeasons: '0',
+      const scope = mockTMDbDetailsRequest(
+        series.tmdbId,
+        tmdbSeriesDetailsFactory.build({
+          id: series.tmdbId,
+          overview: 'Updated plot',
         }),
       )
 
@@ -228,18 +213,17 @@ describe('features/series/series.schema', () => {
       scope.isDone()
 
       expect(resSeries.plot).toBe('Updated plot')
-      expect(resSeries.imdbRating).toBe('8.9')
       expect(resSeries.syncedAt).not.toBeNull()
     })
 
-    it('does not sync details from OMDb if it has recently been synced', async () => {
+    it('does not sync details from TMDB if it has recently been synced', async () => {
       const series = await seriesFactory.create({
         syncedAt: subDays(new Date(Date.now()), 3),
       })
 
-      const scope = mockOMDbDetailsRequest(
-        series.imdbId,
-        omdbSeriesDetailsFactory.build(),
+      const scope = mockTMDbDetailsRequest(
+        series.tmdbId,
+        tmdbSeriesDetailsFactory.build(),
       )
 
       await executeSeriesQuery(series.id)
@@ -247,43 +231,42 @@ describe('features/series/series.schema', () => {
       expect(scope.isDone()).toBeFalsy()
     })
 
-    it('fetches seasons and episodes from OMDb API', async () => {
+    it('fetches seasons and episodes from TMDB API', async () => {
       const series = await seriesFactory.create({
-        imdbId: `tt${nanoid(8)}`,
         syncedAt: null,
       })
 
-      mockOMDbDetailsRequest(
-        series.imdbId,
-        omdbSeriesDetailsFactory.build({
-          imdbID: series.imdbId,
-          Plot: 'Updated plot',
-          totalSeasons: '1',
+      mockTMDbDetailsRequest(
+        series.tmdbId,
+        tmdbSeriesDetailsFactory.build({
+          id: series.tmdbId,
+          overview: 'Updated plot',
+          number_of_seasons: 1,
+          seasons: [
+            tmdbSeasonFactory.build({
+              season_number: 1,
+            }),
+          ],
         }),
       )
 
-      const seriesSeasonScope = mockOMDbSeasonRequest(
+      const s1e1 = tmdbEpisodeFactory.build({
+        episode_number: 1,
+        name: 'Episode 1',
+      })
+      const s1e2 = tmdbEpisodeFactory.build({
+        episode_number: 2,
+        name: 'Episode 2',
+      })
+      const seriesSeasonScope = mockTMDbSeasonRequest(
         {
-          imdbId: series.imdbId,
+          tmdbId: series.tmdbId,
           seasonNumber: 1,
         },
-        {
-          Season: '1',
-          Episodes: [
-            omdbEpisodeFactory.build({
-              Episode: '1',
-              Title: 'Episode 1',
-              imdbID: `${series.imdbId}s1e1`,
-              imdbRating: '7.2',
-            }),
-            omdbEpisodeFactory.build({
-              Episode: '2',
-              Title: 'Episode 2',
-              imdbID: `${series.imdbId}s1e2`,
-              imdbRating: '7.3',
-            }),
-          ],
-        },
+        tmdbSeasonFactory.build({
+          season_number: 1,
+          episodes: [s1e1, s1e2],
+        }),
       )
 
       await executeSeriesQuery(series.id)
@@ -311,18 +294,16 @@ describe('features/series/series.schema', () => {
       expect(episodes).toHaveLength(2)
       expect(episodes[0]).toEqual(
         expect.objectContaining({
+          tmdbId: s1e1.id,
           number: 1,
           title: 'Episode 1',
-          imdbId: `${series.imdbId}s1e1`,
-          imdbRating: '7.2',
         }),
       )
       expect(episodes[1]).toEqual(
         expect.objectContaining({
+          tmdbId: s1e2.id,
           number: 2,
           title: 'Episode 2',
-          imdbId: `${series.imdbId}s1e2`,
-          imdbRating: '7.3',
         }),
       )
     })

@@ -1,8 +1,11 @@
 import { format } from 'date-fns'
-import { nanoid } from 'nanoid'
 
-import { omdbEpisodeFactory, omdbSeriesDetailsFactory } from '@/features/omdb'
 import { seriesProgressFactory } from '@/features/seriesProgress'
+import {
+  tmdbEpisodeFactory,
+  tmdbSeasonFactory,
+  tmdbSeriesDetailsFactory,
+} from '@/features/tmdb'
 import { userFactory } from '@/features/users'
 import { db } from '@/lib/db'
 import {
@@ -16,14 +19,14 @@ import { seasonFactory } from '../season.factory'
 import { seriesFactory } from '../series.factory'
 import {
   findStatusForSeries,
-  syncSeasonsAndEpisodesFromOMDb,
-  syncSeriesDetailsFromOMDb,
+  syncSeasonsAndEpisodes,
+  syncSeriesDetails,
 } from '../series.service'
 
-import { mockOMDbDetailsRequest, mockOMDbSeasonRequest } from './scopes'
+import { mockTMDbDetailsRequest, mockTMDbSeasonRequest } from './scopes'
 
 describe('features/series/series.service', () => {
-  describe('syncSeasonsAndEpisodesFromOMDb', () => {
+  describe('syncSeasonsAndEpisodes', () => {
     it('imports new episodes into existing seasons', async () => {
       const series = await seriesFactory.create()
       const season = await seasonFactory.create({
@@ -35,32 +38,31 @@ describe('features/series/series.service', () => {
         number: 1,
       })
 
-      const newOMDbEpisode = omdbEpisodeFactory.build({
-        Episode: '2',
-        imdbID: `tt${nanoid(12)}`,
+      const newTMDbEpisode = tmdbEpisodeFactory.build({
+        episode_number: 2,
       })
-      mockOMDbSeasonRequest(
+      mockTMDbSeasonRequest(
         {
-          imdbId: series.imdbId,
+          tmdbId: series.tmdbId,
           seasonNumber: 1,
         },
-        {
-          Season: '1',
-          Episodes: [
-            omdbEpisodeFactory.build(
+        tmdbSeasonFactory.build({
+          season_number: 1,
+          episodes: [
+            tmdbEpisodeFactory.build(
               {},
               { transient: { savedEpisode: existingEpisode } },
             ),
-            newOMDbEpisode,
+            newTMDbEpisode,
           ],
-        },
+        }),
       )
 
-      await syncSeasonsAndEpisodesFromOMDb({
+      await syncSeasonsAndEpisodes({
         ctx: createContext(),
-        imdbId: series.imdbId,
+        tmdbId: series.tmdbId,
         seriesId: series.id,
-        totalNumberOfSeasons: 1,
+        seasons: [season],
       })
 
       const seasons = await db
@@ -77,7 +79,7 @@ describe('features/series/series.service', () => {
         .execute()
       expect(episodes).toHaveLength(2)
       expect(episodes[0]?.id).toBe(existingEpisode.id)
-      expect(episodes[1]?.imdbId).toBe(newOMDbEpisode.imdbID)
+      expect(episodes[1]?.tmdbId).toBe(newTMDbEpisode.id)
     })
 
     it('updates existing episodes', async () => {
@@ -85,37 +87,37 @@ describe('features/series/series.service', () => {
         series,
         seasons: [
           {
+            season,
             episodes: [s1e1],
           },
         ],
       } = await createSeriesWithEpisodesAndSeasons([1])
 
-      const omdbEpisodeWithNewData = omdbEpisodeFactory.build(
+      const tmdbEpisodeWithNewData = tmdbEpisodeFactory.build(
         {
-          Title: 'An updated title',
-          imdbRating: '9.8',
-          Released: '2023-01-10',
+          name: 'An updated title',
+          air_date: new Date('2023-01-10'),
         },
         {
           transient: { savedEpisode: s1e1 },
         },
       )
-      mockOMDbSeasonRequest(
+      mockTMDbSeasonRequest(
         {
-          imdbId: series.imdbId,
+          tmdbId: series.tmdbId,
           seasonNumber: 1,
         },
-        {
-          Season: '1',
-          Episodes: [omdbEpisodeWithNewData],
-        },
+        tmdbSeasonFactory.build({
+          season_number: 1,
+          episodes: [tmdbEpisodeWithNewData],
+        }),
       )
 
-      await syncSeasonsAndEpisodesFromOMDb({
+      await syncSeasonsAndEpisodes({
         ctx: createContext(),
-        imdbId: series.imdbId,
+        tmdbId: series.tmdbId,
         seriesId: series.id,
-        totalNumberOfSeasons: 1,
+        seasons: [season],
       })
 
       const episode = await db
@@ -124,48 +126,7 @@ describe('features/series/series.service', () => {
         .selectAll()
         .executeTakeFirstOrThrow()
       expect(episode.title).toBe('An updated title')
-      expect(episode.imdbRating).toBe('9.8')
       expect(format(episode.releasedAt!, 'yyyy-MM-dd')).toBe('2023-01-10')
-    })
-
-    it('does not fail when syncing episodes with N/As', async () => {
-      const series = await seriesFactory.create()
-
-      const newEpisode = omdbEpisodeFactory.build({
-        Episode: '1',
-        Released: 'N/A',
-        imdbRating: 'N/A',
-      })
-      mockOMDbSeasonRequest(
-        {
-          imdbId: series.imdbId,
-          seasonNumber: 1,
-        },
-        {
-          Season: '1',
-          Episodes: [newEpisode],
-        },
-      )
-
-      await syncSeasonsAndEpisodesFromOMDb({
-        ctx: createContext(),
-        seriesId: series.id,
-        imdbId: series.imdbId,
-        totalNumberOfSeasons: 1,
-      })
-
-      const episode = await db
-        .selectFrom('episode')
-        .where('imdbId', '=', newEpisode.imdbID)
-        .selectAll()
-        .executeTakeFirstOrThrow()
-
-      expect(episode).toEqual(
-        expect.objectContaining({
-          imdbRating: null,
-          releasedAt: null,
-        }),
-      )
     })
 
     it("does not fail when there's nothing to import", async () => {
@@ -179,27 +140,27 @@ describe('features/series/series.service', () => {
         number: 1,
       })
 
-      mockOMDbSeasonRequest(
+      mockTMDbSeasonRequest(
         {
-          imdbId: series.imdbId,
+          tmdbId: series.tmdbId,
           seasonNumber: 1,
         },
-        {
-          Season: '1',
-          Episodes: [
-            omdbEpisodeFactory.build(
+        tmdbSeasonFactory.build({
+          season_number: 1,
+          episodes: [
+            tmdbEpisodeFactory.build(
               {},
               { transient: { savedEpisode: existingEpisode } },
             ),
           ],
-        },
+        }),
       )
 
-      await syncSeasonsAndEpisodesFromOMDb({
+      await syncSeasonsAndEpisodes({
         ctx: createContext(),
-        imdbId: series.imdbId,
+        tmdbId: series.tmdbId,
         seriesId: series.id,
-        totalNumberOfSeasons: 1,
+        seasons: [season],
       })
 
       const seasons = await db
@@ -223,6 +184,7 @@ describe('features/series/series.service', () => {
         series,
         seasons: [
           {
+            season,
             episodes: [s1e1],
           },
         ],
@@ -242,38 +204,36 @@ describe('features/series/series.service', () => {
         nextEpisodeId: null,
       })
 
-      const newOMDbEpisode = omdbEpisodeFactory.build({
-        Episode: '2',
-        imdbID: `tt${nanoid(12)}`,
+      const newTMDbEpisode = tmdbEpisodeFactory.build({
+        episode_number: 2,
       })
-      mockOMDbSeasonRequest(
+      mockTMDbSeasonRequest(
         {
-          imdbId: series.imdbId,
+          tmdbId: series.tmdbId,
           seasonNumber: 1,
         },
-        {
-          Season: '1',
-          Episodes: [
-            omdbEpisodeFactory.build({}, { transient: { savedEpisode: s1e1 } }),
-            newOMDbEpisode,
-            omdbEpisodeFactory.build({
-              Episode: '3',
-              imdbID: `tt${nanoid(12)}`,
+        tmdbSeasonFactory.build({
+          season_number: 1,
+          episodes: [
+            tmdbEpisodeFactory.build({}, { transient: { savedEpisode: s1e1 } }),
+            newTMDbEpisode,
+            tmdbEpisodeFactory.build({
+              episode_number: 3,
             }),
           ],
-        },
+        }),
       )
 
-      await syncSeasonsAndEpisodesFromOMDb({
+      await syncSeasonsAndEpisodes({
         ctx: createContext(),
-        imdbId: series.imdbId,
+        tmdbId: series.tmdbId,
         seriesId: series.id,
-        totalNumberOfSeasons: 1,
+        seasons: [season],
       })
 
       const newEpisode = await db
         .selectFrom('episode')
-        .where('imdbId', '=', newOMDbEpisode.imdbID)
+        .where('tmdbId', '=', newTMDbEpisode.id)
         .selectAll()
         .executeTakeFirstOrThrow()
       const seriesProgresses = await db
@@ -286,21 +246,22 @@ describe('features/series/series.service', () => {
     })
   })
 
-  describe('syncSeriesDetailsFromOMDb', () => {
+  describe('syncSeriesDetails', () => {
     it('does not sync seasons if there are none', async () => {
       const series = await seriesFactory.create()
 
-      mockOMDbDetailsRequest(
-        series.imdbId,
-        omdbSeriesDetailsFactory.build({
-          imdbID: series.imdbId,
-          totalSeasons: 'N/A',
+      mockTMDbDetailsRequest(
+        series.tmdbId,
+        tmdbSeriesDetailsFactory.build({
+          id: series.tmdbId,
+          number_of_seasons: 0,
+          seasons: [],
         }),
       )
 
-      await syncSeriesDetailsFromOMDb({
+      await syncSeriesDetails({
         ctx: createContext(),
-        imdbId: series.imdbId,
+        tmdbId: series.tmdbId,
       })
     })
   })

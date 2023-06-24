@@ -4,6 +4,7 @@ import { nanoid } from 'nanoid'
 
 import { type Episode } from '@/generated/db'
 import { db } from '@/lib/db'
+import { generateRandomInt } from '@/utils/generateRandomInt'
 
 import { seasonFactory } from './season.factory'
 
@@ -23,6 +24,7 @@ export const episodeFactory = Factory.define<Selectable<Episode>>(
 
     return {
       id: sequence,
+      tmdbId: generateRandomInt(1, 9999999),
       title: 'Test Episode',
       imdbId: `tt${nanoid(12)}`,
       number: sequence,
