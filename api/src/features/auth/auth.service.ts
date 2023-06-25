@@ -55,7 +55,7 @@ const refreshTokens = ({
   void ctx.reply.setCookie(ACCESS_TOKEN_COOKIE, tokens.accessToken, {
     httpOnly: true,
     path: '/',
-    domain: 'localhost',
+    domain: config.webapp.host,
     secure: true,
     sameSite: 'none',
   })
@@ -65,7 +65,7 @@ const refreshTokens = ({
   void ctx.reply.setCookie(REFRESH_TOKEN_COOKIE, tokens.refreshToken, {
     httpOnly: true,
     path: '/',
-    domain: 'localhost',
+    domain: config.webapp.host,
     expires: new Date(refreshExpires),
     secure: true,
     sameSite: 'none',

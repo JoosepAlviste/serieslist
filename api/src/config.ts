@@ -31,6 +31,7 @@ export const config = {
   },
 
   webapp: {
+    host: process.env.APP_HOST!,
     url: process.env.APP_URL!,
   },
 
