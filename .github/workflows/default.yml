@@ -1,4 +1,4 @@
-name: Checks
+name: Default
 
 on:
   push:
@@ -66,3 +66,26 @@ jobs:
           name: playwright-report
           path: webapp/playwright-report/
           retention-days: 30
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    needs: check
+
+    if: ${{ github.ref == 'refs/heads/main' || github.ref == 'refs/heads/rewrite' }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup
+        run: |
+          cp .env.example .env
+
+      - name: Build containers
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          sed -i.bak -e "s/VITE_API_HOST=.*/VITE_API_HOST=api.serieslist.joosep.xyz/" .env
+          sed -i.bak -e "s/VITE_API_URL=.*/VITE_API_URL=VITE_API_URL=https:\/\/$VITE_API_HOST:$VITE_API_PORT/" .env
+          docker compose -f docker-compose.production.yml pull || true
+          docker compose -f docker-compose.production.yml build
+          docker compose -f docker-compose.production.yml push
