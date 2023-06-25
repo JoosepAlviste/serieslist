@@ -36,3 +36,5 @@ export const config = {
         : import.meta.env.VITE_API_PORT) ?? '3000',
   },
 }
+
+console.log('config', config)
