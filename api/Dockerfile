@@ -2,6 +2,11 @@ FROM node:16-alpine AS builder
 
 WORKDIR /app
 
+# Install dependencies for compiling node-gyp (since there is no pre-built 
+# binary for Alpine)
+# https://stackoverflow.com/a/59538284/7044732
+RUN apk add g++ make python3
+
 COPY package*.json .
 RUN npm ci
 
