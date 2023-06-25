@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3'
 
 services:
   api:
@@ -12,6 +12,11 @@ services:
       - .env.docker
     depends_on:
       - db
+    networks:
+      - caddy
+    labels:
+      caddy: api.serieslist.joosep.xyz
+      caddy.reverse_proxy: "{{upstreams ${API_PORT}}}"
 
   webapp:
     image: ghcr.io/joosepalviste/serieslist-webapp:latest
@@ -28,6 +33,11 @@ services:
     env_file:
       - .env
       - .env.docker
+    networks:
+      - caddy
+    labels:
+      caddy: serieslist.joosep.xyz
+      caddy.reverse_proxy: "{{upstreams ${VITE_APP_PORT}}}"
 
   db:
     image: postgres:15.2-alpine
@@ -44,6 +54,12 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_DB}
+    networks:
+      - caddy
 
 volumes:
   pgdata:
+
+networks:
+  caddy:
+    external: true
