@@ -1,17 +1,35 @@
 /**
  * Object with environment variables that works on both the server and the
- * browser.
+ * browser. `process` only exists on the server and `import.meta.env` only
+ * exists on the client side...
  */
-const env = typeof process !== 'undefined' ? process.env : import.meta.env
-
 export const config = {
-  development: env.DEV,
+  development:
+    typeof process !== 'undefined' ? process.env.DEV : import.meta.env.DEV,
 
-  port: parseInt(env.VITE_APP_PORT ?? '3000', 10),
+  port: parseInt(
+    (typeof process !== 'undefined'
+      ? process.env.VITE_APP_PORT
+      : import.meta.env.VITE_APP_PORT) ?? '3000',
+    10,
+  ),
 
   api: {
-    url: env.VITE_API_URL ?? '',
-    host: env.VITE_API_HOST ?? 'localhost',
-    port: env.VITE_API_PORT ?? '3000',
+    url:
+      (typeof process !== 'undefined'
+        ? process.env.VITE_API_URL
+        : import.meta.env.VITE_API_URL) ?? '',
+    internalUrl:
+      (typeof process !== 'undefined'
+        ? process.env.VITE_API_INTERNAL_URL
+        : import.meta.env.VITE_API_INTERNAL_URL) ?? 'localhost',
+    host:
+      (typeof process !== 'undefined'
+        ? process.env.VITE_API_HOST
+        : import.meta.env.VITE_API_HOST) ?? 'localhost',
+    port:
+      (typeof process !== 'undefined'
+        ? process.env.VITE_API_PORT
+        : import.meta.env.VITE_API_PORT) ?? '3000',
   },
 }
