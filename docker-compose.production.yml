@@ -12,6 +12,21 @@ services:
     depends_on:
       - db
 
+  webapp:
+    build:
+      context: webapp
+      args:
+        VITE_APP_PORT: $VITE_APP_PORT
+        VITE_API_URL: $VITE_API_URL
+        VITE_API_INTERNAL_URL: $VITE_API_INTERNAL_URL
+        VITE_API_HOST: $VITE_API_HOST
+        VITE_API_PORT: $VITE_API_PORT
+    ports:
+      - '$VITE_APP_PORT:$VITE_APP_PORT'
+    env_file:
+      - .env
+      - .env.docker
+
   db:
     image: postgres:15.2-alpine
     ports:

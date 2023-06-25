@@ -2,6 +2,9 @@
  * Object with environment variables that works on both the server and the
  * browser. `process` only exists on the server and `import.meta.env` only
  * exists on the client side...
+ *
+ * New environment variables used here MUST be also defined in the `webapp`
+ * Dockerfile with ARG and ENV keywords.
  */
 export const config = {
   development:
