@@ -18,6 +18,7 @@ cd ~/projects/serieslist
 git pull
 
 docker-compose -f docker-compose.production.yml pull
+docker-compose -f docker-compose.production.yml run --rm api npm run migrate:prod
 docker-compose -f docker-compose.production.yml up -d
 ENDSSH
 
