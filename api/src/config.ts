@@ -31,9 +31,7 @@ export const config = {
   },
 
   webapp: {
-    url: `http://${process.env.VITE_APP_HOST ?? 'localhost'}:${
-      process.env.VITE_APP_PORT ?? 3000
-    }`,
+    url: process.env.APP_URL!,
   },
 
   tmdb: {
