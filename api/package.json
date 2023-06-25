@@ -20,8 +20,9 @@
     "codegen:watch": "npm run codegen -- --watch",
     "codegen:db": "tsx bin/kyselyCodegen.ts && eslint --fix src/generated/db.ts",
     "migration": "./bin/createMigration.sh",
-    "migrate": "tsx bin/migrate.ts && npm run codegen:db",
-    "migrate:test": "dotenv -e ../.env.test tsx bin/migrate.ts"
+    "migrate": "tsx src/bin/migrate.ts && npm run codegen:db",
+    "migrate:test": "dotenv -e ../.env.test tsx src/bin/migrate.ts",
+    "migrate:prod": "dotenv -e ../.env node dist/bin/migrate.js"
   },
   "dependencies": {
     "@fastify/cookie": "^8.3.0",
