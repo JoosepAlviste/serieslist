@@ -27,7 +27,7 @@ export const makeApolloClient = ({
 
   const cookie = req?.header('Cookie')
 
-  const uri = `${config.api.url}/graphql`
+  const uri = `${ssr ? config.api.internalUrl : config.api.url}/graphql`
   const apolloClient = new ApolloClient({
     connectToDevTools: Boolean(config.development && !ssr),
     ssrMode: ssr,
