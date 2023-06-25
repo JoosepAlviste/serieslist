@@ -1,4 +1,4 @@
-import groupBy from 'lodash/groupBy'
+import groupBy from 'just-group-by'
 
 /**
  * To be used when returning data for loaders.
@@ -15,7 +15,10 @@ export const groupEntitiesByKeyToNestedArray = <
   ids: number[]
   fieldToGroupBy: Field
 }) => {
-  const groupedById = groupBy(entities, fieldToGroupBy)
+  const groupedById = groupBy(
+    entities,
+    (entity) => entity[fieldToGroupBy] as string,
+  )
 
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   return ids.map((id) => groupedById[id] ?? [])

@@ -1,7 +1,7 @@
 import { addDays, isFuture } from 'date-fns'
+import index from 'just-index'
+import unique from 'just-unique'
 import { type Insertable } from 'kysely'
-import keyBy from 'lodash/keyBy'
-import uniq from 'lodash/uniq'
 
 import { seriesProgressService } from '@/features/seriesProgress'
 import { tmdbService } from '@/features/tmdb'
@@ -79,9 +79,9 @@ export const syncSeasonsAndEpisodes = async ({
   const existingSeasonsAndEpisodes =
     await episodeRepository.findEpisodesAndSeasonsForSeries({ ctx, seriesId })
 
-  const seasonsByNumber = keyBy(existingSeasonsAndEpisodes, 'seasonNumber')
+  const seasonsByNumber = index(existingSeasonsAndEpisodes, 'seasonNumber')
 
-  const existingSeasonTmdbIds = uniq(
+  const existingSeasonTmdbIds = unique(
     existingSeasonsAndEpisodes.map(({ seasonTmdbId }) => seasonTmdbId),
   )
   const existingEpisodeTmdbIds = new Set(
@@ -290,7 +290,7 @@ export const findStatusForSeries = async ({
     userId: ctx.currentUser.id,
   })
 
-  const statusesBySeriesId = keyBy(allStatuses, 'seriesId')
+  const statusesBySeriesId = index(allStatuses, 'seriesId')
 
   return seriesIds.map((seriesId) => {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition

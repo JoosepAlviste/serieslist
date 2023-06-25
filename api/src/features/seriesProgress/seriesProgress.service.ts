@@ -1,5 +1,5 @@
+import index from 'just-index'
 import { type UpdateObject } from 'kysely'
-import keyBy from 'lodash/keyBy'
 
 import { episodesService, seasonService } from '@/features/series'
 import { type DB } from '@/generated/db'
@@ -115,7 +115,7 @@ export const findIsSeenForEpisodes = async ({
     episodeIds,
   })
 
-  const seenEpisodesByEpisodeId = keyBy(seenEpisodes, 'episodeId')
+  const seenEpisodesByEpisodeId = index(seenEpisodes, 'episodeId')
 
   return episodeIds.map((episodeId) => {
     return Boolean(seenEpisodesByEpisodeId[episodeId])
@@ -179,7 +179,7 @@ export const findLatestSeenEpisodesForSeries = async ({
     seriesIds,
     userId: ctx.currentUser.id,
   })
-  const seenEpisodesBySeriesIds = keyBy(seenEpisodes, 'seriesId')
+  const seenEpisodesBySeriesIds = index(seenEpisodes, 'seriesId')
 
   const episodeIds = seenEpisodes
     .map((seenEpisode) => seenEpisode.latestSeenEpisodeId)
@@ -192,7 +192,7 @@ export const findLatestSeenEpisodesForSeries = async ({
     ctx,
     episodeIds,
   })
-  const episodesByIds = keyBy(episodes, 'id')
+  const episodesByIds = index(episodes, 'id')
 
   return seriesIds.map((seriesId) => {
     const progress = seenEpisodesBySeriesIds[seriesId]
@@ -215,7 +215,7 @@ export const findNextEpisodesForSeries = async ({
     seriesIds,
     userId: ctx.currentUser.id,
   })
-  const seenEpisodesBySeriesIds = keyBy(seenEpisodes, 'seriesId')
+  const seenEpisodesBySeriesIds = index(seenEpisodes, 'seriesId')
 
   const episodeIds = seenEpisodes
     .map((seenEpisode) => seenEpisode.nextEpisodeId)
@@ -228,7 +228,7 @@ export const findNextEpisodesForSeries = async ({
     ctx,
     episodeIds,
   })
-  const episodesByIds = keyBy(episodes, 'id')
+  const episodesByIds = index(episodes, 'id')
 
   return seriesIds.map((seriesId) => {
     const progress = seenEpisodesBySeriesIds[seriesId]
