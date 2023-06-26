@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import React from 'react'
 
 import { Link, LoadingSpinner } from '@/components'
+import { useFragment, type FragmentType } from '@/generated/gql'
 import { graphql } from '@/generated/gql/gql'
 import { type UserSeriesStatus } from '@/generated/gql/graphql'
 
@@ -11,6 +12,38 @@ import { SeriesPoster } from '../SeriesPoster'
 import { ReactComponent as EmptyList } from './EmptyList.svg'
 import { LatestSeenEpisodeCell } from './LatestSeenEpisodeCell'
 import * as s from './SeriesList.css'
+
+const SeriesRow_SeriesFragment = graphql(`
+  fragment SeriesRow_SeriesFragment on Series {
+    id
+    title
+    ...SeriesPoster_SeriesFragment
+    ...LatestSeenEpisodeCell_SeriesFragment
+  }
+`)
+
+type SeriesRowProps = {
+  serie: FragmentType<typeof SeriesRow_SeriesFragment>
+  className?: string
+}
+
+const SeriesRow = ({ serie: serieOriginal, className }: SeriesRowProps) => {
+  const serie = useFragment(SeriesRow_SeriesFragment, serieOriginal)
+
+  return (
+    <tr className={className}>
+      <td className={classNames(s.cell, s.cellPoster)}>
+        <SeriesPoster series={serie} />
+      </td>
+      <td className={s.cell}>
+        <Link href={`/series/${serie.id}`}>{serie.title}</Link>
+      </td>
+      <td className={s.cell}>
+        <LatestSeenEpisodeCell series={serie} />
+      </td>
+    </tr>
+  )
+}
 
 type SeriesListProps = {
   status?: UserSeriesStatus
@@ -28,9 +61,10 @@ export const SeriesList = ({ status }: SeriesListProps) => {
           ... on QueryUserSeriesListSuccess {
             data {
               id
-              title
-              ...SeriesPoster_SeriesFragment
-              ...LatestSeenEpisodeCell_SeriesFragment
+              nextEpisode {
+                id
+              }
+              ...SeriesRow_SeriesFragment
             }
           }
         }
@@ -49,6 +83,12 @@ export const SeriesList = ({ status }: SeriesListProps) => {
     data?.userSeriesList.__typename === 'QueryUserSeriesListSuccess'
       ? data.userSeriesList.data
       : []
+  const seriesWithNextEpisodeAvailable = series.filter(
+    (serie) => serie.nextEpisode,
+  )
+  const seriesWithNoNextEpisodeAvailable = series.filter(
+    (serie) => !serie.nextEpisode,
+  )
 
   return (
     <div className={s.container}>
@@ -63,20 +103,33 @@ export const SeriesList = ({ status }: SeriesListProps) => {
               </tr>
             </thead>
             <tbody>
-              {series.map((oneSeries) => (
-                <tr key={oneSeries.id}>
-                  <td className={classNames(s.cell, s.cellPoster)}>
-                    <SeriesPoster series={oneSeries} />
-                  </td>
-                  <td className={s.cell}>
-                    <Link href={`/series/${oneSeries.id}`}>
-                      {oneSeries.title}
-                    </Link>
-                  </td>
-                  <td className={s.cell}>
-                    <LatestSeenEpisodeCell series={oneSeries} />
+              {seriesWithNextEpisodeAvailable.map((oneSeries, index) => (
+                <SeriesRow
+                  key={oneSeries.id}
+                  serie={oneSeries}
+                  className={
+                    index === seriesWithNextEpisodeAvailable.length - 1
+                      ? s.lastRowNextEpisodeAvailable
+                      : undefined
+                  }
+                />
+              ))}
+              {seriesWithNextEpisodeAvailable.length &&
+              seriesWithNoNextEpisodeAvailable.length ? (
+                <tr>
+                  <td
+                    className={classNames(s.tableHeadCell, s.cellSubheading)}
+                  />
+                  <td
+                    colSpan={2}
+                    className={classNames(s.tableHeadCell, s.cellSubheading)}
+                  >
+                    Waiting for more episodes
                   </td>
                 </tr>
+              ) : null}
+              {seriesWithNoNextEpisodeAvailable.map((oneSeries) => (
+                <SeriesRow key={oneSeries.id} serie={oneSeries} />
               ))}
             </tbody>
           </table>

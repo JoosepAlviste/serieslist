@@ -6,7 +6,6 @@ export const container = style({
   background: vars.color.popoverBackground,
   boxShadow: vars.shadow.xl,
   borderRadius: vars.radii.m,
-  paddingBottom: '1rem',
   overflow: 'hidden',
 
   '@media': {
@@ -38,6 +37,8 @@ export const tableHeadCell = style({
   whiteSpace: 'nowrap',
 })
 
+export const lastRowNextEpisodeAvailable = style({})
+
 export const cell = style({
   padding: '1rem',
   verticalAlign: 'middle',
@@ -45,11 +46,22 @@ export const cell = style({
   borderBottomStyle: 'solid',
 
   selectors: {
-    'tr:not(:last-of-type) &': {
+    [`tr:not(${lastRowNextEpisodeAvailable}):not(:last-of-type) &`]: {
       borderBottomWidth: 1,
     },
   },
 })
+
+export const cellSubheading = style([
+  tableHead,
+  {
+    selectors: {
+      [`tr:not(${lastRowNextEpisodeAvailable}):not(:last-of-type) &`]: {
+        borderBottomWidth: 0,
+      },
+    },
+  },
+])
 
 export const cellPoster = style({
   width: 1,

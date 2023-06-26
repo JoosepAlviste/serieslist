@@ -48,35 +48,11 @@ export const tab = style({
     borderBottomColor: vars.color.inputRaisedBackground,
   },
 
-  ':first-of-type': {
-    borderTopLeftRadius: vars.radii.m,
-    borderBottomLeftRadius: vars.radii.m,
-  },
-
-  ':last-of-type': {
-    borderTopRightRadius: vars.radii.m,
-    borderBottomRightRadius: vars.radii.m,
-  },
-
   selectors: {
     '&[data-state="active"]': {
       color: vars.color.primary,
       borderColor: vars.color.primary,
       fontWeight: vars.fontWeight.medium,
-    },
-  },
-
-  '@media': {
-    [responsive.m]: {
-      ':first-of-type': {
-        borderTopLeftRadius: 0,
-        borderBottomLeftRadius: 0,
-      },
-
-      ':last-of-type': {
-        borderTopRightRadius: 0,
-        borderBottomRightRadius: 0,
-      },
     },
   },
 })
