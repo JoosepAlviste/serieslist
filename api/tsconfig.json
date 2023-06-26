@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "ES2018",
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "lib": [
+      "ESNext"
+    ],
+    "strict": true,
+    "isolatedModules": true,
+    "skipLibCheck": true,
+    "outDir": "dist",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    },
+    "types": [
+      "vitest/globals"
+    ]
+  }
+}

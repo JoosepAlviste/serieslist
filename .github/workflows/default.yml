@@ -1,0 +1,105 @@
+name: Default
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+
+  check:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: serieslist
+          POSTGRES_PASSWORD: serieslist
+          POSTGRES_DB: serieslist_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Setup
+        run: |
+          cp .env.example .env
+          bash bin/generate-secret-token.sh
+
+      - name: API checks
+        run: |
+          cd api
+          npm ci
+          npm run lint
+          npm run migrate:test
+          npm run tsc
+          npm run test:coverage
+          npm run build
+
+      - name: Webapp checks
+        run: |
+          cd webapp
+          npm ci
+          npm run lint
+          npm run tsc
+          npm run test:coverage
+          npm run build
+
+      - name: E2E tests
+        run: |
+          (cd webapp && npx playwright install chromium --with-deps)
+          (cd api && npm run start:e2e) & (cd webapp && npm run test:e2e)
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: webapp/playwright-report/
+          retention-days: 30
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    needs: check
+
+    if: ${{ github.ref == 'refs/heads/master' }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup
+        run: |
+          cp .env.example .env
+
+      - name: Build containers
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          sed -i.bak -e "s/VITE_API_HOST=.*/VITE_API_HOST=api.serieslist.joosep.xyz/" .env
+          sed -i.bak -e "s/VITE_API_URL=.*/VITE_API_URL=https:\/\/\$VITE_API_HOST/" .env
+          docker compose -f docker-compose.production.yml pull || true
+          docker compose -f docker-compose.production.yml build
+          docker compose -f docker-compose.production.yml push
+
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.DEPLOYMENT_SSH_PRIVATE_KEY }}
+          known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
+      - name: Adding Known Hosts
+        run: ssh-keyscan -H ${{ secrets.DEPLOYMENT_SSH_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Updating deployment in server
+        run: bash bin/update-deployment.sh
+        env:
+          DEPLOYMENT_SSH_HOST: ${{ secrets.DEPLOYMENT_SSH_HOST }}
+          DEPLOYMENT_SSH_USER: ${{ secrets.DEPLOYMENT_SSH_USER }}

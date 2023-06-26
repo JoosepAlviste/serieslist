@@ -1,70 +1,65 @@
 version: '3'
 
 services:
-  nginx:
-    image: nginx
-    expose:
-      - 8000
-    volumes:
-      - .:/app
-      - ./deploy/nginx/production/default.conf:/etc/nginx/conf.d/default.conf
-      # - /etc/letsencrypt/archive/serieslist.joosep.xyz:/etc/nginx/certs
+  api:
+    image: ghcr.io/joosepalviste/serieslist-api:latest
+    build:
+      context: api
+    ports:
+      - '$API_PORT:$API_PORT'
+    env_file:
+      - .env
+      - .env.docker
     depends_on:
-      - php
-      - serieslist_db
+      - db
+    networks:
+      - caddy
+    labels:
+      caddy: api.serieslist.joosep.xyz
+      caddy.reverse_proxy: "{{upstreams ${API_PORT}}}"
+
+  webapp:
+    image: ghcr.io/joosepalviste/serieslist-webapp:latest
+    build:
+      context: webapp
+      args:
+        VITE_APP_PORT: $VITE_APP_PORT
+        VITE_API_URL: $VITE_API_URL
+        VITE_API_INTERNAL_URL: $VITE_API_INTERNAL_URL
+        VITE_API_HOST: $VITE_API_HOST
+        VITE_API_PORT: $VITE_API_PORT
+    ports:
+      - '$VITE_APP_PORT:$VITE_APP_PORT'
+    env_file:
+      - .env
+      - .env.docker
     networks:
       - caddy
     labels:
       caddy: serieslist.joosep.xyz
-      caddy.reverse_proxy: "{{upstreams 8000}}"
+      caddy.reverse_proxy: "{{upstreams ${VITE_APP_PORT}}}"
 
-  php:
-    build:
-      context: .
-      dockerfile: deploy/docker/production/Dockerfile
+  db:
+    image: postgres:15.2-alpine
+    ports:
+      - '${DB_PORT}:5432'
     volumes:
-      - .:/app
-      - ./deploy/php/production/php.ini:/usr/local/etc/php/conf.d/php.ini
+      - 'pgdata:/var/lib/postgresql/data'
+      - ./bin/create-multiple-postgresql-databases.sh:/docker-entrypoint-initdb.d/create-multiple-postgresql-databases.sh
+    # Make Postgres faster
+    # https://github.com/testjavascript/nodejs-integration-tests-best-practices#%EF%B8%8F-4-optimize-your-real-db-for-testing-dont-fake-it
+    command: postgres -c fsync=off -c synchronous_commit=off -c full_page_writes=off -c random_page_cost=1.0
     environment:
-      DB_CONNECTION: mysql
-      DB_HOST: serieslist_db
-      DB_PORT: 3306
-      DB_DATABASE: serieslist
-      DB_USERNAME: serieslist
-      DB_PASSWORD: serieslist
-    user: ${CURRENT_UID}
+      POSTGRES_MULTIPLE_DATABASES: ${DB_DB}_test
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DB}
     networks:
       - caddy
 
-  composer:
-    image: composer
-    volumes:
-      - .:/app
-    command: install --ignore-platform-reqs
-    user: ${CURRENT_UID}
-
-  serieslist_db:
-    image: mysql:5.6
-    environment:
-      - MYSQL_DATABASE=serieslist
-      - MYSQL_USER=serieslist
-      - MYSQL_PASSWORD=serieslist
-      - MYSQL_ROOT_PASSWORD=serieslist
-    volumes:
-      - .data/mysql:/var/lib/mysql
-      - ./deploy/mysql:/etc/mysql/conf.d
-    networks:
-      - caddy
-
-  # whoami:
-  #   image: jwilder/whoami
-  #   networks:
-  #     - caddy
-  #   labels:
-  #     caddy: serieslist.joosep.xyz
-  #     caddy.reverse_proxy: "{{upstreams 8000}}"
+volumes:
+  pgdata:
 
 networks:
   caddy:
     external: true
-
