@@ -73,6 +73,7 @@ export const findManyForUser = ({
     .innerJoin('userSeriesStatus', 'series.id', 'userSeriesStatus.seriesId')
     .where('userSeriesStatus.userId', '=', userId)
     .selectAll('series')
+    .orderBy('series.title')
 
   if (status) {
     query = query.where('userSeriesStatus.status', '=', status)
