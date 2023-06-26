@@ -9,6 +9,8 @@ import { getPageTitle } from './getPageTitle'
 import { PageShell } from './PageShell'
 import type { PageContextClient } from './types'
 
+import '@/lib/initSentry'
+
 let root: Root | undefined
 /**
  * Keep track of the Apollo client instance used in the client-side so that we

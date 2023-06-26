@@ -30,3 +30,15 @@ Running in production mode with Docker:
 ```sh
 docker-compose up
 ```
+
+### Sentry
+
+Error monitoring in Sentry requires setting up a few environment variables:
+
+- `API_SENTRY_DSN`: The API project DSN
+- `VITE_APP_SENTRY_DSN`: The webapp project DSN
+- `SENTRY_ORG`
+- `SENTRY_PROJECT`
+- `SENTRY_AUTH_TOKEN`: Generate from 
+  https://sentry.io/settings/account/api/auth-tokens/, requires the 
+  `project:releases` and `org:read` scopes

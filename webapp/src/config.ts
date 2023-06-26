@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+
 /**
  * Object with environment variables that works on both the server and the
  * browser. `process` only exists on the server and `import.meta.env` only
@@ -34,5 +36,13 @@ export const config = {
       (typeof process !== 'undefined'
         ? process.env.VITE_API_PORT
         : import.meta.env.VITE_API_PORT) ?? '3000',
+  },
+
+  sentry: {
+    enabled: true,
+    dsn:
+      typeof process !== 'undefined'
+        ? process.env.VITE_APP_SENTRY_DSN!
+        : import.meta.env.VITE_APP_SENTRY_DSN,
   },
 }
