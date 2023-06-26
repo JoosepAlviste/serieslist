@@ -2,11 +2,13 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import { config as dotenvConfig } from 'dotenv'
+import { expand } from 'dotenv-expand'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
-dotenvConfig({
+const env = dotenvConfig({
   path: path.resolve(__dirname, '..', '..', '.env'),
 })
+expand(env)
 
 type Environment = 'development' | 'test' | 'production'
 
