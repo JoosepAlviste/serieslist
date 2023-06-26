@@ -2,7 +2,7 @@ name: Default
 
 on:
   push:
-    branches: [master, rewrite]
+    branches: [master]
   pull_request:
 
 jobs:
@@ -72,7 +72,7 @@ jobs:
 
     needs: check
 
-    if: ${{ github.ref == 'refs/heads/main' || github.ref == 'refs/heads/rewrite' }}
+    if: ${{ github.ref == 'refs/heads/master' }}
 
     steps:
       - uses: actions/checkout@v3
