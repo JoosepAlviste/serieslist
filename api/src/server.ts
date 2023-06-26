@@ -1,3 +1,4 @@
+import { useSentry } from '@envelop/sentry'
 import { type FastifyRequest, type FastifyReply } from 'fastify'
 import { createYoga } from 'graphql-yoga'
 
@@ -7,10 +8,18 @@ import { app } from './lib/fastify'
 import { schema } from './schema'
 import { type Context } from './types/context'
 
+import '@/lib/initSentry'
+
 export const yoga = createYoga<{
   req: FastifyRequest
   reply: FastifyReply
 }>({
+  plugins: [
+    useSentry({
+      includeResolverArgs: true,
+      includeExecuteVariables: true,
+    }),
+  ],
   logging: {
     debug: (...args) => args.forEach((arg) => app.log.debug(arg)),
     info: (...args) => args.forEach((arg) => app.log.info(arg)),
