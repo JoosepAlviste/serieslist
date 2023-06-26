@@ -2,16 +2,6 @@
 
 The front-end for the Serieslist web application.
 
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
 
 ## Code checks
 
@@ -21,38 +11,24 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 npm run lint
 ```
 
-
 ### TypeScript
 
 ```sh
 npm run tsc
 ```
 
-
 ### Tests
 
 ```sh
-npm t
+npm run test
 ```
 
+## Development
 
-### E2E tests
+### GraphQL Code Generator
 
-First, run the back-end:
-
-```sh
-cd api
-# Migrate the test database
-npm run migrate:test
-# Run the server
-npm run start:e2e
-```
-
-Then, run the e2e tests in another terminal tab:
+To generate TypeScript types for GraphQL requests, run:
 
 ```sh
-cd webapp
-# Install the playwright dependencies if they haven't been yet
-npx playwright install chromium --with-deps
-npm run test:e2e
+npm run codegen
 ```
