@@ -5,6 +5,7 @@ import { userFactory } from '@/features/users'
 import { type User } from '@/generated/db'
 import { graphql } from '@/generated/gql'
 import {
+  type MarkSeriesEpisodesAsSeenInput,
   type MarkSeasonEpisodesAsSeenInput,
   type ToggleEpisodeSeenInput,
 } from '@/generated/gql/graphql'
@@ -175,6 +176,84 @@ describe('features/seriesProgress/seriesProgress.schema', () => {
         .where('userId', '=', user.id)
         .execute()
       expect(seenEpisode).toHaveLength(2)
+    })
+  })
+
+  describe('markSeriesEpisodesAsSeen mutation', () => {
+    const executeMutation = async ({
+      seriesId,
+      user,
+    }: MarkSeriesEpisodesAsSeenInput & {
+      user: Selectable<User>
+    }) =>
+      await executeOperation({
+        operation: graphql(`
+          mutation markSeriesEpisodesAsSeen(
+            $input: MarkSeriesEpisodesAsSeenInput!
+          ) {
+            markSeriesEpisodesAsSeen(input: $input) {
+              __typename
+              ... on Series {
+                id
+              }
+            }
+          }
+        `),
+        variables: { input: { seriesId } },
+        user,
+      })
+
+    it('allows marking all episodes in a series as seen', async () => {
+      const {
+        series,
+        seasons: [
+          {
+            episodes: [s1e1],
+          },
+          {
+            episodes: [s2e1],
+          },
+        ],
+      } = await createSeriesWithEpisodesAndSeasons([1, 1])
+      const user = await userFactory.create()
+
+      await executeMutation({
+        seriesId: series.id,
+        user,
+      })
+
+      const seenEpisodes = await db
+        .selectFrom('seenEpisode')
+        .where('episodeId', 'in', [s1e1.id, s2e1.id])
+        .execute()
+      expect(seenEpisodes).toHaveLength(2)
+    })
+
+    it('advances series progress to the last episode', async () => {
+      const {
+        series,
+        seasons: [
+          ,
+          {
+            episodes: [s2e1],
+          },
+        ],
+      } = await createSeriesWithEpisodesAndSeasons([1, 1])
+      const user = await userFactory.create()
+
+      await executeMutation({
+        seriesId: series.id,
+        user,
+      })
+
+      const progress = await db
+        .selectFrom('seriesProgress')
+        .selectAll()
+        .where('seriesId', '=', series.id)
+        .where('userId', '=', user.id)
+        .executeTakeFirstOrThrow()
+      expect(progress.latestSeenEpisodeId).toBe(s2e1.id)
+      expect(progress.nextEpisodeId).toBe(null)
     })
   })
 

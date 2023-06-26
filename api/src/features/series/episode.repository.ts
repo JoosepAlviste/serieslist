@@ -19,6 +19,7 @@ export const findEpisodesAndSeasonsForSeries = ({
     .where('seriesId', '=', seriesId)
     .leftJoin('episode', 'season.id', 'episode.seasonId')
     .select([
+      'episode.id as episodeId',
       'episode.tmdbId as episodeTmdbId',
       'season.id as seasonId',
       'season.tmdbId as seasonTmdbId',

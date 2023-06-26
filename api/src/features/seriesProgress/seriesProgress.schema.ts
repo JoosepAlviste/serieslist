@@ -23,6 +23,17 @@ const MarkSeasonEpisodesAsSeenInputRef = builder.inputType(
   },
 )
 
+const MarkSeriesEpisodesAsSeenInputRef = builder.inputType(
+  'MarkSeriesEpisodesAsSeenInput',
+  {
+    fields: (t) => ({
+      seriesId: t.id({
+        required: true,
+      }),
+    }),
+  },
+)
+
 builder.mutationFields((t) => ({
   toggleEpisodeSeen: t.authField({
     type: EpisodeRef,
@@ -60,6 +71,26 @@ builder.mutationFields((t) => ({
       return seriesProgressService.markSeasonEpisodesAsSeen({
         ctx,
         seasonId: args.input.seasonId,
+      })
+    },
+  }),
+
+  markSeriesEpisodesAsSeen: t.authField({
+    type: SeriesRef,
+    nullable: false,
+    authScopes: {
+      authenticated: true,
+    },
+    args: {
+      input: t.arg({ type: MarkSeriesEpisodesAsSeenInputRef, required: true }),
+    },
+    errors: {
+      types: [NotFoundError, UnauthorizedError],
+    },
+    resolve(_parent, args, ctx) {
+      return seriesProgressService.markSeriesEpisodesAsSeen({
+        ctx,
+        seriesId: parseInt(String(args.input.seriesId)),
       })
     },
   }),

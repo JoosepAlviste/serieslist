@@ -5,6 +5,7 @@ import { episodesService, seasonService } from '@/features/series'
 import { type DB } from '@/generated/db'
 import { NotFoundError } from '@/lib/errors'
 import { type Context, type AuthenticatedContext } from '@/types/context'
+import { type NonNullableFields } from '@/types/utils'
 import { isTruthy } from '@/utils/isTruthy'
 
 import * as seenEpisodeRepository from './seenEpisode.repository'
@@ -96,6 +97,53 @@ export const markSeasonEpisodesAsSeen = async ({
   }
 
   return season
+}
+
+/**
+ * @returns Series ID
+ */
+export const markSeriesEpisodesAsSeen = async ({
+  ctx,
+  seriesId,
+}: {
+  ctx: AuthenticatedContext
+  seriesId: number
+}) => {
+  const episodes = await episodesService.findEpisodesAndSeasonsForSeries({
+    ctx,
+    seriesId: seriesId,
+  })
+
+  await seenEpisodeRepository.createMany({
+    ctx,
+    seenEpisodes: episodes
+      .filter(
+        (episode): episode is NonNullableFields<typeof episode, 'episodeId'> =>
+          !!episode.episodeId,
+      )
+      .map((episode) => ({
+        episodeId: episode.episodeId,
+        userId: ctx.currentUser.id,
+      })),
+  })
+
+  const lastEpisode = await episodesService.findLastEpisodeOfSeries({
+    ctx,
+    seriesId,
+  })
+  if (lastEpisode) {
+    await seriesProgressRepository.createOrUpdateOne({
+      ctx,
+      seriesProgress: {
+        seriesId,
+        userId: ctx.currentUser.id,
+        latestSeenEpisodeId: lastEpisode.id,
+        nextEpisodeId: null,
+      },
+    })
+  }
+
+  return seriesId
 }
 
 export const findIsSeenForEpisodes = async ({

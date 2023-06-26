@@ -108,6 +108,7 @@ export const syncSeasonsAndEpisodes = async ({
         seasonId: season.id,
         seasonTmdbId: season.tmdbId,
         seasonNumber: season.number,
+        episodeId: null,
         episodeTmdbId: null,
       }
     })

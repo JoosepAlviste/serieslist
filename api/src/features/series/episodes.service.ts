@@ -47,6 +47,16 @@ export const findEpisodesBySeasonIds = async ({
   })
 }
 
+export const findEpisodesAndSeasonsForSeries = ({
+  ctx,
+  seriesId,
+}: {
+  ctx: Context
+  seriesId: number
+}) => {
+  return episodeRepository.findEpisodesAndSeasonsForSeries({ ctx, seriesId })
+}
+
 /**
  * It is often needed to have a season number, series id, and episode data in
  * one go.
