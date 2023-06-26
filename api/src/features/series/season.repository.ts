@@ -46,5 +46,10 @@ export const createMany = ({
   ctx: Context
   seasons: InsertObject<DB, 'season'>[]
 }) => {
-  return ctx.db.insertInto('season').values(seasons).returningAll().execute()
+  return ctx.db
+    .insertInto('season')
+    .values(seasons)
+    .returningAll()
+    .onConflict((oc) => oc.column('tmdbId').doNothing())
+    .execute()
 }
