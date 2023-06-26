@@ -8,7 +8,7 @@ export const container = style({
   gridTemplateRows: 'auto auto auto 1fr',
   gap: '1rem 2rem',
   marginTop: '1.5rem',
-  marginBottom: '1.5rem',
+  marginBottom: '5rem',
   paddingRight: '3rem',
 
   '@media': {

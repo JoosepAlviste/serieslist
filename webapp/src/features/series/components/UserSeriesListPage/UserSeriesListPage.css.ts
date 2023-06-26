@@ -6,8 +6,14 @@ export const container = style({
   marginTop: '1.5rem',
   marginLeft: '5rem',
   marginRight: '5rem',
+  marginBottom: '5rem',
 
   '@media': {
+    [responsive.l]: {
+      marginLeft: '1rem',
+      marginRight: '1rem',
+    },
+
     [responsive.m]: {
       marginLeft: 0,
       marginRight: 0,
