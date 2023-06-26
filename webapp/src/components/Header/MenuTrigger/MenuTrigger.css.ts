@@ -29,7 +29,7 @@ const line = style({
   background: vars.color.textTertiary,
   boxShadow: `0 0 0 3px ${vars.color.pageBackground}`,
   borderRadius: '2rem',
-  transition: 'all .5s cubic-bezier(0.1, 0.9, 0, 1.2)',
+  transition: `all 0.5s ${vars.easing.base}`,
 
   selectors: {
     [`${burgerContainer}:hover &`]: {

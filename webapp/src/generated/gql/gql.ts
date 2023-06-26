@@ -29,7 +29,7 @@ const documents = {
     "\n  fragment SeriesPoster_SeriesFragment on Series {\n    poster\n    title\n  }\n": types.SeriesPoster_SeriesFragmentFragmentDoc,
     "\n  fragment SeriesStatusSelect_SeriesFragment on Series {\n    id\n    status\n  }\n": types.SeriesStatusSelect_SeriesFragmentFragmentDoc,
     "\n      mutation seriesUpdateStatus($input: SeriesUpdateStatusInput!) {\n        seriesUpdateStatus(input: $input) {\n          __typename\n          ... on Series {\n            id\n            status\n          }\n        }\n      }\n    ": types.SeriesUpdateStatusDocument,
-    "\n      query aboutPage {\n        me {\n          __typename\n          ... on User {\n            id\n            email\n          }\n        }\n      }\n    ": types.AboutPageDocument,
+    "\n      mutation markSeriesEpisodesAsSeen(\n        $input: MarkSeriesEpisodesAsSeenInput!\n      ) {\n        markSeriesEpisodesAsSeen(input: $input) {\n          __typename\n          ... on Error {\n            message\n          }\n          ... on Series {\n            id\n            ...LatestSeenEpisodeCell_SeriesFragment\n            seasons {\n              id\n              episodes {\n                id\n                isSeen\n              }\n            }\n          }\n        }\n      }\n    ": types.MarkSeriesEpisodesAsSeenDocument,
 };
 
 /**
@@ -113,7 +113,7 @@ export function graphql(source: "\n      mutation seriesUpdateStatus($input: Ser
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n      query aboutPage {\n        me {\n          __typename\n          ... on User {\n            id\n            email\n          }\n        }\n      }\n    "): (typeof documents)["\n      query aboutPage {\n        me {\n          __typename\n          ... on User {\n            id\n            email\n          }\n        }\n      }\n    "];
+export function graphql(source: "\n      mutation markSeriesEpisodesAsSeen(\n        $input: MarkSeriesEpisodesAsSeenInput!\n      ) {\n        markSeriesEpisodesAsSeen(input: $input) {\n          __typename\n          ... on Error {\n            message\n          }\n          ... on Series {\n            id\n            ...LatestSeenEpisodeCell_SeriesFragment\n            seasons {\n              id\n              episodes {\n                id\n                isSeen\n              }\n            }\n          }\n        }\n      }\n    "): (typeof documents)["\n      mutation markSeriesEpisodesAsSeen(\n        $input: MarkSeriesEpisodesAsSeenInput!\n      ) {\n        markSeriesEpisodesAsSeen(input: $input) {\n          __typename\n          ... on Error {\n            message\n          }\n          ... on Series {\n            id\n            ...LatestSeenEpisodeCell_SeriesFragment\n            seasons {\n              id\n              episodes {\n                id\n                isSeen\n              }\n            }\n          }\n        }\n      }\n    "];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

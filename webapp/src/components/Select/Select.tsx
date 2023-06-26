@@ -1,9 +1,18 @@
 import * as BaseSelect from '@radix-ui/react-select'
-import React from 'react'
+import React, { type ForwardedRef, forwardRef } from 'react'
 
 import { Icon } from '../Icon'
 
 import * as s from './Select.css'
+
+// Make forwardRef work with generic component types. This should not affect the
+// `forwardRef` types globally.
+// https://fettblog.eu/typescript-react-generic-forward-refs/
+declare module 'react' {
+  function forwardRef<T, P = object>(
+    render: (props: P, ref: React.Ref<T>) => React.ReactElement | null,
+  ): (props: P & React.RefAttributes<T>) => React.ReactElement | null
+}
 
 type Option = {
   value: string
@@ -17,17 +26,15 @@ type SelectProps<T extends string = string> = {
   onChange: (value: T) => void
 }
 
-export const Select = <T extends string>({
-  options,
-  onChange,
-  value,
-  label,
-}: SelectProps<T>) => {
+function SelectInner<T extends string = string>(
+  { options, onChange, value, label }: SelectProps<T>,
+  ref: ForwardedRef<HTMLButtonElement>,
+) {
   const selectedOption = options.find((option) => option.value === value)
 
   return (
     <BaseSelect.Root onValueChange={onChange} value={value}>
-      <BaseSelect.Trigger className={s.trigger} aria-label={label}>
+      <BaseSelect.Trigger className={s.trigger} aria-label={label} ref={ref}>
         <BaseSelect.Value placeholder={selectedOption?.label} />
         <BaseSelect.Icon>
           <Icon size="s" name="triangle" aria-hidden className={s.triangle} />
@@ -55,3 +62,5 @@ export const Select = <T extends string>({
     </BaseSelect.Root>
   )
 }
+
+export const Select = forwardRef(SelectInner)

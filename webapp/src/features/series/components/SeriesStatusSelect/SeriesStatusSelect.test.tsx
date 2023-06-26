@@ -8,6 +8,7 @@ import {
   SeriesStatusSelect_SeriesFragmentFragmentDoc,
   SeriesUpdateStatusDocument,
   UserSeriesStatus,
+  MarkSeriesEpisodesAsSeenDocument,
 } from '@/generated/gql/graphql'
 import { createMockResolver, render } from '@/lib/testUtils'
 
@@ -26,6 +27,13 @@ describe('features/series/components/SeriesStatusSelect', () => {
       },
     })
 
+    const [markSeriesEpisodesAsSeenDoc, markSeriesEpisodesAsSeenMockResolver] =
+      createMockResolver(MarkSeriesEpisodesAsSeenDocument, {
+        data: {
+          markSeriesEpisodesAsSeen: returnedSeries,
+        },
+      })
+
     const utils = await render(
       <SeriesStatusSelect
         series={makeFragmentData(
@@ -34,13 +42,17 @@ describe('features/series/components/SeriesStatusSelect', () => {
         )}
       />,
       {
-        requestMocks: [[doc, mockResolver]],
+        requestMocks: [
+          [doc, mockResolver],
+          [markSeriesEpisodesAsSeenDoc, markSeriesEpisodesAsSeenMockResolver],
+        ],
       },
     )
 
     return {
       ...utils,
       mockResolver,
+      markSeriesEpisodesAsSeenMockResolver,
     }
   }
 
@@ -63,7 +75,7 @@ describe('features/series/components/SeriesStatusSelect', () => {
 
     const { mockResolver } = await renderStatusSelect(series, {
       ...series,
-      status: UserSeriesStatus.Completed,
+      status: UserSeriesStatus.PlanToWatch,
     })
 
     await userEvent.click(
@@ -73,14 +85,14 @@ describe('features/series/components/SeriesStatusSelect', () => {
     )
     await userEvent.click(
       screen.getByRole('option', {
-        name: 'Completed',
+        name: 'Plan to watch',
       }),
     )
 
     expect(mockResolver).toHaveBeenCalledWith({
       input: {
         seriesId: 1,
-        status: UserSeriesStatus.Completed,
+        status: UserSeriesStatus.PlanToWatch,
       },
     })
   })
@@ -90,8 +102,36 @@ describe('features/series/components/SeriesStatusSelect', () => {
 
     await renderStatusSelect(series, {
       ...series,
-      status: UserSeriesStatus.Completed,
+      status: UserSeriesStatus.PlanToWatch,
     })
+
+    await userEvent.click(
+      screen.getByRole('combobox', {
+        name: 'Change status',
+      }),
+    )
+    await userEvent.click(
+      screen.getByRole('option', {
+        name: 'Plan to watch',
+      }),
+    )
+
+    screen.getByText('Series status changed')
+  })
+
+  it('allows marking all series episodes as seen when status is changed to Completed', async () => {
+    const series = seriesFactory.build({
+      id: '1',
+      status: UserSeriesStatus.InProgress,
+    })
+
+    const { markSeriesEpisodesAsSeenMockResolver } = await renderStatusSelect(
+      series,
+      {
+        ...series,
+        status: UserSeriesStatus.Completed,
+      },
+    )
 
     await userEvent.click(
       screen.getByRole('combobox', {
@@ -104,6 +144,20 @@ describe('features/series/components/SeriesStatusSelect', () => {
       }),
     )
 
-    screen.getByText('Series status changed')
+    // An alert dialog is shown
+    screen.getByText('Mark all episodes as seen?')
+
+    // The user confirms marking all episodes as seen
+    await userEvent.click(
+      screen.getByRole('button', {
+        name: 'Yes, mark all as seen',
+      }),
+    )
+
+    expect(markSeriesEpisodesAsSeenMockResolver).toHaveBeenCalledWith({
+      input: {
+        seriesId: series.id,
+      },
+    })
   })
 })

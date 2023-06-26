@@ -61,6 +61,8 @@ export const imdbLogo = style({
 })
 
 export const statusSelectContainer = style({
+  alignSelf: 'center',
+
   '@media': {
     [responsive.m]: {
       gridArea: '3 / 1 / 4 / 4',

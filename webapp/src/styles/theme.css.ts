@@ -3,6 +3,7 @@ import { createTheme } from '@vanilla-extract/css'
 const colors = {
   white: '#ffffff',
   black: '#000000',
+  blackA5: 'rgba(0, 0, 0, 0.5)',
 
   slate100: '#f1f5f9',
   slate200: '#e2e8f0',
@@ -115,6 +116,10 @@ export const [lightThemeClass, vars] = createTheme({
     xl: '0 5px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
     '2xl': '0 25px 50px -12px rgb(0 0 0 / 0.25)',
   },
+
+  easing: {
+    base: 'cubic-bezier(0.1, 0.9, 0, 1.2)',
+  },
 })
 
 export const darkThemeClass = createTheme(vars, {
@@ -192,6 +197,10 @@ export const darkThemeClass = createTheme(vars, {
     md: 'rgba(0, 0, 0, 0.2) 0px 18px 50px -10px',
     xl: '0 5px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
     '2xl': '0 25px 50px -12px rgb(0 0 0 / 0.25)',
+  },
+
+  easing: {
+    base: 'cubic-bezier(0.1, 0.9, 0, 1.2)',
   },
 })
 

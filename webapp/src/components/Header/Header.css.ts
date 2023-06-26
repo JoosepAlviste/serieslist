@@ -67,7 +67,7 @@ export const dropdownContent = style({
   paddingBottom: '0.5rem',
   boxShadow: vars.shadow.xl,
   animationDuration: '400ms',
-  animationTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
+  animationTimingFunction: vars.easing.base,
   willChange: ['transform', 'opacity'],
 
   selectors: {

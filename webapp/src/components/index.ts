@@ -10,5 +10,6 @@ export * from './Toast'
 export * from './IconButton'
 export * from './Tooltip'
 export * from './Error'
+export * from './AlertDialog'
 
 export * from './HomePage'

@@ -58,11 +58,16 @@ export type MarkSeasonEpisodesAsSeenInput = {
   seasonId: Scalars['Int'];
 };
 
+export type MarkSeriesEpisodesAsSeenInput = {
+  seriesId: Scalars['ID'];
+};
+
 export type Mutation = {
   __typename: 'Mutation';
   logOut: Scalars['Boolean'];
   login: MutationLoginResult;
   markSeasonEpisodesAsSeen: MutationMarkSeasonEpisodesAsSeenResult;
+  markSeriesEpisodesAsSeen: MutationMarkSeriesEpisodesAsSeenResult;
   register: MutationRegisterResult;
   seriesUpdateStatus: MutationSeriesUpdateStatusResult;
   toggleEpisodeSeen: MutationToggleEpisodeSeenResult;
@@ -76,6 +81,11 @@ export type MutationLoginArgs = {
 
 export type MutationMarkSeasonEpisodesAsSeenArgs = {
   input: MarkSeasonEpisodesAsSeenInput;
+};
+
+
+export type MutationMarkSeriesEpisodesAsSeenArgs = {
+  input: MarkSeriesEpisodesAsSeenInput;
 };
 
 
@@ -96,6 +106,8 @@ export type MutationToggleEpisodeSeenArgs = {
 export type MutationLoginResult = InvalidInputError | User;
 
 export type MutationMarkSeasonEpisodesAsSeenResult = NotFoundError | Season | UnauthorizedError;
+
+export type MutationMarkSeriesEpisodesAsSeenResult = NotFoundError | Series | UnauthorizedError;
 
 export type MutationRegisterResult = InvalidInputError | User;
 
@@ -173,7 +185,7 @@ export type Series = {
   plot?: Maybe<Scalars['String']>;
   poster?: Maybe<Scalars['String']>;
   seasons: Array<Season>;
-  startYear: Scalars['Int'];
+  startYear?: Maybe<Scalars['Int']>;
   status?: Maybe<UserSeriesStatus>;
   title: Scalars['String'];
 };
@@ -244,7 +256,7 @@ export type SearchQueryVariables = Exact<{
 
 
 export type SearchQuery = { __typename: 'Query', seriesSearch: Array<(
-    { __typename: 'Series', id: string, imdbId?: string | null, title: string, startYear: number, endYear?: number | null }
+    { __typename: 'Series', id: string, imdbId?: string | null, title: string, startYear?: number | null, endYear?: number | null }
     & { ' $fragmentRefs'?: { 'SeriesPoster_SeriesFragmentFragment': SeriesPoster_SeriesFragmentFragment } }
   )> };
 
@@ -268,7 +280,7 @@ export type SeriesDetailsPageQueryVariables = Exact<{
 
 
 export type SeriesDetailsPageQuery = { __typename: 'Query', series: { __typename: 'NotFoundError', message: string } | (
-    { __typename: 'Series', id: string, imdbId?: string | null, title: string, startYear: number, endYear?: number | null, plot?: string | null, seasons: Array<(
+    { __typename: 'Series', id: string, imdbId?: string | null, title: string, startYear?: number | null, endYear?: number | null, plot?: string | null, seasons: Array<(
       { __typename: 'Season', id: string, number: number, title: string, episodes: Array<(
         { __typename: 'Episode', id: string, isSeen: boolean }
         & { ' $fragmentRefs'?: { 'EpisodeLine_EpisodeFragmentFragment': EpisodeLine_EpisodeFragmentFragment } }
@@ -321,10 +333,15 @@ export type SeriesUpdateStatusMutationVariables = Exact<{
 
 export type SeriesUpdateStatusMutation = { __typename: 'Mutation', seriesUpdateStatus: { __typename: 'NotFoundError' } | { __typename: 'Series', id: string, status?: UserSeriesStatus | null } | { __typename: 'UnauthorizedError' } };
 
-export type AboutPageQueryVariables = Exact<{ [key: string]: never; }>;
+export type MarkSeriesEpisodesAsSeenMutationVariables = Exact<{
+  input: MarkSeriesEpisodesAsSeenInput;
+}>;
 
 
-export type AboutPageQuery = { __typename: 'Query', me: { __typename: 'UnauthorizedError' } | { __typename: 'User', id: string, email: string } };
+export type MarkSeriesEpisodesAsSeenMutation = { __typename: 'Mutation', markSeriesEpisodesAsSeen: { __typename: 'NotFoundError', message: string } | (
+    { __typename: 'Series', id: string, seasons: Array<{ __typename: 'Season', id: string, episodes: Array<{ __typename: 'Episode', id: string, isSeen: boolean }> }> }
+    & { ' $fragmentRefs'?: { 'LatestSeenEpisodeCell_SeriesFragmentFragment': LatestSeenEpisodeCell_SeriesFragmentFragment } }
+  ) | { __typename: 'UnauthorizedError', message: string } };
 
 export const EpisodeLine_EpisodeFragmentFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"EpisodeLine_EpisodeFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Episode"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"number"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"isSeen"}}]}}]} as unknown as DocumentNode<EpisodeLine_EpisodeFragmentFragment, unknown>;
 export const EpisodeLine_SeasonFragmentFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"EpisodeLine_SeasonFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Season"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"number"}}]}}]} as unknown as DocumentNode<EpisodeLine_SeasonFragmentFragment, unknown>;
@@ -342,4 +359,4 @@ export const MarkSeasonEpisodesAsSeenDocument = {"kind":"Document","definitions"
 export const LatestSeenEpisodeToggleEpisodeSeenDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"LatestSeenEpisodeToggleEpisodeSeen"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ToggleEpisodeSeenInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"toggleEpisodeSeen"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Error"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"message"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Episode"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"isSeen"}},{"kind":"Field","name":{"kind":"Name","value":"season"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"series"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"LatestSeenEpisodeCell_SeriesFragment"}}]}}]}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"LatestSeenEpisodeCell_SeriesFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Series"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"latestSeenEpisode"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"number"}},{"kind":"Field","name":{"kind":"Name","value":"season"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"number"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"nextEpisode"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<LatestSeenEpisodeToggleEpisodeSeenMutation, LatestSeenEpisodeToggleEpisodeSeenMutationVariables>;
 export const SeriesListDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"seriesList"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UserSeriesListInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"userSeriesList"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Error"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"message"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"QueryUserSeriesListSuccess"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"data"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"SeriesPoster_SeriesFragment"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"LatestSeenEpisodeCell_SeriesFragment"}}]}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"SeriesPoster_SeriesFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Series"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"poster"}},{"kind":"Field","name":{"kind":"Name","value":"title"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"LatestSeenEpisodeCell_SeriesFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Series"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"latestSeenEpisode"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"number"}},{"kind":"Field","name":{"kind":"Name","value":"season"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"number"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"nextEpisode"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<SeriesListQuery, SeriesListQueryVariables>;
 export const SeriesUpdateStatusDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"seriesUpdateStatus"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"SeriesUpdateStatusInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"seriesUpdateStatus"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Series"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"status"}}]}}]}}]}}]} as unknown as DocumentNode<SeriesUpdateStatusMutation, SeriesUpdateStatusMutationVariables>;
-export const AboutPageDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"aboutPage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"me"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"email"}}]}}]}}]}}]} as unknown as DocumentNode<AboutPageQuery, AboutPageQueryVariables>;
+export const MarkSeriesEpisodesAsSeenDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"markSeriesEpisodesAsSeen"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"MarkSeriesEpisodesAsSeenInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"markSeriesEpisodesAsSeen"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Error"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"message"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Series"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"FragmentSpread","name":{"kind":"Name","value":"LatestSeenEpisodeCell_SeriesFragment"}},{"kind":"Field","name":{"kind":"Name","value":"seasons"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"episodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"isSeen"}}]}}]}}]}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"LatestSeenEpisodeCell_SeriesFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Series"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"latestSeenEpisode"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"number"}},{"kind":"Field","name":{"kind":"Name","value":"season"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"number"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"nextEpisode"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<MarkSeriesEpisodesAsSeenMutation, MarkSeriesEpisodesAsSeenMutationVariables>;
