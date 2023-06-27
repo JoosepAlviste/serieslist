@@ -1,5 +1,6 @@
 import * as Tabs from '@radix-ui/react-tabs'
 import React, { useEffect, useState } from 'react'
+import { navigate } from 'vite-plugin-ssr/client/router'
 
 import { UserSeriesStatus } from '@/generated/gql/graphql'
 
@@ -30,13 +31,21 @@ export const UserSeriesListPage = ({ status }: UserSeriesListPageProps) => {
   const [selectedStatus, setSelectedStatus] = useState(status)
 
   useEffect(() => {
-    if (selectedStatus) {
-      const statusSlug = statusSlugs[selectedStatus]
-      window.history.pushState({}, '', `/series/list/${statusSlug}`)
-    } else {
-      window.history.pushState({}, '', '/series/list/all')
+    const redirect = async () => {
+      if (selectedStatus) {
+        const statusSlug = statusSlugs[selectedStatus]
+        await navigate(`/series/list/${statusSlug}`)
+      } else {
+        await navigate('/series/list/all')
+      }
     }
+
+    redirect().catch(console.error)
   }, [selectedStatus])
+
+  useEffect(() => {
+    setSelectedStatus(status)
+  }, [status])
 
   return (
     <Tabs.Root
