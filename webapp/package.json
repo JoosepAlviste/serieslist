@@ -55,8 +55,8 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "3.2.2",
-    "@graphql-codegen/client-preset": "2.1.1",
+    "@graphql-codegen/cli": "4.0.1",
+    "@graphql-codegen/client-preset": "4.0.1",
     "@playwright/test": "^1.31.2",
     "@sentry/vite-plugin": "^2.3.0",
     "@testing-library/jest-dom": "^5.16.5",
