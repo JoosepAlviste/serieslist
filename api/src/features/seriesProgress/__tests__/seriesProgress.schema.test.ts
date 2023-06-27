@@ -218,7 +218,7 @@ describe('features/seriesProgress/seriesProgress.schema', () => {
       const user = await userFactory.create()
 
       await executeMutation({
-        seriesId: series.id,
+        seriesId: String(series.id),
         user,
       })
 
@@ -242,7 +242,7 @@ describe('features/seriesProgress/seriesProgress.schema', () => {
       const user = await userFactory.create()
 
       await executeMutation({
-        seriesId: series.id,
+        seriesId: String(series.id),
         user,
       })
 
