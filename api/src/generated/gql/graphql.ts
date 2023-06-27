@@ -5,66 +5,68 @@ export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
+export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: string;
-  String: string;
-  Boolean: boolean;
-  Int: number;
-  Float: number;
+  ID: { input: string; output: string; }
+  String: { input: string; output: string; }
+  Boolean: { input: boolean; output: boolean; }
+  Int: { input: number; output: number; }
+  Float: { input: number; output: number; }
   /** A local date string (i.e., with no associated timezone) in `YYYY-MM-DD` format, e.g. `2020-01-01`. */
-  Date: any;
+  Date: { input: any; output: any; }
 };
 
 export type BaseError = Error & {
   __typename?: 'BaseError';
-  message: Scalars['String'];
+  message: Scalars['String']['output'];
 };
 
 export type Episode = {
   __typename?: 'Episode';
-  id: Scalars['ID'];
-  imdbId?: Maybe<Scalars['String']>;
-  imdbRating?: Maybe<Scalars['Float']>;
-  isSeen: Scalars['Boolean'];
-  number: Scalars['Int'];
-  releasedAt?: Maybe<Scalars['Date']>;
+  id: Scalars['ID']['output'];
+  imdbId?: Maybe<Scalars['String']['output']>;
+  imdbRating?: Maybe<Scalars['Float']['output']>;
+  isSeen: Scalars['Boolean']['output'];
+  number: Scalars['Int']['output'];
+  releasedAt?: Maybe<Scalars['Date']['output']>;
   season: Season;
-  title: Scalars['String'];
+  title: Scalars['String']['output'];
 };
 
 export type Error = {
-  message: Scalars['String'];
+  message: Scalars['String']['output'];
 };
 
 export type InvalidInputError = Error & {
   __typename?: 'InvalidInputError';
   fieldErrors: Array<InvalidInputErrorField>;
-  message: Scalars['String'];
+  message: Scalars['String']['output'];
 };
 
 export type InvalidInputErrorField = {
   __typename?: 'InvalidInputErrorField';
-  message: Scalars['String'];
-  path: Array<Scalars['String']>;
+  message: Scalars['String']['output'];
+  path: Array<Scalars['String']['output']>;
 };
 
 export type LoginInput = {
-  email: Scalars['String'];
-  password: Scalars['String'];
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
 };
 
 export type MarkSeasonEpisodesAsSeenInput = {
-  seasonId: Scalars['Int'];
+  seasonId: Scalars['Int']['input'];
 };
 
 export type MarkSeriesEpisodesAsSeenInput = {
-  seriesId: Scalars['Int'];
+  seriesId: Scalars['ID']['input'];
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
-  logOut: Scalars['Boolean'];
+  logOut: Scalars['Boolean']['output'];
   login: MutationLoginResult;
   markSeasonEpisodesAsSeen: MutationMarkSeasonEpisodesAsSeenResult;
   markSeriesEpisodesAsSeen: MutationMarkSeriesEpisodesAsSeenResult;
@@ -117,12 +119,12 @@ export type MutationToggleEpisodeSeenResult = Episode | NotFoundError | Unauthor
 
 export type NotFoundError = Error & {
   __typename?: 'NotFoundError';
-  message: Scalars['String'];
+  message: Scalars['String']['output'];
 };
 
 export type Query = {
   __typename?: 'Query';
-  hello: Scalars['String'];
+  hello: Scalars['String']['output'];
   me: QueryMeResult;
   series: QuerySeriesResult;
   seriesSearch: Array<Series>;
@@ -131,12 +133,12 @@ export type Query = {
 
 
 export type QueryHelloArgs = {
-  name?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']['input']>;
 };
 
 
 export type QuerySeriesArgs = {
-  id: Scalars['ID'];
+  id: Scalars['ID']['input'];
 };
 
 
@@ -161,58 +163,58 @@ export type QueryUserSeriesListSuccess = {
 };
 
 export type RegisterInput = {
-  email: Scalars['String'];
-  name: Scalars['String'];
-  password: Scalars['String'];
+  email: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  password: Scalars['String']['input'];
 };
 
 export type Season = {
   __typename?: 'Season';
   episodes: Array<Episode>;
-  id: Scalars['ID'];
-  number: Scalars['Int'];
+  id: Scalars['ID']['output'];
+  number: Scalars['Int']['output'];
   series: Series;
-  title: Scalars['String'];
+  title: Scalars['String']['output'];
 };
 
 export type Series = {
   __typename?: 'Series';
-  endYear?: Maybe<Scalars['Int']>;
-  id: Scalars['ID'];
-  imdbId?: Maybe<Scalars['String']>;
+  endYear?: Maybe<Scalars['Int']['output']>;
+  id: Scalars['ID']['output'];
+  imdbId?: Maybe<Scalars['String']['output']>;
   latestSeenEpisode?: Maybe<Episode>;
   nextEpisode?: Maybe<Episode>;
-  plot?: Maybe<Scalars['String']>;
-  poster?: Maybe<Scalars['String']>;
+  plot?: Maybe<Scalars['String']['output']>;
+  poster?: Maybe<Scalars['String']['output']>;
   seasons: Array<Season>;
-  startYear?: Maybe<Scalars['Int']>;
+  startYear?: Maybe<Scalars['Int']['output']>;
   status?: Maybe<UserSeriesStatus>;
-  title: Scalars['String'];
+  title: Scalars['String']['output'];
 };
 
 export type SeriesSearchInput = {
-  keyword: Scalars['String'];
+  keyword: Scalars['String']['input'];
 };
 
 export type SeriesUpdateStatusInput = {
-  seriesId: Scalars['Int'];
+  seriesId: Scalars['Int']['input'];
   status?: InputMaybe<UserSeriesStatus>;
 };
 
 export type ToggleEpisodeSeenInput = {
-  episodeId: Scalars['Int'];
+  episodeId: Scalars['Int']['input'];
 };
 
 export type UnauthorizedError = Error & {
   __typename?: 'UnauthorizedError';
-  message: Scalars['String'];
+  message: Scalars['String']['output'];
 };
 
 export type User = {
   __typename?: 'User';
-  email: Scalars['String'];
-  id: Scalars['ID'];
-  name: Scalars['String'];
+  email: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
 };
 
 export type UserSeriesListInput = {
@@ -258,7 +260,7 @@ export type SeriesSearchQueryVariables = Exact<{
 export type SeriesSearchQuery = { __typename?: 'Query', seriesSearch: Array<{ __typename?: 'Series', id: string, title: string, imdbId?: string | null, poster?: string | null, startYear?: number | null, endYear?: number | null }> };
 
 export type SeriesQueryVariables = Exact<{
-  id: Scalars['ID'];
+  id: Scalars['ID']['input'];
 }>;
 
 
@@ -272,28 +274,28 @@ export type SeriesSchemaUserSeriesListQueryVariables = Exact<{
 export type SeriesSchemaUserSeriesListQuery = { __typename?: 'Query', userSeriesList: { __typename: 'QueryUserSeriesListSuccess', data: Array<{ __typename?: 'Series', id: string }> } | { __typename: 'UnauthorizedError', message: string } };
 
 export type SeriesTypeSeriesQueryVariables = Exact<{
-  id: Scalars['ID'];
+  id: Scalars['ID']['input'];
 }>;
 
 
 export type SeriesTypeSeriesQuery = { __typename?: 'Query', series: { __typename: 'NotFoundError' } | { __typename: 'Series', seasons: Array<{ __typename?: 'Season', id: string, number: number }> } };
 
 export type SeriesTypeSeriesEpisodesQueryVariables = Exact<{
-  id: Scalars['ID'];
+  id: Scalars['ID']['input'];
 }>;
 
 
 export type SeriesTypeSeriesEpisodesQuery = { __typename?: 'Query', series: { __typename: 'NotFoundError' } | { __typename: 'Series', seasons: Array<{ __typename?: 'Season', episodes: Array<{ __typename?: 'Episode', id: string, imdbId?: string | null, number: number, title: string, imdbRating?: number | null, releasedAt?: any | null }> }> } };
 
 export type SeriesTypeSeriesStatusQueryVariables = Exact<{
-  id: Scalars['ID'];
+  id: Scalars['ID']['input'];
 }>;
 
 
 export type SeriesTypeSeriesStatusQuery = { __typename?: 'Query', series: { __typename: 'NotFoundError' } | { __typename: 'Series', status?: UserSeriesStatus | null } };
 
 export type EpisodeTypeSeasonQueryVariables = Exact<{
-  id: Scalars['ID'];
+  id: Scalars['ID']['input'];
 }>;
 
 
@@ -328,7 +330,7 @@ export type MarkSeriesEpisodesAsSeenMutationVariables = Exact<{
 export type MarkSeriesEpisodesAsSeenMutation = { __typename?: 'Mutation', markSeriesEpisodesAsSeen: { __typename: 'NotFoundError' } | { __typename: 'Series', id: string } | { __typename: 'UnauthorizedError' } };
 
 export type SeriesProgressEpisodeQueryVariables = Exact<{
-  id: Scalars['ID'];
+  id: Scalars['ID']['input'];
 }>;
 
 
