@@ -4,7 +4,7 @@ import {
   InMemoryCache,
   type NormalizedCacheObject,
 } from '@apollo/client/core/index.js'
-import { type Request } from 'express'
+import { type FastifyRequest } from 'fastify'
 import fetch from 'isomorphic-unfetch'
 
 import { config } from '@/config'
@@ -12,7 +12,7 @@ import { config } from '@/config'
 type MakeApolloClientOptions = {
   ssr?: boolean
   initialState?: NormalizedCacheObject
-  req?: Request
+  req?: FastifyRequest
 }
 
 export const makeApolloClient = ({
@@ -25,7 +25,7 @@ export const makeApolloClient = ({
     cache.restore(initialState)
   }
 
-  const cookie = req?.header('Cookie')
+  const cookie = req?.headers.cookie
 
   const uri = `${ssr ? config.api.internalUrl : config.api.url}/graphql`
   const apolloClient = new ApolloClient({

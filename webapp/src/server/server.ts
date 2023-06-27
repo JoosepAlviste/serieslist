@@ -2,9 +2,14 @@
 
 import './loadDotenv'
 
-import compression from 'compression'
-import cookieParser from 'cookie-parser'
-import express from 'express'
+import { join } from 'node:path'
+
+import { fastifyCompress } from '@fastify/compress'
+// eslint-disable-next-line import/no-named-as-default
+import fastifyCookie from '@fastify/cookie'
+import { fastifyMiddie } from '@fastify/middie'
+import { fastifyStatic } from '@fastify/static'
+import { fastify } from 'fastify'
 import { renderPage } from 'vite-plugin-ssr'
 
 import { config } from '@/config'
@@ -21,14 +26,18 @@ const isProduction = process.env.NODE_ENV === 'production'
 void startServer()
 
 async function startServer() {
-  const app = express()
+  const app = fastify()
 
-  app.use(cookieParser())
-  app.use(compression())
+  await app.register(fastifyMiddie)
+  await app.register(fastifyCompress)
+  await app.register(fastifyCookie)
 
   if (isProduction) {
-    const sirv = (await import('sirv')).default
-    app.use(sirv(`${root}/dist/client`))
+    const distPath = join(root, '/dist/client')
+    await app.register(fastifyStatic, {
+      root: distPath,
+      prefix: '/assets/',
+    })
   } else {
     const vite = await import('vite')
     const viteDevMiddleware = (
@@ -37,10 +46,10 @@ async function startServer() {
         server: { middlewareMode: true },
       })
     ).middlewares
-    app.use(viteDevMiddleware)
+    await app.use(viteDevMiddleware)
   }
 
-  app.get('*', async (req, res, next) => {
+  app.get('*', async (req, reply) => {
     const apollo = makeApolloClient({
       ssr: true,
       req,
@@ -49,10 +58,9 @@ async function startServer() {
       query: CurrentUserDocument,
     })
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-    const theme: Theme | undefined = req.cookies.theme
+    const theme = req.cookies.theme as Theme | undefined
     const pageContextInit: Partial<PageContext> = {
-      urlOriginal: req.originalUrl,
+      urlOriginal: req.url,
       apollo,
       theme,
       currentUser:
@@ -64,21 +72,17 @@ async function startServer() {
 
     const { httpResponse, redirectTo } = pageContext
     if (redirectTo) {
-      return res.redirect(307, redirectTo)
+      return reply.redirect(307, redirectTo)
     } else if (!httpResponse) {
-      return next()
+      return reply.code(404).type('text/html').send('Not Found')
     }
 
-    const { body, statusCode, contentType, earlyHints } = httpResponse
+    const { body, statusCode, contentType } = httpResponse
 
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    if (res.writeEarlyHints) {
-      res.writeEarlyHints({ link: earlyHints.map((e) => e.earlyHintLink) })
-    }
-
-    res.status(statusCode).type(contentType).send(body)
+    return reply.status(statusCode).type(contentType).send(body)
   })
 
-  app.listen(config.port)
+  await app.listen({ port: config.port })
+
   console.log(`Server running at http://localhost:${config.port}`)
 }
