@@ -12,9 +12,12 @@ expand(env)
 
 type Environment = 'development' | 'test' | 'production'
 
+const environment = (process.env.NODE_ENV ?? 'production') as Environment
+
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 export const config = {
-  environment: (process.env.NODE_ENV ?? 'production') as Environment,
+  environment,
+  isProduction: environment === 'production',
 
   port: parseInt(process.env.API_PORT ?? '4000', 10),
 

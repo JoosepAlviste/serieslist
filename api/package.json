@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "@envelop/sentry": "^6.0.0",
+    "@escape.tech/graphql-armor": "^2.2.0",
     "@fastify/cookie": "^8.3.0",
     "@fastify/cors": "^8.2.1",
     "@pothos/core": "^3.29.0",

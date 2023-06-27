@@ -1,7 +1,9 @@
 import { useSentry } from '@envelop/sentry'
+import { EnvelopArmorPlugin } from '@escape.tech/graphql-armor'
 import { type FastifyRequest, type FastifyReply } from 'fastify'
 import { createYoga } from 'graphql-yoga'
 
+import { config } from './config'
 import { authService } from './features/auth'
 import { db } from './lib/db'
 import { app } from './lib/fastify'
@@ -18,6 +20,14 @@ export const yoga = createYoga<{
     useSentry({
       includeResolverArgs: true,
       includeExecuteVariables: true,
+    }),
+    EnvelopArmorPlugin({
+      blockFieldSuggestion: {
+        enabled: config.environment === 'production',
+      },
+      maxDepth: {
+        n: 10,
+      },
     }),
   ],
   logging: {
