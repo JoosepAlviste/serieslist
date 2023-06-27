@@ -69,7 +69,9 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-
+    environment:
+      name: production
+      url: https://serieslist.joosep.xyz
     needs: check
 
     if: ${{ github.ref == 'refs/heads/master' }}
