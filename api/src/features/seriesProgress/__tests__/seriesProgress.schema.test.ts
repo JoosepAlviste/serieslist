@@ -1,3 +1,4 @@
+import { addDays } from 'date-fns'
 import { type Selectable } from 'kysely'
 
 import { episodeFactory } from '@/features/series'
@@ -386,6 +387,35 @@ describe('features/seriesProgress/seriesProgress.schema', () => {
         seriesId: series.id,
         latestSeenEpisodeId: s1e1.id,
         nextEpisodeId: null,
+      })
+
+      const res = await queryEpisode(series.id, user)
+      const resSeries = checkErrors(res.data?.series)
+
+      expect(resSeries.nextEpisode).toBe(null)
+    })
+
+    it('does not return next episode if it will be released in the future', async () => {
+      const {
+        series,
+        seasons: [
+          {
+            season,
+            episodes: [s1e1],
+          },
+        ],
+      } = await createSeriesWithEpisodesAndSeasons([1])
+      const s1e2 = await episodeFactory.create({
+        seasonId: season.id,
+        releasedAt: addDays(new Date(), 1),
+      })
+
+      const { user } = await createSeenEpisodesForUser([s1e1.id])
+      await seriesProgressFactory.create({
+        userId: user.id,
+        seriesId: series.id,
+        latestSeenEpisodeId: s1e1.id,
+        nextEpisodeId: s1e2.id,
       })
 
       const res = await queryEpisode(series.id, user)

@@ -20,12 +20,19 @@ export const findMany = ({
   ctx,
   seasonIds,
   episodeIds,
+  releasedBefore,
 }: {
   ctx: Context
   seasonIds?: number[]
   episodeIds?: number[]
+  releasedBefore?: Date
 }) => {
-  return episodeRepository.findMany({ ctx, seasonIds, episodeIds })
+  return episodeRepository.findMany({
+    ctx,
+    seasonIds,
+    episodeIds,
+    releasedBefore,
+  })
 }
 
 export const findEpisodesBySeasonIds = async ({

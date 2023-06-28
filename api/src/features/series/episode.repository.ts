@@ -185,10 +185,12 @@ export const findMany = ({
   ctx,
   seasonIds,
   episodeIds,
+  releasedBefore,
 }: {
   ctx: Context
   seasonIds?: number[]
   episodeIds?: number[]
+  releasedBefore?: Date
 }) => {
   let query = ctx.db.selectFrom('episode').selectAll().orderBy('number')
 
@@ -198,6 +200,10 @@ export const findMany = ({
 
   if (episodeIds) {
     query = query.where('id', 'in', episodeIds)
+  }
+
+  if (releasedBefore) {
+    query = query.where('releasedAt', '<=', releasedBefore)
   }
 
   return query.execute()

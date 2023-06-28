@@ -275,6 +275,7 @@ export const findNextEpisodesForSeries = async ({
   const episodes = await episodesService.findMany({
     ctx,
     episodeIds,
+    releasedBefore: new Date(Date.now()),
   })
   const episodesByIds = index(episodes, 'id')
 
