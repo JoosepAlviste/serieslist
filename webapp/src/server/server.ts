@@ -82,7 +82,7 @@ async function startServer() {
     return reply.status(statusCode).type(contentType).send(body)
   })
 
-  await app.listen({ port: config.port })
+  await app.listen({ port: config.port, host: '0.0.0.0' })
 
   console.log(`Server running at http://localhost:${config.port}`)
 }
