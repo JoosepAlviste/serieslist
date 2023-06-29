@@ -33,7 +33,9 @@ await app.register(cors, {
   origin: [config.webapp.url],
 })
 
-await app.register(rateLimit, {
-  max: 100,
-  timeWindow: '1 minute',
-})
+if (config.environment !== 'test') {
+  await app.register(rateLimit, {
+    max: 100,
+    timeWindow: '1 minute',
+  })
+}
