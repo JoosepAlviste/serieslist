@@ -33,7 +33,7 @@ async function startServer() {
   await app.register(fastifyCookie)
 
   if (isProduction) {
-    const distPath = join(root, '/dist/client')
+    const distPath = join(root, '/dist/client/assets')
     await app.register(fastifyStatic, {
       root: distPath,
       prefix: '/assets/',
