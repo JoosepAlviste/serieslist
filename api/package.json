@@ -22,7 +22,8 @@
     "migration": "./bin/createMigration.sh",
     "migrate": "tsx src/bin/migrate.ts && npm run codegen:db",
     "migrate:test": "dotenv -e ../.env.test tsx src/bin/migrate.ts",
-    "migrate:prod": "dotenv -e ../.env node dist/bin/migrate.js"
+    "migrate:prod": "dotenv -e ../.env node dist/bin/migrate.js",
+    "clear-test-db": "dotenv -e ../.env.test tsx bin/clearDatabase.ts"
   },
   "dependencies": {
     "@envelop/sentry": "^6.0.0",
