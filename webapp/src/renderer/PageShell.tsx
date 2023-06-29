@@ -4,7 +4,12 @@ import React from 'react'
 
 import { Header, NavSidebar } from '@/components'
 import { AuthenticatedUserProvider } from '@/features/auth'
-import { PageContextProvider, ThemeProvider, ToastProvider } from '@/providers'
+import {
+  PageContextProvider,
+  SSRProvider,
+  ThemeProvider,
+  ToastProvider,
+} from '@/providers'
 
 import * as s from './PageShell.css'
 import type { PageContext } from './types'
@@ -21,23 +26,25 @@ export function PageShell({
 }) {
   return (
     <React.StrictMode>
-      <ApolloProvider client={pageContext.apollo}>
-        <PageContextProvider pageContext={pageContext}>
-          <ThemeProvider>
-            <AuthenticatedUserProvider>
-              <TooltipProvider>
-                <ToastProvider>
-                  <div className={s.pageContainer}>
-                    <Header className={s.header} />
-                    <NavSidebar className={s.nav} />
-                    <main className={s.main}>{children}</main>
-                  </div>
-                </ToastProvider>
-              </TooltipProvider>
-            </AuthenticatedUserProvider>
-          </ThemeProvider>
-        </PageContextProvider>
-      </ApolloProvider>
+      <SSRProvider>
+        <ApolloProvider client={pageContext.apollo}>
+          <PageContextProvider pageContext={pageContext}>
+            <ThemeProvider>
+              <AuthenticatedUserProvider>
+                <TooltipProvider>
+                  <ToastProvider>
+                    <div className={s.pageContainer}>
+                      <Header className={s.header} />
+                      <NavSidebar className={s.nav} />
+                      <main className={s.main}>{children}</main>
+                    </div>
+                  </ToastProvider>
+                </TooltipProvider>
+              </AuthenticatedUserProvider>
+            </ThemeProvider>
+          </PageContextProvider>
+        </ApolloProvider>
+      </SSRProvider>
     </React.StrictMode>
   )
 }

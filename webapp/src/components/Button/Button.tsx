@@ -6,6 +6,8 @@ import React, {
   type ComponentPropsWithoutRef,
 } from 'react'
 
+import { useSSR } from '@/hooks'
+
 import { Link, type LinkProps } from '../Link'
 
 import * as s from './Button.css'
@@ -34,6 +36,8 @@ const ButtonBase = forwardRef<
   { variant, className, size = 'm', isDisabled = false, ...rest },
   ref,
 ) {
+  const { isSSR } = useSSR()
+
   if (isLinkProps(rest)) {
     return (
       <Link
@@ -51,14 +55,27 @@ const ButtonBase = forwardRef<
     )
   }
 
+  // Disable the button on the server and re-enable it once hydration is done.
+  // Clicking on a button before hydration should not be possible And might
+  // result in native form submissions (e.g., in UI tests because they are fast).
+  const disabled = isDisabled || isSSR
+
   return (
     <button
       ref={ref as ForwardedRef<HTMLButtonElement>}
       className={classNames(s.button[variant], s.buttonSize[size], className, {
-        [s.disabled]: isDisabled,
+        [s.disabled]: disabled,
       })}
       type="button"
-      disabled={isDisabled}
+      disabled={disabled}
+      // Firefox saves the `disabled` state of form elements and restores it on
+      // the next page load, causing hydration mismatch errors. We can disable
+      // that behaviour by disabling autocompletion on the elements (yes, even
+      // on button elements...):
+      // https://github.com/vercel/next.js/discussions/21999
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
+      autoComplete="off"
       {...(rest as ComponentPropsWithoutRef<'button'>)}
     />
   )
