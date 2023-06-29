@@ -9,9 +9,9 @@ test('allows creating an acount and logging in', async ({ page }) => {
   await expect(page).toHaveURL(/.*register/)
 
   const email = `test.dude${nanoid()}@test.com`
-  await page.getByLabel('Email').type(email)
-  await page.getByLabel('Name').type('Test Dude')
-  await page.getByLabel('Password').type('test123')
+  await page.getByLabel('Email').fill(email)
+  await page.getByLabel('Name').fill('Test Dude')
+  await page.getByLabel('Password').fill('test123')
 
   await page.getByRole('button', { name: 'Register' }).click()
 
@@ -25,8 +25,8 @@ test('allows creating an acount and logging in', async ({ page }) => {
   await page.getByRole('link', { name: 'Log in' }).click()
   await expect(page).toHaveURL(/.*login/)
 
-  await page.getByLabel('Email').type(email)
-  await page.getByLabel('Password').type('test123')
+  await page.getByLabel('Email').fill(email)
+  await page.getByLabel('Password').fill('test123')
 
   await page.getByRole('button', { name: 'Log in' }).click()
 
