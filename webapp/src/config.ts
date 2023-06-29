@@ -16,7 +16,6 @@ export const config = {
     (typeof process !== 'undefined'
       ? process.env.VITE_APP_PORT
       : import.meta.env.VITE_APP_PORT) ?? '3000',
-    10,
   ),
 
   api: {
@@ -32,10 +31,11 @@ export const config = {
       (typeof process !== 'undefined'
         ? process.env.VITE_API_HOST
         : import.meta.env.VITE_API_HOST) ?? 'localhost',
-    port:
+    port: parseInt(
       (typeof process !== 'undefined'
         ? process.env.VITE_API_PORT
         : import.meta.env.VITE_API_PORT) ?? '3000',
+    ),
   },
 
   sentry: {

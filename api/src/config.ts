@@ -41,7 +41,7 @@ export const config = {
   },
 
   tmdb: {
-    url: 'https://api.themoviedb.org',
+    url: process.env.TMDB_URL!,
     apiToken: process.env.TMDB_API_TOKEN!,
   },
 

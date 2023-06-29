@@ -59,7 +59,7 @@ jobs:
       - name: E2E tests
         run: |
           (cd webapp && npx playwright install chromium --with-deps)
-          (cd api && npm run start:e2e) & (cd webapp && npm run test:e2e)
+          (cd webapp && npm run test:e2e)
       - uses: actions/upload-artifact@v3
         if: always()
         with:

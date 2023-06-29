@@ -82,7 +82,8 @@
     },
     {
       "files": [
-        "src/**/*.test.ts"
+        "src/**/*.test.ts",
+        "src/test/mockTMDBServer.ts"
       ],
       "rules": {
         "@typescript-eslint/no-non-null-assertion": "off"

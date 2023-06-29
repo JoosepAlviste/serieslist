@@ -129,17 +129,14 @@ Error monitoring in Sentry requires setting up a few environment variables:
 
 There are some end-to-end tests, but they are still a work in progress.
 
-First, run the back-end:
+First, migrate the test database:
 
 ```sh
 cd api
-# Migrate the test database
 npm run migrate:test
-# Run the server
-npm run start:e2e
 ```
 
-Then, run the e2e tests in another terminal tab:
+Then, run the e2e tests:
 
 ```sh
 cd webapp
