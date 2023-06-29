@@ -10,17 +10,19 @@ import { type TMDbSeason, type TMDbEpisode, type TMDbSeries } from './types'
 export const tmdbSeriesDetailsFactory = Factory.define<TMDbSeries>(() => ({
   id: generateRandomInt(1, 9999999),
   name: 'Test Series',
-  external_ids: {
-    imdb_id: `tt${nanoid(12)}`,
-  },
   poster_path: 'foo.jpg',
   overview: 'Test plot.',
+  first_air_date: '2023-05-06',
+
+  // Details
   number_of_seasons: 0,
   episode_run_time: [22],
-  first_air_date: '2023-05-06',
   last_air_date: null,
   status: 'Returning Series',
   seasons: [],
+  external_ids: {
+    imdb_id: `tt${nanoid(12)}`,
+  },
 }))
 
 type TMDBEpisodeTransientParams = {
@@ -37,10 +39,14 @@ export const tmdbEpisodeFactory = Factory.define<
   air_date: savedEpisode?.releasedAt ?? new Date(Date.now()),
 }))
 
-export const tmdbSeasonFactory = Factory.define<TMDbSeason>(({ sequence }) => ({
-  id: generateRandomInt(1, 9999999),
-  season_number: sequence,
-  name: `Season ${sequence}`,
-  air_date: new Date(Date.now()),
-  episodes: [],
-}))
+export const tmdbSeasonFactory = Factory.define<TMDbSeason>(
+  ({ sequence, params }) => ({
+    id: generateRandomInt(1, 9999999),
+    season_number: sequence,
+    name: `Season ${params.season_number ?? sequence}`,
+    air_date: new Date(Date.now()),
+
+    // Details
+    episodes: [],
+  }),
+)

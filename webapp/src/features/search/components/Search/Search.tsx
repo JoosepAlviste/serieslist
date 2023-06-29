@@ -16,7 +16,7 @@ import { navigate } from 'vite-plugin-ssr/client/router'
 import { Icon, LoadingSpinner } from '@/components'
 import { SeriesPoster } from '@/features/series'
 import { graphql } from '@/generated/gql'
-import { useDebouncedCallback } from '@/hooks'
+import { useDebouncedCallback, useSSR } from '@/hooks'
 
 import * as s from './Search.css'
 
@@ -49,6 +49,8 @@ export const Search = ({
   className,
   ...rest
 }: SearchProps) => {
+  const { isSSR } = useSSR()
+
   const [seriesSearch, { loading, data, previousData }] =
     useLazyQuery(Search_Query)
 
@@ -242,6 +244,8 @@ export const Search = ({
                 setIsPopoverOpen(true)
               }
             }}
+            disabled={isSSR}
+            autoComplete={isSSR ? 'off' : undefined}
           />
           {loading ? (
             <div className={s.inputAddonContainer}>
