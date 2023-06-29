@@ -17,9 +17,12 @@ deploy() {
 cd ~/projects/serieslist
 git pull
 
+echo "Pulling images..."
 docker-compose -f docker-compose.production.yml pull
-docker-compose -f docker-compose.production.yml run --rm api npm run migrate:prod
+echo "Starting containers..."
 docker-compose -f docker-compose.production.yml up -d
+echo "Migrating database..."
+docker-compose -f docker-compose.production.yml exec api npm run migrate:prod
 ENDSSH
 
   echo "Project deployed!"

@@ -18,6 +18,10 @@ const migrator = new Migrator({
 
 const { error, results } = await migrator.migrateToLatest()
 
+if (!results?.length) {
+  console.log('nothing to migrate')
+}
+
 results?.forEach((it) => {
   if (it.status === 'Success') {
     console.log(`migration "${it.migrationName}" was executed successfully`)
