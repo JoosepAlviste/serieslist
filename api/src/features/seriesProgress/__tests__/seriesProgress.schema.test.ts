@@ -1,7 +1,11 @@
 import { addDays } from 'date-fns'
 import { type Selectable } from 'kysely'
 
-import { episodeFactory } from '@/features/series'
+import {
+  episodeFactory,
+  UserSeriesStatus,
+  userSeriesStatusFactory,
+} from '@/features/series'
 import { userFactory } from '@/features/users'
 import { type User } from '@/generated/db'
 import { graphql } from '@/generated/gql'
@@ -259,7 +263,7 @@ describe('features/seriesProgress/seriesProgress.schema', () => {
   })
 
   describe('Episode type', () => {
-    const queryEpisode = (seriesId: number, user: Selectable<User>) => {
+    const querySeries = (seriesId: number, user: Selectable<User>) => {
       return executeOperation({
         operation: graphql(`
           query seriesProgressEpisode($id: ID!) {
@@ -289,6 +293,35 @@ describe('features/seriesProgress/seriesProgress.schema', () => {
       })
     }
 
+    const querySeriesList = (user: Selectable<User>) => {
+      return executeOperation({
+        operation: graphql(`
+          query seriesProgressEpisodeList($input: UserSeriesListInput!) {
+            userSeriesList(input: $input) {
+              __typename
+              ... on QueryUserSeriesListSuccess {
+                data {
+                  id
+                  latestSeenEpisode {
+                    id
+                  }
+                  nextEpisode {
+                    id
+                  }
+                }
+              }
+            }
+          }
+        `),
+        variables: {
+          input: {
+            status: null,
+          },
+        },
+        user,
+      })
+    }
+
     it('allows querying if the episode is seen', async () => {
       const user = await userFactory.create()
 
@@ -306,7 +339,7 @@ describe('features/seriesProgress/seriesProgress.schema', () => {
         episodeId: episode.id,
       })
 
-      const res = await queryEpisode(series.id, user)
+      const res = await querySeries(series.id, user)
       const resSeries = checkErrors(res.data?.series)
 
       expect(resSeries.seasons[0]?.episodes[0]?.isSeen).toBeTruthy()
@@ -330,7 +363,7 @@ describe('features/seriesProgress/seriesProgress.schema', () => {
         nextEpisodeId: s1e2.id,
       })
 
-      const res = await queryEpisode(series.id, user)
+      const res = await querySeries(series.id, user)
       const resSeries = checkErrors(res.data?.series)
 
       expect(resSeries.latestSeenEpisode?.id).toBe(String(s1e1.id))
@@ -341,7 +374,7 @@ describe('features/seriesProgress/seriesProgress.schema', () => {
 
       const user = await userFactory.create()
 
-      const res = await queryEpisode(series.id, user)
+      const res = await querySeries(series.id, user)
       const resSeries = checkErrors(res.data?.series)
 
       expect(resSeries.latestSeenEpisode).toBe(null)
@@ -365,7 +398,7 @@ describe('features/seriesProgress/seriesProgress.schema', () => {
         nextEpisodeId: s1e2.id,
       })
 
-      const res = await queryEpisode(series.id, user)
+      const res = await querySeries(series.id, user)
       const resSeries = checkErrors(res.data?.series)
 
       expect(resSeries.nextEpisode?.id).toBe(String(s1e2.id))
@@ -389,7 +422,7 @@ describe('features/seriesProgress/seriesProgress.schema', () => {
         nextEpisodeId: null,
       })
 
-      const res = await queryEpisode(series.id, user)
+      const res = await querySeries(series.id, user)
       const resSeries = checkErrors(res.data?.series)
 
       expect(resSeries.nextEpisode).toBe(null)
@@ -418,10 +451,76 @@ describe('features/seriesProgress/seriesProgress.schema', () => {
         nextEpisodeId: s1e2.id,
       })
 
-      const res = await queryEpisode(series.id, user)
+      const res = await querySeries(series.id, user)
       const resSeries = checkErrors(res.data?.series)
 
       expect(resSeries.nextEpisode).toBe(null)
+    })
+
+    it('returns the first episode as the next one if there is no progress', async () => {
+      const {
+        series,
+        seasons: [
+          {
+            episodes: [s1e1],
+          },
+        ],
+      } = await createSeriesWithEpisodesAndSeasons([1])
+
+      const user = await userFactory.create()
+
+      const res = await querySeries(series.id, user)
+      const resSeries = checkErrors(res.data?.series)
+
+      expect(resSeries.nextEpisode!.id).toBe(String(s1e1.id))
+    })
+
+    it('returns the first episode as the next one for multiple series', async () => {
+      const {
+        series: series1,
+        seasons: [
+          {
+            episodes: [series1S1E1],
+          },
+        ],
+      } = await createSeriesWithEpisodesAndSeasons([1])
+      const {
+        series: series2,
+        seasons: [
+          {
+            episodes: [series2S1E1, series2S1E2],
+          },
+        ],
+      } = await createSeriesWithEpisodesAndSeasons([2])
+
+      const { user } = await createSeenEpisodesForUser([series2S1E1.id])
+      await seriesProgressFactory.create({
+        userId: user.id,
+        seriesId: series2.id,
+        latestSeenEpisodeId: series2S1E1.id,
+        nextEpisodeId: series2S1E2.id,
+      })
+
+      await userSeriesStatusFactory.create({
+        userId: user.id,
+        status: UserSeriesStatus.InProgress,
+        seriesId: series1.id,
+      })
+      await userSeriesStatusFactory.create({
+        userId: user.id,
+        status: UserSeriesStatus.InProgress,
+        seriesId: series2.id,
+      })
+
+      const res = await querySeriesList(user)
+      const { data: returnedSeries } = checkErrors(res.data?.userSeriesList)
+
+      const nextEpisodes = returnedSeries.map(
+        (series) => series.nextEpisode?.id,
+      )
+
+      expect(nextEpisodes).toContain(String(series1S1E1.id))
+      expect(nextEpisodes).toContain(String(series2S1E2.id))
     })
   })
 })

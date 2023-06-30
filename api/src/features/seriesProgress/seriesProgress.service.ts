@@ -264,27 +264,47 @@ export const findNextEpisodesForSeries = async ({
     userId: ctx.currentUser.id,
   })
   const seenEpisodesBySeriesIds = index(seenEpisodes, 'seriesId')
+  if (!seenEpisodes.length) {
+    const firstEpisodes = await episodesService.findFirstEpisodesForSeries({
+      ctx,
+      seriesIds,
+    })
 
-  const episodeIds = seenEpisodes
+    return seriesIds.map((seriesId) => firstEpisodes[seriesId])
+  }
+
+  const nextEpisodeIds = seenEpisodes
     .map((seenEpisode) => seenEpisode.nextEpisodeId)
     .filter(isTruthy)
-  if (!episodeIds.length) {
+  if (!nextEpisodeIds.length) {
     return seriesIds.map(() => null)
   }
 
   const episodes = await episodesService.findMany({
     ctx,
-    episodeIds,
+    episodeIds: nextEpisodeIds,
     releasedBefore: new Date(Date.now()),
   })
   const episodesByIds = index(episodes, 'id')
+
+  const seriesWithNoProgress = seriesIds.filter((seriesId) => {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    return !seenEpisodesBySeriesIds[seriesId]
+  })
+  const firstEpisodes = seriesWithNoProgress.length
+    ? await episodesService.findFirstEpisodesForSeries({
+        ctx,
+        seriesIds: seriesWithNoProgress,
+      })
+    : {}
 
   return seriesIds.map((seriesId) => {
     const progress = seenEpisodesBySeriesIds[seriesId]
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     return progress?.nextEpisodeId
       ? episodesByIds[progress.nextEpisodeId]
-      : null
+      : // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        firstEpisodes[seriesId] ?? null
   })
 }
 

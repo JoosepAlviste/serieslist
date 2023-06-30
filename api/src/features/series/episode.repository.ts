@@ -44,25 +44,26 @@ export const findOne = ({
     .executeTakeFirst()
 }
 
-export const findOneByNumber = ({
+export const findManyByNumberForManySeries = ({
   ctx,
-  seriesId,
+  seriesIds,
   seasonNumber,
   episodeNumber,
 }: {
   ctx: Context
-  seriesId: number
+  seriesIds: number[]
   seasonNumber: number
   episodeNumber: number
 }) => {
   return ctx.db
     .selectFrom('episode')
     .innerJoin('season', 'season.id', 'episode.seasonId')
-    .where('seriesId', '=', seriesId)
+    .where('seriesId', 'in', seriesIds)
     .where('season.number', '=', seasonNumber)
     .where('episode.number', '=', episodeNumber)
     .selectAll('episode')
-    .executeTakeFirst()
+    .select('season.seriesId as seriesId')
+    .execute()
 }
 
 export const findOneWithSeasonAndSeriesInfo = ({

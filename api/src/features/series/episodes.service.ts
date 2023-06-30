@@ -1,3 +1,4 @@
+import index from 'just-index'
 import { type Selectable } from 'kysely'
 
 import { type Episode } from '@/generated/db'
@@ -108,12 +109,14 @@ export const findPreviousEpisode = async ({
   seasonNumber: number
   seriesId: number
 }) => {
-  const sameSeasonPreviousEpisode = await episodeRepository.findOneByNumber({
-    ctx,
-    seriesId: seriesId,
-    seasonNumber: seasonNumber,
-    episodeNumber: episode.number - 1,
-  })
+  const [sameSeasonPreviousEpisode] =
+    await episodeRepository.findManyByNumberForManySeries({
+      ctx,
+      seriesIds: [seriesId],
+      seasonNumber: seasonNumber,
+      episodeNumber: episode.number - 1,
+    })
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (sameSeasonPreviousEpisode) {
     return sameSeasonPreviousEpisode
   }
@@ -155,4 +158,21 @@ export const findFirstNotSeenEpisodeInSeriesForUser = async ({
     seriesId,
     userId,
   })
+}
+
+export const findFirstEpisodesForSeries = async ({
+  ctx,
+  seriesIds,
+}: {
+  ctx: Context
+  seriesIds: number[]
+}) => {
+  const episodes = await episodeRepository.findManyByNumberForManySeries({
+    ctx,
+    seriesIds,
+    seasonNumber: 1,
+    episodeNumber: 1,
+  })
+
+  return index(episodes, 'seriesId')
 }
