@@ -1,5 +1,8 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 
+const development =
+  typeof process !== 'undefined' ? process.env.DEV : import.meta.env.DEV
+
 /**
  * Object with environment variables that works on both the server and the
  * browser. `process` only exists on the server and `import.meta.env` only
@@ -9,8 +12,7 @@
  * Dockerfile with ARG and ENV keywords.
  */
 export const config = {
-  development:
-    typeof process !== 'undefined' ? process.env.DEV : import.meta.env.DEV,
+  development,
 
   port: parseInt(
     (typeof process !== 'undefined'
@@ -39,7 +41,7 @@ export const config = {
   },
 
   sentry: {
-    enabled: true,
+    enabled: !development,
     dsn:
       typeof process !== 'undefined'
         ? process.env.VITE_APP_SENTRY_DSN!

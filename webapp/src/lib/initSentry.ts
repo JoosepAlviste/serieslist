@@ -5,6 +5,7 @@ import { config } from '@/config'
 Sentry.init({
   enabled: config.sentry.enabled,
   dsn: config.sentry.dsn,
+  environment: config.development ? 'development' : 'production',
   integrations: [
     new Sentry.BrowserTracing({
       tracePropagationTargets: [
