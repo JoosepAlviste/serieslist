@@ -11,7 +11,7 @@ type TooltipProps = {
 
 export const Tooltip = ({ text, side, children }: TooltipProps) => {
   return (
-    <BaseTooltip.Root>
+    <BaseTooltip.Root delayDuration={500}>
       <BaseTooltip.Trigger asChild>{children}</BaseTooltip.Trigger>
 
       {text && (

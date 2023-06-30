@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/client'
 import React from 'react'
 
-import { IconButton } from '@/components'
+import { IconButton, Tooltip } from '@/components'
 import { type FragmentType, graphql, useFragment } from '@/generated/gql'
 
 import { formatEpisodeNumber } from '../../utils/formatEpisodeNumber'
@@ -74,30 +74,28 @@ export const LatestSeenEpisodeCell = ({
 
   return (
     <div className={s.container}>
-      {series.latestSeenEpisode ? (
-        <>
-          {formatEpisodeNumber(
+      {series.latestSeenEpisode
+        ? formatEpisodeNumber(
             series.latestSeenEpisode.season.number,
             series.latestSeenEpisode.number,
-          )}
-          {series.nextEpisode && (
-            <IconButton
-              name="plus"
-              variant="primary"
-              label="Mark next episode as seen"
-              onClick={async () => {
-                if (!series.nextEpisode) {
-                  return
-                }
+          )
+        : '-'}
+      {series.nextEpisode ? (
+        <Tooltip text="Mark next episode as seen" side="top">
+          <IconButton
+            name="plus"
+            variant="primary"
+            label="Mark next episode as seen"
+            onClick={async () => {
+              if (!series.nextEpisode) {
+                return
+              }
 
-                await handleIncrementSeenEpisodeClick(series.nextEpisode.id)
-              }}
-            />
-          )}
-        </>
-      ) : (
-        '-'
-      )}
+              await handleIncrementSeenEpisodeClick(series.nextEpisode.id)
+            }}
+          />
+        </Tooltip>
+      ) : null}
     </div>
   )
 }
