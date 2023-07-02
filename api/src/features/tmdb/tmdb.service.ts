@@ -5,7 +5,7 @@ import { type z } from 'zod'
 import { config } from '@/config'
 import { type Season, type Series } from '@/generated/db'
 import { NotFoundError } from '@/lib/errors'
-import { app } from '@/lib/fastify'
+import { log } from '@/lib/logger'
 
 import {
   tmdbSeasonSchema,
@@ -35,7 +35,7 @@ const makeTMDbRequest = async <T>(
   try {
     return schema.parse(json)
   } catch (e) {
-    app.log.warn(
+    log.warn(
       {
         fullUrl,
         json,

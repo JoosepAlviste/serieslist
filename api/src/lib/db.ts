@@ -4,7 +4,7 @@ import pg from 'pg'
 import { config } from '@/config'
 import { type DB } from '@/generated/db'
 
-import { app } from './fastify'
+import { log } from './logger'
 
 const { Pool } = pg
 
@@ -21,7 +21,7 @@ export const db = new Kysely<DB>({
   plugins: [new CamelCasePlugin()],
   log(event) {
     if (config.debug.logSqlQueries && event.level === 'query') {
-      app.log.info(
+      log.info(
         {
           sql: event.query.sql,
           parameters: event.query.parameters,

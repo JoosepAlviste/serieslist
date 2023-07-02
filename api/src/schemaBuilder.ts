@@ -9,7 +9,7 @@ import TracingPlugin, {
 import ValidationPlugin from '@pothos/plugin-validation'
 
 import { UnauthorizedError } from './lib/errors'
-import { app } from './lib/fastify'
+import { log } from './lib/logger'
 import { type AuthenticatedContext, type Context } from './types/context'
 
 export const builder = new SchemaBuilder<{
@@ -52,7 +52,7 @@ export const builder = new SchemaBuilder<{
     wrap: (resolver, _options, config) =>
       wrapResolver(resolver, (_error, duration) => {
         if (process.env.NODE_ENV !== 'test') {
-          app.log.info(
+          log.info(
             `Executed resolver ${config.parentType}.${config.name} in ${duration}ms`,
           )
         }

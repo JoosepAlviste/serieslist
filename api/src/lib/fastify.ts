@@ -5,17 +5,11 @@ import fastify, { type FastifyServerOptions } from 'fastify'
 
 import { config } from '@/config'
 
+import { log } from './logger'
+
 const envToLogger: Record<string, FastifyServerOptions['logger']> = {
-  development: {
-    transport: {
-      target: 'pino-pretty',
-      options: {
-        translateTime: 'HH:MM:ss Z',
-        ignore: 'pid,hostname',
-      },
-    },
-  },
-  production: true,
+  development: log,
+  production: log,
   test: false,
 }
 

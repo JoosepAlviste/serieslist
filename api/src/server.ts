@@ -7,6 +7,7 @@ import { config } from './config'
 import { authService } from './features/auth'
 import { db } from './lib/db'
 import { app } from './lib/fastify'
+import { log } from './lib/logger'
 import { schema } from './schema'
 import { type Context } from './types/context'
 
@@ -31,10 +32,10 @@ export const yoga = createYoga<{
     }),
   ],
   logging: {
-    debug: (...args) => args.forEach((arg) => app.log.debug(arg)),
-    info: (...args) => args.forEach((arg) => app.log.info(arg)),
-    warn: (...args) => args.forEach((arg) => app.log.warn(arg)),
-    error: (...args) => args.forEach((arg) => app.log.error(arg)),
+    debug: (...args) => args.forEach(log.debug),
+    info: (...args) => args.forEach(log.info),
+    warn: (...args) => args.forEach(log.warn),
+    error: (...args) => args.forEach(log.error),
   },
   schema,
   context: async (ctx): Promise<Context> => {
