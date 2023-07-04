@@ -1,7 +1,7 @@
 import { type InsertObject } from 'kysely'
 
 import { type DB } from '@/generated/db'
-import { type Context } from '@/types/context'
+import { type DBContext, type Context } from '@/types/context'
 
 /**
  * Return the episode TMDB IDs and season IDs ordered by the season and
@@ -11,7 +11,7 @@ export const findEpisodesAndSeasonsForSeries = ({
   ctx,
   seriesId,
 }: {
-  ctx: Context
+  ctx: DBContext
   seriesId: number
 }) => {
   return ctx.db
@@ -214,7 +214,7 @@ export const createOrUpdateMany = ({
   ctx,
   episodes,
 }: {
-  ctx: Context
+  ctx: DBContext
   episodes: InsertObject<DB, 'episode'>[]
 }) => {
   return ctx.db

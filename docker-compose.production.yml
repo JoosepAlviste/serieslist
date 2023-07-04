@@ -12,11 +12,24 @@ services:
       - .env.docker
     depends_on:
       - db
+      - redis
     networks:
       - caddy
     labels:
       caddy: api.serieslist.joosep.xyz
       caddy.reverse_proxy: "{{upstreams ${API_PORT}}}"
+
+  api_jobs:
+    image: ghcr.io/joosepalviste/serieslist-api:latest
+    command: npm run start:jobs:prod
+    env_file:
+      - .env
+      - .env.docker
+    depends_on:
+      - db
+      - redis
+    networks:
+      - caddy
 
   webapp:
     image: ghcr.io/joosepalviste/serieslist-webapp:latest
@@ -57,8 +70,20 @@ services:
     networks:
       - caddy
 
+  redis:
+    image: redis:7.0-alpine
+    restart: always
+    ports:
+      - '$REDIS_PORT:6379'
+    volumes:
+      - redisdata:/data
+    command: redis-server --save 20 1 --loglevel warning --requirepass $REDIS_PASSWORD
+    networks:
+      - caddy
+
 volumes:
   pgdata:
+  redisdata:
 
 networks:
   caddy:

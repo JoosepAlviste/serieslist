@@ -1,7 +1,7 @@
 import { type UpdateObject, type InsertObject } from 'kysely'
 
 import { type DB } from '@/generated/db'
-import { type Context } from '@/types/context'
+import { type DBContext, type Context } from '@/types/context'
 
 export const findMany = ({
   ctx,
@@ -46,7 +46,7 @@ export const updateMany = ({
   nextEpisodeId,
   seriesProgress,
 }: {
-  ctx: Context
+  ctx: DBContext
   seriesId: number
   nextEpisodeId: number | null
   seriesProgress: UpdateObject<DB, 'seriesProgress'>

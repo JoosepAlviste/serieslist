@@ -2,17 +2,24 @@ import { Factory } from 'fishery'
 import { type Selectable } from 'kysely'
 import { nanoid } from 'nanoid'
 
-import { type Episode } from '@/generated/db'
+import { type Series, type Episode } from '@/generated/db'
 import { generateRandomInt } from '@/utils/generateRandomInt'
 
 import { type TMDbSeason, type TMDbEpisode, type TMDbSeries } from './types'
 
-export const tmdbSeriesDetailsFactory = Factory.define<TMDbSeries>(() => ({
-  id: generateRandomInt(1, 9999999),
-  name: 'Test Series',
-  poster_path: 'foo.jpg',
-  overview: 'Test plot.',
-  first_air_date: '2023-05-06',
+type TMDBSeriesDetailsTransientParams = {
+  savedSeries?: Selectable<Series>
+}
+
+export const tmdbSeriesDetailsFactory = Factory.define<
+  TMDbSeries,
+  TMDBSeriesDetailsTransientParams
+>(({ transientParams: { savedSeries } }) => ({
+  id: savedSeries?.tmdbId ?? generateRandomInt(1, 9999999),
+  name: savedSeries?.title ?? 'Test Series',
+  poster_path: savedSeries?.poster ?? 'foo.jpg',
+  overview: savedSeries?.plot ?? 'Test plot.',
+  first_air_date: `${savedSeries?.startYear ?? 2023}-05-06`,
 
   // Details
   number_of_seasons: 0,
@@ -21,7 +28,7 @@ export const tmdbSeriesDetailsFactory = Factory.define<TMDbSeries>(() => ({
   status: 'Returning Series',
   seasons: [],
   external_ids: {
-    imdb_id: `tt${nanoid(12)}`,
+    imdb_id: savedSeries?.imdbId ?? `tt${nanoid(12)}`,
   },
 }))
 

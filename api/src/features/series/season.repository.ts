@@ -1,7 +1,7 @@
 import { type InsertObject } from 'kysely'
 
 import { type DB } from '@/generated/db'
-import { type Context } from '@/types/context'
+import { type DBContext, type Context } from '@/types/context'
 
 export const findOne = ({
   ctx,
@@ -43,7 +43,7 @@ export const createMany = ({
   ctx,
   seasons,
 }: {
-  ctx: Context
+  ctx: DBContext
   seasons: InsertObject<DB, 'season'>[]
 }) => {
   return ctx.db

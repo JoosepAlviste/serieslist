@@ -4,7 +4,11 @@ import { type UpdateObject } from 'kysely'
 import { episodesService, seasonService } from '@/features/series'
 import { type DB } from '@/generated/db'
 import { NotFoundError } from '@/lib/errors'
-import { type Context, type AuthenticatedContext } from '@/types/context'
+import {
+  type Context,
+  type AuthenticatedContext,
+  type DBContext,
+} from '@/types/context'
 import { type NonNullableFields } from '@/types/utils'
 import { isTruthy } from '@/utils/isTruthy'
 
@@ -314,7 +318,7 @@ export const updateMany = ({
   nextEpisodeId,
   seriesProgress,
 }: {
-  ctx: Context
+  ctx: DBContext
   seriesId: number
   nextEpisodeId: number | null
   seriesProgress: UpdateObject<DB, 'seriesProgress'>

@@ -61,7 +61,7 @@ and add it into the [`.env`](.env) file. Make sure to check the rest of the
 
 ### Run the project in development mode
 
-First, run the database and migrate it:
+First, run the Redis and database containers and migrate the database:
 
 ```sh
 docker-compose up -d
@@ -83,6 +83,13 @@ And in another:
 ```sh
 cd webapp
 npm start
+```
+
+If you'd like to run the background jobs, also run this:
+
+```sh
+cd api
+npm run start:jobs
 ```
 
 For more specific information about the webapp and the API, check out their 

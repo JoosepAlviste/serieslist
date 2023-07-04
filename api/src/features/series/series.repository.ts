@@ -2,7 +2,7 @@ import { type UpdateObject } from 'kysely'
 import { type InsertObject } from 'kysely/dist/cjs/parser/insert-values-parser'
 
 import { type DB } from '@/generated/db'
-import { type Context } from '@/types/context'
+import { type DBContext, type Context } from '@/types/context'
 
 import { type UserSeriesStatus } from './constants'
 
@@ -41,10 +41,14 @@ export const findMany = ({
   ctx,
   tmdbIds,
   seriesIds,
+  syncedAtBefore,
+  orderBySyncedAt,
 }: {
-  ctx: Context
+  ctx: DBContext
   tmdbIds?: number[]
   seriesIds?: number[]
+  syncedAtBefore?: Date
+  orderBySyncedAt?: 'asc' | 'desc'
 }) => {
   let query = ctx.db.selectFrom('series').selectAll()
 
@@ -54,6 +58,14 @@ export const findMany = ({
 
   if (seriesIds) {
     query = query.where('id', 'in', seriesIds)
+  }
+
+  if (syncedAtBefore) {
+    query = query.where('syncedAt', '<', syncedAtBefore)
+  }
+
+  if (orderBySyncedAt) {
+    query = query.orderBy('syncedAt', orderBySyncedAt)
   }
 
   return query.execute()
@@ -97,7 +109,7 @@ export const updateOneByTMDbId = ({
   tmdbId,
   series,
 }: {
-  ctx: Context
+  ctx: DBContext
   tmdbId: number
   series: UpdateObject<DB, 'series'>
 }) => {

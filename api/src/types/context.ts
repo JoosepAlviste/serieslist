@@ -15,3 +15,8 @@ export type Context = Omit<YogaInitialContext, 'request'> & {
 export type AuthenticatedContext = Omit<Context, 'currentUser'> & {
   currentUser: NonNullable<Context['currentUser']>
 }
+
+/**
+ * Context requiring only the database connection to be there.
+ */
+export type DBContext = Pick<Context, 'db'>

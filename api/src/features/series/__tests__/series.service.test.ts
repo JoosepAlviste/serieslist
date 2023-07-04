@@ -1,4 +1,4 @@
-import { format } from 'date-fns'
+import { format, subDays } from 'date-fns'
 
 import { seriesProgressFactory } from '@/features/seriesProgress'
 import {
@@ -19,6 +19,7 @@ import { seasonFactory } from '../season.factory'
 import { seriesFactory } from '../series.factory'
 import {
   findStatusForSeries,
+  reSyncSeries,
   syncSeasonsAndEpisodes,
   syncSeriesDetails,
 } from '../series.service'
@@ -279,6 +280,95 @@ describe('features/series/series.service', () => {
       })
 
       expect(status[0]).toBeNull()
+    })
+  })
+
+  describe('reSyncSeries', () => {
+    it('re-syncs series from TMDB', async () => {
+      const series = await seriesFactory.create({
+        syncedAt: subDays(new Date(), 8),
+      })
+
+      const scope = mockTMDbDetailsRequest(
+        series.tmdbId,
+        tmdbSeriesDetailsFactory.build(
+          {
+            name: 'Updated Title',
+            number_of_seasons: 0,
+            seasons: [],
+          },
+          { transient: { savedSeries: series } },
+        ),
+      )
+
+      await reSyncSeries({ ctx: createContext() })
+
+      scope.done()
+
+      const savedSeries = await db
+        .selectFrom('series')
+        .where('id', '=', series.id)
+        .selectAll()
+        .executeTakeFirstOrThrow()
+      expect(savedSeries.title).toBe('Updated Title')
+    })
+
+    it("does not re-sync series that haven't been synced before", async () => {
+      const series = await seriesFactory.create({
+        syncedAt: null,
+      })
+
+      const scope = mockTMDbDetailsRequest(
+        series.tmdbId,
+        tmdbSeriesDetailsFactory.build(
+          {},
+          { transient: { savedSeries: series } },
+        ),
+      )
+
+      await reSyncSeries({ ctx: createContext() })
+
+      expect(scope.isDone()).toBeFalsy()
+    })
+
+    it('does not re-sync series that have recently been synced', async () => {
+      const series = await seriesFactory.create({
+        syncedAt: subDays(new Date(), 6),
+      })
+
+      const scope = mockTMDbDetailsRequest(
+        series.tmdbId,
+        tmdbSeriesDetailsFactory.build(
+          {},
+          { transient: { savedSeries: series } },
+        ),
+      )
+
+      await reSyncSeries({ ctx: createContext() })
+
+      expect(scope.isDone()).toBeFalsy()
+    })
+
+    it('re-syncs multiple series', async () => {
+      const seriesToSync = await seriesFactory.createList(2, {
+        syncedAt: subDays(new Date(), 9),
+      })
+
+      const seriesToSyncScopes = seriesToSync.map((series) =>
+        mockTMDbDetailsRequest(
+          series.tmdbId,
+          tmdbSeriesDetailsFactory.build(
+            {},
+            { transient: { savedSeries: series } },
+          ),
+        ),
+      )
+
+      await reSyncSeries({ ctx: createContext() })
+
+      seriesToSyncScopes.forEach((scope) => {
+        scope.done()
+      })
     })
   })
 })

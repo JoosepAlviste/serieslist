@@ -63,7 +63,8 @@
       "error",
       {
         "patterns": [
-          "@/features/*/*"
+          "@/features/*/*",
+          "!@/features/*/jobs"
         ]
       }
     ]

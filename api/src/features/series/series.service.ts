@@ -1,4 +1,4 @@
-import { addDays, isFuture } from 'date-fns'
+import { addDays, isFuture, subDays } from 'date-fns'
 import index from 'just-index'
 import unique from 'just-unique'
 import { type Insertable } from 'kysely'
@@ -11,13 +11,20 @@ import {
   type SeriesSearchInput,
 } from '@/generated/gql/graphql'
 import { NotFoundError } from '@/lib/errors'
-import { type AuthenticatedContext, type Context } from '@/types/context'
+import { log } from '@/lib/logger'
+import {
+  type DBContext,
+  type AuthenticatedContext,
+  type Context,
+} from '@/types/context'
 
 import { UserSeriesStatus } from './constants'
 import * as episodeRepository from './episode.repository'
 import * as seasonRepository from './season.repository'
 import * as seriesRepository from './series.repository'
 import * as userSeriesStatusRepository from './userSeriesStatus.repository'
+
+const RE_SYNC_AFTER_DAYS = 7
 
 export const searchSeries = async ({
   ctx,
@@ -63,15 +70,13 @@ const getSeriesById = (ctx: Context) => async (id: number) => {
   return series
 }
 
-const RE_SYNC_AFTER_DAYS = 7
-
 export const syncSeasonsAndEpisodes = async ({
   ctx,
   seriesId,
   tmdbId,
   seasons,
 }: {
-  ctx: Context
+  ctx: DBContext
   seriesId: number
   tmdbId: number
   seasons: Omit<Insertable<Season>, 'seriesId'>[]
@@ -185,7 +190,7 @@ export const syncSeriesDetails = async ({
   ctx,
   tmdbId,
 }: {
-  ctx: Context
+  ctx: DBContext
   tmdbId: number
 }) => {
   const {
@@ -215,6 +220,8 @@ export const syncSeriesDetails = async ({
       seasons,
     })
   }
+
+  log.info(`Synced series "${savedSeries.title}" (${savedSeries.id})`)
 
   return savedSeries
 }
@@ -333,4 +340,16 @@ export const findMany = async ({
   }
 
   return series
+}
+
+export const reSyncSeries = async ({ ctx }: { ctx: DBContext }) => {
+  const seriesToSync = await seriesRepository.findMany({
+    ctx,
+    syncedAtBefore: subDays(new Date(Date.now()), RE_SYNC_AFTER_DAYS),
+    orderBySyncedAt: 'asc',
+  })
+
+  for (const series of seriesToSync) {
+    await syncSeriesDetails({ ctx, tmdbId: series.tmdbId })
+  }
 }
