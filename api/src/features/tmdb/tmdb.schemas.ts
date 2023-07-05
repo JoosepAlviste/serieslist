@@ -48,7 +48,7 @@ export const tmdbSeriesSearchResponseSchema = z.object({
 export const tmdbEpisodeSchema = z.object({
   id: z.number(),
   name: z.string(),
-  air_date: z.coerce.date(),
+  air_date: z.coerce.date().nullable(),
   episode_number: z.number(),
 })
 
