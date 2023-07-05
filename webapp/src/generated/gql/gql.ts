@@ -18,7 +18,7 @@ const documents = {
     "\n      query currentUser {\n        me {\n          __typename\n          ... on User {\n            id\n            email\n            name\n          }\n        }\n      }\n    ": types.CurrentUserDocument,
     "\n      mutation logOut {\n        logOut\n      }\n    ": types.LogOutDocument,
     "\n  query search($input: SeriesSearchInput!) {\n    seriesSearch(input: $input) {\n      id\n      imdbId\n      title\n      startYear\n      endYear\n      ...SeriesPoster_SeriesFragment\n    }\n  }\n": types.SearchDocument,
-    "\n  fragment EpisodeLine_EpisodeFragment on Episode {\n    id\n    number\n    title\n    isSeen\n  }\n": types.EpisodeLine_EpisodeFragmentFragmentDoc,
+    "\n  fragment EpisodeLine_EpisodeFragment on Episode {\n    id\n    number\n    title\n    isSeen\n    releasedAt\n  }\n": types.EpisodeLine_EpisodeFragmentFragmentDoc,
     "\n  fragment EpisodeLine_SeasonFragment on Season {\n    number\n  }\n": types.EpisodeLine_SeasonFragmentFragmentDoc,
     "\n      mutation toggleEpisodeSeen($input: ToggleEpisodeSeenInput!) {\n        toggleEpisodeSeen(input: $input) {\n          __typename\n          ... on Error {\n            message\n          }\n          ... on Episode {\n            id\n            isSeen\n            season {\n              id\n              series {\n                id\n                ...LatestSeenEpisodeCell_SeriesFragment\n              }\n            }\n          }\n        }\n      }\n    ": types.ToggleEpisodeSeenDocument,
     "\n      query seriesDetailsPage($id: ID!) {\n        series(id: $id) {\n          __typename\n          ... on NotFoundError {\n            message\n          }\n          ... on Series {\n            id\n            imdbId\n            title\n            startYear\n            endYear\n            plot\n            ...SeriesPoster_SeriesFragment\n            ...SeriesStatusSelect_SeriesFragment\n            seasons {\n              id\n              number\n              title\n              episodes {\n                id\n                isSeen\n                ...EpisodeLine_EpisodeFragment\n              }\n              ...EpisodeLine_SeasonFragment\n            }\n          }\n        }\n      }\n    ": types.SeriesDetailsPageDocument,
@@ -70,7 +70,7 @@ export function graphql(source: "\n  query search($input: SeriesSearchInput!) {\
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  fragment EpisodeLine_EpisodeFragment on Episode {\n    id\n    number\n    title\n    isSeen\n  }\n"): (typeof documents)["\n  fragment EpisodeLine_EpisodeFragment on Episode {\n    id\n    number\n    title\n    isSeen\n  }\n"];
+export function graphql(source: "\n  fragment EpisodeLine_EpisodeFragment on Episode {\n    id\n    number\n    title\n    isSeen\n    releasedAt\n  }\n"): (typeof documents)["\n  fragment EpisodeLine_EpisodeFragment on Episode {\n    id\n    number\n    title\n    isSeen\n    releasedAt\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

@@ -16,6 +16,7 @@ const EpisodeLine_EpisodeFragment = graphql(`
     number
     title
     isSeen
+    releasedAt
   }
 `)
 
@@ -85,12 +86,21 @@ export const EpisodeLine = ({
     }
   }
 
+  const releasedAt = episode.releasedAt
+    ? new Date(episode.releasedAt)
+    : undefined
+
   return (
     <li className={s.episode}>
       <div className={s.episodeNumber}>
         {formatEpisodeNumber(season.number, episode.number)}
       </div>
-      <div className={s.episodeTitle}>{episode.title}</div>
+      <div className={s.episodeTitle}>
+        {episode.title}
+        <span className={s.date}>
+          {releasedAt ? ` · ${releasedAt.toLocaleDateString('et-EE')}` : ''}
+        </span>
+      </div>
       {currentUser && (
         <Button
           variant={episode.isSeen ? 'primary' : 'secondary'}

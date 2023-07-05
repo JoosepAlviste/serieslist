@@ -35,3 +35,8 @@ export const episodeTitle = style({
     },
   },
 })
+
+export const date = style({
+  fontSize: '0.875rem',
+  color: vars.color.textTertiary,
+})
