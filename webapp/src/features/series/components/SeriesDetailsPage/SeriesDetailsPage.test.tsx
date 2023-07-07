@@ -1,12 +1,14 @@
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { addDays, subDays } from 'date-fns'
 import React from 'react'
 
 import {
   MarkSeasonEpisodesAsSeenDocument,
   SeriesDetailsPageDocument,
 } from '#/generated/gql/graphql'
-import { createMockResolver, render } from '#/lib/testUtils'
+import { createMockResolver, render, textContentMatcher } from '#/lib/testUtils'
+import { formatDate, stringifyDate } from '#/utils/dates'
 
 import { episodeFactory } from '../../episode.factory'
 import { seasonFactory } from '../../season.factory'
@@ -182,5 +184,38 @@ describe('features/series/components/SeriesDetailsPage', () => {
 
     // And the episode buttons now show that they have been seen
     expect(screen.getAllByRole('button', { name: 'Seen' })).toHaveLength(3)
+  })
+
+  it('shows when the next episode will be released', async () => {
+    const nextEpisodeAirDate = addDays(new Date(), 1)
+
+    const series = seriesFactory.build({
+      seasons: [
+        seasonFactory.build({
+          episodes: [
+            episodeFactory.build({
+              releasedAt: stringifyDate(subDays(new Date(), 1)),
+            }),
+            episodeFactory.build({
+              releasedAt: stringifyDate(nextEpisodeAirDate),
+            }),
+          ],
+        }),
+      ],
+    })
+
+    const [doc, mockResolver] = createMockResolver(SeriesDetailsPageDocument, {
+      data: {
+        series,
+      },
+    })
+
+    await render(<SeriesDetailsPage seriesId={series.id} />, {
+      requestMocks: [[doc, mockResolver]],
+    })
+
+    screen.getByText(
+      textContentMatcher(`Next episode ${formatDate(nextEpisodeAirDate)}`),
+    )
   })
 })

@@ -7,7 +7,7 @@ import { Button, Tooltip } from '#/components'
 import { useAuthenticatedUser } from '#/features/auth'
 import { graphql } from '#/generated/gql'
 import { useToast } from '#/hooks'
-import { formatDate } from '#/utils/formatDate'
+import { formatDate } from '#/utils/dates'
 
 import { EpisodeLine } from '../EpisodeLine'
 import { SeriesPoster } from '../SeriesPoster'
