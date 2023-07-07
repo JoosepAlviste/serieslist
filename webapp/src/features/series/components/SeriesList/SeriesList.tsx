@@ -35,7 +35,7 @@ const SeriesRow = ({ serie: serieOriginal, className }: SeriesRowProps) => {
       <td className={classNames(s.cell, s.cellPoster)}>
         <SeriesPoster series={serie} />
       </td>
-      <td className={s.cell}>
+      <td className={classNames(s.cell, s.cellTitle)}>
         <Link href={`/series/${serie.id}`}>{serie.title}</Link>
       </td>
       <td className={s.cell}>
@@ -98,7 +98,11 @@ export const SeriesList = ({ status }: SeriesListProps) => {
             <thead className={s.tableHead}>
               <tr>
                 <th className={s.tableHeadCellPoster} />
-                <th className={s.tableHeadCell}>Title</th>
+                <th
+                  className={classNames(s.tableHeadCell, s.tableHeadCellTitle)}
+                >
+                  Title
+                </th>
                 <th className={s.tableHeadCell}>Latest</th>
               </tr>
             </thead>

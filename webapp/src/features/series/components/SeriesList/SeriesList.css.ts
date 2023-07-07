@@ -30,11 +30,34 @@ export const tableHead = style({
 export const tableHeadCellPoster = style({
   minWidth: '4.75rem',
   width: 0,
+
+  '@media': {
+    [responsive.m]: {
+      minWidth: '4.25rem',
+    },
+  },
 })
 
 export const tableHeadCell = style({
   padding: '0.5rem 1rem',
   whiteSpace: 'nowrap',
+
+  '@media': {
+    [responsive.m]: {
+      paddingLeft: '0.75rem',
+      paddingRight: '0.75rem',
+    },
+  },
+})
+
+export const tableHeadCellTitle = style({
+  '@media': {
+    [responsive.m]: {
+      width: '100%',
+      paddingLeft: '0',
+      paddingRight: '0',
+    },
+  },
 })
 
 export const lastRowNextEpisodeAvailable = style({})
@@ -48,6 +71,21 @@ export const cell = style({
   selectors: {
     [`tr:not(${lastRowNextEpisodeAvailable}):not(:last-of-type) &`]: {
       borderBottomWidth: 1,
+    },
+  },
+
+  '@media': {
+    [responsive.m]: {
+      padding: '0.75rem',
+    },
+  },
+})
+
+export const cellTitle = style({
+  '@media': {
+    [responsive.m]: {
+      paddingLeft: 0,
+      paddingRight: 0,
     },
   },
 })
