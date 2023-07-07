@@ -1,4 +1,5 @@
 import { useMutation } from '@apollo/client'
+import { format } from 'date-fns'
 import React from 'react'
 
 import { Button } from '@/components'
@@ -98,7 +99,7 @@ export const EpisodeLine = ({
       <div className={s.episodeTitle}>
         {episode.title}
         <span className={s.date}>
-          {releasedAt ? ` · ${releasedAt.toLocaleDateString('et-EE')}` : ''}
+          {releasedAt ? ` · ${format(releasedAt, 'd MMM yyyy')}` : ''}
         </span>
       </div>
       {currentUser && (
