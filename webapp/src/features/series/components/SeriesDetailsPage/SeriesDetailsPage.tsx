@@ -1,11 +1,13 @@
 import { useMutation, useQuery } from '@apollo/client'
 import * as Tabs from '@radix-ui/react-tabs'
+import { isAfter } from 'date-fns'
 import React from 'react'
 
 import { Button, Tooltip } from '@/components'
 import { useAuthenticatedUser } from '@/features/auth'
 import { graphql } from '@/generated/gql'
 import { useToast } from '@/hooks'
+import { formatDate } from '@/utils/formatDate'
 
 import { EpisodeLine } from '../EpisodeLine'
 import { SeriesPoster } from '../SeriesPoster'
@@ -46,6 +48,7 @@ export const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
               episodes {
                 id
                 isSeen
+                releasedAt
                 ...EpisodeLine_EpisodeFragment
               }
               ...EpisodeLine_SeasonFragment
@@ -112,6 +115,15 @@ export const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
     (season) => season.number !== 0,
   )
 
+  const nextEpisode = series?.seasons
+    .map((season) => season.episodes)
+    .flat()
+    .find(
+      (episode) =>
+        !episode.releasedAt ||
+        isAfter(new Date(episode.releasedAt), new Date(Date.now())),
+    )
+
   return (
     <div>
       {loading && <div>Loading...</div>}
@@ -141,7 +153,16 @@ export const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
           )}
 
           <div className={s.years}>
-            {series.startYear} – {series.endYear ?? '…'}
+            <div>
+              {series.startYear} – {series.endYear ?? '…'}
+            </div>
+
+            {nextEpisode?.releasedAt ? (
+              <div className={s.nextEpisode}>
+                <b className={s.nextEpisodeTitle}>Next episode</b>{' '}
+                {formatDate(nextEpisode.releasedAt)}
+              </div>
+            ) : null}
           </div>
           <div className={s.descriptionContainer}>
             <div className={s.description}>{series.plot}</div>

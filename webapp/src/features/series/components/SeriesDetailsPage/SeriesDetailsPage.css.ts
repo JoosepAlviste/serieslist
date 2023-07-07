@@ -71,13 +71,16 @@ export const statusSelectContainer = style({
 })
 
 export const years = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '1rem',
   fontSize: '0.875rem',
   color: vars.color.textTertiary,
   gridArea: '2 / 2 / 3 / 4',
 
   '@media': {
     [responsive.m]: {
-      gridArea: '2 / 1 / 3 / 2',
+      gridArea: '2 / 1 / 3 / 4',
     },
   },
 })
@@ -167,6 +170,25 @@ export const episodesContainer = style({
   display: 'flex',
   flexDirection: 'column',
   gap: '0.75rem',
+})
+
+export const nextEpisode = style({
+  alignSelf: 'flex-start',
+  background: vars.color.pillBackground,
+  color: vars.color.pillText,
+  borderRadius: vars.radii.s,
+  padding: '0.5rem 1rem',
+  textAlign: 'center',
+
+  '@media': {
+    [responsive.m]: {
+      alignSelf: 'stretch',
+    },
+  },
+})
+
+export const nextEpisodeTitle = style({
+  fontWeight: vars.fontWeight.medium,
 })
 
 export const episodesTitleRow = style({

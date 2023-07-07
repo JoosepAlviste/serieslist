@@ -17,6 +17,7 @@ export const disabled = style({
 export const buttonSize = styleVariants({
   s: {
     fontSize: '0.875rem',
+    lineHeight: '1.25rem',
     padding: '0.375rem 1rem',
     borderRadius: vars.radii.s,
   },

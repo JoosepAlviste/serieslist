@@ -97,6 +97,9 @@ export const [lightThemeClass, vars] = createTheme({
     toastErrorAccessory: colors.red100,
 
     drawingColor: colors.slate300,
+
+    pillBackground: colors.indigo100,
+    pillText: colors.indigo500,
   },
 
   fontWeight: {
@@ -179,6 +182,9 @@ export const darkThemeClass = createTheme(vars, {
     toastErrorAccessory: colors.red950,
 
     drawingColor: colors.slate700,
+
+    pillBackground: colors.indigo950,
+    pillText: colors.indigo400,
   },
 
   fontWeight: {

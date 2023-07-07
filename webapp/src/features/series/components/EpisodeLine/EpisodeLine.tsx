@@ -1,11 +1,11 @@
 import { useMutation } from '@apollo/client'
-import { format } from 'date-fns'
 import React from 'react'
 
 import { Button } from '@/components'
 import { useAuthenticatedUser } from '@/features/auth'
 import { type FragmentType, graphql, useFragment } from '@/generated/gql'
 import { useToast } from '@/hooks'
+import { formatDate } from '@/utils/formatDate'
 
 import { formatEpisodeNumber } from '../../utils/formatEpisodeNumber'
 
@@ -87,10 +87,6 @@ export const EpisodeLine = ({
     }
   }
 
-  const releasedAt = episode.releasedAt
-    ? new Date(episode.releasedAt)
-    : undefined
-
   return (
     <li className={s.episode}>
       <div className={s.episodeNumber}>
@@ -99,7 +95,7 @@ export const EpisodeLine = ({
       <div className={s.episodeTitle}>
         {episode.title}
         <span className={s.date}>
-          {releasedAt ? ` · ${format(releasedAt, 'd MMM yyyy')}` : ''}
+          {episode.releasedAt ? ` · ${formatDate(episode.releasedAt)}` : ''}
         </span>
       </div>
       {currentUser && (
