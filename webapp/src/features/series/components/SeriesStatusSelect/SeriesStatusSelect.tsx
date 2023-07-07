@@ -1,10 +1,10 @@
 import { useMutation } from '@apollo/client'
 import React, { useState } from 'react'
 
-import { Button, Select, AlertDialog } from '@/components'
-import { type FragmentType, graphql, useFragment } from '@/generated/gql'
-import { UserSeriesStatus } from '@/generated/gql/graphql'
-import { useToast } from '@/hooks'
+import { Button, Select, AlertDialog } from '#/components'
+import { type FragmentType, graphql, useFragment } from '#/generated/gql'
+import { UserSeriesStatus } from '#/generated/gql/graphql'
+import { useToast } from '#/hooks'
 
 const STATUS_LABELS = {
   [UserSeriesStatus.InProgress]: 'In progress',

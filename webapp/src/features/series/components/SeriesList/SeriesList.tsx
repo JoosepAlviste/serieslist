@@ -2,10 +2,10 @@ import { useQuery } from '@apollo/client'
 import classNames from 'classnames'
 import React from 'react'
 
-import { Link, LoadingSpinner } from '@/components'
-import { useFragment, type FragmentType } from '@/generated/gql'
-import { graphql } from '@/generated/gql/gql'
-import { type UserSeriesStatus } from '@/generated/gql/graphql'
+import { Link, LoadingSpinner } from '#/components'
+import { useFragment, type FragmentType } from '#/generated/gql'
+import { graphql } from '#/generated/gql/gql'
+import { type UserSeriesStatus } from '#/generated/gql/graphql'
 
 import { SeriesPoster } from '../SeriesPoster'
 

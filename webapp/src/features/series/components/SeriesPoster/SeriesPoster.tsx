@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import React, { type ComponentPropsWithoutRef } from 'react'
 
-import { type FragmentType, graphql, useFragment } from '@/generated/gql'
+import { type FragmentType, graphql, useFragment } from '#/generated/gql'
 
 import * as s from './SeriesPoster.css'
 import posterPlaceholder from './seriesPosterPlaceholder.svg'

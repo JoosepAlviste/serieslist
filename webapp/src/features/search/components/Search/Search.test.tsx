@@ -6,10 +6,10 @@ import {
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import { seriesFactory } from '@/features/series'
-import { SearchDocument, type Series } from '@/generated/gql/graphql'
-import { createMockResolver, render, textContentMatcher } from '@/lib/testUtils'
-import { wait } from '@/utils/misc'
+import { seriesFactory } from '#/features/series'
+import { SearchDocument, type Series } from '#/generated/gql/graphql'
+import { createMockResolver, render, textContentMatcher } from '#/lib/testUtils'
+import { wait } from '#/utils/misc'
 
 import { Search } from './Search'
 

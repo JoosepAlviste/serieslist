@@ -2,15 +2,15 @@ import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import { makeFragmentData } from '@/generated/gql'
+import { makeFragmentData } from '#/generated/gql'
 import {
   type Series,
   SeriesStatusSelect_SeriesFragmentFragmentDoc,
   SeriesUpdateStatusDocument,
   UserSeriesStatus,
   MarkSeriesEpisodesAsSeenDocument,
-} from '@/generated/gql/graphql'
-import { createMockResolver, render } from '@/lib/testUtils'
+} from '#/generated/gql/graphql'
+import { createMockResolver, render } from '#/lib/testUtils'
 
 import { seriesFactory } from '../../series.factory'
 

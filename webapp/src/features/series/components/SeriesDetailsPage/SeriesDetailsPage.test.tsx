@@ -5,8 +5,8 @@ import React from 'react'
 import {
   MarkSeasonEpisodesAsSeenDocument,
   SeriesDetailsPageDocument,
-} from '@/generated/gql/graphql'
-import { createMockResolver, render } from '@/lib/testUtils'
+} from '#/generated/gql/graphql'
+import { createMockResolver, render } from '#/lib/testUtils'
 
 import { episodeFactory } from '../../episode.factory'
 import { seasonFactory } from '../../season.factory'

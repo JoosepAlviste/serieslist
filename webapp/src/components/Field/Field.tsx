@@ -3,8 +3,8 @@ import classNames from 'classnames'
 import React, { forwardRef, type InputHTMLAttributes } from 'react'
 import { type FieldError } from 'react-hook-form'
 
-import { Error } from '@/components'
-import { useSSR } from '@/hooks'
+import { Error } from '#/components'
+import { useSSR } from '#/hooks'
 
 import * as s from './Field.css'
 

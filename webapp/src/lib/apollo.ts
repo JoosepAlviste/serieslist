@@ -7,7 +7,7 @@ import {
 import { type FastifyRequest } from 'fastify'
 import fetch from 'isomorphic-unfetch'
 
-import { config } from '@/config'
+import { config } from '#/config'
 
 type MakeApolloClientOptions = {
   ssr?: boolean

@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { UserSeriesStatus } from '@/generated/gql/graphql'
-import { usePageContext } from '@/hooks'
+import { UserSeriesStatus } from '#/generated/gql/graphql'
+import { usePageContext } from '#/hooks'
 
 import { UserSeriesListPage } from '../../components/UserSeriesListPage'
 

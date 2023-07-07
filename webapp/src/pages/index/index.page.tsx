@@ -1,5 +1,5 @@
 import React from 'react'
 
-import { HomePage } from '@/components'
+import { HomePage } from '#/components'
 
 export const Page = () => <HomePage />

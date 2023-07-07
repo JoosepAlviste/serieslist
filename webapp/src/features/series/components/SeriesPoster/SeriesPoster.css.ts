@@ -1,6 +1,6 @@
 import { style, styleVariants } from '@vanilla-extract/css'
 
-import { vars } from '@/styles/theme.css'
+import { vars } from '#/styles/theme.css'
 
 const posterContainerBase = style({
   aspectRatio: '2 / 3',

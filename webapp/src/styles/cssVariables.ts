@@ -7,4 +7,4 @@
 // I think that this issue is related to this:
 // https://github.com/vanilla-extract-css/vanilla-extract/issues/665
 
-export { iconColorVar } from '@/components/Icon/Icon.css'
+export { iconColorVar } from '#/components/Icon/Icon.css'

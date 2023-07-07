@@ -1,4 +1,4 @@
-import { type PageContext } from '@/renderer/types'
+import { type PageContext } from '#/renderer/types'
 
 export const onBeforeRender = (
   pageContext: PageContext,

@@ -2,14 +2,14 @@ import { ApolloProvider } from '@apollo/client'
 import { TooltipProvider } from '@radix-ui/react-tooltip'
 import React from 'react'
 
-import { Header, NavSidebar } from '@/components'
-import { AuthenticatedUserProvider } from '@/features/auth'
+import { Header, NavSidebar } from '#/components'
+import { AuthenticatedUserProvider } from '#/features/auth'
 import {
   PageContextProvider,
   SSRProvider,
   ThemeProvider,
   ToastProvider,
-} from '@/providers'
+} from '#/providers'
 
 import * as s from './PageShell.css'
 import type { PageContext } from './types'

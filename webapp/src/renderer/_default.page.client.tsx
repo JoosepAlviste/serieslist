@@ -2,14 +2,14 @@ import { type NormalizedCacheObject, type ApolloClient } from '@apollo/client'
 import React from 'react'
 import { hydrateRoot, createRoot, type Root } from 'react-dom/client'
 
-import { CurrentUserDocument } from '@/generated/gql/graphql'
-import { makeApolloClient } from '@/lib/apollo'
+import { CurrentUserDocument } from '#/generated/gql/graphql'
+import { makeApolloClient } from '#/lib/apollo'
 
 import { getPageTitle } from './getPageTitle'
 import { PageShell } from './PageShell'
 import type { PageContextClient } from './types'
 
-import '@/lib/initSentry'
+import '#/lib/initSentry'
 
 let root: Root | undefined
 /**

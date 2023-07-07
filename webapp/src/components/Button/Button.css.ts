@@ -1,7 +1,7 @@
 import { style, styleVariants } from '@vanilla-extract/css'
 
-import { iconColorVar } from '@/styles/cssVariables'
-import { vars } from '@/styles/theme.css'
+import { iconColorVar } from '#/styles/cssVariables'
+import { vars } from '#/styles/theme.css'
 
 const baseButton = style({
   display: 'flex',

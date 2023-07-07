@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { usePageContext } from '@/hooks'
+import { usePageContext } from '#/hooks'
 
 import { SeriesDetailsPage } from '../components/SeriesDetailsPage'
 

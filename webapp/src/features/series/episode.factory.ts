@@ -1,7 +1,7 @@
 import { format } from 'date-fns'
 import { Factory } from 'fishery'
 
-import { type Episode } from '@/generated/gql/graphql'
+import { type Episode } from '#/generated/gql/graphql'
 
 import { seasonFactory } from './season.factory'
 

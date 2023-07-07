@@ -1,8 +1,8 @@
 import { useMutation, useQuery } from '@apollo/client'
 import React, { type FC, type ReactNode } from 'react'
 
-import { graphql } from '@/generated/gql'
-import { usePageContext } from '@/hooks'
+import { graphql } from '#/generated/gql'
+import { usePageContext } from '#/hooks'
 
 import { AuthenticatedUserContext } from '../context/AuthenticatedUserContext'
 

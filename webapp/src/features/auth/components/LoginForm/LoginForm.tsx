@@ -3,9 +3,9 @@ import React from 'react'
 import { navigate } from 'vite-plugin-ssr/client/router'
 import { z } from 'zod'
 
-import { Button, Error, Field } from '@/components'
-import { graphql } from '@/generated/gql'
-import { useForm } from '@/lib/forms'
+import { Button, Error, Field } from '#/components'
+import { graphql } from '#/generated/gql'
+import { useForm } from '#/lib/forms'
 
 import * as s from './LoginForm.css'
 

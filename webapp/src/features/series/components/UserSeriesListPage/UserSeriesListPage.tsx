@@ -2,7 +2,7 @@ import * as Tabs from '@radix-ui/react-tabs'
 import React, { useEffect, useState } from 'react'
 import { navigate } from 'vite-plugin-ssr/client/router'
 
-import { UserSeriesStatus } from '@/generated/gql/graphql'
+import { UserSeriesStatus } from '#/generated/gql/graphql'
 
 import { SeriesList } from '../SeriesList'
 

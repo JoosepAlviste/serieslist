@@ -4,8 +4,8 @@ import {
 } from '@radix-ui/react-toast'
 import React, { useRef, useState, type ReactElement } from 'react'
 
-import { Toast as ToastComponent } from '@/components'
-import { type Toast, ToastContext } from '@/context'
+import { Toast as ToastComponent } from '#/components'
+import { type Toast, ToastContext } from '#/context'
 
 import * as s from './ToastProvider.css'
 

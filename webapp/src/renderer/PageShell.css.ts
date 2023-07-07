@@ -1,6 +1,6 @@
 import { style } from '@vanilla-extract/css'
 
-import { responsive } from '@/styles/theme.css'
+import { responsive } from '#/styles/theme.css'
 
 export const pageContainer = style({
   display: 'grid',

@@ -1,6 +1,6 @@
 import { style } from '@vanilla-extract/css'
 
-import { vars } from '@/styles/theme.css'
+import { vars } from '#/styles/theme.css'
 
 /**
  * Theme toggle design inspiration from https://codepen.io/anurag94/pen/MWYBWoN

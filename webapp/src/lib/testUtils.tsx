@@ -18,13 +18,13 @@ import React, { type ReactElement } from 'react'
 import {
   AuthenticatedUserProvider,
   type AuthenticatedUser,
-} from '@/features/auth'
-import { userFactory } from '@/features/users'
-import { CurrentUserDocument } from '@/generated/gql/graphql'
-import { PageContextProvider } from '@/providers/PageContextProvider'
-import { ToastProvider } from '@/providers/ToastProvider'
-import { type NotWorthIt, type LiterallyAnything } from '@/types/utils'
-import { wait } from '@/utils/misc'
+} from '#/features/auth'
+import { userFactory } from '#/features/users'
+import { CurrentUserDocument } from '#/generated/gql/graphql'
+import { PageContextProvider } from '#/providers/PageContextProvider'
+import { ToastProvider } from '#/providers/ToastProvider'
+import { type NotWorthIt, type LiterallyAnything } from '#/types/utils'
+import { wait } from '#/utils/misc'
 
 type ExtraRenderOptions = {
   /**

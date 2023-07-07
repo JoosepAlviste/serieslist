@@ -1,6 +1,6 @@
 import React, { type ReactElement, useEffect, useState } from 'react'
 
-import { SSRContext } from '@/context'
+import { SSRContext } from '#/context'
 
 type SSRProviderProps = {
   children: ReactElement

@@ -2,8 +2,8 @@ import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import classNames from 'classnames'
 import React, { useState } from 'react'
 
-import { useAuthenticatedUser } from '@/features/auth'
-import { Search } from '@/features/search'
+import { useAuthenticatedUser } from '#/features/auth'
+import { Search } from '#/features/search'
 
 import { Button } from '../Button'
 import { Icon } from '../Icon'

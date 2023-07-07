@@ -1,9 +1,9 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import React from 'react'
 
-import { userFactory } from '@/features/users'
-import { RegisterDocument } from '@/generated/gql/graphql'
-import { createMockResolver, fillForm, render } from '@/lib/testUtils'
+import { userFactory } from '#/features/users'
+import { RegisterDocument } from '#/generated/gql/graphql'
+import { createMockResolver, fillForm, render } from '#/lib/testUtils'
 
 import { RegisterForm } from './RegisterForm'
 

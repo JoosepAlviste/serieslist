@@ -1,8 +1,8 @@
 import { screen } from '@testing-library/react'
 import React from 'react'
 
-import { SeriesListDocument, UserSeriesStatus } from '@/generated/gql/graphql'
-import { createMockResolver, render } from '@/lib/testUtils'
+import { SeriesListDocument, UserSeriesStatus } from '#/generated/gql/graphql'
+import { createMockResolver, render } from '#/lib/testUtils'
 
 import { seriesFactory } from '../../series.factory'
 

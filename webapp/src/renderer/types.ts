@@ -1,9 +1,11 @@
 import { type NormalizedCacheObject, type ApolloClient } from '@apollo/client'
-import type { PageContextBuiltIn } from 'vite-plugin-ssr'
-import type { PageContextBuiltInClient } from 'vite-plugin-ssr/client/router'
+import type {
+  PageContextBuiltIn,
+  PageContextBuiltInClientWithClientRouting as PageContextBuiltInClient,
+} from 'vite-plugin-ssr/types'
 
-import { type AuthenticatedUser } from '@/features/auth'
-import { type Theme } from '@/utils/theme'
+import { type AuthenticatedUser } from '#/features/auth'
+import { type Theme } from '#/utils/theme'
 
 export type Page = (pageProps: PageProps) => React.ReactElement
 export type PageProps = Record<string, unknown>

@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { PageContextContext } from '@/context'
-import { type PageContext } from '@/renderer/types'
+import { PageContextContext } from '#/context'
+import { type PageContext } from '#/renderer/types'
 
 type PageContextProviderProps = {
   pageContext: PageContext

@@ -2,9 +2,9 @@ import * as NavigationMenu from '@radix-ui/react-navigation-menu'
 import classNames from 'classnames'
 import React from 'react'
 
-import { Link, Tooltip } from '@/components'
-import { GITHUB_URL } from '@/constants'
-import { useAuthenticatedUser } from '@/features/auth'
+import { Link, Tooltip } from '#/components'
+import { GITHUB_URL } from '#/constants'
+import { useAuthenticatedUser } from '#/features/auth'
 
 import { Icon } from '../Icon'
 import { Logo } from '../Logo'

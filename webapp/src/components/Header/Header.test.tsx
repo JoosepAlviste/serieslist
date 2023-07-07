@@ -2,8 +2,8 @@ import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import { userFactory } from '@/features/users'
-import { render } from '@/lib/testUtils'
+import { userFactory } from '#/features/users'
+import { render } from '#/lib/testUtils'
 
 import { Header } from './Header'
 

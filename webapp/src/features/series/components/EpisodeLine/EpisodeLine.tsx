@@ -1,11 +1,11 @@
 import { useMutation } from '@apollo/client'
 import React from 'react'
 
-import { Button } from '@/components'
-import { useAuthenticatedUser } from '@/features/auth'
-import { type FragmentType, graphql, useFragment } from '@/generated/gql'
-import { useToast } from '@/hooks'
-import { formatDate } from '@/utils/formatDate'
+import { Button } from '#/components'
+import { useAuthenticatedUser } from '#/features/auth'
+import { type FragmentType, graphql, useFragment } from '#/generated/gql'
+import { useToast } from '#/hooks'
+import { formatDate } from '#/utils/formatDate'
 
 import { formatEpisodeNumber } from '../../utils/formatEpisodeNumber'
 

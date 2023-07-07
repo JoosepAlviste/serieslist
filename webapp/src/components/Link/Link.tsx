@@ -5,7 +5,7 @@ import React, {
   type ComponentPropsWithoutRef,
 } from 'react'
 
-import { usePageContext } from '@/hooks'
+import { usePageContext } from '#/hooks'
 
 import * as s from './Link.css'
 

@@ -1,6 +1,6 @@
 import { style, keyframes } from '@vanilla-extract/css'
 
-import { vars } from '@/styles/theme.css'
+import { vars } from '#/styles/theme.css'
 
 const rotate = keyframes({
   '0%': { transform: 'rotate(0deg)' },

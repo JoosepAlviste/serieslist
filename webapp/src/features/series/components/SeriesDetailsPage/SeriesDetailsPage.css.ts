@@ -1,6 +1,6 @@
 import { style } from '@vanilla-extract/css'
 
-import { responsive, vars } from '@/styles/theme.css'
+import { responsive, vars } from '#/styles/theme.css'
 
 export const container = style({
   display: 'grid',

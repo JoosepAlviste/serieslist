@@ -13,10 +13,10 @@ import React, {
 import Highlighter from 'react-highlight-words'
 import { navigate } from 'vite-plugin-ssr/client/router'
 
-import { Icon, LoadingSpinner } from '@/components'
-import { SeriesPoster } from '@/features/series'
-import { graphql } from '@/generated/gql'
-import { useDebouncedCallback, useSSR } from '@/hooks'
+import { Icon, LoadingSpinner } from '#/components'
+import { SeriesPoster } from '#/features/series'
+import { graphql } from '#/generated/gql'
+import { useDebouncedCallback, useSSR } from '#/hooks'
 
 import * as s from './Search.css'
 

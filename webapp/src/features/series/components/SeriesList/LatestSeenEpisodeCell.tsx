@@ -1,8 +1,8 @@
 import { useMutation } from '@apollo/client'
 import React from 'react'
 
-import { IconButton, Tooltip } from '@/components'
-import { type FragmentType, graphql, useFragment } from '@/generated/gql'
+import { IconButton, Tooltip } from '#/components'
+import { type FragmentType, graphql, useFragment } from '#/generated/gql'
 
 import { formatEpisodeNumber } from '../../utils/formatEpisodeNumber'
 

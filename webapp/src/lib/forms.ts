@@ -6,8 +6,8 @@ import {
 } from 'react-hook-form'
 import { type ZodSchema } from 'zod'
 
-import { type InvalidInputError } from '@/generated/gql/graphql'
-import { type NotWorthIt, type LiterallyAnything } from '@/types/utils'
+import { type InvalidInputError } from '#/generated/gql/graphql'
+import { type NotWorthIt, type LiterallyAnything } from '#/types/utils'
 
 /**
  * A wrapper around `react-hook-form` `useForm` that sets up some useful error

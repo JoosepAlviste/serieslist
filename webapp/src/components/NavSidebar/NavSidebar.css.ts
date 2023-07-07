@@ -1,7 +1,7 @@
 import { globalStyle, style } from '@vanilla-extract/css'
 
-import { iconColorVar } from '@/styles/cssVariables'
-import { vars } from '@/styles/theme.css'
+import { iconColorVar } from '#/styles/cssVariables'
+import { vars } from '#/styles/theme.css'
 
 export const container = style({})
 

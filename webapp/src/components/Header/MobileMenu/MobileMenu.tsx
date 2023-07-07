@@ -2,10 +2,10 @@ import * as NavigationMenu from '@radix-ui/react-navigation-menu'
 import React, { useRef } from 'react'
 import { CSSTransition } from 'react-transition-group'
 
-import { Icon, Link } from '@/components'
-import { GITHUB_URL } from '@/constants'
-import { useAuthenticatedUser } from '@/features/auth'
-import { Search } from '@/features/search'
+import { Icon, Link } from '#/components'
+import { GITHUB_URL } from '#/constants'
+import { useAuthenticatedUser } from '#/features/auth'
+import { Search } from '#/features/search'
 
 import { ThemeToggle } from '../../ThemeToggle'
 

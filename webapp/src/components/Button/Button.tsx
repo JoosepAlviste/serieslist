@@ -6,7 +6,7 @@ import React, {
   type ComponentPropsWithoutRef,
 } from 'react'
 
-import { useSSR } from '@/hooks'
+import { useSSR } from '#/hooks'
 
 import { Link, type LinkProps } from '../Link'
 
