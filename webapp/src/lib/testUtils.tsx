@@ -106,8 +106,8 @@ export const render = async (
   )
 
   if (!skipWaiting) {
-    await act(() => {
-      return wait()
+    await act(async () => {
+      await wait()
     })
   }
 

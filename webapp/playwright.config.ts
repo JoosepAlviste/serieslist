@@ -33,19 +33,19 @@ export default defineConfig({
 
   webServer: [
     {
-      command: 'npm run start:e2e',
+      command: 'pnpm start:e2e',
       port: config.port,
       timeout: 120 * 1000,
       reuseExistingServer: !process.env.CI,
     },
     {
-      command: '(cd ../api && npm run start:e2e)',
+      command: '(cd ../api && pnpm start:e2e)',
       url: `${config.api.url}/graphql`,
       timeout: 20 * 1000,
       reuseExistingServer: !process.env.CI,
     },
     {
-      command: '(cd ../api && npm run start:tmdb)',
+      command: '(cd ../api && pnpm start:tmdb)',
       url: `http://localhost:4002`,
       timeout: 20 * 1000,
       reuseExistingServer: !process.env.CI,

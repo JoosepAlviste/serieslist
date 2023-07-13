@@ -1,4 +1,25 @@
-FROM node:16-alpine AS builder
+FROM node:16-alpine AS base
+
+RUN npm i -g pnpm@8
+
+
+FROM base AS dependencies
+
+WORKDIR /app
+
+# Install dependencies for compiling node-gyp (since there is no pre-built 
+# binary for Alpine)
+# https://stackoverflow.com/a/59538284/7044732
+RUN apk add g++ make python3
+
+COPY . .
+
+RUN pnpm --filter webapp --prod deploy pruned
+
+
+FROM dependencies AS build
+
+WORKDIR /app
 
 # Environment variables are used during the build step, but the build step does 
 # NOT get access to the system's environment variables. So, we need to 
@@ -16,28 +37,17 @@ ENV VITE_API_INTERNAL_URL=$VITE_API_INTERNAL_URL
 ENV VITE_API_HOST=$VITE_API_HOST
 ENV VITE_API_PORT=$VITE_API_PORT
 
-WORKDIR /app
-
-# Install dependencies for compiling node-gyp (since there is no pre-built 
-# binary for Alpine)
-# https://stackoverflow.com/a/59538284/7044732
-RUN apk add g++ make python3
-
-COPY package*.json .
-RUN npm ci
-
-COPY . .
-
-RUN npm run build
+RUN rm -rf node_modules && pnpm install
+RUN pnpm --filter webapp deploy pruned
+RUN cd pruned && pnpm build
 
 
-FROM node:16-alpine AS production
+FROM base AS production
 
 WORKDIR /app
 
-COPY package*.json .
-RUN npm ci --production
+COPY --from=build /app/pruned/dist dist
+COPY --from=build /app/webapp/package.json .
+COPY --from=dependencies /app/pruned/node_modules node_modules
 
-COPY --from=builder /app/dist dist
-
-CMD [ "npm", "run", "start:prod" ]
+CMD [ "pnpm", "start:prod" ]

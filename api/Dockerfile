@@ -1,4 +1,9 @@
-FROM node:16-alpine AS builder
+FROM node:16-alpine AS base
+
+RUN npm i -g pnpm@8
+
+
+FROM base AS dependencies
 
 WORKDIR /app
 
@@ -7,21 +12,25 @@ WORKDIR /app
 # https://stackoverflow.com/a/59538284/7044732
 RUN apk add g++ make python3
 
-COPY package*.json .
-RUN npm ci
-
 COPY . .
 
-RUN npm run build
+RUN pnpm --filter api --prod deploy pruned
 
 
-FROM node:16-alpine AS production
+FROM dependencies AS build
 
 WORKDIR /app
 
-COPY package*.json .
-RUN npm ci --production
+RUN rm -rf node_modules && pnpm install
+RUN pnpm -C api build
 
-COPY --from=builder /app/dist dist
 
-CMD [ "npm", "run", "start:prod" ]
+FROM base AS production
+
+WORKDIR /app
+
+COPY --from=build /app/api/dist dist
+COPY --from=build /app/api/package.json .
+COPY --from=dependencies /app/pruned/node_modules node_modules
+
+CMD [ "pnpm", "start:prod" ]

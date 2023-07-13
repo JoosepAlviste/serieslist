@@ -1,0 +1,8 @@
+bin
+node_modules
+.env*
+.gitattributes
+.gitignore
+README.md
+
+backup.sql

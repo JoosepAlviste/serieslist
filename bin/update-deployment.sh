@@ -22,7 +22,7 @@ docker-compose -f docker-compose.production.yml pull
 echo "Starting containers..."
 docker-compose -f docker-compose.production.yml up -d
 echo "Migrating database..."
-docker-compose -f docker-compose.production.yml exec api npm run migrate:prod
+docker-compose -f docker-compose.production.yml exec api pnpm migrate:prod
 ENDSSH
 
   echo "Project deployed!"

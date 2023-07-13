@@ -10,7 +10,8 @@ The series are automatically imported from [The Movie Database (TMDB)](https://w
 ## Tech stack
 
 The goal of the tech stack is to be as fully statically typed as possible, all 
-the way from the database to the front-end, while being as simple as possible.
+the way from the database to the front-end, while being as simple as possible. 
+[`pnpm`](https://pnpm.io/) is used to manage the multiple workspaces.
 
 The front-end is an SPA with server-side rendering:
 
@@ -46,12 +47,16 @@ Finally, the project is continuously deployed to a
 
 ## Set up
 
+### Requirements
+
+- [Node.js](https://nodejs.org/)
+- [`pnpm`](https://pnpm.io/)
+- See the required versions in [`package.json`](package.json), `engines` field
+
 ```bash
 git clone https://github.com/JoosepAlviste/serieslist.git
 
-cd api
-npm install
-cd ..
+pnpm install
 ./bin/generate-secret-token.sh
 ```
 
@@ -65,37 +70,21 @@ First, run the Redis and database containers and migrate the database:
 
 ```sh
 docker-compose up -d
-cd api
-npm run migrate
+pnpm migrate
 # Migrate the test database
-npm run migrate:test
+pnpm migrate:test
 ```
 
-Then, in one terminal window:
+Then, run the application (both the API and the web application):
 
 ```sh
-cd api
-npm start
-```
-
-And in another:
-
-```sh
-cd webapp
-npm start
-```
-
-If you'd like to run the background jobs, also run this:
-
-```sh
-cd api
-npm run start:jobs
+pnpm start
 ```
 
 For more specific information about the webapp and the API, check out their 
 respective READMEs.
 
-The development server is available at http://localhost:3000.
+The development server is accessible at http://localhost:3000.
 
 
 ### File structure
@@ -139,15 +128,13 @@ There are some end-to-end tests, but they are still a work in progress.
 First, migrate the test database:
 
 ```sh
-cd api
-npm run migrate:test
+pnpm migrate:test
 ```
 
 Then, run the e2e tests:
 
 ```sh
-cd webapp
 # Install the playwright dependencies if they haven't been yet
-npx playwright install chromium --with-deps
-npm run test:e2e
+(cd webapp && pnpm dlx playwright install chromium --with-deps)
+pnpm test:e2e
 ```

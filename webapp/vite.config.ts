@@ -15,6 +15,7 @@ export default ({ mode }: { mode: string }) => {
   }
 
   return defineConfig({
+    clearScreen: false,
     build: {
       sourcemap: true,
     },

@@ -1,0 +1,19 @@
+{
+  "name": "serieslist",
+  "author": "Joosep Alviste",
+  "license": "MIT",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Always know which episode to watch next. Keep track of your series and seen episodes.",
+  "engines": {
+    "node": ">=16",
+    "pnpm": ">=8"
+  },
+  "scripts": {
+    "postinstall": "cp -n .env.example .env || exit 0",
+    "start": "FORCE_COLOR=1 pnpm run --parallel -r '/^start(:jobs)?$/'",
+    "migrate": "pnpm -C api migrate",
+    "migrate:test": "pnpm -C api migrate:test",
+    "test:e2e": "pnpm -C webapp test:e2e"
+  }
+}

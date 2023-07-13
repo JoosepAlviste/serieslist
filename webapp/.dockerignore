@@ -1,0 +1,17 @@
+dist
+node_modules
+.gitignore
+.github
+.vite
+coverage
+dist
+e2e
+playwright
+playwright-report
+test-results
+.eslintrc.json
+.gitignore
+.graphqlrc.yml
+.prettierrc
+README.md
+playwright.config.ts

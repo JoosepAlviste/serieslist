@@ -8,19 +8,19 @@ The front-end for the Serieslist web application.
 ### ESLint
 
 ```sh
-npm run lint
+pnpm lint
 ```
 
 ### TypeScript
 
 ```sh
-npm run tsc
+pnpm tsc
 ```
 
 ### Tests
 
 ```sh
-npm run test
+pnpm test
 ```
 
 ## Development
@@ -30,5 +30,5 @@ npm run test
 To generate TypeScript types for GraphQL requests, run:
 
 ```sh
-npm run codegen
+pnpm codegen
 ```

@@ -16,7 +16,7 @@ const config: CodegenConfig = {
     },
   },
   hooks: {
-    afterAllFileWrite: ['npx eslint --fix'],
+    afterAllFileWrite: ['pnpm exec eslint --fix'],
   },
 }
 

@@ -4,7 +4,9 @@ services:
   api:
     image: ghcr.io/joosepalviste/serieslist-api:latest
     build:
-      context: api
+      context: .
+      dockerfile: api/Dockerfile
+      target: production
     ports:
       - '$API_PORT:$API_PORT'
     env_file:
@@ -21,7 +23,7 @@ services:
 
   api_jobs:
     image: ghcr.io/joosepalviste/serieslist-api:latest
-    command: npm run start:jobs:prod
+    command: pnpm start:jobs:prod
     env_file:
       - .env
       - .env.docker
@@ -34,7 +36,9 @@ services:
   webapp:
     image: ghcr.io/joosepalviste/serieslist-webapp:latest
     build:
-      context: webapp
+      context: .
+      dockerfile: webapp/Dockerfile
+      target: production
       args:
         VITE_APP_PORT: $VITE_APP_PORT
         VITE_API_URL: $VITE_API_URL

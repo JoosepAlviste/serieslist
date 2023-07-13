@@ -2,3 +2,9 @@ dist
 node_modules
 .gitignore
 nodemon.json
+coverage
+.eslintrc.json
+.gitignore
+.madgerc
+.prettierrc
+README.md
