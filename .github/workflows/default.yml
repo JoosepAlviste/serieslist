@@ -40,26 +40,26 @@ jobs:
       - name: API checks
         run: |
           cd api
-          npm ci
-          npm run lint
-          npm run migrate:test
-          npm run tsc
-          npm run test:coverage
-          npm run build
+          pnpm install
+          pnpm lint
+          pnpm migrate:test
+          pnpm tsc
+          pnpm test:coverage
+          pnpm build
 
       - name: Webapp checks
         run: |
           cd webapp
-          npm ci
-          npm run lint
-          npm run tsc
-          npm run test:coverage
-          npm run build
+          pnpm install
+          pnpm lint
+          pnpm tsc
+          pnpm test:coverage
+          pnpm build
 
       - name: E2E tests
         run: |
           (cd webapp && npx playwright install chromium --with-deps)
-          (cd webapp && npm run test:e2e)
+          pnpm test:e2e
       - uses: actions/upload-artifact@v3
         if: always()
         with:
