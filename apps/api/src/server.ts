@@ -35,7 +35,10 @@ export const yoga = createYoga<{
     debug: (...args) => args.forEach(log.debug),
     info: (...args) => args.forEach(log.info),
     warn: (...args) => args.forEach(log.warn),
-    error: (...args) => args.forEach(log.error),
+    error: (...args) => {
+      console.log('error!', args)
+      return args.forEach(log.error)
+    },
   },
   schema,
   context: async (ctx): Promise<Context> => {

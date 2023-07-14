@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "tsx ./src/server/server.ts",
-    "start:e2e": "dotenv -e ../.env.e2e pnpm start",
+    "start:e2e": "dotenv -e ../../.env.e2e pnpm start",
     "build": "rimraf dist && vite build && pnpm build:server && resolve-tspaths --out dist/prodServer",
     "build:server": "tsc -p tsconfig.server.json",
     "start:prod": "cross-env NODE_ENV=production node dist/prodServer/server/server.js",
@@ -13,7 +13,7 @@
     "tsc": "tsc --noEmit",
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
-    "test:e2e": "dotenv -e ../.env.e2e pnpm exec playwright test",
+    "test:e2e": "dotenv -e ../../.env.e2e pnpm exec playwright test",
     "codegen": "graphql-codegen"
   },
   "dependencies": {

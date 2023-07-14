@@ -14,7 +14,7 @@ RUN apk add g++ make python3
 
 COPY . .
 
-RUN pnpm --filter api --prod deploy pruned
+RUN pnpm -F api --prod deploy pruned
 
 
 FROM dependencies AS build
@@ -22,15 +22,15 @@ FROM dependencies AS build
 WORKDIR /app
 
 RUN rm -rf node_modules && pnpm install
-RUN pnpm -C api build
+RUN pnpm -F api build
 
 
 FROM base AS production
 
 WORKDIR /app
 
-COPY --from=build /app/api/dist dist
-COPY --from=build /app/api/package.json .
+COPY --from=build /app/apps/api/dist dist
+COPY --from=build /app/apps/api/package.json .
 COPY --from=dependencies /app/pruned/node_modules node_modules
 
 CMD [ "pnpm", "start:prod" ]

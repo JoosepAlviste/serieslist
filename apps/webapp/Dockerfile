@@ -14,7 +14,7 @@ RUN apk add g++ make python3
 
 COPY . .
 
-RUN pnpm --filter webapp --prod deploy pruned
+RUN pnpm -F webapp --prod deploy pruned
 
 
 FROM dependencies AS build
@@ -38,7 +38,7 @@ ENV VITE_API_HOST=$VITE_API_HOST
 ENV VITE_API_PORT=$VITE_API_PORT
 
 RUN rm -rf node_modules && pnpm install
-RUN pnpm --filter webapp deploy pruned
+RUN pnpm -F webapp deploy pruned
 RUN cd pruned && pnpm build
 
 
@@ -47,7 +47,7 @@ FROM base AS production
 WORKDIR /app
 
 COPY --from=build /app/pruned/dist dist
-COPY --from=build /app/webapp/package.json .
+COPY --from=build /app/pruned/package.json .
 COPY --from=dependencies /app/pruned/node_modules node_modules
 
 CMD [ "pnpm", "start:prod" ]

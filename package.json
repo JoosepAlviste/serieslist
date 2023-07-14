@@ -12,8 +12,8 @@
   "scripts": {
     "postinstall": "cp -n .env.example .env || exit 0",
     "start": "FORCE_COLOR=1 pnpm run --parallel -r '/^start(:jobs)?$/'",
-    "migrate": "pnpm -C api migrate",
-    "migrate:test": "pnpm -C api migrate:test",
-    "test:e2e": "pnpm -C webapp test:e2e"
+    "migrate": "pnpm -F api migrate",
+    "migrate:test": "pnpm -F api migrate:test",
+    "test:e2e": "pnpm -F webapp test:e2e"
   }
 }

@@ -6,7 +6,7 @@ import { expand } from 'dotenv-expand'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 const env = dotenvConfig({
-  path: path.resolve(__dirname, '..', '..', '.env'),
+  path: path.resolve(__dirname, '..', '..', '..', '.env'),
 })
 expand(env)
 

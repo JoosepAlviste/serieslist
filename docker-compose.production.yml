@@ -5,7 +5,7 @@ services:
     image: ghcr.io/joosepalviste/serieslist-api:latest
     build:
       context: .
-      dockerfile: api/Dockerfile
+      dockerfile: apps/api/Dockerfile
       target: production
     ports:
       - '$API_PORT:$API_PORT'
@@ -37,7 +37,7 @@ services:
     image: ghcr.io/joosepalviste/serieslist-webapp:latest
     build:
       context: .
-      dockerfile: webapp/Dockerfile
+      dockerfile: apps/webapp/Dockerfile
       target: production
       args:
         VITE_APP_PORT: $VITE_APP_PORT

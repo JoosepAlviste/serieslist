@@ -11,7 +11,7 @@ import { defineConfig } from 'vitest/config'
 export default ({ mode }: { mode: string }) => {
   process.env = {
     ...process.env,
-    ...loadEnv(mode, join(process.cwd(), '..'), ''),
+    ...loadEnv(mode, join(process.cwd(), '../..'), ''),
   }
 
   return defineConfig({
@@ -42,7 +42,7 @@ export default ({ mode }: { mode: string }) => {
     ssr: {
       noExternal: ['@apollo/client'],
     },
-    envDir: '..',
+    envDir: '../../',
     test: {
       globals: true,
       dir: path.resolve(__dirname, 'src'),

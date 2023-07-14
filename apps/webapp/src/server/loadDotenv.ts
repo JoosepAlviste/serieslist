@@ -6,6 +6,6 @@ import { expand } from 'dotenv-expand'
 import { root } from './root.js'
 
 const env = config({
-  path: path.resolve(root, '..', '.env'),
+  path: path.resolve(root, '../..', '.env'),
 })
 expand(env)
