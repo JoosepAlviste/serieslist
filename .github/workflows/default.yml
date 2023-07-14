@@ -43,7 +43,7 @@ jobs:
 
       - name: API checks
         run: |
-          cd api
+          cd apps/api
           pnpm install
           pnpm lint
           pnpm migrate:test
@@ -53,7 +53,7 @@ jobs:
 
       - name: Webapp checks
         run: |
-          cd webapp
+          cd apps/webapp
           pnpm install
           pnpm lint
           pnpm tsc
@@ -62,7 +62,7 @@ jobs:
 
       - name: E2E tests
         run: |
-          (cd webapp && npx playwright install chromium --with-deps)
+          (cd apps/webapp && npx playwright install chromium --with-deps)
           pnpm test:e2e
       - uses: actions/upload-artifact@v3
         if: always()
