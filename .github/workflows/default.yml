@@ -28,6 +28,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: nrwl/nx-set-shas@v3
+        with:
+          main-branch-name: 'master'
       - uses: pnpm/action-setup@v2
         with:
           version: 8
