@@ -11,9 +11,16 @@
   },
   "scripts": {
     "postinstall": "cp -n .env.example .env || exit 0",
-    "start": "FORCE_COLOR=1 pnpm run --parallel -r '/^start(:jobs)?$/'",
+    "start": "nx run-many -t start,start:jobs",
+    "lint": "nx affected -t lint",
+    "tsc": "nx affected -t tsc",
+    "test:coverage": "nx affected -t test:coverage",
+    "build": "nx affected -t build",
     "migrate": "pnpm -F api migrate",
     "migrate:test": "pnpm -F api migrate:test",
     "test:e2e": "pnpm -F webapp test:e2e"
+  },
+  "devDependencies": {
+    "nx": "^16.5.2"
   }
 }

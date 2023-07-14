@@ -27,6 +27,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+      - uses: nrwl/nx-set-shas@v3
       - uses: pnpm/action-setup@v2
         with:
           version: 8
@@ -41,22 +42,12 @@ jobs:
           cp .env.example .env
           bash bin/generate-secret-token.sh
 
-      - name: API checks
+      - name: Checks
         run: |
-          cd apps/api
           pnpm install
           pnpm lint
+          pnpm tsc
           pnpm migrate:test
-          pnpm tsc
-          pnpm test:coverage
-          pnpm build
-
-      - name: Webapp checks
-        run: |
-          cd apps/webapp
-          pnpm install
-          pnpm lint
-          pnpm tsc
           pnpm test:coverage
           pnpm build
 

@@ -1,0 +1,23 @@
+{
+  "workspaceLayout": {
+    "appsDir": "apps"
+  },
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "nx/tasks-runners/default",
+      "options": {
+        "cacheableOperations": [
+          "build",
+          "tsc",
+          "lint",
+          "test",
+          "test:coverage",
+          "build:server"
+        ]
+      }
+    }
+  },
+  "affected": {
+    "defaultBase": "master"
+  }
+}
