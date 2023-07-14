@@ -27,6 +27,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          # We need to fetch all branches and commits so that Nx affected has a base to compare against.
+          fetch-depth: 0
       - uses: nrwl/nx-set-shas@v3
         with:
           main-branch-name: 'master'
