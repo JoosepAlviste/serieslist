@@ -11,10 +11,6 @@ import type { PageContextClient } from './types'
 
 import '#/lib/initSentry'
 
-// A dummy import of the favicon to make sure that it is copied into the
-// `dist/client` folder. It's only actually used in the server default page.
-import './favicon.ico'
-
 let root: Root | undefined
 /**
  * Keep track of the Apollo client instance used in the client-side so that we
