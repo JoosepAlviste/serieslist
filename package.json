@@ -14,13 +14,14 @@
     "start": "nx run-many -t start,start:jobs",
     "lint": "nx affected -t lint",
     "tsc": "nx affected -t tsc",
-    "test:coverage": "nx affected -t test:coverage",
+    "test:coverage": "dotenv -e .env.test -- nx affected -t test:coverage --verbose",
     "build": "nx affected -t build",
     "migrate": "pnpm -F api migrate",
-    "migrate:test": "pnpm -F api migrate:test",
-    "test:e2e": "pnpm -F webapp test:e2e"
+    "migrate:test": "dotenv -e .env.test -- pnpm -F api migrate:test",
+    "test:e2e": "dotenv -e .env.e2e -- pnpm -F webapp test:e2e"
   },
   "devDependencies": {
+    "dotenv-cli": "^7.1.0",
     "nx": "^16.5.2"
   }
 }
