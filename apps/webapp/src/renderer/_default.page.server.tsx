@@ -51,6 +51,7 @@ export async function render(pageContext: PageContextServer) {
         <link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png" sizes="180x180">
         <link rel="mask-icon" href="/maskable-icon-512x512.png" color="#FFFFFF">
         <meta name="theme-color" content="#6366f1">
+        <link rel="manifest" href="/manifest.webmanifest">
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="description" content="${desc}" />
         <title>${title}</title>
@@ -58,6 +59,8 @@ export async function render(pageContext: PageContextServer) {
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+
+        <script src="/registerSW.js"></script>
       </head>
       <body class="${themeClass}">
         <div id="page-view">${dangerouslySkipEscape(pageHtml)}</div>
