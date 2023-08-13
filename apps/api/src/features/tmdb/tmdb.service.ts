@@ -9,7 +9,7 @@ import { log } from '@/lib/logger'
 
 import {
   tmdbSeasonSchema,
-  tmdbSeriesSchema,
+  tmdbSeriesResponseSchema,
   tmdbSeriesSearchResponseSchema,
 } from './tmdb.schemas'
 import { type TMDbSeries, type TMDbSearchSeries } from './types'
@@ -33,7 +33,7 @@ const makeTMDbRequest = async <T>(
   const json = (await res.json()) as T
 
   try {
-    return schema.parse(json)
+    return { parsed: true, response: schema.parse(json) }
   } catch (e) {
     log.warn(
       {
@@ -44,7 +44,7 @@ const makeTMDbRequest = async <T>(
       'TMDB API response did not match the schema.',
     )
 
-    return null
+    return { parsed: false, response: null }
   }
 }
 
@@ -79,34 +79,36 @@ export const searchSeries = async ({
 }: {
   keyword: string
 }): Promise<Insertable<Series>[]> => {
-  const seriesSearchResponse = await makeTMDbRequest(
+  const { response } = await makeTMDbRequest(
     'search/tv',
     { query: keyword },
     tmdbSeriesSearchResponseSchema,
   )
 
-  if (!seriesSearchResponse) {
+  if (!response) {
     // No result found or other error
     return []
   }
 
-  return seriesSearchResponse.results.map(parseSeriesFromTMDbResponse)
+  return response.results.map(parseSeriesFromTMDbResponse)
 }
 
 export const fetchSeriesDetails = async ({ tmdbId }: { tmdbId: number }) => {
-  const seriesDetails = await makeTMDbRequest(
+  const { parsed, response } = await makeTMDbRequest(
     `tv/${tmdbId}`,
     { append_to_response: 'external_ids' },
-    tmdbSeriesSchema,
+    tmdbSeriesResponseSchema,
   )
-  if (!seriesDetails) {
-    throw new NotFoundError()
+  if (!response || 'success' in response) {
+    return { parsed, found: false, series: null, totalSeasons: 0, seasons: [] }
   }
 
   return {
-    series: parseSeriesFromTMDbResponse(seriesDetails),
-    totalSeasons: seriesDetails.number_of_seasons,
-    seasons: seriesDetails.seasons.map(
+    found: true,
+    parsed: true,
+    series: parseSeriesFromTMDbResponse(response),
+    totalSeasons: response.number_of_seasons,
+    seasons: response.seasons.map(
       (season): Omit<Insertable<Season>, 'seriesId'> => ({
         tmdbId: season.id,
         number: season.season_number,
@@ -123,19 +125,19 @@ export const fetchEpisodesForSeason = async ({
   tmdbId: number
   seasonNumber: number
 }) => {
-  const season = await makeTMDbRequest(
+  const { response } = await makeTMDbRequest(
     `tv/${tmdbId}/season/${seasonNumber}`,
     {},
     tmdbSeasonSchema,
   )
-  if (!season) {
+  if (!response) {
     throw new NotFoundError()
   }
 
   return {
-    seasonNumber: season.season_number,
-    seasonTitle: season.name,
-    episodes: season.episodes.map((episode) => ({
+    seasonNumber: response.season_number,
+    seasonTitle: response.name,
+    episodes: response.episodes.map((episode) => ({
       tmdbId: episode.id,
       number: episode.episode_number,
       title: episode.name,

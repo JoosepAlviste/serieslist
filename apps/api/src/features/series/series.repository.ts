@@ -120,3 +120,13 @@ export const updateOneByTMDbId = ({
     .returningAll()
     .executeTakeFirst()
 }
+
+export const deleteOne = ({
+  ctx,
+  tmdbId,
+}: {
+  ctx: DBContext
+  tmdbId: number
+}) => {
+  return ctx.db.deleteFrom('series').where('tmdbId', '=', tmdbId).execute()
+}

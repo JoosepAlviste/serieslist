@@ -7,6 +7,12 @@ export const tmdbStatusSchema = z.enum([
   'Canceled',
 ])
 
+export const tmdbSeriesNotFoundSchema = z.object({
+  success: z.literal(false),
+  status_code: z.literal(34),
+  status_message: z.string(),
+})
+
 export const tmdbSeriesSchema = z.object({
   id: z.number(),
   name: z.string(),
@@ -29,6 +35,10 @@ export const tmdbSeriesSchema = z.object({
     }),
   ),
 })
+
+export const tmdbSeriesResponseSchema = tmdbSeriesSchema.or(
+  tmdbSeriesNotFoundSchema,
+)
 
 export const tmdbSearchSeriesSchema = tmdbSeriesSchema.pick({
   id: true,

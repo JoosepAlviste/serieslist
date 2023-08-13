@@ -185,6 +185,9 @@ export const syncSeasonsAndEpisodes = async ({
  * Update the details of the series with the given TMDB ID from the TMDB API.
  * This also syncs the seasons and episodes from TMDB, saving them into the
  * database if needed.
+ *
+ * If the series does not exist on TMDB, then it will be deleted from the
+ * database.
  */
 export const syncSeriesDetails = async ({
   ctx,
@@ -194,10 +197,20 @@ export const syncSeriesDetails = async ({
   tmdbId: number
 }) => {
   const {
+    parsed,
+    found,
     series: newSeries,
     totalSeasons,
     seasons,
   } = await tmdbService.fetchSeriesDetails({ tmdbId })
+  if (!parsed) {
+    return null
+  }
+
+  if (!found) {
+    await seriesRepository.deleteOne({ ctx, tmdbId })
+    return null
+  }
 
   const savedSeries = await seriesRepository.updateOneByTMDbId({
     ctx,
@@ -209,7 +222,7 @@ export const syncSeriesDetails = async ({
     },
   })
   if (!savedSeries) {
-    throw new NotFoundError()
+    return null
   }
 
   if (totalSeasons) {
@@ -242,7 +255,12 @@ export const getSeriesByIdAndFetchDetailsFromTMDB = async ({
     return series
   }
 
-  return await syncSeriesDetails({ ctx, tmdbId: series.tmdbId })
+  const syncedSeries = await syncSeriesDetails({ ctx, tmdbId: series.tmdbId })
+  if (!syncedSeries) {
+    throw new NotFoundError()
+  }
+
+  return series
 }
 
 export const updateSeriesStatusForUser = async ({

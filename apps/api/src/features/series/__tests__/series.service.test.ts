@@ -13,6 +13,7 @@ import {
   createSeenEpisodesForUser,
   createSeriesWithEpisodesAndSeasons,
 } from '@/test/testUtils'
+import { type LiterallyAnything } from '@/types/utils'
 
 import { episodeFactory } from '../episode.factory'
 import { seasonFactory } from '../season.factory'
@@ -264,6 +265,53 @@ describe('features/series/series.service', () => {
         ctx: createContext(),
         tmdbId: series.tmdbId,
       })
+    })
+
+    it('deletes a series if it has been deleted in TMDB', async () => {
+      const series = await seriesFactory.create()
+
+      mockTMDbDetailsRequest(series.tmdbId, {
+        success: false,
+        status_code: 34,
+        status_message: 'The resource you requested could not be found.',
+      })
+
+      const returnedSeries = await syncSeriesDetails({
+        ctx: createContext(),
+        tmdbId: series.tmdbId,
+      })
+
+      expect(returnedSeries).toBe(null)
+
+      const seriesInDb = await db
+        .selectFrom('series')
+        .where('id', '=', series.id)
+        .selectAll()
+        .executeTakeFirst()
+      expect(seriesInDb).toBe(undefined)
+    })
+
+    it('does not delete the series if parsing the TMDB response fails', async () => {
+      const series = await seriesFactory.create()
+
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      mockTMDbDetailsRequest(series.tmdbId, {
+        not: 'correct',
+      } as LiterallyAnything)
+
+      const returnedSeries = await syncSeriesDetails({
+        ctx: createContext(),
+        tmdbId: series.tmdbId,
+      })
+
+      expect(returnedSeries).toBe(null)
+
+      const seriesInDb = await db
+        .selectFrom('series')
+        .where('id', '=', series.id)
+        .selectAll()
+        .executeTakeFirst()
+      expect(seriesInDb).not.toBeFalsy()
     })
   })
 
