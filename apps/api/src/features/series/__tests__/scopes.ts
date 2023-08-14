@@ -2,9 +2,9 @@ import nock from 'nock'
 
 import { config } from '@/config'
 import {
-  type TMDbSeason,
   type TMDbSearchResponse,
   type TMDbSeriesResponse,
+  type TMDbSeasonResponse,
 } from '@/features/tmdb'
 
 export const mockTMDbSearchRequest = (
@@ -47,7 +47,7 @@ export const mockTMDbSeasonRequest = (
     tmdbId: number
     seasonNumber: number
   },
-  response: TMDbSeason,
+  response: TMDbSeasonResponse,
 ) =>
   nock(config.tmdb.url)
     .get(`/3/tv/${tmdbId}/season/${seasonNumber}`)

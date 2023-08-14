@@ -53,3 +53,13 @@ export const createMany = ({
     .onConflict((oc) => oc.column('tmdbId').doNothing())
     .execute()
 }
+
+export const deleteOne = ({
+  ctx,
+  seasonId,
+}: {
+  ctx: DBContext
+  seasonId: number
+}) => {
+  return ctx.db.deleteFrom('season').where('id', '=', seasonId).execute()
+}

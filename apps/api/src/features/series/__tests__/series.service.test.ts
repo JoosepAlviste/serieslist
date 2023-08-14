@@ -3,6 +3,7 @@ import { format, subDays } from 'date-fns'
 import { seriesProgressFactory } from '@/features/seriesProgress'
 import {
   tmdbEpisodeFactory,
+  tmdbNotFoundResponseFactory,
   tmdbSeasonFactory,
   tmdbSeriesDetailsFactory,
 } from '@/features/tmdb'
@@ -246,6 +247,57 @@ describe('features/series/series.service', () => {
         .execute()
       expect(seriesProgresses).toHaveLength(2)
     })
+
+    it('deletes the season if it has been deleted in TMDB', async () => {
+      const {
+        series,
+        seasons: [{ season }],
+      } = await createSeriesWithEpisodesAndSeasons([0])
+
+      mockTMDbSeasonRequest(
+        { tmdbId: series.tmdbId, seasonNumber: season.number },
+        tmdbNotFoundResponseFactory.build(),
+      )
+
+      await syncSeasonsAndEpisodes({
+        ctx: createContext(),
+        seriesId: series.id,
+        tmdbId: series.tmdbId,
+        seasons: [season],
+      })
+
+      const savedSeason = await db
+        .selectFrom('season')
+        .where('id', '=', season.id)
+        .executeTakeFirst()
+      expect(savedSeason).toBeFalsy()
+    })
+
+    it('does not delete the season if there is a parsing error', async () => {
+      const {
+        series,
+        seasons: [{ season }],
+      } = await createSeriesWithEpisodesAndSeasons([0])
+
+      mockTMDbSeasonRequest(
+        { tmdbId: series.tmdbId, seasonNumber: season.number },
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        { not: 'correct' } as LiterallyAnything,
+      )
+
+      await syncSeasonsAndEpisodes({
+        ctx: createContext(),
+        seriesId: series.id,
+        tmdbId: series.tmdbId,
+        seasons: [season],
+      })
+
+      const savedSeason = await db
+        .selectFrom('season')
+        .where('id', '=', season.id)
+        .executeTakeFirst()
+      expect(savedSeason).not.toBeFalsy()
+    })
   })
 
   describe('syncSeriesDetails', () => {
@@ -270,11 +322,7 @@ describe('features/series/series.service', () => {
     it('deletes a series if it has been deleted in TMDB', async () => {
       const series = await seriesFactory.create()
 
-      mockTMDbDetailsRequest(series.tmdbId, {
-        success: false,
-        status_code: 34,
-        status_message: 'The resource you requested could not be found.',
-      })
+      mockTMDbDetailsRequest(series.tmdbId, tmdbNotFoundResponseFactory.build())
 
       const returnedSeries = await syncSeriesDetails({
         ctx: createContext(),

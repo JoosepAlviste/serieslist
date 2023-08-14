@@ -4,11 +4,10 @@ import { type z } from 'zod'
 
 import { config } from '@/config'
 import { type Season, type Series } from '@/generated/db'
-import { NotFoundError } from '@/lib/errors'
 import { log } from '@/lib/logger'
 
 import {
-  tmdbSeasonSchema,
+  tmdbSeasonResponseSchema,
   tmdbSeriesResponseSchema,
   tmdbSeriesSearchResponseSchema,
 } from './tmdb.schemas'
@@ -125,16 +124,24 @@ export const fetchEpisodesForSeason = async ({
   tmdbId: number
   seasonNumber: number
 }) => {
-  const { response } = await makeTMDbRequest(
+  const { response, parsed } = await makeTMDbRequest(
     `tv/${tmdbId}/season/${seasonNumber}`,
     {},
-    tmdbSeasonSchema,
+    tmdbSeasonResponseSchema,
   )
-  if (!response) {
-    throw new NotFoundError()
+  if (!response || 'success' in response) {
+    return {
+      parsed,
+      found: false,
+      seasonNumber: 0,
+      seasonTitle: '',
+      episodes: [],
+    }
   }
 
   return {
+    parsed,
+    found: true,
     seasonNumber: response.season_number,
     seasonTitle: response.name,
     episodes: response.episodes.map((episode) => ({

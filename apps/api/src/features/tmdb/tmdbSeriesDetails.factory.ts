@@ -1,10 +1,12 @@
 import { Factory } from 'fishery'
 import { type Selectable } from 'kysely'
 import { nanoid } from 'nanoid'
+import { type z } from 'zod'
 
 import { type Series, type Episode } from '@/generated/db'
 import { generateRandomInt } from '@/utils/generateRandomInt'
 
+import { type tmdbNotFoundSchema } from './tmdb.schemas'
 import { type TMDbSeason, type TMDbEpisode, type TMDbSeries } from './types'
 
 type TMDBSeriesDetailsTransientParams = {
@@ -57,3 +59,11 @@ export const tmdbSeasonFactory = Factory.define<TMDbSeason>(
     episodes: [],
   }),
 )
+
+export const tmdbNotFoundResponseFactory = Factory.define<
+  z.infer<typeof tmdbNotFoundSchema>
+>(() => ({
+  status_code: 34,
+  success: false,
+  status_message: 'The resource you requested could not be found.',
+}))

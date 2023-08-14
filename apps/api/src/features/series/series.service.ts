@@ -21,6 +21,7 @@ import {
 import { UserSeriesStatus } from './constants'
 import * as episodeRepository from './episode.repository'
 import * as seasonRepository from './season.repository'
+import * as seasonService from './season.service'
 import * as seriesRepository from './series.repository'
 import * as userSeriesStatusRepository from './userSeriesStatus.repository'
 
@@ -127,10 +128,22 @@ export const syncSeasonsAndEpisodes = async ({
 
   await Promise.all(
     Object.keys(seasonsByNumber).map(async (seasonNumber) => {
-      const { episodes } = await tmdbService.fetchEpisodesForSeason({
-        tmdbId,
-        seasonNumber: parseInt(seasonNumber),
-      })
+      const { parsed, found, episodes } =
+        await tmdbService.fetchEpisodesForSeason({
+          tmdbId,
+          seasonNumber: parseInt(seasonNumber),
+        })
+      if (!parsed) {
+        return
+      }
+      if (!found) {
+        await seasonService.deleteOne({
+          ctx,
+          seasonId: seasonsByNumber[seasonNumber].seasonId,
+        })
+        return
+      }
+
       if (!episodes.length) {
         return
       }

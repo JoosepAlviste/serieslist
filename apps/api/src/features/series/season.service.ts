@@ -1,4 +1,4 @@
-import { type Context } from '@/types/context'
+import { type DBContext, type Context } from '@/types/context'
 import { groupEntitiesByKeyToNestedArray } from '@/utils/groupEntitiesByKeyToNestedArray'
 
 import * as seasonRepository from './season.repository'
@@ -46,4 +46,14 @@ export const findSeasonsBySeriesIds = async ({
     ids: seriesIds,
     fieldToGroupBy: 'seriesId',
   })
+}
+
+export const deleteOne = ({
+  ctx,
+  seasonId,
+}: {
+  ctx: DBContext
+  seasonId: number
+}) => {
+  return seasonRepository.deleteOne({ ctx, seasonId })
 }

@@ -7,7 +7,7 @@ export const tmdbStatusSchema = z.enum([
   'Canceled',
 ])
 
-export const tmdbSeriesNotFoundSchema = z.object({
+export const tmdbNotFoundSchema = z.object({
   success: z.literal(false),
   status_code: z.literal(34),
   status_message: z.string(),
@@ -36,9 +36,7 @@ export const tmdbSeriesSchema = z.object({
   ),
 })
 
-export const tmdbSeriesResponseSchema = tmdbSeriesSchema.or(
-  tmdbSeriesNotFoundSchema,
-)
+export const tmdbSeriesResponseSchema = tmdbSeriesSchema.or(tmdbNotFoundSchema)
 
 export const tmdbSearchSeriesSchema = tmdbSeriesSchema.pick({
   id: true,
@@ -69,3 +67,5 @@ export const tmdbSeasonSchema = z.object({
   episodes: z.array(tmdbEpisodeSchema),
   air_date: z.coerce.date(),
 })
+
+export const tmdbSeasonResponseSchema = tmdbSeasonSchema.or(tmdbNotFoundSchema)

@@ -7,6 +7,7 @@ import {
   type tmdbSeasonSchema,
   type tmdbSeriesSearchResponseSchema,
   type tmdbSeriesResponseSchema,
+  type tmdbSeasonResponseSchema,
 } from './tmdb.schemas'
 
 export type TMDbSearchResponse = z.infer<typeof tmdbSeriesSearchResponseSchema>
@@ -18,5 +19,7 @@ export type TMDbSeries = z.infer<typeof tmdbSeriesSchema>
 export type TMDbSeriesResponse = z.infer<typeof tmdbSeriesResponseSchema>
 
 export type TMDbSeason = z.infer<typeof tmdbSeasonSchema>
+
+export type TMDbSeasonResponse = z.infer<typeof tmdbSeasonResponseSchema>
 
 export type TMDbEpisode = z.infer<typeof tmdbEpisodeSchema>
