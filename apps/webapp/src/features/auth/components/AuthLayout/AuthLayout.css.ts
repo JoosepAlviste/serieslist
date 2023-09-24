@@ -6,7 +6,7 @@ export const container = style({
   display: 'flex',
   // Gradient is indigo-500, quite transparent
   background: `linear-gradient(143deg, rgba(99, 102, 241, 0) 70%, rgba(99, 102, 241, 0.2) 100%);`,
-  height: '100%',
+  flex: 1,
 })
 
 export const formSide = style({

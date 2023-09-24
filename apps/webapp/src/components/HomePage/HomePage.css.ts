@@ -6,7 +6,7 @@ export const container = style({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  minHeight: '100%',
+  flex: 1,
 
   '@media': {
     [responsive.m]: {

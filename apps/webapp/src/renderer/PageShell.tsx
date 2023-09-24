@@ -33,7 +33,7 @@ export function PageShell({
               <AuthenticatedUserProvider>
                 <TooltipProvider>
                   <ToastProvider>
-                    <div className={s.pageContainer}>
+                    <div>
                       <Header className={s.header} />
                       <NavSidebar className={s.nav} />
                       <main className={s.main}>{children}</main>
