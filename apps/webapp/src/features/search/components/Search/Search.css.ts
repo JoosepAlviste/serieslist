@@ -1,6 +1,6 @@
 import { style } from '@vanilla-extract/css'
 
-import { vars } from '#/styles/theme.css'
+import { vars, zIndex } from '#/styles/theme.css'
 
 export const container = style({
   display: 'flex',
@@ -60,7 +60,7 @@ export const popoverContent = style({
   width: '30rem',
   maxWidth: '100vw',
   overflowY: 'auto',
-  zIndex: 2,
+  zIndex: zIndex.search.popover,
 })
 
 export const searchTitle = style({

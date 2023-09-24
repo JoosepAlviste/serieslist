@@ -1,7 +1,7 @@
 import { globalStyle, style } from '@vanilla-extract/css'
 
 import { iconColorVar } from '#/styles/cssVariables'
-import { responsive, vars } from '#/styles/theme.css'
+import { responsive, vars, zIndex } from '#/styles/theme.css'
 
 export const ANIMATION_DURATION_MS = 200
 
@@ -14,7 +14,7 @@ export const mobileMenu = style({
   top: 80,
   background: vars.color.pageBackground,
   padding: '1.5rem',
-  zIndex: 2,
+  zIndex: zIndex.layout.header,
 
   '@media': {
     [responsive.m]: {

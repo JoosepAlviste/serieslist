@@ -40,7 +40,33 @@ const colors = {
   yellow500: '#eab308',
 }
 
+const generalVariables = {
+  fontWeight: {
+    regular: '400',
+    medium: '500',
+    bold: '700',
+  },
+
+  radii: {
+    s: '0.5rem',
+    m: '0.75rem',
+    xl: '1.25rem',
+  },
+
+  shadow: {
+    md: 'rgba(0, 0, 0, 0.2) 0px 18px 50px -10px',
+    xl: '0 5px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
+    '2xl': '0 25px 50px -12px rgb(0 0 0 / 0.25)',
+  },
+
+  easing: {
+    base: 'cubic-bezier(0.1, 0.9, 0, 1.2)',
+  },
+}
+
 export const [lightThemeClass, vars] = createTheme({
+  ...generalVariables,
+
   color: {
     ...colors,
 
@@ -101,31 +127,11 @@ export const [lightThemeClass, vars] = createTheme({
     pillBackground: colors.indigo100,
     pillText: colors.indigo500,
   },
-
-  fontWeight: {
-    regular: '400',
-    medium: '500',
-    bold: '700',
-  },
-
-  radii: {
-    s: '0.5rem',
-    m: '0.75rem',
-    xl: '1.25rem',
-  },
-
-  shadow: {
-    md: 'rgba(0, 0, 0, 0.2) 0px 18px 50px -10px',
-    xl: '0 5px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
-    '2xl': '0 25px 50px -12px rgb(0 0 0 / 0.25)',
-  },
-
-  easing: {
-    base: 'cubic-bezier(0.1, 0.9, 0, 1.2)',
-  },
 })
 
 export const darkThemeClass = createTheme(vars, {
+  ...generalVariables,
+
   color: {
     ...colors,
 
@@ -186,32 +192,38 @@ export const darkThemeClass = createTheme(vars, {
     pillBackground: colors.indigo950,
     pillText: colors.indigo400,
   },
-
-  fontWeight: {
-    regular: '400',
-    medium: '500',
-    bold: '700',
-  },
-
-  radii: {
-    s: '0.5rem',
-    m: '0.75rem',
-    xl: '1.25rem',
-  },
-
-  shadow: {
-    md: 'rgba(0, 0, 0, 0.2) 0px 18px 50px -10px',
-    xl: '0 5px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
-    '2xl': '0 25px 50px -12px rgb(0 0 0 / 0.25)',
-  },
-
-  easing: {
-    base: 'cubic-bezier(0.1, 0.9, 0, 1.2)',
-  },
 })
 
 export const responsive = {
   s: 'screen and (max-width: 320px)',
   m: 'screen and (max-width: 768px)',
   l: 'screen and (max-width: 1200px)',
+}
+
+const base = 1
+const above = 1
+const below = -1
+
+const zLayoutHeader = above + base
+const zLayoutToast = above + zLayoutHeader
+const zLayoutSelect = above + zLayoutHeader
+const zHomePageBackground = below + base
+const zAuthLayoutSeparator = base
+const zSearchPopover = above + zLayoutHeader
+
+export const zIndex = {
+  layout: {
+    header: zLayoutHeader,
+    toast: zLayoutToast,
+    select: zLayoutSelect,
+  },
+  homePage: {
+    background: zHomePageBackground,
+  },
+  authLayout: {
+    separator: zAuthLayoutSeparator,
+  },
+  search: {
+    popover: zSearchPopover,
+  },
 }

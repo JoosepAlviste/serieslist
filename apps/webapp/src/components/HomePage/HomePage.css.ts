@@ -1,6 +1,6 @@
 import { style } from '@vanilla-extract/css'
 
-import { responsive, vars } from '#/styles/theme.css'
+import { responsive, vars, zIndex } from '#/styles/theme.css'
 
 export const container = style({
   display: 'flex',
@@ -52,7 +52,7 @@ export const titleHighlight = style({
 export const background = style({
   position: 'fixed',
   inset: 0,
-  zIndex: -1,
+  zIndex: zIndex.homePage.background,
   background: `radial-gradient(circle at 77% 100%, rgba(99,102,241,0.2) 0%, rgba(99,102,241,0) 60%)`,
 
   '@media': {

@@ -1,6 +1,6 @@
 import { style } from '@vanilla-extract/css'
 
-import { responsive, vars } from '#/styles/theme.css'
+import { responsive, vars, zIndex } from '#/styles/theme.css'
 
 export const container = style({
   display: 'flex',
@@ -43,7 +43,7 @@ export const separatorText = style({
   background: vars.color.pageBackground,
   paddingLeft: '0.5rem',
   paddingRight: '0.5rem',
-  zIndex: 1,
+  zIndex: zIndex.authLayout.separator,
 })
 
 export const otherActionContainer = style({

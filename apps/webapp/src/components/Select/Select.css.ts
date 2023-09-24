@@ -1,7 +1,7 @@
 import { style } from '@vanilla-extract/css'
 
 import { iconColorVar } from '#/styles/cssVariables'
-import { vars } from '#/styles/theme.css'
+import { vars, zIndex } from '#/styles/theme.css'
 
 export const trigger = style({
   display: 'flex',
@@ -27,6 +27,7 @@ export const content = style({
   borderRadius: vars.radii.s,
   paddingTop: '0.25rem',
   paddingBottom: '0.25rem',
+  zIndex: zIndex.layout.select,
 })
 
 export const item = style({

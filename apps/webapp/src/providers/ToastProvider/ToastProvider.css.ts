@@ -1,5 +1,7 @@
 import { style } from '@vanilla-extract/css'
 
+import { zIndex } from '#/styles/theme.css'
+
 export const viewport = style({
   display: 'flex',
   flexDirection: 'column',
@@ -13,5 +15,5 @@ export const viewport = style({
   maxWidth: '100vw',
   listStyle: 'none',
   outline: 'none',
-  zIndex: 2147483647,
+  zIndex: zIndex.layout.toast,
 })
