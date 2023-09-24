@@ -11,22 +11,26 @@ import * as s from './Link.css'
 
 export type LinkProps = ComponentPropsWithoutRef<'a'> & {
   activeClass?: string
+  activeUrlPrefix?: string
   children: ReactNode
 }
 
 export const Link = forwardRef<HTMLAnchorElement, LinkProps>(function Link(
-  { className, activeClass, ...rest },
+  { className, activeClass, activeUrlPrefix, ...rest },
   ref,
 ) {
   const pageContext = usePageContext()
+
+  const isActive = activeUrlPrefix
+    ? pageContext.urlPathname.startsWith(activeUrlPrefix)
+    : pageContext.urlPathname === rest.href
 
   return (
     <a
       className={classNames(
         s.link,
         {
-          [activeClass ?? '']:
-            activeClass && pageContext.urlPathname === rest.href,
+          [activeClass ?? '']: activeClass && isActive,
         },
         className,
       )}

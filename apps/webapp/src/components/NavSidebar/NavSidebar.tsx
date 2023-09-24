@@ -40,7 +40,10 @@ export const NavSidebar = ({ className }: NavSidebarProps) => {
                 className={s.navLink}
                 asChild
               >
-                <Link activeClass={s.navLinkIsActive}>
+                <Link
+                  activeClass={s.navLinkIsActive}
+                  activeUrlPrefix="/series/list"
+                >
                   <Icon name="series" size="l" label="Series" />
                 </Link>
               </NavigationMenu.Link>
