@@ -5,6 +5,7 @@ import { Button, Select, AlertDialog } from '#/components'
 import { type FragmentType, graphql, useFragment } from '#/generated/gql'
 import { UserSeriesStatus } from '#/generated/gql/graphql'
 import { useToast } from '#/hooks'
+import { invalidateCacheFields } from '#/lib/apollo'
 
 const STATUS_LABELS = {
   [UserSeriesStatus.InProgress]: 'In progress',
@@ -42,6 +43,9 @@ export const SeriesStatusSelect = ({
         }
       }
     `),
+    {
+      update: invalidateCacheFields(['userSeriesList']),
+    },
   )
 
   const [markSeriesEpisodesAsSeenMutate] = useMutation(

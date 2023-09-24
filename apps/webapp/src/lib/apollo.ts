@@ -1,4 +1,5 @@
 import {
+  type ApolloCache,
   ApolloClient,
   createHttpLink,
   InMemoryCache,
@@ -43,3 +44,23 @@ export const makeApolloClient = ({
 
   return apolloClient
 }
+
+/**
+ * Invalidate the give cache fields after after a mutation.
+ *
+ * Usage example:
+ * ```ts
+ * const [mutate] = useMutation(graphql(`...`), {
+ *   update: invalidateCacheFields(['userSeriesList']),
+ * })
+ * ```
+ */
+export const invalidateCacheFields =
+  (fields: string[]) => (cache: ApolloCache<unknown>) => {
+    cache.modify({
+      fields: fields.reduce<Record<string, () => void>>((acc, curr) => {
+        acc[curr] = () => undefined
+        return acc
+      }, {}),
+    })
+  }
