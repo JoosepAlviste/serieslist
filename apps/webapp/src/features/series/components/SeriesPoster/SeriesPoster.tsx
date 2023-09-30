@@ -33,7 +33,7 @@ export const SeriesPoster = ({
       <img
         src={
           series.poster
-            ? `http://image.tmdb.org/t/p/w780${series.poster}`
+            ? `https://image.tmdb.org/t/p/w780${series.poster}`
             : posterPlaceholder
         }
         className={s.poster}
