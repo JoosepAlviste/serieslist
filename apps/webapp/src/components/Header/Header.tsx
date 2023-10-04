@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 
 import { useAuthenticatedUser } from '#/features/auth'
 import { Search } from '#/features/search'
+import { zIndex } from '#/styles/theme.css'
 
 import { Button } from '../Button'
 import { Icon } from '../Icon'
@@ -52,7 +53,10 @@ export const Header = ({ className }: HeaderProps) => {
             </DropdownMenu.Trigger>
 
             <DropdownMenu.Portal>
-              <DropdownMenu.Content className={s.dropdownContent}>
+              <DropdownMenu.Content
+                className={s.dropdownContent}
+                style={{ zIndex: zIndex.layout.dropdownMenu }}
+              >
                 <DropdownMenu.Item onSelect={logOut} className={s.dropdownItem}>
                   Log out
                 </DropdownMenu.Item>
