@@ -21,12 +21,11 @@ import { isTruthy } from '@/utils/isTruthy'
 
 import { UserSeriesStatus } from './constants'
 import * as episodeRepository from './episode.repository'
+import * as episodesService from './episodes.service'
 import * as seasonRepository from './season.repository'
 import * as seasonService from './season.service'
 import * as seriesRepository from './series.repository'
 import * as userSeriesStatusRepository from './userSeriesStatus.repository'
-
-import { episodesService } from '.'
 
 const RE_SYNC_AFTER_DAYS = 7
 
