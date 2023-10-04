@@ -32,13 +32,10 @@ export const yoga = createYoga<{
     }),
   ],
   logging: {
-    debug: (...args) => args.forEach(log.debug),
-    info: (...args) => args.forEach(log.info),
-    warn: (...args) => args.forEach(log.warn),
-    error: (...args) => {
-      console.log('error!', args)
-      return args.forEach(log.error)
-    },
+    debug: (...args) => args.forEach(log.debug.bind(log)),
+    info: (...args) => args.forEach(log.info.bind(log)),
+    warn: (...args) => args.forEach(log.warn.bind(log)),
+    error: (...args) => args.forEach(log.error.bind(log)),
   },
   schema,
   context: async (ctx): Promise<Context> => {
