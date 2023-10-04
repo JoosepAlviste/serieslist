@@ -1,4 +1,4 @@
-// Note that this file isn't processed by Vite, see https://github.com/brillout/vite-plugin-ssr/issues/562
+// Note that this file isn't processed by Vite, see https://vikejs/vike/issues/562
 
 import './loadDotenv'
 
@@ -10,14 +10,14 @@ import fastifyCookie from '@fastify/cookie'
 import { fastifyMiddie } from '@fastify/middie'
 import { fastifyStatic } from '@fastify/static'
 import { fastify } from 'fastify'
-import { renderPage } from 'vite-plugin-ssr/server'
+import { renderPage } from 'vike/server'
+import { type PageContext } from 'vike/types'
 
 import { config } from '#/config'
 import { CurrentUserDocument } from '#/generated/gql/graphql'
 import { type Theme } from '#/utils/theme'
 
 import { makeApolloClient } from '../lib/apollo.js'
-import { type PageContext } from '../renderer/types.js'
 
 import { root } from './root.js'
 
@@ -61,7 +61,10 @@ async function startServer() {
     })
 
     const theme = req.cookies.theme as Theme | undefined
-    const pageContextInit: Partial<PageContext> = {
+    const pageContextInit: Pick<
+      PageContext,
+      'urlOriginal' | 'apollo' | 'theme' | 'currentUser'
+    > = {
       urlOriginal: req.url,
       apollo,
       theme,
@@ -70,18 +73,22 @@ async function startServer() {
           ? currentUserResponse.data.me
           : undefined,
     }
-    const pageContext = await renderPage(pageContextInit)
-
-    const { httpResponse, redirectTo } = pageContext
-    if (redirectTo) {
-      return reply.redirect(307, redirectTo)
-    } else if (!httpResponse) {
+    const { httpResponse } = await renderPage(pageContextInit)
+    if (!httpResponse) {
       return reply.code(404).type('text/html').send('Not Found')
     }
 
-    const { body, statusCode, contentType } = httpResponse
+    const { body, statusCode, headers } = httpResponse
 
-    return reply.status(statusCode).type(contentType).send(body)
+    return reply
+      .status(statusCode)
+      .headers(
+        headers.reduce<Record<string, string>>((acc, [name, value]) => {
+          acc[name] = value
+          return acc
+        }, {}),
+      )
+      .send(body)
   })
 
   await app.listen({ port: config.port, host: '0.0.0.0' })

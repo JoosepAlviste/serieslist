@@ -5,7 +5,7 @@ import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin'
 import react from '@vitejs/plugin-react'
 import { loadEnv } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
-import ssr from 'vite-plugin-ssr/plugin'
+import ssr from 'vike/plugin'
 import svgr from 'vite-plugin-svgr'
 import { defineConfig } from 'vitest/config'
 

@@ -1,7 +1,7 @@
-import { RenderErrorPage } from 'vite-plugin-ssr/RenderErrorPage'
+import { RenderErrorPage } from 'vike/RenderErrorPage'
+import { type PageContext } from 'vike/types'
 
 import { SeriesDetailsPageDocument } from '#/generated/gql/graphql'
-import { type PageContext } from '#/renderer/types'
 
 export const onBeforeRender = async (pageContext: PageContext) => {
   const { apollo, routeParams } = pageContext
