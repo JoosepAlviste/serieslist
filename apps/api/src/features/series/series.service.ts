@@ -17,6 +17,7 @@ import {
   type AuthenticatedContext,
   type Context,
 } from '@/types/context'
+import { isTruthy } from '@/utils/isTruthy'
 
 import { UserSeriesStatus } from './constants'
 import * as episodeRepository from './episode.repository'
@@ -24,6 +25,8 @@ import * as seasonRepository from './season.repository'
 import * as seasonService from './season.service'
 import * as seriesRepository from './series.repository'
 import * as userSeriesStatusRepository from './userSeriesStatus.repository'
+
+import { episodesService } from '.'
 
 const RE_SYNC_AFTER_DAYS = 7
 
@@ -126,6 +129,8 @@ export const syncSeasonsAndEpisodes = async ({
     episodeNumber: number
   }[] = []
 
+  const episodeIdsToDelete: number[] = []
+
   await Promise.all(
     Object.keys(seasonsByNumber).map(async (seasonNumber) => {
       const { parsed, found, episodes } =
@@ -144,7 +149,15 @@ export const syncSeasonsAndEpisodes = async ({
         return
       }
 
+      const existingEpisodesInSeason = existingSeasonsAndEpisodes.filter(
+        (episode) => episode.seasonNumber === parseInt(seasonNumber),
+      )
       if (!episodes.length) {
+        episodeIdsToDelete.push(
+          ...existingEpisodesInSeason
+            .map((episode) => episode.episodeId)
+            .filter(isTruthy),
+        )
         return
       }
 
@@ -168,9 +181,27 @@ export const syncSeasonsAndEpisodes = async ({
         }
       })
 
+      const existingEpisodesDeletedFromTMDB = existingEpisodesInSeason.filter(
+        (episode) =>
+          !savedAndUpdatedEpisodes.find(
+            (newEpisode) => newEpisode.id === episode.episodeId,
+          ),
+      )
+
+      episodeIdsToDelete.push(
+        ...existingEpisodesDeletedFromTMDB
+          .map((episode) => episode.episodeId)
+          .filter(isTruthy),
+      )
+
       return savedAndUpdatedEpisodes
     }),
   )
+
+  await episodesService.deleteMany({
+    ctx,
+    episodeIds: episodeIdsToDelete,
+  })
 
   if (newEpisodes.length) {
     newEpisodes.sort((a, b) => {

@@ -2,7 +2,7 @@ import index from 'just-index'
 import { type Selectable } from 'kysely'
 
 import { type Episode } from '@/generated/db'
-import { type Context } from '@/types/context'
+import { type DBContext, type Context } from '@/types/context'
 import { groupEntitiesByKeyToNestedArray } from '@/utils/groupEntitiesByKeyToNestedArray'
 
 import * as episodeRepository from './episode.repository'
@@ -175,4 +175,18 @@ export const findFirstEpisodesForSeries = async ({
   })
 
   return index(episodes, 'seriesId')
+}
+
+export const deleteMany = async ({
+  ctx,
+  episodeIds,
+}: {
+  ctx: DBContext
+  episodeIds: number[]
+}) => {
+  if (!episodeIds.length) {
+    return
+  }
+
+  return episodeRepository.deleteMany({ ctx, episodeIds })
 }

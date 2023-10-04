@@ -298,6 +298,48 @@ describe('features/series/series.service', () => {
         .executeTakeFirst()
       expect(savedSeason).not.toBeFalsy()
     })
+
+    it('deletes an episode if it has been deleted in TMDB', async () => {
+      // TODO: What happens to series progress?
+      // TODO: What if the episode is the only one in the season?
+      const {
+        series,
+        seasons: [
+          {
+            season,
+            episodes: [s1e1, s1e2],
+          },
+        ],
+      } = await createSeriesWithEpisodesAndSeasons([2])
+
+      mockTMDbSeasonRequest(
+        { tmdbId: series.tmdbId, seasonNumber: season.number },
+        tmdbSeasonFactory.build({
+          season_number: season.number,
+          episodes: [
+            tmdbEpisodeFactory.build({}, { transient: { savedEpisode: s1e1 } }),
+          ],
+        }),
+      )
+
+      await syncSeasonsAndEpisodes({
+        ctx: createContext(),
+        seriesId: series.id,
+        tmdbId: series.tmdbId,
+        seasons: [season],
+      })
+
+      const savedEpisode = await db
+        .selectFrom('episode')
+        .where('id', '=', s1e2.id)
+        .executeTakeFirst()
+      expect(savedEpisode).toBeFalsy()
+      const savedEpisodeThatShouldStillExist = await db
+        .selectFrom('episode')
+        .where('id', '=', s1e1.id)
+        .executeTakeFirst()
+      expect(savedEpisodeThatShouldStillExist).toBeTruthy()
+    })
   })
 
   describe('syncSeriesDetails', () => {

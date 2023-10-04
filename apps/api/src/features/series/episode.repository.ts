@@ -231,3 +231,13 @@ export const createOrUpdateMany = ({
     )
     .execute()
 }
+
+export const deleteMany = ({
+  ctx,
+  episodeIds,
+}: {
+  ctx: DBContext
+  episodeIds: number[]
+}) => {
+  return ctx.db.deleteFrom('episode').where('id', 'in', episodeIds).execute()
+}
