@@ -13,7 +13,7 @@ import { EpisodeLine } from '../EpisodeLine'
 import { SeriesPoster } from '../SeriesPoster'
 import { SeriesStatusSelect } from '../SeriesStatusSelect'
 
-import { ReactComponent as ImdbLogo } from './ImdbLogo.svg'
+import ImdbLogo from './ImdbLogo.svg?react'
 import * as s from './SeriesDetailsPage.css'
 
 type SeriesDetailsPageProps = {

@@ -1,7 +1,7 @@
 import React from 'react'
 
 import * as s from './index.page.css'
-import { ReactComponent as TMDBLogo } from './TMDBLogo.svg'
+import TMDBLogo from './TMDBLogo.svg?react'
 
 export const Page = () => (
   <div className={s.page}>

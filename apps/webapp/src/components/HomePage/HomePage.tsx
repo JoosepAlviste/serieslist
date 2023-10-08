@@ -1,9 +1,9 @@
 import React from 'react'
 
-import { ReactComponent as FunArrow } from './FunArrow.svg'
-import { ReactComponent as HomeCinema } from './HomeCinema.svg'
+import FunArrow from './FunArrow.svg?react'
+import HomeCinema from './HomeCinema.svg?react'
 import * as s from './HomePage.css'
-import { ReactComponent as PartyHat } from './PartyHat.svg'
+import PartyHat from './PartyHat.svg?react'
 
 export const HomePage = () => (
   <>

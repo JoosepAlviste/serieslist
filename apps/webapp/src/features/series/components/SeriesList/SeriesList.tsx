@@ -9,7 +9,7 @@ import { type UserSeriesStatus } from '#/generated/gql/graphql'
 
 import { SeriesPoster } from '../SeriesPoster'
 
-import { ReactComponent as EmptyList } from './EmptyList.svg'
+import EmptyList from './EmptyList.svg?react'
 import { LatestSeenEpisodeCell } from './LatestSeenEpisodeCell'
 import * as s from './SeriesList.css'
 

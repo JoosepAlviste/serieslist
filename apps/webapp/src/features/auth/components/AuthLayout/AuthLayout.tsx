@@ -1,7 +1,7 @@
 import React, { type ReactElement } from 'react'
 
 import * as s from './AuthLayout.css'
-import { ReactComponent as HorrorMovie } from './HorrorMovie.svg'
+import HorrorMovie from './HorrorMovie.svg?react'
 
 type AuthLayoutProps = {
   children: ReactElement | ReactElement[]
