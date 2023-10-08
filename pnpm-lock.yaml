@@ -55,7 +55,7 @@ importers:
         version: 0.5.7(@pothos/core@3.29.0)(graphql@16.8.1)
       '@pothos/plugin-validation':
         specifier: ^3.9.0
-        version: 3.9.0(@pothos/core@3.29.0)(graphql@16.8.1)(zod@3.21.4)
+        version: 3.9.0(@pothos/core@3.29.0)(graphql@16.8.1)(zod@3.22.3)
       '@sentry/node':
         specifier: ^7.56.0
         version: 7.56.0
@@ -129,8 +129,8 @@ importers:
         specifier: ^8.14.1
         version: 8.14.1
       zod:
-        specifier: ^3.21.4
-        version: 3.21.4
+        specifier: ^3.22.3
+        version: 3.22.3
     devDependencies:
       '@graphql-codegen/cli':
         specifier: ^4.0.1
@@ -328,8 +328,8 @@ importers:
         specifier: ^4.1.0
         version: 4.1.0(rollup@2.79.1)(vite@4.4.11)
       zod:
-        specifier: ^3.21.4
-        version: 3.21.4
+        specifier: ^3.22.3
+        version: 3.22.3
     devDependencies:
       '@graphql-codegen/cli':
         specifier: 4.0.1
@@ -4491,7 +4491,7 @@ packages:
       graphql: 16.8.1
     dev: false
 
-  /@pothos/plugin-validation@3.9.0(@pothos/core@3.29.0)(graphql@16.8.1)(zod@3.21.4):
+  /@pothos/plugin-validation@3.9.0(@pothos/core@3.29.0)(graphql@16.8.1)(zod@3.22.3):
     resolution: {integrity: sha512-w2Q52l8JnhceKfDzuX1zOfspTZPc3gxxixgt10y1bB/h/kD2n/xwYXmAOLqyIN+TTr0Bi8/udYUDAAtWn9Q67A==}
     peerDependencies:
       '@pothos/core': '*'
@@ -4500,7 +4500,7 @@ packages:
     dependencies:
       '@pothos/core': 3.29.0(graphql@16.8.1)
       graphql: 16.8.1
-      zod: 3.21.4
+      zod: 3.22.3
     dev: false
 
   /@protobufjs/aspromise@1.1.2:
@@ -14092,6 +14092,6 @@ packages:
   /zen-observable@0.8.15:
     resolution: {integrity: sha512-PQ2PC7R9rslx84ndNBZB/Dkv8V8fZEpk83RLgXtYd0fwUgEjseMn1Dgajh2x6S8QbZAFa9p2qVCEuYZNgve0dQ==}
 
-  /zod@3.21.4:
-    resolution: {integrity: sha512-m46AKbrzKVzOzs/DZgVnG5H55N1sv1M8qZU3A8RIKbs3mrACDNeIOeilDymVb2HdmP8uwshOCF4uJ8uM9rCqJw==}
+  /zod@3.22.3:
+    resolution: {integrity: sha512-EjIevzuJRiRPbVH4mGc8nApb/lVLKVpmUhAaR5R5doKGfAnGJ6Gr3CViAVjP+4FWSxCsybeWQdcgCtbX+7oZug==}
     dev: false
