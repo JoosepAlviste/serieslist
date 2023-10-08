@@ -1,5 +1,5 @@
-import { render } from 'vite-plugin-ssr/abort'
-import { type PageContext } from 'vite-plugin-ssr/types'
+import { render } from 'vike/abort'
+import { type PageContext } from 'vike/types'
 
 import { SeriesDetailsPageDocument } from '#/generated/gql/graphql'
 

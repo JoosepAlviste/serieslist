@@ -7,7 +7,7 @@ global.ResizeObserver = vi.fn().mockImplementation(() => ({
   disconnect: vi.fn(),
 }))
 
-vi.mock('vite-plugin-ssr/client/router', () => ({
+vi.mock('vike/client/router', () => ({
   navigate: vi.fn(),
 }))
 

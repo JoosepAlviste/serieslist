@@ -1,5 +1,5 @@
 import { createContext } from 'react'
-import type { PageContext } from 'vite-plugin-ssr/types'
+import type { PageContext } from 'vike/types'
 
 import { type NotWorthIt } from '#/types/utils'
 

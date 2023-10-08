@@ -1,5 +1,5 @@
-import { redirect } from 'vite-plugin-ssr/abort'
-import { type PageContext } from 'vite-plugin-ssr/types'
+import { redirect } from 'vike/abort'
+import { type PageContext } from 'vike/types'
 
 export const guard = (pageContext: PageContext) => {
   if (!pageContext.currentUser) {

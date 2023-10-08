@@ -1,4 +1,4 @@
-// Note that this file isn't processed by Vite, see https://github.com/brillout/vite-plugin-ssr/issues/562
+// Note that this file isn't processed by Vite, see https://vikejs/vike/issues/562
 
 import './loadDotenv'
 
@@ -10,8 +10,8 @@ import fastifyCookie from '@fastify/cookie'
 import { fastifyMiddie } from '@fastify/middie'
 import { fastifyStatic } from '@fastify/static'
 import { fastify } from 'fastify'
-import { renderPage } from 'vite-plugin-ssr/server'
-import { type PageContext } from 'vite-plugin-ssr/types'
+import { renderPage } from 'vike/server'
+import { type PageContext } from 'vike/types'
 
 import { config } from '#/config'
 import { CurrentUserDocument } from '#/generated/gql/graphql'
