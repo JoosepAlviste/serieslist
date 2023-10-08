@@ -1,12 +1,12 @@
 import { renderToStringWithData } from '@apollo/client/react/ssr'
 import React from 'react'
-import { escapeInject, dangerouslySkipEscape } from 'vike/server'
-import type { PageContextServer } from 'vike/types'
+import { escapeInject, dangerouslySkipEscape } from 'vite-plugin-ssr/server'
 
 import { darkThemeClass, lightThemeClass } from '#/styles/theme.css'
 import { THEME } from '#/utils/theme'
 
 import { PageShell } from './PageShell'
+import type { PageContextServer } from './types'
 
 export const passToClient = [
   'pageProps',
@@ -35,7 +35,7 @@ export async function render(pageContext: PageContextServer) {
 
   const apolloInitialState = pageContext.apollo.extract()
 
-  // See https://vike.dev/head
+  // See https://vite-plugin-ssr.com/head
   const { documentProps } = pageContext.exports
   const title = documentProps?.title ?? 'Serieslist'
   const desc =

@@ -1,13 +1,13 @@
 import { type NormalizedCacheObject, type ApolloClient } from '@apollo/client'
 import React from 'react'
 import { hydrateRoot, createRoot, type Root } from 'react-dom/client'
-import type { PageContextClient } from 'vike/types'
 
 import { CurrentUserDocument } from '#/generated/gql/graphql'
 import { makeApolloClient } from '#/lib/apollo'
 
 import { getPageTitle } from './getPageTitle'
 import { PageShell } from './PageShell'
+import type { PageContextClient } from './types'
 
 import '#/lib/initSentry'
 
@@ -62,6 +62,6 @@ export function render(pageContext: PageContextClient) {
 }
 
 // Enable client-side routing
-// https://vike.dev/clientRouting
+// https://vite-plugin-ssr.com/clientRouting
 export const clientRouting = true
 export const hydrationCanBeAborted = true

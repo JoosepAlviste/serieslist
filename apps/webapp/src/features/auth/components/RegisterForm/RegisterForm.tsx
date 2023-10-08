@@ -1,6 +1,6 @@
 import { useMutation } from '@apollo/client'
 import React from 'react'
-import { navigate } from 'vike/client/router'
+import { navigate } from 'vite-plugin-ssr/client/router'
 import { z } from 'zod'
 
 import { Button, Error, Field } from '#/components'

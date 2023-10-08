@@ -11,7 +11,7 @@ import React, {
   useCallback,
 } from 'react'
 import Highlighter from 'react-highlight-words'
-import { navigate } from 'vike/client/router'
+import { navigate } from 'vite-plugin-ssr/client/router'
 
 import { Icon, LoadingSpinner } from '#/components'
 import { SeriesPoster } from '#/features/series'

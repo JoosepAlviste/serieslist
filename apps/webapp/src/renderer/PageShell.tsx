@@ -1,7 +1,6 @@
 import { ApolloProvider } from '@apollo/client'
 import { TooltipProvider } from '@radix-ui/react-tooltip'
 import React from 'react'
-import type { PageContext } from 'vike/types'
 
 import { Header, NavSidebar } from '#/components'
 import { AuthenticatedUserProvider } from '#/features/auth'
@@ -13,6 +12,7 @@ import {
 } from '#/providers'
 
 import * as s from './PageShell.css'
+import type { PageContext } from './types'
 
 import './reset.css'
 import './global.css'
