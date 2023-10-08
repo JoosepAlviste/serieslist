@@ -1,6 +1,8 @@
 import * as BaseTooltip from '@radix-ui/react-tooltip'
 import React, { type ReactElement } from 'react'
 
+import { zIndex } from '#/styles/theme.css'
+
 import * as s from './Tooltip.css'
 
 type TooltipProps = {
@@ -16,7 +18,12 @@ export const Tooltip = ({ text, side, children }: TooltipProps) => {
 
       {text && (
         <BaseTooltip.Portal>
-          <BaseTooltip.Content className={s.content} side={side} sideOffset={4}>
+          <BaseTooltip.Content
+            className={s.content}
+            side={side}
+            sideOffset={4}
+            style={{ zIndex: zIndex.layout.tooltip }}
+          >
             {text}
             <BaseTooltip.Arrow className={s.arrow} />
           </BaseTooltip.Content>

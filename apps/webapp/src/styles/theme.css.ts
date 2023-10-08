@@ -208,6 +208,7 @@ const zLayoutHeader = above + base
 const zLayoutToast = above + zLayoutHeader
 const zLayoutSelect = above + zLayoutHeader
 const zLayoutDropdownMenu = above + zLayoutHeader
+const zLayoutTooltip = above + zLayoutHeader
 const zHomePageBackground = below + below + base
 const zAuthLayoutSeparator = base
 const zSearchPopover = above + zLayoutHeader
@@ -218,6 +219,7 @@ export const zIndex = {
     toast: zLayoutToast,
     select: zLayoutSelect,
     dropdownMenu: zLayoutDropdownMenu,
+    tooltip: zLayoutTooltip,
   },
   homePage: {
     background: zHomePageBackground,
