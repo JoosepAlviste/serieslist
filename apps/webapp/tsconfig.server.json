@@ -4,6 +4,7 @@
     "outDir": "dist/prodServer"
   },
   "include": [
-    "./src/server/*.ts"
+    "./src/server/*.ts",
+    "./src/types/pageContext.ts"
   ]
 }

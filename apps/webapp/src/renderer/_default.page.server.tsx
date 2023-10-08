@@ -1,12 +1,12 @@
 import { renderToStringWithData } from '@apollo/client/react/ssr'
 import React from 'react'
 import { escapeInject, dangerouslySkipEscape } from 'vite-plugin-ssr/server'
+import type { PageContextServer } from 'vite-plugin-ssr/types'
 
 import { darkThemeClass, lightThemeClass } from '#/styles/theme.css'
 import { THEME } from '#/utils/theme'
 
 import { PageShell } from './PageShell'
-import type { PageContextServer } from './types'
 
 export const passToClient = [
   'pageProps',

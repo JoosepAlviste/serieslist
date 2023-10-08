@@ -1,7 +1,7 @@
 import React from 'react'
+import { type PageContext } from 'vite-plugin-ssr/types'
 
 import { PageContextContext } from '#/context'
-import { type PageContext } from '#/renderer/types'
 
 type PageContextProviderProps = {
   pageContext: PageContext

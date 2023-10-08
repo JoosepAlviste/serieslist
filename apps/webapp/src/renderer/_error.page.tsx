@@ -1,17 +1,16 @@
 import React from 'react'
 
-type ErrorPageProps = {
-  is404: boolean
-  errorInfo?: string
-}
+import { usePageContext } from '#/hooks'
 
-export const Page = ({ is404, errorInfo }: ErrorPageProps) => {
+export const Page = () => {
+  const { abortReason = 'This page could not be found.', is404 } =
+    usePageContext()
+
   if (is404) {
     return (
       <>
         <h1>404 Page Not Found</h1>
-        <p>This page could not be found.</p>
-        {errorInfo && <p>{errorInfo}</p>}
+        <p>{abortReason}</p>
       </>
     )
   } else {

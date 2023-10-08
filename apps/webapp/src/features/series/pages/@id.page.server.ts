@@ -1,15 +1,13 @@
-import { RenderErrorPage } from 'vite-plugin-ssr/RenderErrorPage'
+import { render } from 'vite-plugin-ssr/abort'
+import { type PageContext } from 'vite-plugin-ssr/types'
 
 import { SeriesDetailsPageDocument } from '#/generated/gql/graphql'
-import { type PageContext } from '#/renderer/types'
 
 export const onBeforeRender = async (pageContext: PageContext) => {
   const { apollo, routeParams } = pageContext
   const id = routeParams?.id
   if (!id) {
-    throw RenderErrorPage({
-      pageContext: {},
-    })
+    throw render(404)
   }
 
   const { data } = await apollo.query({
@@ -17,13 +15,7 @@ export const onBeforeRender = async (pageContext: PageContext) => {
     variables: { id },
   })
   if (data.series.__typename === 'NotFoundError') {
-    throw RenderErrorPage({
-      pageContext: {
-        pageProps: {
-          errorInfo: 'This series does not exist.',
-        },
-      },
-    })
+    throw render(404, 'This series does not exist.')
   }
 
   return {
