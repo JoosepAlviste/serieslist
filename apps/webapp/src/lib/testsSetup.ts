@@ -1,5 +1,5 @@
 import { type UntypedLibrary } from '#/types/utils'
-import '@testing-library/jest-dom/extend-expect'
+import '@testing-library/jest-dom/vitest'
 
 global.ResizeObserver = vi.fn().mockImplementation(() => ({
   observe: vi.fn(),
