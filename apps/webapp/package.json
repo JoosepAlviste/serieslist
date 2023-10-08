@@ -55,7 +55,7 @@
     "react-transition-group": "^4.4.5",
     "vike": "^0.4.142",
     "vite-plugin-svgr": "^4.1.0",
-    "zod": "^3.21.4"
+    "zod": "^3.22.3"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "4.0.1",
