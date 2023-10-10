@@ -1,4 +1,5 @@
 import { type Selectable } from 'kysely'
+import { ZodError } from 'zod'
 
 import { type Episode } from '@/generated/db'
 import { NotFoundError, UnauthorizedError } from '@/lib/errors'
@@ -144,10 +145,16 @@ builder.queryFields((t) => ({
   series: t.field({
     type: SeriesRef,
     args: {
-      id: t.arg({ type: 'ID', required: true }),
+      id: t.arg({
+        type: 'ID',
+        required: true,
+        validate: {
+          regex: [/^\d+$/, { message: 'The ID must be a number' }],
+        },
+      }),
     },
     errors: {
-      types: [NotFoundError],
+      types: [NotFoundError, ZodError],
     },
     resolve(_parent, args, ctx) {
       return seriesService.getSeriesByIdAndFetchDetailsFromTMDB({

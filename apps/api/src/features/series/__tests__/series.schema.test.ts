@@ -16,6 +16,7 @@ import {
   checkErrors,
   createSeriesWithEpisodesAndSeasons,
   executeOperation,
+  expectErrors,
 } from '@/test/testUtils'
 import { type NotWorthIt } from '@/types/utils'
 
@@ -149,7 +150,7 @@ describe('features/series/series.schema', () => {
   })
 
   describe('series query', () => {
-    const executeSeriesQuery = (id: number) =>
+    const executeSeriesQuery = (id: number | string) =>
       executeOperation({
         operation: graphql(`
           query series($id: ID!) {
@@ -165,7 +166,7 @@ describe('features/series/series.schema', () => {
                   }
                 }
               }
-              ... on NotFoundError {
+              ... on Error {
                 message
               }
             }
@@ -306,6 +307,18 @@ describe('features/series/series.schema', () => {
           title: 'Episode 2',
         }),
       )
+    })
+
+    it('requires a numeric id', async () => {
+      await seriesFactory.create({
+        syncedAt: new Date(Date.now()),
+      })
+
+      const res = await executeSeriesQuery('some text')
+      const error = expectErrors(res.data?.series)
+
+      expect(error.__typename).toBe('InvalidInputError')
+      expect(error.message).toContain('The ID must be a number')
     })
   })
 

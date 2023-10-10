@@ -14,7 +14,7 @@ export const onBeforeRender = async (pageContext: PageContext) => {
     query: SeriesDetailsPageDocument,
     variables: { id },
   })
-  if (data.series.__typename === 'NotFoundError') {
+  if (data.series.__typename !== 'Series') {
     throw render(404, 'This series does not exist.')
   }
 

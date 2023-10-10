@@ -153,7 +153,7 @@ export type QueryUserSeriesListArgs = {
 
 export type QueryMeResult = UnauthorizedError | User;
 
-export type QuerySeriesResult = NotFoundError | Series;
+export type QuerySeriesResult = InvalidInputError | NotFoundError | Series;
 
 export type QueryUserSeriesListResult = QueryUserSeriesListSuccess | UnauthorizedError;
 
@@ -281,7 +281,7 @@ export type SeriesDetailsPageQueryVariables = Exact<{
 }>;
 
 
-export type SeriesDetailsPageQuery = { __typename: 'Query', series: { __typename: 'NotFoundError', message: string } | (
+export type SeriesDetailsPageQuery = { __typename: 'Query', series: { __typename: 'InvalidInputError' } | { __typename: 'NotFoundError', message: string } | (
     { __typename: 'Series', id: string, imdbId?: string | null, title: string, startYear?: number | null, endYear?: number | null, plot?: string | null, seasons: Array<(
       { __typename: 'Season', id: string, number: number, title: string, episodes: Array<(
         { __typename: 'Episode', id: string, isSeen: boolean, releasedAt?: string | null }
