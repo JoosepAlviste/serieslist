@@ -9,7 +9,7 @@ import { VitePWA } from 'vite-plugin-pwa'
 import svgr from 'vite-plugin-svgr'
 import { defineConfig } from 'vitest/config'
 
-import { SVG_COLOR_VAR } from '#/styles/simpleCssVariables'
+import { SVG_COLOR_VAR } from './src/styles/simpleCssVariables'
 
 export default ({ mode }: { mode: string }) => {
   process.env = {
