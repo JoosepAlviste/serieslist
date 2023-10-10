@@ -21,9 +21,7 @@ export const illustration = style({
 })
 
 export const title = style({
-  fontSize: '2rem',
   marginBottom: '1rem',
-  color: vars.color.text,
 })
 
 export const text = style({

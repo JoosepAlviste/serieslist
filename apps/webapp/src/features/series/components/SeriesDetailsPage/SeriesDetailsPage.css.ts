@@ -49,11 +49,6 @@ export const titleContainer = style({
   },
 })
 
-export const title = style({
-  fontSize: '2rem',
-  fontWeight: vars.fontWeight.medium,
-})
-
 export const imdbLogo = style({
   height: '2rem',
   width: '2rem',
@@ -122,8 +117,6 @@ export const seasons = style({
 
 export const seasonsTitle = style({
   marginBottom: '1rem',
-  fontSize: '1.375rem',
-  fontWeight: vars.fontWeight.medium,
 })
 
 export const seasonTabsContainer = style({
@@ -201,6 +194,4 @@ export const episodesTitleRow = style({
 
 export const episodesTitle = style({
   flex: 1,
-  fontSize: '1rem',
-  fontWeight: vars.fontWeight.medium,
 })

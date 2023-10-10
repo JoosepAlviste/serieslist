@@ -33,9 +33,6 @@ export const titleSide = style({
 })
 
 export const title = style({
-  color: vars.color.text,
-  fontSize: '2rem',
-  fontWeight: vars.fontWeight.medium,
   paddingBottom: '0.75rem',
 })
 

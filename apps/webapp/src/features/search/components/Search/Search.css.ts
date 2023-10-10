@@ -69,9 +69,6 @@ export const searchTitle = style({
   paddingRight: '1.25rem',
   paddingBottom: '0.25rem',
   paddingLeft: '1.25rem',
-  fontWeight: vars.fontWeight.medium,
-  color: vars.color.textTertiary,
-  fontSize: '0.875rem',
 })
 
 export const searchResultsList = style({

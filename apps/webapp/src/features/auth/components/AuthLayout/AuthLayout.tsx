@@ -1,5 +1,7 @@
 import React, { type ReactElement } from 'react'
 
+import { Title } from '#/components'
+
 import * as s from './AuthLayout.css'
 import HorrorMovie from './HorrorMovie.svg?react'
 
@@ -12,7 +14,7 @@ export const AuthLayout = ({ children, otherAction }: AuthLayoutProps) => {
   return (
     <div className={s.container}>
       <div className={s.formSide}>
-        <h1 className={s.title}>Serieslist</h1>
+        <Title className={s.title}>Serieslist</Title>
 
         {children}
         <div className={s.separatorContainer}>

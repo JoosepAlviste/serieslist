@@ -3,7 +3,7 @@ import * as Tabs from '@radix-ui/react-tabs'
 import { isAfter } from 'date-fns'
 import React from 'react'
 
-import { Button, Tooltip } from '#/components'
+import { Button, Title, Tooltip } from '#/components'
 import { useAuthenticatedUser } from '#/features/auth'
 import { graphql } from '#/generated/gql'
 import { useToast } from '#/hooks'
@@ -133,7 +133,7 @@ export const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
           <SeriesPoster series={series} size="l" className={s.poster} />
 
           <div className={s.titleContainer}>
-            <h1 className={s.title}>{series.title}</h1>
+            <Title size="l">{series.title}</Title>
             {series.imdbId && (
               <a
                 href={`https://imdb.com/title/${series.imdbId}`}
@@ -172,7 +172,9 @@ export const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
             defaultValue={firstNonZeroSeason?.id}
             className={s.seasons}
           >
-            <h2 className={s.seasonsTitle}>Seasons</h2>
+            <Title as="h2" className={s.seasonsTitle}>
+              Seasons
+            </Title>
 
             <div className={s.seasonTabsContainer}>
               <Tabs.List className={s.seasonTabs}>
@@ -196,7 +198,9 @@ export const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
               return (
                 <Tabs.Content key={season.id} value={season.id}>
                   <div className={s.episodesTitleRow}>
-                    <h3 className={s.episodesTitle}>{season.title}</h3>
+                    <Title as="h3" size="s" className={s.episodesTitle}>
+                      {season.title}
+                    </Title>
 
                     {currentUser && (
                       <Tooltip

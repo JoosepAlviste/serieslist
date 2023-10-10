@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { Title } from '../Title'
+
 import FunArrow from './FunArrow.svg?react'
 import HomeCinema from './HomeCinema.svg?react'
 import * as s from './HomePage.css'
@@ -16,7 +18,9 @@ export const HomePage = () => (
 
     <div className={s.container}>
       <div className={s.titleSide}>
-        <div className={s.title}>Watching many shows at a time?</div>
+        <Title as="h1" size="l" className={s.title}>
+          Watching many shows at a time?
+        </Title>
         <h1 className={s.subtitle}>
           Always know which episode to watch next. Keep track of your series and
           seen episodes with{' '}

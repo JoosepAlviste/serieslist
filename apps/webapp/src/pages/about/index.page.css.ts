@@ -15,8 +15,6 @@ export const page = style({
 })
 
 export const title = style({
-  fontSize: '1.5rem',
-  fontWeight: vars.fontWeight.medium,
   marginBottom: '1rem',
 })
 

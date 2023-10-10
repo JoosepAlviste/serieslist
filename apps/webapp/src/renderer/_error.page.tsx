@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { Title } from '#/components'
 import { usePageContext } from '#/hooks'
 
 import Illustration404 from './404.svg?react'
@@ -13,7 +14,9 @@ export const Page = () => {
     return (
       <div className={s.container}>
         <Illustration404 className={s.illustration} />
-        <h1 className={s.title}>Page not found</h1>
+        <Title size="l" className={s.title}>
+          Page not found
+        </Title>
         {abortReason ? <p className={s.text}>{abortReason}</p> : null}
       </div>
     )
@@ -21,7 +24,9 @@ export const Page = () => {
     return (
       <div className={s.container}>
         <ServerDown className={s.illustration} />
-        <h1 className={s.title}>Internal server error</h1>
+        <Title size="l" className={s.title}>
+          Internal server error
+        </Title>
         <p className={s.text}>Something went wrong...</p>
       </div>
     )

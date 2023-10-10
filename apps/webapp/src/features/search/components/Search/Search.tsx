@@ -13,7 +13,7 @@ import React, {
 import Highlighter from 'react-highlight-words'
 import { navigate } from 'vike/client/router'
 
-import { Icon, LoadingSpinner } from '#/components'
+import { Icon, LoadingSpinner, Title } from '#/components'
 import { SeriesPoster } from '#/features/series'
 import { graphql } from '#/generated/gql'
 import { useDebouncedCallback, useSSR } from '#/hooks'
@@ -295,7 +295,14 @@ export const Search = ({
             } else if (searchResults.length) {
               return (
                 <>
-                  <div className={s.searchTitle}>Series</div>
+                  <Title
+                    as="h3"
+                    size="xs"
+                    variant="tertiary"
+                    className={s.searchTitle}
+                  >
+                    Series
+                  </Title>
                   <ul className={s.searchResultsList}>
                     {searchResults.map((series, index) => (
                       <li
