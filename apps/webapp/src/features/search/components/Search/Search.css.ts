@@ -1,6 +1,6 @@
 import { style } from '@vanilla-extract/css'
 
-import { vars, zIndex } from '#/styles/theme.css'
+import { colorTransition, vars, zIndex } from '#/styles/theme.css'
 
 export const container = style({
   display: 'flex',
@@ -30,6 +30,7 @@ export const input = style({
 
   '::placeholder': {
     color: vars.color.textSecondary,
+    transition: colorTransition,
   },
 })
 

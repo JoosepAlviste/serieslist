@@ -200,6 +200,8 @@ export const responsive = {
   l: 'screen and (max-width: 1200px)',
 }
 
+export const colorTransition = 'color 200ms ease-in-out'
+
 const base = 1
 const above = 1
 const below = -1

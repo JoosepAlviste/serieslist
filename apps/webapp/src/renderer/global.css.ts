@@ -1,7 +1,7 @@
 import { globalStyle } from '@vanilla-extract/css'
 
 import { SVG_COLOR_VAR } from '#/styles/simpleCssVariables'
-import { vars } from '#/styles/theme.css'
+import { colorTransition, vars } from '#/styles/theme.css'
 
 globalStyle(':root', {
   vars: {
@@ -11,16 +11,15 @@ globalStyle(':root', {
 
 globalStyle('body', {
   fontFamily: 'Inter, sans-serif',
-  color: vars.color.text,
   background: vars.color.pageBackground,
 })
 
 globalStyle('*', {
+  color: vars.color.text,
   outlineWidth: 0,
   outlineStyle: 'solid',
   outlineColor: vars.color.primary,
-  transition:
-    'outline-width 100ms ease-in-out, color 200ms ease-in-out, background-color 200ms ease-in-out, border-color 200ms ease-in-out, fill 200ms ease-in-out',
+  transition: `outline-width 100ms ease-in-out, ${colorTransition}, background-color 200ms ease-in-out, border-color 200ms ease-in-out, fill 200ms ease-in-out`,
 })
 
 globalStyle('*:focus-visible', {

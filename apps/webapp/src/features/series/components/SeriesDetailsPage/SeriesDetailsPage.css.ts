@@ -188,6 +188,7 @@ export const nextEpisode = style({
 })
 
 export const nextEpisodeTitle = style({
+  color: vars.color.pillText,
   fontWeight: vars.fontWeight.medium,
 })
 
