@@ -17,10 +17,13 @@ export const navLink = style({
   justifyContent: 'center',
   borderRadius: vars.radii.m,
   backgroundColor: vars.color.navIconBackground,
-  color: vars.color.icon,
 
   ':hover': {
     backgroundColor: vars.color.navIconHoverBackground,
+  },
+
+  vars: {
+    [iconColorVar]: vars.color.icon,
   },
 })
 

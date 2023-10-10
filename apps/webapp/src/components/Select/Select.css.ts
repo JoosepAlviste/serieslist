@@ -60,5 +60,7 @@ export const itemCheck = style({
 })
 
 export const itemCheckIcon = style({
-  color: vars.color.primary,
+  vars: {
+    [iconColorVar]: vars.color.primary,
+  },
 })

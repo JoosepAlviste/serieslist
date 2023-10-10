@@ -3,11 +3,13 @@ import path, { join } from 'path'
 import { sentryVitePlugin } from '@sentry/vite-plugin'
 import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin'
 import react from '@vitejs/plugin-react'
+import ssr from 'vike/plugin'
 import { loadEnv } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
-import ssr from 'vike/plugin'
 import svgr from 'vite-plugin-svgr'
 import { defineConfig } from 'vitest/config'
+
+import { SVG_COLOR_VAR } from '#/styles/simpleCssVariables'
 
 export default ({ mode }: { mode: string }) => {
   process.env = {
@@ -27,7 +29,14 @@ export default ({ mode }: { mode: string }) => {
       }),
       react(),
       ssr(),
-      svgr(),
+      svgr({
+        svgrOptions: {
+          icon: '1em',
+          replaceAttrValues: {
+            currentColor: `var(${SVG_COLOR_VAR})`,
+          },
+        },
+      }),
       sentryVitePlugin({
         org: process.env.SENTRY_ORG,
         project: process.env.SENTRY_PROJECT,

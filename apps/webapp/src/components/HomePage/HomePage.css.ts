@@ -1,5 +1,6 @@
 import { style } from '@vanilla-extract/css'
 
+import { SVG_COLOR_VAR } from '#/styles/simpleCssVariables'
 import { responsive, vars, zIndex } from '#/styles/theme.css'
 
 export const container = style({
@@ -32,6 +33,7 @@ export const titleSide = style({
 })
 
 export const title = style({
+  color: vars.color.text,
   fontSize: '2rem',
   fontWeight: vars.fontWeight.medium,
   paddingBottom: '0.75rem',
@@ -73,8 +75,11 @@ export const illustration = style({
 const drawing = style({
   width: '4rem',
   height: '4rem',
-  color: vars.color.drawingColor,
   position: 'absolute',
+
+  vars: {
+    [SVG_COLOR_VAR]: vars.color.drawingColor,
+  },
 
   '@media': {
     [responsive.m]: {

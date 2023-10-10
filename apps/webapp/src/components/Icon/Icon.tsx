@@ -45,6 +45,11 @@ type IconProps = BaseIconProps &
       }
   )
 
+/**
+ * Use the `iconColorVar` CSS variable to customize the color of the icon. When
+ * adding new icons, change the colors in the SVG to `currentColor`, which will
+ * be replaced with a CSS variable by SVGR.
+ */
 export const Icon = ({
   name,
   label,

@@ -16,10 +16,10 @@ export const activateTheme = (theme: Theme) => {
   setCookie(THEME_COOKIE, theme)
 
   if (theme === THEME.DARK) {
-    document.body.classList.remove(lightThemeClass)
-    document.body.classList.add(darkThemeClass)
+    document.documentElement.classList.remove(lightThemeClass)
+    document.documentElement.classList.add(darkThemeClass)
   } else {
-    document.body.classList.remove(darkThemeClass)
-    document.body.classList.add(lightThemeClass)
+    document.documentElement.classList.remove(darkThemeClass)
+    document.documentElement.classList.add(lightThemeClass)
   }
 }

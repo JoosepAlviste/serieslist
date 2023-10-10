@@ -52,7 +52,7 @@ export async function render(pageContext: PageContextServer) {
     : ''
 
   const documentHtml = escapeInject`<!DOCTYPE html>
-    <html lang="en">
+    <html lang="en" class="${themeClass}">
       <head>
         <meta charset="UTF-8" />
         <link rel="icon" href="/favicon.ico" sizes="any">
@@ -70,7 +70,7 @@ export async function render(pageContext: PageContextServer) {
 
         ${dangerouslySkipEscape(pwaHead)}
       </head>
-      <body class="${themeClass}">
+      <body>
         <div id="page-view">${dangerouslySkipEscape(pageHtml)}</div>
       </body>
     </html>`
