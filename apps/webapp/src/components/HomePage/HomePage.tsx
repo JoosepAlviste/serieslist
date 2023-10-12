@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { Text } from '../Text'
 import { Title } from '../Title'
 
 import FunArrow from './FunArrow.svg?react'
@@ -13,7 +14,9 @@ export const HomePage = () => (
       <FunArrow className={s.drawing1} />
       <PartyHat className={s.drawing2} />
 
-      <div className={s.heartfulMessage}>Made with 💜 in Tallinn!</div>
+      <Text size="s" variant="secondary" className={s.heartfulMessage}>
+        Made with 💜 in Tallinn!
+      </Text>
     </div>
 
     <div className={s.container}>
@@ -21,11 +24,14 @@ export const HomePage = () => (
         <Title as="h1" size="l" className={s.title}>
           Watching many shows at a time?
         </Title>
-        <h1 className={s.subtitle}>
+        <Text size="l" variant="secondary" className={s.subtitle}>
           Always know which episode to watch next. Keep track of your series and
           seen episodes with{' '}
-          <span className={s.titleHighlight}>Serieslist</span>!
-        </h1>
+          <Text as="span" weight="medium">
+            Serieslist
+          </Text>
+          !
+        </Text>
       </div>
 
       <HomeCinema className={s.illustration} />

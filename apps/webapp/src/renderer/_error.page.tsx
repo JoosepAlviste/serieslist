@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Title } from '#/components'
+import { Text, Title } from '#/components'
 import { usePageContext } from '#/hooks'
 
 import Illustration404 from './404.svg?react'
@@ -17,7 +17,7 @@ export const Page = () => {
         <Title size="l" className={s.title}>
           Page not found
         </Title>
-        {abortReason ? <p className={s.text}>{abortReason}</p> : null}
+        {abortReason ? <Text variant="tertiary">{abortReason}</Text> : null}
       </div>
     )
   } else {
@@ -27,7 +27,7 @@ export const Page = () => {
         <Title size="l" className={s.title}>
           Internal server error
         </Title>
-        <p className={s.text}>Something went wrong...</p>
+        <Text variant="tertiary">Something went wrong...</Text>
       </div>
     )
   }

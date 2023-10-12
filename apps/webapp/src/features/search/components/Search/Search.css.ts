@@ -43,8 +43,8 @@ export const inputAddonContainer = style({
 })
 
 export const searchShortcut = style({
-  width: '1.375rem',
-  height: '1.375rem',
+  width: '1.5rem',
+  height: '1.5rem',
   borderRadius: vars.radii.s,
   color: vars.color.inputAccessoryColor,
   backgroundColor: vars.color.inputAccessoryBackground,
@@ -85,7 +85,6 @@ export const searchResult = style({
   paddingBottom: '0.75rem',
   paddingLeft: '1.25rem',
   textDecoration: 'none',
-  color: vars.color.text,
   // When using `.scrollIntoView()`, leave a lot of space above the item in the
   // dropdown
   scrollMarginTop: '40vh',
@@ -118,13 +117,8 @@ export const poster = style({
   borderRadius: vars.radii.s,
 })
 
-export const searchResultTitle = style({
-  fontWeight: vars.fontWeight.medium,
-})
-
 export const titleHighlight = style({
   backgroundColor: vars.color.textHighlightedBackground,
-  color: vars.color.text,
 
   selectors: {
     [`${searchResultActive} &`]: {
@@ -133,15 +127,9 @@ export const titleHighlight = style({
   },
 })
 
-export const searchResultDetails = style({
-  color: vars.color.textTertiary,
-  fontSize: '0.875rem',
-})
-
 export const emptyState = style({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
   height: '5rem',
-  color: vars.color.textTertiary,
 })

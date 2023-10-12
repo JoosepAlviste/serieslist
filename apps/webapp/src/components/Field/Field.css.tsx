@@ -8,7 +8,6 @@ export const label = style({
 
 export const labelText = style({
   marginBottom: '0.25rem',
-  color: vars.color.textSecondary,
 })
 
 export const inputContainer = style({

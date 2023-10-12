@@ -2,7 +2,7 @@ import * as NavigationMenu from '@radix-ui/react-navigation-menu'
 import React, { useRef } from 'react'
 import { CSSTransition } from 'react-transition-group'
 
-import { Icon, Link } from '#/components'
+import { Icon, Link, Text } from '#/components'
 import { GITHUB_URL } from '#/constants'
 import { useAuthenticatedUser } from '#/features/auth'
 import { Search } from '#/features/search'
@@ -45,7 +45,11 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                 asChild
                 onSelect={onClose}
               >
-                <Link className={s.link}>My series list</Link>
+                <Link>
+                  <Text size="l" variant="secondary" className={s.link}>
+                    My series list
+                  </Text>
+                </Link>
               </NavigationMenu.Link>
             </NavigationMenu.Item>
           )}

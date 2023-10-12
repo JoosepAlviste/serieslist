@@ -55,9 +55,6 @@ export const list = style({
 })
 
 export const link = style({
-  color: vars.color.textSecondary,
-  fontSize: '1.125rem',
-
   ':hover': {
     color: vars.color.text,
 

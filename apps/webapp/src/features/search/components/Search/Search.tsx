@@ -13,7 +13,7 @@ import React, {
 import Highlighter from 'react-highlight-words'
 import { navigate } from 'vike/client/router'
 
-import { Icon, LoadingSpinner, Title } from '#/components'
+import { Icon, LoadingSpinner, Text, Title } from '#/components'
 import { SeriesPoster } from '#/features/series'
 import { graphql } from '#/generated/gql'
 import { useDebouncedCallback, useSSR } from '#/hooks'
@@ -291,7 +291,11 @@ export const Search = ({
               keyword.length < KEYWORD_MIN_LENGTH &&
               hasTriedToFetchWithTooShortKeyword
             ) {
-              return <div className={s.emptyState}>Keep typing...</div>
+              return (
+                <Text variant="tertiary" className={s.emptyState}>
+                  Keep typing...
+                </Text>
+              )
             } else if (searchResults.length) {
               return (
                 <>
@@ -328,17 +332,17 @@ export const Search = ({
                         >
                           <SeriesPoster series={series} />
                           <div>
-                            <div className={s.searchResultTitle}>
+                            <Text weight="medium">
                               <Highlighter
                                 highlightClassName={s.titleHighlight}
                                 searchWords={keyword.split(' ')}
                                 autoEscape={true}
                                 textToHighlight={series.title}
                               />
-                            </div>
-                            <div className={s.searchResultDetails}>
+                            </Text>
+                            <Text size="s" variant="tertiary">
                               {series.startYear} – {series.endYear ?? '...'}
-                            </div>
+                            </Text>
                           </div>
                         </a>
                       </li>
@@ -347,7 +351,11 @@ export const Search = ({
                 </>
               )
             } else {
-              return <div className={s.emptyState}>No results :(</div>
+              return (
+                <Text variant="tertiary" className={s.emptyState}>
+                  No results :(
+                </Text>
+              )
             }
           })()}
         </Popover.Content>

@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/client'
 import React from 'react'
 
-import { Button } from '#/components'
+import { Button, Text } from '#/components'
 import { useAuthenticatedUser } from '#/features/auth'
 import { type FragmentType, graphql, useFragment } from '#/generated/gql'
 import { useToast } from '#/hooks'
@@ -89,15 +89,15 @@ export const EpisodeLine = ({
 
   return (
     <li className={s.episode}>
-      <div className={s.episodeNumber}>
+      <Text variant="secondary" weight="bold">
         {formatEpisodeNumber(season.number, episode.number)}
-      </div>
-      <div className={s.episodeTitle}>
+      </Text>
+      <Text variant="secondary" className={s.episodeTitle}>
         {episode.title}
-        <span className={s.date}>
+        <Text as="span" size="s" variant="tertiary">
           {episode.releasedAt ? ` · ${formatDate(episode.releasedAt)}` : ''}
-        </span>
-      </div>
+        </Text>
+      </Text>
       {currentUser && (
         <Button
           variant={episode.isSeen ? 'primary' : 'secondary'}

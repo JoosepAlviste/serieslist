@@ -37,7 +37,6 @@ export const separator = style({
 })
 
 export const separatorText = style({
-  fontSize: '0.875rem',
   background: vars.color.pageBackground,
   paddingLeft: '0.5rem',
   paddingRight: '0.5rem',

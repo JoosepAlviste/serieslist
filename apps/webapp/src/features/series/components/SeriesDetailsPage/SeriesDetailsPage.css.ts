@@ -69,8 +69,6 @@ export const years = style({
   display: 'flex',
   flexDirection: 'column',
   gap: '1rem',
-  fontSize: '0.875rem',
-  color: vars.color.textTertiary,
   gridArea: '2 / 2 / 3 / 4',
 
   '@media': {
@@ -92,8 +90,6 @@ export const descriptionContainer = style({
 })
 
 export const description = style({
-  color: vars.color.textSecondary,
-
   '@media': {
     [responsive.m]: {
       WebkitLineClamp: 5,

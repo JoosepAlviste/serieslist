@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/client'
 import React from 'react'
 
-import { IconButton, Tooltip } from '#/components'
+import { IconButton, Text, Tooltip } from '#/components'
 import { type FragmentType, graphql, useFragment } from '#/generated/gql'
 
 import { formatEpisodeNumber } from '../../utils/formatEpisodeNumber'
@@ -73,7 +73,7 @@ export const LatestSeenEpisodeCell = ({
   }
 
   return (
-    <div className={s.container}>
+    <Text variant="primary" className={s.container}>
       {series.latestSeenEpisode
         ? formatEpisodeNumber(
             series.latestSeenEpisode.season.number,
@@ -96,6 +96,6 @@ export const LatestSeenEpisodeCell = ({
           />
         </Tooltip>
       ) : null}
-    </div>
+    </Text>
   )
 }

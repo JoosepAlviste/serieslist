@@ -2,7 +2,7 @@ import { useQuery } from '@apollo/client'
 import classNames from 'classnames'
 import React from 'react'
 
-import { Link, LoadingSpinner } from '#/components'
+import { Link, LoadingSpinner, Text } from '#/components'
 import { useFragment, type FragmentType } from '#/generated/gql'
 import { graphql } from '#/generated/gql/gql'
 import { type UserSeriesStatus } from '#/generated/gql/graphql'
@@ -148,7 +148,9 @@ export const SeriesList = ({ status }: SeriesListProps) => {
       {!series.length && !loading && (
         <div className={s.emptyListContainer}>
           <EmptyList className={s.emptyListIllustration} />
-          <div className={s.emptyListText}>No series with this status</div>
+          <Text variant="tertiary" weight="medium" className={s.emptyListText}>
+            No series with this status
+          </Text>
         </div>
       )}
     </div>

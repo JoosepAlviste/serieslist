@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import React, { forwardRef, type InputHTMLAttributes } from 'react'
 import { type FieldError } from 'react-hook-form'
 
-import { Error } from '#/components'
+import { Error, Text } from '#/components'
 import { useSSR } from '#/hooks'
 
 import * as s from './Field.css'
@@ -22,7 +22,9 @@ export const Field = forwardRef<HTMLInputElement, FieldProps>(function Field(
   return (
     <div>
       <Label className={s.label}>
-        <div className={s.labelText}>{label}</div>
+        <Text variant="secondary" className={s.labelText}>
+          {label}
+        </Text>
         <div
           className={classNames(s.inputContainer, {
             [s.inputContainerHasError]: !!error,

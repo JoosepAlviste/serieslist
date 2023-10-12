@@ -37,15 +37,7 @@ export const title = style({
 })
 
 export const subtitle = style({
-  fontSize: '1.125rem',
-  color: vars.color.textSecondary,
-  fontWeight: vars.fontWeight.regular,
   maxWidth: '35rem',
-})
-
-export const titleHighlight = style({
-  fontWeight: vars.fontWeight.medium,
-  color: vars.color.text,
 })
 
 export const background = style({
@@ -104,8 +96,6 @@ export const drawing2 = style([
 ])
 
 export const heartfulMessage = style({
-  fontSize: '0.875rem',
-  color: vars.color.textSecondary,
   position: 'absolute',
   bottom: '2rem',
   right: '4rem',

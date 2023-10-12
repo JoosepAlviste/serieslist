@@ -45,14 +45,11 @@ export const content = style({
 })
 
 export const title = style({
-  fontSize: '1.125rem',
-  fontWeight: vars.fontWeight.medium,
   marginBottom: '1rem',
 })
 
 export const description = style({
   marginBottom: '1.5rem',
-  color: vars.color.textSecondary,
 })
 
 export const actionsContainer = style({

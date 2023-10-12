@@ -12,5 +12,6 @@ export * from './Tooltip'
 export * from './Error'
 export * from './AlertDialog'
 export * from './Title'
+export * from './Text'
 
 export * from './HomePage'

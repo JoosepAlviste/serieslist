@@ -23,8 +23,3 @@ export const illustration = style({
 export const title = style({
   marginBottom: '1rem',
 })
-
-export const text = style({
-  fontSize: '1.125rem',
-  color: vars.color.textTertiary,
-})

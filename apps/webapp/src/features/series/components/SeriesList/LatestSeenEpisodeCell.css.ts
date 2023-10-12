@@ -5,7 +5,6 @@ import { vars } from '#/styles/theme.css'
 export const container = style({
   display: 'flex',
   alignItems: 'center',
-  color: vars.color.primary,
   gap: '0.5rem',
 
   vars: {

@@ -1,6 +1,6 @@
 import React, { type ReactElement } from 'react'
 
-import { Title } from '#/components'
+import { Text, Title } from '#/components'
 
 import * as s from './AuthLayout.css'
 import HorrorMovie from './HorrorMovie.svg?react'
@@ -19,7 +19,9 @@ export const AuthLayout = ({ children, otherAction }: AuthLayoutProps) => {
         {children}
         <div className={s.separatorContainer}>
           <div className={s.separator} />
-          <div className={s.separatorText}>OR</div>
+          <Text size="s" className={s.separatorText}>
+            OR
+          </Text>
         </div>
         <div className={s.otherActionContainer}>{otherAction}</div>
       </div>

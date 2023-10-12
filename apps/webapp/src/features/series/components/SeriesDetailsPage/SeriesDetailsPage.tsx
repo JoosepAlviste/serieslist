@@ -3,7 +3,7 @@ import * as Tabs from '@radix-ui/react-tabs'
 import { isAfter } from 'date-fns'
 import React from 'react'
 
-import { Button, Title, Tooltip } from '#/components'
+import { Button, Text, Title, Tooltip } from '#/components'
 import { useAuthenticatedUser } from '#/features/auth'
 import { graphql } from '#/generated/gql'
 import { useToast } from '#/hooks'
@@ -153,19 +153,21 @@ export const SeriesDetailsPage = ({ seriesId }: SeriesDetailsPageProps) => {
           )}
 
           <div className={s.years}>
-            <div>
+            <Text size="s" variant="tertiary">
               {series.startYear} – {series.endYear ?? '…'}
-            </div>
+            </Text>
 
             {nextEpisode?.releasedAt ? (
-              <div className={s.nextEpisode}>
+              <Text size="s" className={s.nextEpisode}>
                 <b className={s.nextEpisodeTitle}>Next episode</b>{' '}
                 {formatDate(nextEpisode.releasedAt)}
-              </div>
+              </Text>
             ) : null}
           </div>
           <div className={s.descriptionContainer}>
-            <div className={s.description}>{series.plot}</div>
+            <Text as="p" className={s.description}>
+              {series.plot}
+            </Text>
           </div>
 
           <Tabs.Root

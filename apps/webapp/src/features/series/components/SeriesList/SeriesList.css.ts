@@ -124,6 +124,4 @@ export const emptyListIllustration = style({
 
 export const emptyListText = style({
   textAlign: 'center',
-  color: vars.color.textTertiary,
-  fontWeight: vars.fontWeight.medium,
 })

@@ -1,6 +1,8 @@
 import * as AlertDialogRadix from '@radix-ui/react-alert-dialog'
 import React, { type ReactElement } from 'react'
 
+import { Text } from '../Text'
+
 import * as s from './AlertDialog.css'
 
 type AlertDialogProps = {
@@ -31,10 +33,12 @@ const AlertDialogDialog = ({
 
       <AlertDialogRadix.Content className={s.content}>
         <AlertDialogRadix.Title className={s.title}>
-          {title}
+          <Text size="l" weight="medium">
+            {title}
+          </Text>
         </AlertDialogRadix.Title>
         <AlertDialogRadix.Description className={s.description}>
-          {description}
+          <Text variant="secondary">{description}</Text>
         </AlertDialogRadix.Description>
 
         <div className={s.actionsContainer}>{actions}</div>
