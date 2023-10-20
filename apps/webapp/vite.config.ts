@@ -42,6 +42,7 @@ export default ({ mode }: { mode: string }) => {
         project: process.env.SENTRY_PROJECT,
         authToken: process.env.SENTRY_AUTH_TOKEN,
         telemetry: false,
+        disable: process.env.NODE_ENV !== 'production',
       }),
       VitePWA({
         includeAssets: [
