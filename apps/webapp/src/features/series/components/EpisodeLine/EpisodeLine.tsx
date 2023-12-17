@@ -1,4 +1,5 @@
 import { useMutation } from '@apollo/client'
+import { isFuture } from 'date-fns/esm'
 import React from 'react'
 
 import { Button, Text } from '#/components'
@@ -87,6 +88,10 @@ export const EpisodeLine = ({
     }
   }
 
+  const isAiringInTheFuture = episode.releasedAt
+    ? isFuture(new Date(episode.releasedAt))
+    : false
+
   return (
     <li className={s.episode}>
       <Text variant="secondary" weight="bold">
@@ -98,7 +103,7 @@ export const EpisodeLine = ({
           {episode.releasedAt ? ` · ${formatDate(episode.releasedAt)}` : ''}
         </Text>
       </Text>
-      {currentUser && (
+      {currentUser && !isAiringInTheFuture && (
         <Button
           variant={episode.isSeen ? 'primary' : 'secondary'}
           size="s"

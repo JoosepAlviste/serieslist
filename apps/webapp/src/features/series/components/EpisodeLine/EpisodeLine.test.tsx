@@ -1,5 +1,6 @@
 import { screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
+import { addDays, format } from 'date-fns'
 import React from 'react'
 
 import { makeFragmentData } from '#/generated/gql'
@@ -25,11 +26,11 @@ describe('features/series/components/EpisodeLine', () => {
   }: {
     season: Season
     episode: Episode
-    returnedEpisode: Episode
+    returnedEpisode?: Episode
   }) => {
     const [doc, mockResolver] = createMockResolver(ToggleEpisodeSeenDocument, {
       data: {
-        toggleEpisodeSeen: returnedEpisode,
+        toggleEpisodeSeen: returnedEpisode ?? episode,
       },
     })
 
@@ -109,5 +110,17 @@ describe('features/series/components/EpisodeLine', () => {
         episodeId: parseInt(episode.id),
       },
     })
+  })
+
+  it('does not render the mark as seen button if the episode airs in the future', async () => {
+    const episode = episodeFactory.build({
+      releasedAt: format(addDays(new Date(), 1), 'yyyy-MM-dd'),
+    })
+
+    await renderEpisodeLine({ episode, season: episode.season })
+
+    expect(
+      screen.queryByRole('button', { name: 'Mark as seen' }),
+    ).not.toBeInTheDocument()
   })
 })
