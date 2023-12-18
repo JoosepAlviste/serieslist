@@ -43,6 +43,7 @@
     "@pothos/plugin-validation": "^3.9.0",
     "@sentry/node": "^7.56.0",
     "@sentry/tracing": "^7.56.0",
+    "@serieslist/prettier-config": "workspace:*",
     "bcryptjs": "^2.4.3",
     "bullmq": "^4.1.0",
     "dataloader": "^2.2.2",
