@@ -1,13 +1,13 @@
-import * as Sentry from '@sentry/react'
+import { init, BrowserTracing } from '@sentry/react'
 
 import { config } from '#/config'
 
-Sentry.init({
+init({
   enabled: config.sentry.enabled,
   dsn: config.sentry.dsn,
   environment: config.development ? 'development' : 'production',
   integrations: [
-    new Sentry.BrowserTracing({
+    new BrowserTracing({
       tracePropagationTargets: [
         'localhost',
         /^https:\/\/serieslist\.joosep\.xyz/,

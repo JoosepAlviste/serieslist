@@ -1,0 +1,32 @@
+{
+  "name": "@serieslist/eslint-config",
+  "version": "0.0.0",
+  "exports": {
+    ".": {
+      "require": "./base.js"
+    },
+    "./react": {
+      "require": "./react.js"
+    }
+  },
+  "scripts": {
+    "lint": "eslint base.js"
+  },
+  "dependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.55.0",
+    "@typescript-eslint/parser": "^5.55.0",
+    "eslint-config-prettier": "^8.7.0",
+    "eslint-import-resolver-typescript": "^3.5.3",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.1"
+  },
+  "peerDependencies": {
+    "eslint": "^8.36.0"
+  },
+  "devDependencies": {
+    "@serieslist/prettier-config": "workspace:^"
+  }
+}
