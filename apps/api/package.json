@@ -16,6 +16,7 @@
     "start:jobs:prod": "NODE_ENV=production node dist/mainJobs.js",
     "tsc": "tsc --noEmit",
     "lint": "eslint src && madge --circular --extensions ts ./src",
+    "lint:fix": "eslint --fix src",
     "test": "dotenv -e ../../.env.test vitest",
     "test:coverage": "dotenv -e ../../.env.test vitest run -- --coverage",
     "codegen": "DOTENV_CONFIG_PATH='../../.env' graphql-codegen-esm -r dotenv/config",
