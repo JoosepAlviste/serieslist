@@ -13,7 +13,7 @@
     "tsc": "tsc --noEmit"
   },
   "devDependencies": {
-    "@serieslist/eslint-config": "workspace:^",
+    "@serieslist/eslint-config-base": "workspace:^",
     "@serieslist/prettier-config": "workspace:^",
     "typescript": "^4.9.4"
   }

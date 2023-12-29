@@ -1,0 +1,24 @@
+{
+  "name": "@serieslist/eslint-config-react",
+  "version": "0.0.0",
+  "exports": {
+    ".": {
+      "require": "./eslint-config-react.js"
+    }
+  },
+  "scripts": {
+    "lint": "eslint eslint-config-react.js"
+  },
+  "dependencies": {
+    "@serieslist/eslint-config-base": "workspace:*",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.1"
+  },
+  "peerDependencies": {
+    "eslint": "^8.36.0"
+  },
+  "devDependencies": {
+    "@serieslist/prettier-config": "workspace:^"
+  }
+}

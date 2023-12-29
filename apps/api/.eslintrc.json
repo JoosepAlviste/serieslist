@@ -1,5 +1,5 @@
 {
-  "extends": ["@serieslist"],
+  "extends": "@serieslist/eslint-config-base",
   "overrides": [
     {
       "files": ["src/test/mockTMDBServer.ts"],
