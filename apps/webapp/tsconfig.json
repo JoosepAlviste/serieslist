@@ -1,27 +1,12 @@
 {
+  "extends": "@serieslist/typescript-config-base",
   "compilerOptions": {
-    "target": "ES2020",
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ESNext"
-    ],
-    "types": [
-      "vite/client",
-      "vitest/globals",
-      "vite-plugin-svgr/client"
-    ],
-    "skipLibCheck": true,
-    "strict": true,
-    "esModuleInterop": true,
-    "module": "ES2020",
-    "moduleResolution": "Node",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "types": ["vite/client", "vitest/globals", "vite-plugin-svgr/client"],
     "jsx": "react",
     "baseUrl": ".",
     "paths": {
-      "#/*": [
-        "./src/*"
-      ]
+      "#/*": ["./src/*"]
     }
   }
 }

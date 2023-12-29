@@ -76,6 +76,7 @@
     "@serieslist/eslint-config-base": "workspace:*",
     "@serieslist/prettier-config": "workspace:*",
     "@serieslist/type-utils": "workspace:*",
+    "@serieslist/typescript-config-base": "workspace:*",
     "@types/bcryptjs": "^2.4.2",
     "@types/jsonwebtoken": "^9.0.1",
     "@types/node": "^18.15.3",

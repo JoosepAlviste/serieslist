@@ -1,0 +1,12 @@
+{
+  "name": "@serieslist/typescript-config-base",
+  "version": "0.0.0",
+  "main": "tsconfig.json",
+  "scripts": {
+    "lint": "prettier --check .",
+    "lint:fix": "prettier --write ."
+  },
+  "devDependencies": {
+    "@serieslist/prettier-config": "workspace:*"
+  }
+}

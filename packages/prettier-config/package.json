@@ -1,5 +1,9 @@
 {
   "name": "@serieslist/prettier-config",
   "version": "0.0.0",
-  "main": "index.json"
+  "main": "index.json",
+  "scripts": {
+    "lint": "prettier --check .",
+    "lint:fix": "prettier --write ."
+  }
 }

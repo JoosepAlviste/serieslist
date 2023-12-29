@@ -19,6 +19,6 @@
     "eslint": "^8.36.0"
   },
   "devDependencies": {
-    "@serieslist/prettier-config": "workspace:^"
+    "@serieslist/prettier-config": "workspace:*"
   }
 }
