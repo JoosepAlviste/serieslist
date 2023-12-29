@@ -1,3 +1,4 @@
+import { type NonNullableFields } from '@serieslist/type-utils'
 import index from 'just-index'
 import { type UpdateObject } from 'kysely'
 
@@ -9,7 +10,6 @@ import {
   type AuthenticatedContext,
   type DBContext,
 } from '@/types/context'
-import { type NonNullableFields } from '@/types/utils'
 import { isTruthy } from '@/utils/isTruthy'
 
 import * as seenEpisodeRepository from './seenEpisode.repository'

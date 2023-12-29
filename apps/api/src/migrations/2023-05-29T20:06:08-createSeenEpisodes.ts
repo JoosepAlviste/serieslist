@@ -1,6 +1,5 @@
+import { type NotWorthIt } from '@serieslist/type-utils'
 import { sql, type Kysely } from 'kysely'
-
-import { type NotWorthIt } from '@/types/utils'
 
 export async function up(db: Kysely<NotWorthIt>): Promise<void> {
   await db.schema

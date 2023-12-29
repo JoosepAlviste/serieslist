@@ -1,6 +1,5 @@
+import { type LiterallyAnything } from '@serieslist/type-utils'
 import { useCallback, useRef } from 'react'
-
-import { type LiterallyAnything } from '#/types/utils'
 
 /**
  * Create a debounced function that can be used in React.

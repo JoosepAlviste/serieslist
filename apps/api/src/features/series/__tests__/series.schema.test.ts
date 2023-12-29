@@ -1,3 +1,4 @@
+import { type NotWorthIt } from '@serieslist/type-utils'
 import { parseISO, subDays } from 'date-fns'
 import { type Selectable } from 'kysely'
 import { nanoid } from 'nanoid'
@@ -18,7 +19,6 @@ import {
   executeOperation,
   expectErrors,
 } from '@/test/testUtils'
-import { type NotWorthIt } from '@/types/utils'
 
 import { UserSeriesStatus } from '../constants'
 import { episodeFactory } from '../episode.factory'

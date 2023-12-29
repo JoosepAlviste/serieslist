@@ -1,4 +1,5 @@
 import { type TypedDocumentNode } from '@graphql-typed-document-node/core'
+import { type NotWorthIt } from '@serieslist/type-utils'
 import { type ExecutionResult, print } from 'graphql'
 import { createYoga, type YogaInitialContext } from 'graphql-yoga'
 import { type Selectable } from 'kysely'
@@ -16,7 +17,6 @@ import { createArrayOfLength } from '@/lib/createArrayOfLength'
 import { db } from '@/lib/db'
 import { schema } from '@/schema'
 import { type AuthenticatedContext, type Context } from '@/types/context'
-import { type NotWorthIt } from '@/types/utils'
 
 export const createContext = <T extends Context['currentUser']>({
   ctx = {},

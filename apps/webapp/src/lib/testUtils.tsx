@@ -5,6 +5,7 @@ import type {
   VariablesOf,
 } from '@graphql-typed-document-node/core'
 import { Provider as TooltipProvider } from '@radix-ui/react-tooltip'
+import { type NotWorthIt, type LiterallyAnything } from '@serieslist/type-utils'
 import {
   act,
   fireEvent,
@@ -23,7 +24,6 @@ import { userFactory } from '#/features/users'
 import { CurrentUserDocument } from '#/generated/gql/graphql'
 import { PageContextProvider } from '#/providers/PageContextProvider'
 import { ToastProvider } from '#/providers/ToastProvider'
-import { type NotWorthIt, type LiterallyAnything } from '#/types/utils'
 import { wait } from '#/utils/misc'
 
 type ExtraRenderOptions = {

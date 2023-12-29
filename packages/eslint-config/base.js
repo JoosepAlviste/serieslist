@@ -41,6 +41,7 @@ module.exports = {
         checksVoidReturn: false,
       },
     ],
+    '@typescript-eslint/no-explicit-any': 'error',
     'import/order': [
       'error',
       {

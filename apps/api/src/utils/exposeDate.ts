@@ -1,6 +1,5 @@
+import { type NotWorthIt } from '@serieslist/type-utils'
 import { format } from 'date-fns'
-
-import { type NotWorthIt } from '@/types/utils'
 
 /**
  * A utility like `exposeString` and others from Pothos, but for `Date` fields.

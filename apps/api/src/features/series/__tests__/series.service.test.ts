@@ -1,3 +1,4 @@
+import { type LiterallyAnything } from '@serieslist/type-utils'
 import { format, subDays } from 'date-fns'
 
 import { seriesProgressFactory } from '@/features/seriesProgress'
@@ -14,7 +15,6 @@ import {
   createSeenEpisodesForUser,
   createSeriesWithEpisodesAndSeasons,
 } from '@/test/testUtils'
-import { type LiterallyAnything } from '@/types/utils'
 
 import { episodeFactory } from '../episode.factory'
 import { seasonFactory } from '../season.factory'

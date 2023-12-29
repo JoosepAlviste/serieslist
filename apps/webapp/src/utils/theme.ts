@@ -1,5 +1,6 @@
+import { type ValueOf } from '@serieslist/type-utils'
+
 import { darkThemeClass, lightThemeClass } from '#/styles/theme.css'
-import { type ValueOf } from '#/types/utils'
 
 import { setCookie } from './cookies'
 
