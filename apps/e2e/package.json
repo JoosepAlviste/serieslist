@@ -1,0 +1,17 @@
+{
+  "name": "@serieslist/e2e",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "test:e2e": "dotenv -e ../../.env.e2e pnpm exec playwright test -- --ui",
+    "test:e2e:headed": "pnpm test:e2e -- --headed"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.35.1",
+    "@serieslist/eslint-config-base": "workspace:*",
+    "@serieslist/prettier-config": "workspace:*",
+    "@serieslist/typescript-config-base": "workspace:*",
+    "nanoid": "^4.0.2",
+    "typescript": "^4.9.4"
+  }
+}

@@ -18,7 +18,7 @@
     "build": "nx affected -t build",
     "migrate": "pnpm -F api migrate",
     "migrate:test": "dotenv -e .env.test -- pnpm -F api migrate:test",
-    "test:e2e": "dotenv -e .env.e2e -- pnpm -F webapp test:e2e"
+    "test:e2e": "dotenv -e .env.e2e -- nx test:e2e @serieslist/e2e"
   },
   "devDependencies": {
     "dotenv-cli": "^7.1.0",

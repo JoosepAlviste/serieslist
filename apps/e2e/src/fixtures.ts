@@ -5,10 +5,8 @@ import { test as baseTest } from '@playwright/test'
 
 import { registerNewUser } from './utils'
 
-// eslint-disable-next-line import/export
 export * from '@playwright/test'
 
-// eslint-disable-next-line import/export
 export const test = baseTest.extend<object, { workerStorageState: string }>({
   // Use the same storage state for all tests in this worker.
   storageState: ({ workerStorageState }, use) => use(workerStorageState),

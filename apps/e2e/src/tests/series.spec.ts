@@ -1,4 +1,4 @@
-import { test, expect } from '../playwright/fixtures'
+import { test, expect } from '../fixtures'
 
 test('allows searching for series and viewing their details', async ({
   page,

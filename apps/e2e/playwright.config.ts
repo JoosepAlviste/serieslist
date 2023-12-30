@@ -1,12 +1,12 @@
 import { defineConfig, devices } from '@playwright/test'
 
-import { config } from '#/config'
+import { config } from './src/config'
 
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  testDir: './e2e',
+  testDir: './src',
   timeout: 30 * 1000,
   expect: {
     timeout: 5000,
@@ -33,19 +33,19 @@ export default defineConfig({
 
   webServer: [
     {
-      command: 'pnpm start:e2e',
+      command: '(cd ../.. && pnpm exec nx start:e2e @serieslist/webapp)',
       port: config.port,
       timeout: 120 * 1000,
       reuseExistingServer: !process.env.CI,
     },
     {
-      command: '(cd ../api && pnpm start:e2e)',
+      command: '(cd ../.. && pnpm exec nx start:e2e @serieslist/api)',
       url: `${config.api.url}/graphql`,
       timeout: 20 * 1000,
       reuseExistingServer: !process.env.CI,
     },
     {
-      command: '(cd ../api && pnpm start:tmdb)',
+      command: '(cd ../.. && pnpm exec nx start:tmdb @serieslist/api)',
       url: `http://localhost:4002`,
       timeout: 20 * 1000,
       reuseExistingServer: !process.env.CI,

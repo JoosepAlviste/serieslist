@@ -135,6 +135,6 @@ Then, run the e2e tests:
 
 ```sh
 # Install the playwright dependencies if they haven't been yet
-(cd webapp && pnpm dlx playwright install chromium --with-deps)
+(cd apps/e2e && pnpm dlx playwright install chromium --with-deps)
 pnpm test:e2e
 ```

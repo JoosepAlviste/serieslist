@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
 
-import { registerNewUser } from 'playwright/utils'
+import { registerNewUser } from '../utils'
 
 test('allows keeping track of series progress', async ({ page }) => {
   await registerNewUser(page)

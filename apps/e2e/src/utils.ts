@@ -1,7 +1,7 @@
 import { type Page, expect } from '@playwright/test'
 import { nanoid } from 'nanoid'
 
-import { config } from '#/config'
+import { config } from './config'
 
 export const registerNewUser = async (page: Page) => {
   const email = `test.dude${nanoid()}@test.com`
