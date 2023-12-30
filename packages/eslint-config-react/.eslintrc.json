@@ -1,5 +1,6 @@
 {
   "extends": "@serieslist/eslint-config-base",
+  "root": true,
   "env": {
     "node": true
   }

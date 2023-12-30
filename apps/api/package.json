@@ -44,6 +44,7 @@
     "@pothos/plugin-validation": "^3.9.0",
     "@sentry/node": "^7.56.0",
     "@sentry/tracing": "^7.56.0",
+    "@serieslist/logger": "workspace:*",
     "bcryptjs": "^2.4.3",
     "bullmq": "^4.1.0",
     "dataloader": "^2.2.2",
@@ -65,7 +66,6 @@
     "nanoid": "^4.0.2",
     "node-fetch": "^3.3.1",
     "pg": "^8.10.0",
-    "pino": "^8.14.1",
     "zod": "^3.22.3"
   },
   "devDependencies": {
@@ -86,7 +86,6 @@
     "kysely-codegen": "^0.10.0",
     "madge": "^6.0.0",
     "nock": "^13.3.1",
-    "pino-pretty": "^10.0.0",
     "prettier": "^2.8.4",
     "resolve-tspaths": "^0.8.8",
     "rimraf": "^4.4.0",

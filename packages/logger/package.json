@@ -1,12 +1,13 @@
 {
-  "name": "@serieslist/type-utils",
+  "name": "@serieslist/logger",
   "version": "1.0.0",
   "type": "module",
-  "main": "./src/type-utils.ts",
+  "main": "./src/createLogger.ts",
   "exports": {
     ".": {
-      "import": "./src/type-utils.ts",
-      "types": "./src/type-utils.ts"
+      "require": "./src/createLogger.ts",
+      "import": "./src/createLogger.ts",
+      "types": "./src/createLogger.ts"
     }
   },
   "scripts": {
@@ -17,6 +18,10 @@
     "@serieslist/eslint-config-base": "workspace:*",
     "@serieslist/prettier-config": "workspace:*",
     "@serieslist/typescript-config-base": "workspace:*",
+    "pino-pretty": "^10.0.0",
     "typescript": "^4.9.4"
+  },
+  "dependencies": {
+    "pino": "^8.14.1"
   }
 }

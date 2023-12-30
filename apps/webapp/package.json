@@ -37,6 +37,7 @@
     "@radix-ui/react-toggle": "^1.0.3",
     "@radix-ui/react-tooltip": "^1.0.6",
     "@sentry/react": "^7.56.0",
+    "@serieslist/logger": "workspace:*",
     "@vanilla-extract/css": "^1.10.0",
     "@vitejs/plugin-react": "^4.1.0",
     "classnames": "^2.3.2",

@@ -1,15 +1,15 @@
-// Note that this file isn't processed by Vite, see https://vikejs/vike/issues/562
+// Note that this file isn't processed by Vite, see https://github.com/vikejs/vike/issues/562
 
 import './loadDotenv'
 
 import { join } from 'node:path'
 
 import { fastifyCompress } from '@fastify/compress'
-// eslint-disable-next-line import/no-named-as-default
 import fastifyCookie from '@fastify/cookie'
 import { fastifyMiddie } from '@fastify/middie'
 import { fastifyStatic } from '@fastify/static'
-import { fastify } from 'fastify'
+import { createLogger } from '@serieslist/logger'
+import { fastify, type FastifyRequest } from 'fastify'
 import { renderPage } from 'vike/server'
 import { type PageContext } from 'vike/types'
 
@@ -23,10 +23,43 @@ import { root } from './root.js'
 
 const isProduction = process.env.NODE_ENV === 'production'
 
+const log = createLogger({ name: 'webapp' })
+
 void startServer()
 
+const REQUEST_LOG_IGNORE_PATTERNS = [
+  /\.(js|ts|tsx|css|css\?direct|pageContext\.json|mjs|svg\?import&react|svg\?import)$/,
+  /@react-refresh$/,
+  /@vite\/client$/,
+  /:client-routing$/,
+]
+
+const shouldRequestBeLogged = (req: FastifyRequest) => {
+  return !REQUEST_LOG_IGNORE_PATTERNS.some((pattern) => req.url.match(pattern))
+}
+
 async function startServer() {
-  const app = fastify()
+  const app = fastify({
+    logger: log,
+    // We do our own request logging to avoid logging static asset requests
+    disableRequestLogging: true,
+  })
+
+  app.addHook('onRequest', (req, _reply, done) => {
+    if (shouldRequestBeLogged(req)) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      req.log.info({ reqId: req.id, req }, 'incoming request')
+    }
+    done()
+  })
+
+  app.addHook('onResponse', (req, reply, done) => {
+    if (shouldRequestBeLogged(req)) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      req.log.info({ reqId: req.id, res: reply }, 'request completed')
+    }
+    done()
+  })
 
   await app.register(fastifyMiddie)
   await app.register(fastifyCompress)
@@ -92,6 +125,4 @@ async function startServer() {
   })
 
   await app.listen({ port: config.port, host: '0.0.0.0' })
-
-  console.log(`Server running at http://localhost:${config.port}`)
 }

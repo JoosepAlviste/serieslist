@@ -1,5 +1,6 @@
 {
   "extends": "./eslint-config-base.js",
+  "root": true,
   "env": {
     "node": true
   }

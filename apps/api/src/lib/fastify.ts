@@ -1,20 +1,15 @@
 import cookie, { type FastifyCookieOptions } from '@fastify/cookie'
 import cors from '@fastify/cors'
 import rateLimit from '@fastify/rate-limit'
-import fastify, { type FastifyServerOptions } from 'fastify'
+import { getLoggerByEnvironment } from '@serieslist/logger'
+import fastify from 'fastify'
 
 import { config } from '#/config'
 
 import { log } from './logger'
 
-const envToLogger: Record<string, FastifyServerOptions['logger']> = {
-  development: log,
-  production: log,
-  test: false,
-}
-
 export const app = fastify({
-  logger: envToLogger[config.environment] ?? true,
+  logger: getLoggerByEnvironment(log),
 })
 
 await app.register(cookie, {
