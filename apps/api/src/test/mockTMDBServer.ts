@@ -20,8 +20,8 @@ import {
   type TMDbSeason,
   type TMDbEpisode,
   type TMDbSearchResponse,
-} from '@/features/tmdb'
-import { createArrayOfLength } from '@/lib/createArrayOfLength'
+} from '#/features/tmdb'
+import { createArrayOfLength } from '#/lib/createArrayOfLength'
 
 const app = fastify({
   logger: true,

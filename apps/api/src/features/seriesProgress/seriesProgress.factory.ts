@@ -1,10 +1,10 @@
 import { Factory } from 'fishery'
 import { type Selectable } from 'kysely'
 
-import { episodeFactory, seriesFactory } from '@/features/series'
-import { userFactory } from '@/features/users'
-import { type SeriesProgress } from '@/generated/db'
-import { db } from '@/lib/db'
+import { episodeFactory, seriesFactory } from '#/features/series'
+import { userFactory } from '#/features/users'
+import { type SeriesProgress } from '#/generated/db'
+import { db } from '#/lib/db'
 
 export const seriesProgressFactory = Factory.define<Selectable<SeriesProgress>>(
   ({ params, onCreate }) => {

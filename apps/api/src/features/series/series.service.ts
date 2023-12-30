@@ -3,21 +3,21 @@ import index from 'just-index'
 import unique from 'just-unique'
 import { type Insertable } from 'kysely'
 
-import { seriesProgressService } from '@/features/seriesProgress'
-import { tmdbService } from '@/features/tmdb'
-import { type Season } from '@/generated/db'
+import { seriesProgressService } from '#/features/seriesProgress'
+import { tmdbService } from '#/features/tmdb'
+import { type Season } from '#/generated/db'
 import {
   type SeriesUpdateStatusInput,
   type SeriesSearchInput,
-} from '@/generated/gql/graphql'
-import { NotFoundError } from '@/lib/errors'
-import { log } from '@/lib/logger'
+} from '#/generated/gql/graphql'
+import { NotFoundError } from '#/lib/errors'
+import { log } from '#/lib/logger'
 import {
   type DBContext,
   type AuthenticatedContext,
   type Context,
-} from '@/types/context'
-import { isTruthy } from '@/utils/isTruthy'
+} from '#/types/context'
+import { isTruthy } from '#/utils/isTruthy'
 
 import { UserSeriesStatus } from './constants'
 import * as episodeRepository from './episode.repository'

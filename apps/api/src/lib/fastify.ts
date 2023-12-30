@@ -3,7 +3,7 @@ import cors from '@fastify/cors'
 import rateLimit from '@fastify/rate-limit'
 import fastify, { type FastifyServerOptions } from 'fastify'
 
-import { config } from '@/config'
+import { config } from '#/config'
 
 import { log } from './logger'
 

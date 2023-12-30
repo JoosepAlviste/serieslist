@@ -1,8 +1,8 @@
 import { type UpdateObject } from 'kysely'
 import { type InsertObject } from 'kysely/dist/cjs/parser/insert-values-parser'
 
-import { type DB } from '@/generated/db'
-import { type DBContext, type Context } from '@/types/context'
+import { type DB } from '#/generated/db'
+import { type DBContext, type Context } from '#/types/context'
 
 import { type UserSeriesStatus } from './constants'
 

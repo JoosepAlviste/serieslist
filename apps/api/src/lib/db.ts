@@ -1,8 +1,8 @@
 import { CamelCasePlugin, Kysely, PostgresDialect } from 'kysely'
 import pg from 'pg'
 
-import { config } from '@/config'
-import { type DB } from '@/generated/db'
+import { config } from '#/config'
+import { type DB } from '#/generated/db'
 
 import { log } from './logger'
 

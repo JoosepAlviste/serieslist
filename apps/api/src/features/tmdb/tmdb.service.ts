@@ -2,9 +2,9 @@ import { type Insertable } from 'kysely'
 import fetch from 'node-fetch'
 import { type z } from 'zod'
 
-import { config } from '@/config'
-import { type Season, type Series } from '@/generated/db'
-import { log } from '@/lib/logger'
+import { config } from '#/config'
+import { type Season, type Series } from '#/generated/db'
+import { log } from '#/lib/logger'
 
 import {
   tmdbSeasonResponseSchema,

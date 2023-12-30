@@ -1,10 +1,10 @@
 import { Factory } from 'fishery'
 import { type Selectable } from 'kysely'
 
-import { episodeFactory } from '@/features/series'
-import { userFactory } from '@/features/users'
-import { type SeenEpisode } from '@/generated/db'
-import { db } from '@/lib/db'
+import { episodeFactory } from '#/features/series'
+import { userFactory } from '#/features/users'
+import { type SeenEpisode } from '#/generated/db'
+import { db } from '#/lib/db'
 
 export const seenEpisodeFactory = Factory.define<Selectable<SeenEpisode>>(
   ({ onCreate, params }) => {

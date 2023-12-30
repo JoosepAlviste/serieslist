@@ -1,7 +1,7 @@
 import { type UpdateObject, type InsertObject } from 'kysely'
 
-import { type DB } from '@/generated/db'
-import { type DBContext, type Context } from '@/types/context'
+import { type DB } from '#/generated/db'
+import { type DBContext, type Context } from '#/types/context'
 
 export const findMany = ({
   ctx,

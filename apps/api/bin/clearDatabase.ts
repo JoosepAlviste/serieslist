@@ -1,3 +1,3 @@
-import { clearDatabase } from '@/test/clearDatabase'
+import { clearDatabase } from '#/test/clearDatabase'
 
 await clearDatabase()

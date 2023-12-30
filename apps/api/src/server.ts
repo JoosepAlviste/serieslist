@@ -11,7 +11,7 @@ import { log } from './lib/logger'
 import { schema } from './schema'
 import { type Context } from './types/context'
 
-import '@/lib/initSentry'
+import '#/lib/initSentry'
 
 export const yoga = createYoga<{
   req: FastifyRequest

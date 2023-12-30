@@ -2,9 +2,9 @@ import { Factory } from 'fishery'
 import { type Selectable } from 'kysely'
 import { nanoid } from 'nanoid'
 
-import { type Series } from '@/generated/db'
-import { db } from '@/lib/db'
-import { generateRandomInt } from '@/utils/generateRandomInt'
+import { type Series } from '#/generated/db'
+import { db } from '#/lib/db'
+import { generateRandomInt } from '#/utils/generateRandomInt'
 
 export const seriesFactory = Factory.define<Selectable<Series>>(
   ({ sequence, onCreate }) => {

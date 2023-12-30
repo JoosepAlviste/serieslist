@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url'
 
 import { FileMigrationProvider, Migrator } from 'kysely'
 
-import { db } from '@/lib/db'
+import { db } from '#/lib/db'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 const migrator = new Migrator({

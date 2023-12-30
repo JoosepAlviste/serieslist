@@ -1,6 +1,6 @@
-import { EpisodeRef, SeasonRef, SeriesRef } from '@/features/series'
-import { NotFoundError, UnauthorizedError } from '@/lib/errors'
-import { builder } from '@/schemaBuilder'
+import { EpisodeRef, SeasonRef, SeriesRef } from '#/features/series'
+import { NotFoundError, UnauthorizedError } from '#/lib/errors'
+import { builder } from '#/schemaBuilder'
 
 import * as seriesProgressService from './seriesProgress.service'
 

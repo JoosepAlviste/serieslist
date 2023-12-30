@@ -1,5 +1,5 @@
-import { graphql } from '@/generated/gql/index'
-import { executeOperation } from '@/test/testUtils'
+import { graphql } from '#/generated/gql/index'
+import { executeOperation } from '#/test/testUtils'
 
 describe('schema', () => {
   it('returns a hello world', async () => {

@@ -3,8 +3,8 @@ import { type Selectable } from 'kysely'
 import { nanoid } from 'nanoid'
 import { type z } from 'zod'
 
-import { type Series, type Episode } from '@/generated/db'
-import { generateRandomInt } from '@/utils/generateRandomInt'
+import { type Series, type Episode } from '#/generated/db'
+import { generateRandomInt } from '#/utils/generateRandomInt'
 
 import { type tmdbNotFoundSchema } from './tmdb.schemas'
 import { type TMDbSeason, type TMDbEpisode, type TMDbSeries } from './types'

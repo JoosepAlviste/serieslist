@@ -5,22 +5,22 @@ import {
   episodeFactory,
   UserSeriesStatus,
   userSeriesStatusFactory,
-} from '@/features/series'
-import { userFactory } from '@/features/users'
-import { type User } from '@/generated/db'
-import { graphql } from '@/generated/gql'
+} from '#/features/series'
+import { userFactory } from '#/features/users'
+import { type User } from '#/generated/db'
+import { graphql } from '#/generated/gql'
 import {
   type MarkSeriesEpisodesAsSeenInput,
   type MarkSeasonEpisodesAsSeenInput,
   type ToggleEpisodeSeenInput,
-} from '@/generated/gql/graphql'
-import { db } from '@/lib/db'
+} from '#/generated/gql/graphql'
+import { db } from '#/lib/db'
 import {
   checkErrors,
   createSeenEpisodesForUser,
   createSeriesWithEpisodesAndSeasons,
   executeOperation,
-} from '@/test/testUtils'
+} from '#/test/testUtils'
 
 import { seenEpisodeFactory } from '../seenEpisode.factory'
 import { seriesProgressFactory } from '../seriesProgress.factory'

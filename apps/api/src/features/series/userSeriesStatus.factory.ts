@@ -1,8 +1,8 @@
 import { Factory } from 'fishery'
 import { type Selectable } from 'kysely'
 
-import { type UserSeriesStatus } from '@/generated/db'
-import { db } from '@/lib/db'
+import { type UserSeriesStatus } from '#/generated/db'
+import { db } from '#/lib/db'
 
 import { userFactory } from '../users'
 

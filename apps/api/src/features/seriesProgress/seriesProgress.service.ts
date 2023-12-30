@@ -2,15 +2,15 @@ import { type NonNullableFields } from '@serieslist/type-utils'
 import index from 'just-index'
 import { type UpdateObject } from 'kysely'
 
-import { episodesService, seasonService } from '@/features/series'
-import { type DB } from '@/generated/db'
-import { NotFoundError } from '@/lib/errors'
+import { episodesService, seasonService } from '#/features/series'
+import { type DB } from '#/generated/db'
+import { NotFoundError } from '#/lib/errors'
 import {
   type Context,
   type AuthenticatedContext,
   type DBContext,
-} from '@/types/context'
-import { isTruthy } from '@/utils/isTruthy'
+} from '#/types/context'
+import { isTruthy } from '#/utils/isTruthy'
 
 import * as seenEpisodeRepository from './seenEpisode.repository'
 import * as seriesProgressRepository from './seriesProgress.repository'

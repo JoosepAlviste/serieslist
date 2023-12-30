@@ -2,8 +2,8 @@ import { Factory } from 'fishery'
 import { type Selectable } from 'kysely'
 import { nanoid } from 'nanoid'
 
-import { type User } from '@/generated/db'
-import { db } from '@/lib/db'
+import { type User } from '#/generated/db'
+import { db } from '#/lib/db'
 
 export const userFactory = Factory.define<Selectable<User>>(
   ({ sequence, onCreate }) => {

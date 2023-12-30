@@ -4,19 +4,19 @@ import { type ExecutionResult, print } from 'graphql'
 import { createYoga, type YogaInitialContext } from 'graphql-yoga'
 import { type Selectable } from 'kysely'
 
-import { episodeFactory, seasonFactory, seriesFactory } from '@/features/series'
-import { seenEpisodeFactory } from '@/features/seriesProgress'
-import { userFactory } from '@/features/users'
+import { episodeFactory, seasonFactory, seriesFactory } from '#/features/series'
+import { seenEpisodeFactory } from '#/features/seriesProgress'
+import { userFactory } from '#/features/users'
 import {
   type User,
   type Episode,
   type Season,
   type Series,
-} from '@/generated/db'
-import { createArrayOfLength } from '@/lib/createArrayOfLength'
-import { db } from '@/lib/db'
-import { schema } from '@/schema'
-import { type AuthenticatedContext, type Context } from '@/types/context'
+} from '#/generated/db'
+import { createArrayOfLength } from '#/lib/createArrayOfLength'
+import { db } from '#/lib/db'
+import { schema } from '#/schema'
+import { type AuthenticatedContext, type Context } from '#/types/context'
 
 export const createContext = <T extends Context['currentUser']>({
   ctx = {},

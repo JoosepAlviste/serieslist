@@ -1,11 +1,11 @@
 import nock from 'nock'
 
-import { config } from '@/config'
+import { config } from '#/config'
 import {
   type TMDbSearchResponse,
   type TMDbSeriesResponse,
   type TMDbSeasonResponse,
-} from '@/features/tmdb'
+} from '#/features/tmdb'
 
 export const mockTMDbSearchRequest = (
   keyword: string,

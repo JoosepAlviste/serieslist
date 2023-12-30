@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url'
 
 import { DialectManager, Generator } from 'kysely-codegen'
 
-import { db } from '@/lib/db'
+import { db } from '#/lib/db'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
 

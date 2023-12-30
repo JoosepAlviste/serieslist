@@ -1,20 +1,20 @@
 import { type LiterallyAnything } from '@serieslist/type-utils'
 import { format, subDays } from 'date-fns'
 
-import { seriesProgressFactory } from '@/features/seriesProgress'
+import { seriesProgressFactory } from '#/features/seriesProgress'
 import {
   tmdbEpisodeFactory,
   tmdbNotFoundResponseFactory,
   tmdbSeasonFactory,
   tmdbSeriesDetailsFactory,
-} from '@/features/tmdb'
-import { userFactory } from '@/features/users'
-import { db } from '@/lib/db'
+} from '#/features/tmdb'
+import { userFactory } from '#/features/users'
+import { db } from '#/lib/db'
 import {
   createContext,
   createSeenEpisodesForUser,
   createSeriesWithEpisodesAndSeasons,
-} from '@/test/testUtils'
+} from '#/test/testUtils'
 
 import { episodeFactory } from '../episode.factory'
 import { seasonFactory } from '../season.factory'

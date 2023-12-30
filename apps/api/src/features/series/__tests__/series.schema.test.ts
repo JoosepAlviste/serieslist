@@ -7,18 +7,18 @@ import {
   tmdbEpisodeFactory,
   tmdbSeasonFactory,
   tmdbSeriesDetailsFactory,
-} from '@/features/tmdb'
-import { userFactory } from '@/features/users'
-import { type User } from '@/generated/db'
-import { graphql } from '@/generated/gql'
-import { type SeriesUpdateStatusInput } from '@/generated/gql/graphql'
-import { db } from '@/lib/db'
+} from '#/features/tmdb'
+import { userFactory } from '#/features/users'
+import { type User } from '#/generated/db'
+import { graphql } from '#/generated/gql'
+import { type SeriesUpdateStatusInput } from '#/generated/gql/graphql'
+import { db } from '#/lib/db'
 import {
   checkErrors,
   createSeriesWithEpisodesAndSeasons,
   executeOperation,
   expectErrors,
-} from '@/test/testUtils'
+} from '#/test/testUtils'
 
 import { UserSeriesStatus } from '../constants'
 import { episodeFactory } from '../episode.factory'

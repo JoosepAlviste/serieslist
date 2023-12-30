@@ -1,7 +1,7 @@
 import { type InsertObject } from 'kysely'
 
-import { type DB } from '@/generated/db'
-import { type Context } from '@/types/context'
+import { type DB } from '#/generated/db'
+import { type Context } from '#/types/context'
 
 export const findOne = ({
   ctx,

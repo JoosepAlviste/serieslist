@@ -1,6 +1,6 @@
 import { ZodError, type ZodFormattedError } from 'zod'
 
-import { NotFoundError, UnauthorizedError } from '@/lib/errors'
+import { NotFoundError, UnauthorizedError } from '#/lib/errors'
 
 import { builder } from '../schemaBuilder'
 

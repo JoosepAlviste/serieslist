@@ -1,10 +1,10 @@
-import { seriesFactory } from '@/features/series'
-import { db } from '@/lib/db'
+import { seriesFactory } from '#/features/series'
+import { db } from '#/lib/db'
 import {
   createContext,
   createSeenEpisodesForUser,
   createSeriesWithEpisodesAndSeasons,
-} from '@/test/testUtils'
+} from '#/test/testUtils'
 
 import { seriesProgressFactory } from '../seriesProgress.factory'
 import {

@@ -1,5 +1,5 @@
-import { createQueue, createWorker } from '@/lib/bullMq'
-import { db } from '@/lib/db'
+import { createQueue, createWorker } from '#/lib/bullMq'
+import { db } from '#/lib/db'
 
 export const seriesSyncQueue = createQueue('seriesSync')
 

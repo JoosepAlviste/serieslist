@@ -1,11 +1,11 @@
 import { type Selectable } from 'kysely'
 import { ZodError } from 'zod'
 
-import { type Episode } from '@/generated/db'
-import { NotFoundError, UnauthorizedError } from '@/lib/errors'
-import { builder } from '@/schemaBuilder'
-import { type Context } from '@/types/context'
-import { exposeDate } from '@/utils/exposeDate'
+import { type Episode } from '#/generated/db'
+import { NotFoundError, UnauthorizedError } from '#/lib/errors'
+import { builder } from '#/schemaBuilder'
+import { type Context } from '#/types/context'
+import { exposeDate } from '#/utils/exposeDate'
 
 import { UserSeriesStatus } from './constants'
 import * as episodesService from './episodes.service'

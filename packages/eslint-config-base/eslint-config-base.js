@@ -63,7 +63,7 @@ module.exports = {
     'no-restricted-imports': [
       'error',
       {
-        patterns: ['@/features/*/*', '!@/features/*/jobs'],
+        patterns: ['#/features/*/*', '!#/features/*/jobs'],
       },
     ],
   },

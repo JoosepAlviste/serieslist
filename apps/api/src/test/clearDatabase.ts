@@ -1,6 +1,6 @@
 import { sql } from 'kysely'
 
-import { db } from '@/lib/db'
+import { db } from '#/lib/db'
 
 export const clearDatabase = async () => {
   const tables = await sql<{

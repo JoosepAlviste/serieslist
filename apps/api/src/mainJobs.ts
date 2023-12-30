@@ -1,4 +1,4 @@
-import { seriesSyncWorker } from '@/features/series/jobs'
+import { seriesSyncWorker } from '#/features/series/jobs'
 
 import { log } from './lib/logger'
 

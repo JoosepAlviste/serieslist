@@ -1,7 +1,7 @@
 import { type InsertObject } from 'kysely'
 
-import { type DB } from '@/generated/db'
-import { type DBContext, type Context } from '@/types/context'
+import { type DB } from '#/generated/db'
+import { type DBContext, type Context } from '#/types/context'
 
 /**
  * Return the episode TMDB IDs and season IDs ordered by the season and
