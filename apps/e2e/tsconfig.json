@@ -1,4 +1,3 @@
 {
-  "extends": "@serieslist/typescript-config-base",
-  "compilerOptions": {}
+  "extends": "@serieslist/typescript-config-base"
 }

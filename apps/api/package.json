@@ -10,7 +10,7 @@
     "build": "NODE_ENV=production rimraf dist && tsx bin/build.ts && resolve-tspaths",
     "start": "NODE_ENV=development tsx watch --clear-screen=false src/main.ts",
     "start:prod": "NODE_ENV=production node dist/main.js",
-    "start:e2e": "dotenv -e ../../.env.e2e -v NODE_ENV=test tsx watch src/main.ts",
+    "start:e2e": "dotenv -e ../../.env.e2e -v NODE_ENV=test pnpm build && pnpm start:prod",
     "start:tmdb": "tsx watch src/test/mockTMDBServer.ts",
     "start:jobs": "NODE_ENV=development tsx watch --clear-screen=false src/mainJobs.ts",
     "start:jobs:prod": "NODE_ENV=production node dist/mainJobs.js",
