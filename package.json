@@ -18,11 +18,13 @@
     "build": "nx affected -t build",
     "migrate": "pnpm -F api migrate",
     "migrate:test": "dotenv -e .env.test -- pnpm -F api migrate:test",
-    "test:e2e": "dotenv -e .env.e2e -- nx test:e2e @serieslist/e2e"
+    "test:e2e": "dotenv -e .env.e2e -- nx test:e2e @serieslist/e2e",
+    "generate:package": "nx generate @serieslist/nx-plugin:package"
   },
   "devDependencies": {
+    "@nx/devkit": "17.2.8",
+    "@nx/plugin": "^17.2.8",
     "dotenv-cli": "^7.1.0",
     "nx": "17.2.8"
   }
 }
-

@@ -1,0 +1,6 @@
+{
+  "extends": "@serieslist/typescript-config-base",
+  "compilerOptions": {
+    "module": "commonjs"
+  }
+}

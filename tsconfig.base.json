@@ -1,0 +1,7 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "@serieslist/nx-plugin": ["packages/nx-plugin/src/index.ts"]
+    }
+  }
+}
