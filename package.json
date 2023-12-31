@@ -22,6 +22,7 @@
   },
   "devDependencies": {
     "dotenv-cli": "^7.1.0",
-    "nx": "^16.5.2"
+    "nx": "17.2.8"
   }
 }
+
