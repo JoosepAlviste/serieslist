@@ -7,7 +7,7 @@
   "type": "module",
   "module": "src/main.ts",
   "scripts": {
-    "build": "NODE_ENV=production rimraf dist && tsc -p tsconfig.build.json && resolve-tspaths",
+    "build": "NODE_ENV=production rimraf dist && tsx bin/build.ts && resolve-tspaths",
     "start": "NODE_ENV=development tsx watch --clear-screen=false src/main.ts",
     "start:prod": "NODE_ENV=production node dist/main.js",
     "start:e2e": "dotenv -e ../../.env.e2e -v NODE_ENV=test tsx watch src/main.ts",
@@ -73,6 +73,7 @@
     "@graphql-codegen/client-preset": "^4.0.1",
     "@graphql-tools/executor-http": "^1.0.0",
     "@graphql-typed-document-node/core": "^3.2.0",
+    "@serieslist/esbuild": "workspace:*",
     "@serieslist/eslint-config-base": "workspace:*",
     "@serieslist/prettier-config": "workspace:*",
     "@serieslist/type-utils": "workspace:*",

@@ -1,10 +1,7 @@
 // https://stackoverflow.com/questions/46745014/alternative-for-dirname-in-node-when-using-the-experimental-modules-flag/50052194#50052194
 
-import { dirname } from 'path'
+import { dirname, join } from 'path'
 import { fileURLToPath } from 'url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
-export const root =
-  process.env.NODE_ENV === 'production'
-    ? `${__dirname}/../../..`
-    : `${__dirname}/../..`
+export const root = join(__dirname, '..', '..')
