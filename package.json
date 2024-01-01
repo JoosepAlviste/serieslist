@@ -1,30 +1,34 @@
 {
   "name": "serieslist",
-  "author": "Joosep Alviste",
-  "license": "MIT",
-  "private": true,
-  "version": "1.0.0",
   "description": "Always know which episode to watch next. Keep track of your series and seen episodes.",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "author": "Joosep Alviste <joosep.alviste@gmail.com> (https://joosep.xyz/)",
+  "repository": "JoosepAlviste/serieslist.git",
+  "homepage": "https://github.com/JoosepAlviste/serieslist#readme",
+  "bugs": "https://github.com/JoosepAlviste/serieslist/issues",
   "engines": {
     "node": ">=16",
     "pnpm": ">=8"
   },
   "scripts": {
-    "postinstall": "cp -n .env.example .env || exit 0",
-    "start": "nx run-many -t start,start:jobs",
-    "lint": "nx affected -t lint",
-    "tsc": "nx affected -t tsc",
-    "test:coverage": "dotenv -e .env.test -- nx affected -t test:coverage --verbose",
     "build": "nx affected -t build",
+    "generate:package": "nx generate @serieslist/nx-plugin:package",
+    "lint": "nx affected -t lint",
     "migrate": "pnpm -F api migrate",
     "migrate:test": "dotenv -e .env.test -- pnpm -F api migrate:test",
+    "postinstall": "cp -n .env.example .env || exit 0",
+    "start": "nx run-many -t start,start:jobs",
+    "test:coverage": "dotenv -e .env.test -- nx affected -t test:coverage --verbose",
     "test:e2e": "dotenv -e .env.e2e -- nx test:e2e @serieslist/e2e",
-    "generate:package": "nx generate @serieslist/nx-plugin:package"
+    "tsc": "nx affected -t tsc"
   },
   "devDependencies": {
     "@nx/devkit": "17.2.8",
     "@nx/plugin": "^17.2.8",
     "dotenv-cli": "^7.1.0",
-    "nx": "17.2.8"
+    "nx": "17.2.8",
+    "syncpack": "^12.3.0"
   }
 }

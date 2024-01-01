@@ -11,7 +11,8 @@ The series are automatically imported from [The Movie Database (TMDB)](https://w
 
 The goal of the tech stack is to be as fully statically typed as possible, all 
 the way from the database to the front-end, while being as simple as possible. 
-[`pnpm`](https://pnpm.io/) is used to manage the multiple workspaces.
+[`pnpm`](https://pnpm.io/) and [`nx`](https://nx.dev/) are used to manage the 
+multiple workspaces.
 
 The front-end is an SPA with server-side rendering:
 
@@ -92,6 +93,15 @@ The development server is accessible at http://localhost:3000.
 Both the API and the webapp follow a similar file structure where the folders 
 are split into features. The `src` folders contain some general, "global" files, 
 while the `src/features` folders contain feature-specific code.
+
+
+### Generating a new package
+
+A new package can be generated with:
+
+```sh
+pnpm generate:package
+```
 
 
 ## Production

@@ -19,6 +19,6 @@
     "eslint-plugin-prettier": "^4.2.1"
   },
   "devDependencies": {
-    "@serieslist/prettier-config": "workspace:^"
+    "@serieslist/prettier-config": "workspace:*"
   }
 }

@@ -5,8 +5,8 @@
   "main": "./src/type-utils.ts",
   "exports": {
     ".": {
-      "import": "./src/type-utils.ts",
-      "types": "./src/type-utils.ts"
+      "types": "./src/type-utils.ts",
+      "import": "./src/type-utils.ts"
     }
   },
   "scripts": {

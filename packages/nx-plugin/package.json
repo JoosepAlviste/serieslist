@@ -3,8 +3,6 @@
   "version": "0.0.1",
   "type": "commonjs",
   "main": "./src/index.ts",
-  "typings": "./src/index.ts",
-  "generators": "./generators.json",
   "dependencies": {
     "@nx/devkit": "17.2.8",
     "tslib": "^2.3.0"
@@ -14,5 +12,7 @@
     "@serieslist/prettier-config": "workspace:*",
     "@serieslist/typescript-config-base": "workspace:*",
     "typescript": "^4.9.4"
-  }
+  },
+  "generators": "./generators.json",
+  "typings": "./src/index.ts"
 }

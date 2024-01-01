@@ -1,32 +1,28 @@
 {
   "name": "@serieslist/api",
   "version": "1.0.0",
-  "private": true,
-  "description": "A side project. Keep track of your seen series' episodes.",
-  "author": "Joosep Alviste <joosep.alviste@gmail.com> (https://joosep.xyz/)",
   "type": "module",
-  "module": "src/main.ts",
   "scripts": {
     "build": "NODE_ENV=production rimraf dist && tsx bin/build.ts && resolve-tspaths",
-    "start": "NODE_ENV=development tsx watch --clear-screen=false src/main.ts",
-    "start:prod": "NODE_ENV=production node dist/main.js",
-    "start:e2e": "dotenv -e ../../.env.e2e -v NODE_ENV=test pnpm build && pnpm start:prod",
-    "start:tmdb": "tsx watch src/test/mockTMDBServer.ts",
-    "start:jobs": "NODE_ENV=development tsx watch --clear-screen=false src/mainJobs.ts",
-    "start:jobs:prod": "NODE_ENV=production node dist/mainJobs.js",
-    "tsc": "tsc --noEmit",
+    "clear-test-db": "dotenv -e ../../.env.test tsx bin/clearDatabase.ts",
+    "codegen": "DOTENV_CONFIG_PATH='../../.env' graphql-codegen-esm -r dotenv/config",
+    "codegen:db": "tsx bin/kyselyCodegen.ts && eslint --fix src/generated/db.ts",
+    "codegen:watch": "pnpm codegen -- --watch",
     "lint": "eslint src && madge --circular --extensions ts ./src",
     "lint:fix": "eslint --fix src",
+    "migrate": "tsx src/bin/migrate.ts && pnpm codegen:db",
+    "migrate:prod": "dotenv -e ../../.env node dist/bin/migrate.js",
+    "migrate:test": "dotenv -e ../../.env.test tsx src/bin/migrate.ts",
+    "migration": "./bin/createMigration.sh",
+    "start": "NODE_ENV=development tsx watch --clear-screen=false src/main.ts",
+    "start:e2e": "dotenv -e ../../.env.e2e -v NODE_ENV=test pnpm build && pnpm start:prod",
+    "start:jobs": "NODE_ENV=development tsx watch --clear-screen=false src/mainJobs.ts",
+    "start:jobs:prod": "NODE_ENV=production node dist/mainJobs.js",
+    "start:prod": "NODE_ENV=production node dist/main.js",
+    "start:tmdb": "tsx watch src/test/mockTMDBServer.ts",
     "test": "dotenv -e ../../.env.test vitest",
     "test:coverage": "dotenv -e ../../.env.test vitest run -- --coverage",
-    "codegen": "DOTENV_CONFIG_PATH='../../.env' graphql-codegen-esm -r dotenv/config",
-    "codegen:watch": "pnpm codegen -- --watch",
-    "codegen:db": "tsx bin/kyselyCodegen.ts && eslint --fix src/generated/db.ts",
-    "migration": "./bin/createMigration.sh",
-    "migrate": "tsx src/bin/migrate.ts && pnpm codegen:db",
-    "migrate:test": "dotenv -e ../../.env.test tsx src/bin/migrate.ts",
-    "migrate:prod": "dotenv -e ../../.env node dist/bin/migrate.js",
-    "clear-test-db": "dotenv -e ../../.env.test tsx bin/clearDatabase.ts"
+    "tsc": "tsc --noEmit"
   },
   "dependencies": {
     "@bull-board/api": "^5.6.0",
@@ -45,6 +41,7 @@
     "@sentry/node": "^7.56.0",
     "@sentry/tracing": "^7.56.0",
     "@serieslist/logger": "workspace:*",
+    "@serieslist/tmdb": "workspace:*",
     "bcryptjs": "^2.4.3",
     "bullmq": "^4.1.0",
     "dataloader": "^2.2.2",
@@ -52,7 +49,7 @@
     "dotenv": "^16.0.3",
     "dotenv-cli": "^7.1.0",
     "dotenv-expand": "^10.0.0",
-    "fastify": "^4.17.0",
+    "fastify": "^4.18.0",
     "fishery": "^2.2.2",
     "graphql": "^16.8.1",
     "graphql-scalars": "^1.22.0",
@@ -83,24 +80,13 @@
     "@types/node": "^18.15.3",
     "@types/pg": "^8.6.6",
     "@vitest/coverage-c8": "^0.29.3",
-    "eslint": "^8.36.0",
     "kysely-codegen": "^0.10.0",
     "madge": "^6.0.0",
     "nock": "^13.3.1",
-    "prettier": "^2.8.4",
-    "resolve-tspaths": "^0.8.8",
+    "resolve-tspaths": "^0.8.13",
     "rimraf": "^4.4.0",
     "tsx": "^3.14.0",
     "typescript": "^4.9.5",
-    "vitest": "^0.29.3"
-  },
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/JoosepAlviste/serieslist.git"
-  },
-  "bugs": {
-    "url": "https://github.com/JoosepAlviste/serieslist/issues"
-  },
-  "homepage": "https://github.com/JoosepAlviste/serieslist#readme"
+    "vitest": "^0.34.6"
+  }
 }

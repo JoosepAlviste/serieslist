@@ -1,0 +1,31 @@
+{
+  "$schema": "./node_modules/syncpack/dist/schema.json",
+  "versionGroups": [
+    {
+      "label": "Use workspace protocol for local packages",
+      "dependencies": ["$LOCAL"],
+      "dependencyTypes": ["dev", "prod"],
+      "pinVersion": "workspace:*"
+    }
+  ],
+  "sortFirst": [
+    "name",
+    "description",
+    "version",
+    "private",
+    "license",
+    "author",
+    "repository",
+    "homepage",
+    "bugs",
+    "engines",
+    "type",
+    "main",
+    "types",
+    "exports",
+    "scripts",
+    "dependencies",
+    "peerDependencies",
+    "devDependencies"
+  ]
+}
