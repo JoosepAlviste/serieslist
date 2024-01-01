@@ -1,5 +1,4 @@
-import { type UpdateObject } from 'kysely'
-import { type InsertObject } from 'kysely/dist/cjs/parser/insert-values-parser'
+import { type UpdateObject, type InsertObject } from 'kysely'
 
 import { type DB } from '#/generated/db'
 import { type DBContext, type Context } from '#/types/context'

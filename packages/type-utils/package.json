@@ -2,7 +2,6 @@
   "name": "@serieslist/type-utils",
   "version": "1.0.0",
   "type": "module",
-  "main": "./src/type-utils.ts",
   "exports": {
     ".": {
       "types": "./src/type-utils.ts",
@@ -17,6 +16,6 @@
     "@serieslist/eslint-config-base": "workspace:*",
     "@serieslist/prettier-config": "workspace:*",
     "@serieslist/typescript-config-base": "workspace:*",
-    "typescript": "^4.9.4"
+    "typescript": "^5.3.3"
   }
 }

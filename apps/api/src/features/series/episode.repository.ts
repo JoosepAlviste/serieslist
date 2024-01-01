@@ -166,15 +166,15 @@ export const findNextEpisode = async ({
     .selectFrom('episode')
     .innerJoin('season', 'season.id', 'episode.seasonId')
     .where('seriesId', '=', seriesId)
-    .where(({ and, or, cmpr }) =>
-      or([
-        and([
-          cmpr('season.number', '=', seasonNumber),
-          cmpr('episode.number', '=', episodeNumber + 1),
+    .where((eb) =>
+      eb.or([
+        eb.and([
+          eb('season.number', '=', seasonNumber),
+          eb('episode.number', '=', episodeNumber + 1),
         ]),
-        and([
-          cmpr('season.number', '=', seasonNumber + 1),
-          cmpr('episode.number', '=', 1),
+        eb.and([
+          eb('season.number', '=', seasonNumber + 1),
+          eb('episode.number', '=', 1),
         ]),
       ]),
     )

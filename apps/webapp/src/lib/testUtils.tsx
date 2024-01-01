@@ -106,6 +106,7 @@ export const render = async (
   )
 
   if (!skipWaiting) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     await act(async () => {
       await wait()
     })
