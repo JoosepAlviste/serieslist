@@ -41,7 +41,6 @@
     "@sentry/node": "^7.56.0",
     "@sentry/tracing": "^7.56.0",
     "@serieslist/logger": "workspace:*",
-    "@serieslist/tmdb": "workspace:*",
     "bcryptjs": "^2.4.3",
     "bullmq": "^4.1.0",
     "dataloader": "^2.2.2",

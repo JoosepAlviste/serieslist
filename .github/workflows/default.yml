@@ -50,11 +50,8 @@ jobs:
       - name: Checks
         run: |
           pnpm install
-          pnpm lint
-          pnpm tsc
           pnpm migrate:test
-          pnpm test:coverage
-          pnpm build
+          pnpm quality
 
       - name: E2E tests
         run: |
