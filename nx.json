@@ -6,9 +6,14 @@
   "affected": {
     "defaultBase": "master"
   },
+  "namedInputs": {
+    "default": ["{projectRoot}/**/*"],
+    "production": ["default", "!{projectRoot}/**/*.test.{ts,tsx}"]
+  },
   "targetDefaults": {
     "build": {
-      "cache": true
+      "cache": true,
+      "inputs": ["production", "^production"]
     },
     "tsc": {
       "cache": true

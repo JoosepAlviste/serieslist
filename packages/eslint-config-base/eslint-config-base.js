@@ -78,8 +78,7 @@ module.exports = {
       },
     },
     {
-      // TODO: Rename .spec.ts files to .test.ts
-      files: ['src/**/*.test.ts', 'src/**/*.test.tsx', 'src/**/*.spec.ts'],
+      files: ['src/**/*.test.ts', 'src/**/*.test.tsx'],
       rules: {
         '@typescript-eslint/no-non-null-assertion': 'off',
       },
