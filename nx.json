@@ -25,7 +25,8 @@
       "cache": true
     },
     "test:coverage": {
-      "cache": true
+      "cache": true,
+      "defaultConfiguration": "test"
     },
     "build:server": {
       "cache": true
