@@ -9,7 +9,7 @@
   "homepage": "https://github.com/JoosepAlviste/serieslist#readme",
   "bugs": "https://github.com/JoosepAlviste/serieslist/issues",
   "engines": {
-    "node": ">=16",
+    "node": ">=20",
     "pnpm": ">=8"
   },
   "scripts": {

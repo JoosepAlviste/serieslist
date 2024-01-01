@@ -37,7 +37,7 @@
     "@sentry/react": "^7.56.0",
     "@serieslist/logger": "workspace:*",
     "@vanilla-extract/css": "^1.10.0",
-    "@vitejs/plugin-react": "^4.1.0",
+    "@vitejs/plugin-react": "^4.2.1",
     "classnames": "^2.3.2",
     "cross-env": "^7.0.3",
     "date-fns": "^2.30.0",
@@ -54,13 +54,13 @@
     "react-hook-form": "^7.43.9",
     "react-transition-group": "^4.4.5",
     "vike": "^0.4.142",
-    "vite-plugin-svgr": "^4.1.0",
+    "vite-plugin-svgr": "^4.2.0",
     "zod": "^3.22.3"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^4.0.1",
     "@graphql-codegen/client-preset": "^4.0.1",
-    "@sentry/vite-plugin": "^2.8.0",
+    "@sentry/vite-plugin": "^2.10.2",
     "@serieslist/esbuild": "workspace:*",
     "@serieslist/eslint-config-react": "workspace:*",
     "@serieslist/prettier-config": "workspace:*",
@@ -74,8 +74,8 @@
     "@types/react-dom": "^18.0.3",
     "@types/react-highlight-words": "^0.16.4",
     "@types/react-transition-group": "^4.4.6",
-    "@vanilla-extract/vite-plugin": "^3.9.0",
-    "@vitest/coverage-v8": "^0.34.6",
+    "@vanilla-extract/vite-plugin": "^3.9.3",
+    "@vitest/coverage-v8": "^1.1.1",
     "jsdom": "^22.1.0",
     "madge": "^6.0.0",
     "mock-apollo-client": "^1.2.1",
@@ -84,8 +84,8 @@
     "rimraf": "^4.4.0",
     "tsx": "^4.7.0",
     "typescript": "^5.3.3",
-    "vite": "^4.4.12",
-    "vite-plugin-pwa": "^0.16.5",
-    "vitest": "^0.34.6"
+    "vite": "^5.0.10",
+    "vite-plugin-pwa": "^0.17.4",
+    "vitest": "^1.1.1"
   }
 }
