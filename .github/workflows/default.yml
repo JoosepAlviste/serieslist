@@ -51,7 +51,7 @@ jobs:
         run: |
           pnpm install
           pnpm migrate:test
-          pnpm quality
+          pnpm exec nx affected -t lint,tsc,test:coverage,build --verbose
 
       - name: E2E tests
         run: |

@@ -12,14 +12,15 @@
     "lint": "eslint src",
     "tsc": "tsc --noEmit"
   },
-  "dependencies": {
-    "pino": "^8.14.1"
-  },
   "devDependencies": {
     "@serieslist/eslint-config-base": "workspace:*",
     "@serieslist/prettier-config": "workspace:*",
     "@serieslist/typescript-config-base": "workspace:*",
+    "pino": "^8.14.1",
     "pino-pretty": "^10.0.0",
     "typescript": "^5.3.3"
+  },
+  "peerDependencies": {
+    "pino": "^8.14.1"
   }
 }

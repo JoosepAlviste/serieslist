@@ -6,13 +6,13 @@ import { FileMigrationProvider, Migrator } from 'kysely'
 
 import { db } from '#/lib/db'
 
-const __dirname = fileURLToPath(new URL('.', import.meta.url))
+const dirname = fileURLToPath(new URL('.', import.meta.url))
 const migrator = new Migrator({
   db,
   provider: new FileMigrationProvider({
     fs,
     path,
-    migrationFolder: path.join(__dirname, '../migrations'),
+    migrationFolder: path.join(dirname, '../src/migrations'),
   }),
 })
 

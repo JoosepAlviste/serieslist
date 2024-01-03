@@ -13,17 +13,17 @@
     "pnpm": ">=8"
   },
   "scripts": {
-    "build": "nx affected -t build",
+    "build": "nx run-many -t build",
     "generate:package": "nx generate @serieslist/nx-plugin:package",
-    "lint": "nx affected -t lint",
+    "lint": "nx run-many -t lint",
     "migrate": "pnpm -F api migrate",
-    "migrate:test": "dotenv -e .env.test -- pnpm -F api migrate:test",
+    "migrate:test": "pnpm -F api migrate:test",
     "postinstall": "cp -n .env.example .env || exit 0",
     "start": "nx run-many -t start,start:jobs",
-    "test:coverage": "dotenv -e .env.test -- nx affected -t test:coverage --verbose",
-    "test:e2e": "dotenv -e .env.e2e -- nx test:e2e @serieslist/e2e",
-    "tsc": "nx affected -t tsc",
-    "quality": "nx affected -t lint,tsc,test:coverage,build --verbose"
+    "test:coverage": "nx run-many -t test:coverage --verbose",
+    "test:e2e": "nx test:e2e @serieslist/e2e",
+    "tsc": "nx run-many -t tsc",
+    "quality": "nx run-many -t lint,tsc,test:coverage,build --verbose"
   },
   "devDependencies": {
     "@nx/devkit": "17.2.8",

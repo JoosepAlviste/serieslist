@@ -40,7 +40,13 @@ const buildEsbuildConfig = ({
       // imports. This snippets creates a new `require` function that's used in
       // the bundle.
       // https://github.com/evanw/esbuild/issues/1921#issuecomment-1152991694
-      js: "import { createRequire } from 'module'; const require = createRequire(import.meta.url);",
+      js: `
+import { createRequire } from 'module';
+import pathThing from 'path';
+import { fileURLToPath as fileURLToPathThing } from 'url';
+const require = createRequire(import.meta.url);
+const __filename = fileURLToPathThing(import.meta.url);
+const __dirname = pathThing.dirname(__filename);`,
     },
     ...optionsWithoutExternal,
   }

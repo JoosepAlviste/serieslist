@@ -4,9 +4,9 @@ import { fileURLToPath } from 'node:url'
 import { config as dotenvConfig } from 'dotenv'
 import { expand } from 'dotenv-expand'
 
-const __dirname = fileURLToPath(new URL('.', import.meta.url))
+const dirname = fileURLToPath(new URL('.', import.meta.url))
 const env = dotenvConfig({
-  path: path.resolve(__dirname, '..', '..', '..', '.env'),
+  path: path.resolve(dirname, '..', '..', '..', '.env'),
 })
 expand(env)
 

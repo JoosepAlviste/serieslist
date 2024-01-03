@@ -28,6 +28,9 @@
       "cache": true,
       "defaultConfiguration": "test"
     },
+    "test:e2e": {
+      "defaultConfiguration": "e2e"
+    },
     "build:server": {
       "cache": true
     }
