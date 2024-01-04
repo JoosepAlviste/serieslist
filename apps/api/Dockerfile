@@ -22,7 +22,7 @@ FROM dependencies AS build
 WORKDIR /app
 
 RUN rm -rf node_modules && pnpm install
-RUN pnpm -F api build
+RUN pnpm exec nx build @serieslist/api
 
 
 FROM base AS production
