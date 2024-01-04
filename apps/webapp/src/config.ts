@@ -29,15 +29,6 @@ export const config = {
       (typeof process !== 'undefined'
         ? process.env.VITE_API_INTERNAL_URL
         : import.meta.env.VITE_API_INTERNAL_URL) ?? 'localhost',
-    host:
-      (typeof process !== 'undefined'
-        ? process.env.VITE_API_HOST
-        : import.meta.env.VITE_API_HOST) ?? 'localhost',
-    port: parseInt(
-      (typeof process !== 'undefined'
-        ? process.env.VITE_API_PORT
-        : import.meta.env.VITE_API_PORT) ?? '3000',
-    ),
   },
 
   sentry: {

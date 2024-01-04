@@ -43,8 +43,6 @@ services:
         VITE_APP_PORT: $VITE_APP_PORT
         VITE_API_URL: $VITE_API_URL
         VITE_API_INTERNAL_URL: $VITE_API_INTERNAL_URL
-        VITE_API_HOST: $VITE_API_HOST
-        VITE_API_PORT: $VITE_API_PORT
     ports:
       - '$VITE_APP_PORT:$VITE_APP_PORT'
     env_file:

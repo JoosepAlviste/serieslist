@@ -33,6 +33,12 @@
     },
     "build:server": {
       "cache": true
+    },
+    "start:e2e": {
+      "defaultConfiguration": "e2e"
+    },
+    "start:tmdb": {
+      "defaultConfiguration": "e2e"
     }
   }
 }

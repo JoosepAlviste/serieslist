@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "test:e2e": "dotenv -e ../../.env.e2e pnpm exec playwright test",
+    "test:e2e": "pnpm exec playwright test",
     "test:e2e:headed": "pnpm test:e2e -- --headed"
   },
   "devDependencies": {

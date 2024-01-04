@@ -20,6 +20,7 @@
     "migrate:test": "pnpm -F api migrate:test",
     "postinstall": "cp -n .env.example .env || exit 0",
     "start": "nx run-many -t start,start:jobs",
+    "start:e2e": "nx run-many -t start:e2e,start:tmdb",
     "test:coverage": "nx run-many -t test:coverage --verbose",
     "test:e2e": "nx test:e2e @serieslist/e2e",
     "tsc": "nx run-many -t tsc",
