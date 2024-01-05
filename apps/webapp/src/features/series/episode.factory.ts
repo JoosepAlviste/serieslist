@@ -1,4 +1,4 @@
-import { format } from 'date-fns'
+import { format, subDays } from 'date-fns'
 import { Factory } from 'fishery'
 
 import { type Episode } from '#/generated/gql/graphql'
@@ -13,6 +13,6 @@ export const episodeFactory = Factory.define<Episode>(({ sequence }) => ({
   imdbId: 'tt123',
   imdbRating: 4.4,
   isSeen: false,
-  releasedAt: format(new Date(Date.now()), 'yyyy-MM-dd'),
+  releasedAt: format(subDays(new Date(Date.now()), 1), 'yyyy-MM-dd'),
   season: seasonFactory.build(),
 }))

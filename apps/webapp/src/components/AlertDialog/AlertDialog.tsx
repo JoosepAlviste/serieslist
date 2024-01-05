@@ -37,8 +37,10 @@ const AlertDialogDialog = ({
             {title}
           </Text>
         </AlertDialogRadix.Title>
-        <AlertDialogRadix.Description className={s.description}>
-          <Text variant="secondary">{description}</Text>
+        <AlertDialogRadix.Description className={s.description} asChild>
+          <Text as="p" variant="secondary">
+            {description}
+          </Text>
         </AlertDialogRadix.Description>
 
         <div className={s.actionsContainer}>{actions}</div>
