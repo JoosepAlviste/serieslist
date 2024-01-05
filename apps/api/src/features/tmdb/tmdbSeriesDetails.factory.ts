@@ -1,3 +1,4 @@
+import { subDays } from 'date-fns'
 import { Factory } from 'fishery'
 import { type Selectable } from 'kysely'
 import { nanoid } from 'nanoid'
@@ -45,7 +46,7 @@ export const tmdbEpisodeFactory = Factory.define<
   id: savedEpisode?.tmdbId ?? generateRandomInt(1, 9999999),
   episode_number: savedEpisode?.number ? savedEpisode.number : sequence,
   name: savedEpisode?.title ?? 'Test Episode',
-  air_date: savedEpisode?.releasedAt ?? new Date(Date.now()),
+  air_date: savedEpisode?.releasedAt ?? subDays(new Date(Date.now()), 2),
 }))
 
 export const tmdbSeasonFactory = Factory.define<TMDbSeason>(
