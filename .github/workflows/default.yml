@@ -33,7 +33,6 @@ jobs:
       - uses: nrwl/nx-set-shas@v3
         with:
           main-branch-name: 'master'
-      - run: git branch --track master origin/master
       - uses: pnpm/action-setup@v2
         with:
           version: 8
