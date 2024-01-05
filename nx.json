@@ -22,14 +22,25 @@
       "cache": true
     },
     "test": {
-      "cache": true
-    },
-    "test:coverage": {
       "cache": true,
       "defaultConfiguration": "test"
     },
+    "test:watch": {
+      "cache": true,
+      "defaultConfiguration": "test"
+    },
+    "test:coverage": {
+      "cache": true,
+      "defaultConfiguration": "test",
+      "outputs": ["{projectRoot}/coverage"]
+    },
     "test:e2e": {
-      "defaultConfiguration": "e2e"
+      "cache": true,
+      "defaultConfiguration": "e2e",
+      "outputs": [
+        "{projectRoot}/test-results",
+        "{projectRoot}/playwright-report"
+      ]
     },
     "build:server": {
       "cache": true

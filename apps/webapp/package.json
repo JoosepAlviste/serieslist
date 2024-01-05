@@ -11,8 +11,9 @@
     "start": "tsx ./src/server/server.ts",
     "start:e2e": "dotenv -e ../../.env.e2e pnpm build && pnpm start:prod",
     "start:prod": "cross-env NODE_ENV=production node dist/prodServer/server.js",
-    "test": "vitest",
+    "test": "vitest run",
     "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest",
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
