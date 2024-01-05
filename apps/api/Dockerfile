@@ -21,7 +21,7 @@ FROM dependencies AS build
 
 WORKDIR /app
 
-RUN rm -rf node_modules && pnpm install
+RUN rm -rf node_modules && rm -rf pruned && pnpm install
 RUN pnpm exec nx build @serieslist/api
 
 
