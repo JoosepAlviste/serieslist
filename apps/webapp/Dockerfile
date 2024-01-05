@@ -33,7 +33,7 @@ ENV VITE_APP_PORT=$VITE_APP_PORT
 ENV VITE_API_URL=$VITE_API_URL
 ENV VITE_API_INTERNAL_URL=$VITE_API_INTERNAL_URL
 
-RUN rm -rf node_modules && pnpm install
+RUN rm -rf node_modules && rm -rf pruned && pnpm install
 RUN pnpm -F webapp deploy pruned
 RUN cd pruned && pnpm build
 
