@@ -47,15 +47,19 @@ jobs:
           cp .env.example .env
           bash bin/generate-secret-token.sh
 
+      - name: Installing dependencies
+        run: |
+          pnpm install
+          pnpm exec nx affected -t install-deps:e2e
+
       - name: Checks
         run: |
           pnpm install
-          pnpm migrate:test
+          pnpm exec nx affected -t migrate:test
           pnpm exec nx affected -t lint,tsc,test:coverage,build --verbose
 
       - name: E2E tests
         run: |
-          (cd apps/e2e && npx playwright install chromium --with-deps)
           pnpm test:e2e
       - uses: actions/upload-artifact@v3
         if: always()
