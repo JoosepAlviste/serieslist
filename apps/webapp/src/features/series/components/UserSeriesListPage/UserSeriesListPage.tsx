@@ -50,11 +50,11 @@ export const UserSeriesListPage = ({ status }: UserSeriesListPageProps) => {
   return (
     <Tabs.Root
       value={selectedStatus ?? 'all'}
-      onValueChange={(newTab) =>
+      onValueChange={(newTab) => {
         setSelectedStatus(
           newTab === 'all' ? undefined : (newTab as UserSeriesStatus),
         )
-      }
+      }}
       className={s.container}
     >
       <Tabs.List className={s.tabs}>
