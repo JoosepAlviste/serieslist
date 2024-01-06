@@ -11,7 +11,7 @@
     "lint": "eslint src && madge --circular --extensions ts ./src",
     "lint:fix": "eslint --fix src",
     "migrate": "tsx bin/migrate.ts && pnpm codegen:db",
-    "migrate:prod": "dotenv -e ../../.env node dist/bin/migrate.js",
+    "migrate:prod": "NODE_ENV=production dotenv -e ../../.env node dist/bin/migrate.js",
     "migrate:test": "dotenv -e ../../.env.test tsx bin/migrate.ts",
     "migration": "./bin/createMigration.sh",
     "start": "NODE_ENV=development tsx watch --clear-screen=false src/main.ts",
