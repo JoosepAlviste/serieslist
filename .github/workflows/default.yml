@@ -60,7 +60,7 @@ jobs:
 
       - name: E2E tests
         run: |
-          pnpm test:e2e
+          pnpm exec nx affected -t test:e2e
       - uses: actions/upload-artifact@v3
         if: always()
         with:
