@@ -78,7 +78,21 @@ jobs:
     if: ${{ github.ref == 'refs/heads/master' }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+        with:
+          # We need to fetch all branches and commits so that Nx affected has a base to compare against.
+          fetch-depth: 0
+      - uses: nrwl/nx-set-shas@v3
+        with:
+          main-branch-name: 'master'
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          cache: 'pnpm'
 
       - name: Expose GitHub Runtime
         uses: crazy-max/ghaction-github-runtime@v3
@@ -86,6 +100,7 @@ jobs:
       - name: Setup
         run: |
           cp .env.example .env
+          pnpm install
 
       - name: Build containers
         run: |
