@@ -5,7 +5,8 @@
   "scripts": {
     "test:e2e": "pnpm exec playwright test",
     "test:e2e:headed": "pnpm test:e2e -- --headed",
-    "install-deps:e2e": "playwright install chromium --with-deps"
+    "install-deps:e2e": "playwright install chromium --with-deps",
+    "migrate:e2e": "(cd ../.. && pnpm run migrate:test)"
   },
   "devDependencies": {
     "@playwright/test": "^1.35.1",
