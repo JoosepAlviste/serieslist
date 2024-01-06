@@ -80,6 +80,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Expose GitHub Runtime
+        uses: crazy-max/ghaction-github-runtime@v3
+
       - name: Setup
         run: |
           cp .env.example .env
@@ -87,11 +90,8 @@ jobs:
       - name: Build containers
         run: |
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-          sed -i.bak -e "s/VITE_API_HOST=.*/VITE_API_HOST=api.serieslist.joosep.xyz/" .env
-          sed -i.bak -e "s/VITE_API_URL=.*/VITE_API_URL=https:\/\/\$VITE_API_HOST/" .env
-          docker compose -f docker-compose.production.yml pull webapp api || true
-          docker compose -f docker-compose.production.yml build webapp api
-          docker compose -f docker-compose.production.yml push
+          sed -i.bak -e "s/VITE_API_URL=.*/VITE_API_URL=https:\/\/api.serieslist.joosep.xyz/" .env
+          pnpm exec nx affected -t build:docker
 
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2

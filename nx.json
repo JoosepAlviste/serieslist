@@ -15,6 +15,10 @@
       "cache": true,
       "inputs": ["production", "^production"]
     },
+    "build:docker": {
+      "cache": true,
+      "defaultConfiguration": "docker"
+    },
     "tsc": {
       "cache": true
     },
