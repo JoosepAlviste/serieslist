@@ -21,6 +21,7 @@
     "postinstall": "cp -n .env.example .env || exit 0",
     "start": "nx run-many -t start,start:jobs",
     "start:e2e": "nx run-many -t start:e2e,start:tmdb",
+    "start:prod": "nx run-many -t start:prod,start:jobs:prod --output-style stream",
     "test": "nx run-many -t test",
     "test:coverage": "nx run-many -t test:coverage --verbose",
     "test:e2e": "nx test:e2e @serieslist/e2e",

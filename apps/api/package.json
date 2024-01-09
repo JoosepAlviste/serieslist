@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "build": "NODE_ENV=production rimraf dist && tsx bin/build.ts",
+    "build": "rimraf dist && NODE_ENV=production tsx bin/build.ts",
     "build:docker": "(cd ../.. && docker buildx build --push --cache-to type=gha,mode=max,scope=webapp --cache-from type=gha,scope=webapp -t ghcr.io/joosepalviste/serieslist-api:latest -f apps/api/Dockerfile --target production .)",
     "clear-test-db": "dotenv -e ../../.env.test tsx bin/clearDatabase.ts",
     "codegen": "DOTENV_CONFIG_PATH='../../.env' graphql-codegen-esm -r dotenv/config",

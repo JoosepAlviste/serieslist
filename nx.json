@@ -52,6 +52,13 @@
     "start:e2e": {
       "defaultConfiguration": "e2e"
     },
+    "start": {
+      "cache": false
+    },
+    "start:prod": {
+      "cache": false,
+      "dependsOn": ["build"]
+    },
     "start:tmdb": {
       "defaultConfiguration": "e2e"
     }

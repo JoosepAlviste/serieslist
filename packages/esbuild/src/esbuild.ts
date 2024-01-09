@@ -34,6 +34,9 @@ const buildEsbuildConfig = ({
     bundle: true,
     tsconfig: 'tsconfig.json',
     external: [...packages, ...external],
+    define: {
+      'process.env.NODE_ENV': `"${process.env.NODE_ENV ?? ''}"`,
+    },
     banner: {
       // require does not exist in ESM, but some packages that are using require
       // are bundled into `dist/` and esbuild does not convert requires to
