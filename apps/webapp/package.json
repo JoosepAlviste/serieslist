@@ -9,7 +9,7 @@
     "codegen": "graphql-codegen",
     "lint": "eslint src && madge --circular --extensions ts,tsx ./src",
     "lint:fix": "eslint --fix src",
-    "start": "tsx ./src/server/server.ts",
+    "start": "NODE_ENV=development tsx ./src/server/server.ts",
     "start:e2e": "dotenv -e ../../.env.e2e pnpm build && pnpm start:prod",
     "start:prod": "cross-env NODE_ENV=production node dist/prodServer/server.js",
     "test": "vitest run",

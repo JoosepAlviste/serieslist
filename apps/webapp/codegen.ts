@@ -1,14 +1,20 @@
+import { join } from 'path'
+
 import type { CodegenConfig } from '@graphql-codegen/cli'
+
+const dirname = new URL('.', import.meta.url).pathname
+const schema = join(dirname, '..', 'api', 'src', 'generated', 'schema.graphql')
 
 const config: CodegenConfig = {
   overwrite: true,
-  schema: 'http://localhost:4000/graphql',
+  schema,
   documents: ['src/**/*.tsx', 'src/**/*.ts'],
   generates: {
     'src/generated/gql/': {
       preset: 'client',
       config: {
         nonOptionalTypename: true,
+        useTypeImports: true,
         scalars: {
           Date: 'string',
         },
@@ -16,7 +22,7 @@ const config: CodegenConfig = {
     },
   },
   hooks: {
-    afterAllFileWrite: ['pnpm exec eslint --fix'],
+    afterAllFileWrite: ['pnpm exec prettier --write src/generated/gql'],
   },
 }
 

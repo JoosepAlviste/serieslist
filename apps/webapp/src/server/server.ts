@@ -8,7 +8,6 @@ import { fastifyCompress } from '@fastify/compress'
 import fastifyCookie from '@fastify/cookie'
 import { fastifyMiddie } from '@fastify/middie'
 import { fastifyStatic } from '@fastify/static'
-import { createLogger } from '@serieslist/logger'
 import { fastify, type FastifyRequest } from 'fastify'
 import { renderPage } from 'vike/server'
 import { type PageContext } from 'vike/types'
@@ -19,13 +18,16 @@ import { type Theme } from '#/utils/theme'
 
 import { makeApolloClient } from '../lib/apollo.js'
 
+import { log } from './logger'
 import { root } from './root.js'
+import { watchGraphQLSchema } from './watchGraphQLSchema'
 
 const isProduction = process.env.NODE_ENV === 'production'
 
-const log = createLogger({ name: 'webapp' })
-
 void startServer()
+if (process.env.NODE_ENV === 'development') {
+  await watchGraphQLSchema()
+}
 
 const REQUEST_LOG_IGNORE_PATTERNS = [
   /\.(js|ts|tsx|css|css\?direct|pageContext\.json|mjs|svg\?import&react|svg\?import)$/,
