@@ -1,0 +1,152 @@
+type BaseError implements Error {
+  message: String!
+}
+
+"""
+A local date string (i.e., with no associated timezone) in `YYYY-MM-DD` format, e.g. `2020-01-01`.
+"""
+scalar Date
+
+type Episode {
+  id: ID!
+  imdbId: String
+  imdbRating: Float
+  isSeen: Boolean!
+  number: Int!
+  releasedAt: Date
+  season: Season!
+  title: String!
+}
+
+interface Error {
+  message: String!
+}
+
+type InvalidInputError implements Error {
+  fieldErrors: [InvalidInputErrorField!]!
+  message: String!
+}
+
+type InvalidInputErrorField {
+  message: String!
+  path: [String!]!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+input MarkSeasonEpisodesAsSeenInput {
+  seasonId: Int!
+}
+
+input MarkSeriesEpisodesAsSeenInput {
+  seriesId: ID!
+}
+
+type Mutation {
+  logOut: Boolean!
+  login(input: LoginInput!): MutationLoginResult!
+  markSeasonEpisodesAsSeen(input: MarkSeasonEpisodesAsSeenInput!): MutationMarkSeasonEpisodesAsSeenResult!
+  markSeriesEpisodesAsSeen(input: MarkSeriesEpisodesAsSeenInput!): MutationMarkSeriesEpisodesAsSeenResult!
+  register(input: RegisterInput!): MutationRegisterResult!
+  seriesUpdateStatus(input: SeriesUpdateStatusInput!): MutationSeriesUpdateStatusResult!
+  toggleEpisodeSeen(input: ToggleEpisodeSeenInput!): MutationToggleEpisodeSeenResult!
+}
+
+union MutationLoginResult = InvalidInputError | User
+
+union MutationMarkSeasonEpisodesAsSeenResult = NotFoundError | Season | UnauthorizedError
+
+union MutationMarkSeriesEpisodesAsSeenResult = NotFoundError | Series | UnauthorizedError
+
+union MutationRegisterResult = InvalidInputError | User
+
+union MutationSeriesUpdateStatusResult = NotFoundError | Series | UnauthorizedError
+
+union MutationToggleEpisodeSeenResult = Episode | NotFoundError | UnauthorizedError
+
+type NotFoundError implements Error {
+  message: String!
+}
+
+type Query {
+  hello(name: String): String!
+  me: QueryMeResult!
+  series(id: ID!): QuerySeriesResult!
+  seriesSearch(input: SeriesSearchInput!): [Series!]!
+  userSeriesList(input: UserSeriesListInput!): QueryUserSeriesListResult!
+}
+
+union QueryMeResult = UnauthorizedError | User
+
+union QuerySeriesResult = InvalidInputError | NotFoundError | Series
+
+union QueryUserSeriesListResult = QueryUserSeriesListSuccess | UnauthorizedError
+
+type QueryUserSeriesListSuccess {
+  data: [Series!]!
+}
+
+input RegisterInput {
+  email: String!
+  name: String!
+  password: String!
+}
+
+type Season {
+  episodes: [Episode!]!
+  id: ID!
+  number: Int!
+  series: Series!
+  title: String!
+}
+
+type Series {
+  endYear: Int
+  id: ID!
+  imdbId: String
+  latestSeenEpisode: Episode
+  nextEpisode: Episode
+  plot: String
+  poster: String
+  seasons: [Season!]!
+  startYear: Int
+  status: UserSeriesStatus
+  title: String!
+}
+
+input SeriesSearchInput {
+  keyword: String!
+}
+
+input SeriesUpdateStatusInput {
+  seriesId: Int!
+  status: UserSeriesStatus
+}
+
+input ToggleEpisodeSeenInput {
+  episodeId: Int!
+}
+
+type UnauthorizedError implements Error {
+  message: String!
+}
+
+type User {
+  email: String!
+  id: ID!
+  name: String!
+}
+
+input UserSeriesListInput {
+  status: UserSeriesStatus
+}
+
+enum UserSeriesStatus {
+  Completed
+  InProgress
+  OnHold
+  PlanToWatch
+}
