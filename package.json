@@ -14,7 +14,7 @@
   },
   "scripts": {
     "build": "nx run-many -t build",
-    "generate:package": "nx generate @serieslist/nx-plugin:package",
+    "generate:package": "nx generate @serieslist/nx-plugin:package && pnpm i",
     "lint": "nx run-many -t lint",
     "migrate": "nx run @serieslist/api:migrate",
     "migrate:test": "nx migrate:test @serieslist/api",

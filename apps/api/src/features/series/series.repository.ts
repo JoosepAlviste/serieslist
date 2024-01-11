@@ -103,7 +103,7 @@ export const createMany = ({
   return ctx.db.insertInto('series').values(series).returningAll().execute()
 }
 
-export const updateOneByTMDbId = ({
+export const updateOneByTMDBId = ({
   ctx,
   tmdbId,
   series,

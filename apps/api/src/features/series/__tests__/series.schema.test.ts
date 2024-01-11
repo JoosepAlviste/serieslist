@@ -1,13 +1,16 @@
+import {
+  tmdbSeasonFactory,
+  tmdbEpisodeFactory,
+  tmdbSeriesDetailsFactory,
+  mockTMDBDetailsRequest,
+  mockTMDBSearchRequest,
+  mockTMDBSeasonRequest,
+} from '@serieslist/tmdb'
 import { type NotWorthIt } from '@serieslist/type-utils'
 import { parseISO, subDays } from 'date-fns'
 import { type Selectable } from 'kysely'
 import { nanoid } from 'nanoid'
 
-import {
-  tmdbEpisodeFactory,
-  tmdbSeasonFactory,
-  tmdbSeriesDetailsFactory,
-} from '#/features/tmdb'
 import { userFactory } from '#/features/users'
 import { type User } from '#/generated/db'
 import { graphql } from '#/generated/gql'
@@ -25,12 +28,6 @@ import { episodeFactory } from '../episode.factory'
 import { seasonFactory } from '../season.factory'
 import { seriesFactory } from '../series.factory'
 import { userSeriesStatusFactory } from '../userSeriesStatus.factory'
-
-import {
-  mockTMDbDetailsRequest,
-  mockTMDbSearchRequest,
-  mockTMDbSeasonRequest,
-} from './scopes'
 
 describe('features/series/series.schema', () => {
   describe('seriesSearch query', () => {
@@ -56,7 +53,7 @@ describe('features/series/series.schema', () => {
       })
 
     it('searches series from the TMDB API', async () => {
-      const scope = mockTMDbSearchRequest('testing', {
+      const scope = mockTMDBSearchRequest('testing', {
         results: [
           tmdbSeriesDetailsFactory.build({
             name: 'Testing Series',
@@ -84,7 +81,7 @@ describe('features/series/series.schema', () => {
 
     it('returns an empty list if the TMDB request fails', async () => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      const scope = mockTMDbSearchRequest('testing', {
+      const scope = mockTMDBSearchRequest('testing', {
         incorrect: 'response format',
       } as NotWorthIt)
 
@@ -102,7 +99,7 @@ describe('features/series/series.schema', () => {
         first_air_date: '2022-04-05',
         poster_path: 'foo.jpg',
       })
-      mockTMDbSearchRequest('testing', {
+      mockTMDBSearchRequest('testing', {
         results: [tmdbSeries],
       })
 
@@ -128,7 +125,7 @@ describe('features/series/series.schema', () => {
         title,
       })
 
-      mockTMDbSearchRequest('testing', {
+      mockTMDBSearchRequest('testing', {
         results: [
           tmdbSeriesDetailsFactory.build({
             name: title,
@@ -196,7 +193,7 @@ describe('features/series/series.schema', () => {
         syncedAt: null,
       })
 
-      const scope = mockTMDbDetailsRequest(
+      const scope = mockTMDBDetailsRequest(
         series.tmdbId,
         tmdbSeriesDetailsFactory.build({
           id: series.tmdbId,
@@ -222,7 +219,7 @@ describe('features/series/series.schema', () => {
         syncedAt: subDays(new Date(Date.now()), 3),
       })
 
-      const scope = mockTMDbDetailsRequest(
+      const scope = mockTMDBDetailsRequest(
         series.tmdbId,
         tmdbSeriesDetailsFactory.build(),
       )
@@ -237,11 +234,10 @@ describe('features/series/series.schema', () => {
         syncedAt: null,
       })
 
-      mockTMDbDetailsRequest(
+      mockTMDBDetailsRequest(
         series.tmdbId,
         tmdbSeriesDetailsFactory.build({
           id: series.tmdbId,
-          overview: 'Updated plot',
           number_of_seasons: 1,
           seasons: [
             tmdbSeasonFactory.build({
@@ -259,7 +255,7 @@ describe('features/series/series.schema', () => {
         episode_number: 2,
         name: 'Episode 2',
       })
-      const seriesSeasonScope = mockTMDbSeasonRequest(
+      const seriesSeasonScope = mockTMDBSeasonRequest(
         {
           tmdbId: series.tmdbId,
           seasonNumber: 1,

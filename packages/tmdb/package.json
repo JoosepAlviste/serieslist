@@ -1,0 +1,31 @@
+{
+  "name": "@serieslist/tmdb",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "./src/index.ts",
+  "exports": {
+    ".": {
+      "import": "./src/index.ts",
+      "types": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "lint": "eslint src",
+    "tsc": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@serieslist/eslint-config-base": "workspace:*",
+    "@serieslist/prettier-config": "workspace:*",
+    "@serieslist/typescript-config-base": "workspace:*",
+    "date-fns": "^2.30.0",
+    "fishery": "^2.2.2",
+    "nanoid": "^4.0.2",
+    "nock": "^13.3.1",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@serieslist/logger": "workspace:^",
+    "node-fetch": "^3.3.1",
+    "zod": "^3.22.3"
+  }
+}

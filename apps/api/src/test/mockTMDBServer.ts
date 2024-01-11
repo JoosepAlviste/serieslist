@@ -9,32 +9,32 @@
  * Feel free to add more series to be returned here.
  */
 
-import fastify from 'fastify'
-import omit from 'just-omit'
-
 import {
   tmdbEpisodeFactory,
   tmdbSeasonFactory,
-  type TMDbSeries,
+  type TMDBSeries,
   tmdbSeriesDetailsFactory,
-  type TMDbSeason,
-  type TMDbEpisode,
-  type TMDbSearchResponse,
-} from '#/features/tmdb'
+  type TMDBSeason,
+  type TMDBEpisode,
+  type TMDBSearchResponse,
+} from '@serieslist/tmdb'
+import fastify from 'fastify'
+import omit from 'just-omit'
+
 import { createArrayOfLength } from '#/lib/createArrayOfLength'
 
 const app = fastify({
   logger: true,
 })
 
-type TMDbSeriesWithFullInfo = Omit<TMDbSeries, 'seasons'> & {
-  seasons: TMDbSeason[]
+type TMDBSeriesWithFullInfo = Omit<TMDBSeries, 'seasons'> & {
+  seasons: TMDBSeason[]
 }
 
 export const createSeriesWithEpisodesAndSeasons = (
-  series: TMDbSeries,
+  series: TMDBSeries,
   seasonEpisodesCount: number[],
-): TMDbSeriesWithFullInfo => ({
+): TMDBSeriesWithFullInfo => ({
   ...series,
   number_of_seasons: seasonEpisodesCount.length,
   seasons: seasonEpisodesCount.map((episodesCount, seasonIndex) =>
@@ -71,9 +71,9 @@ const futurama = createSeriesWithEpisodesAndSeasons(
  * Keep track of all the created generated here, in memory.
  */
 const db = {
-  series: {} as Record<string, TMDbSeriesWithFullInfo>,
-  seasons: {} as Record<string, TMDbSeason>,
-  episodes: {} as Record<string, TMDbEpisode>,
+  series: {} as Record<string, TMDBSeriesWithFullInfo>,
+  seasons: {} as Record<string, TMDBSeason>,
+  episodes: {} as Record<string, TMDBEpisode>,
 }
 
 const series = [futurama]
@@ -100,7 +100,7 @@ app.get('/', (_res, reply) => {
 
 app.get(
   '/3/search/tv',
-  async (): Promise<TMDbSearchResponse> => ({
+  async (): Promise<TMDBSearchResponse> => ({
     page: 1,
     total_pages: 1,
     total_results: 1,
@@ -114,7 +114,7 @@ app.get<{
   }
 }>(
   '/3/tv/:seriesId',
-  async (request): Promise<TMDbSeries> => db.series[request.params.seriesId],
+  async (request): Promise<TMDBSeries> => db.series[request.params.seriesId],
 )
 
 app.get<{
@@ -124,7 +124,7 @@ app.get<{
   }
 }>(
   '/3/tv/:seriesId/season/:seasonNumber',
-  async (request): Promise<TMDbSeason> => {
+  async (request): Promise<TMDBSeason> => {
     const { seriesId, seasonNumber } = request.params
     const season = db.series[seriesId].seasons.find(
       (season) => season.season_number === parseInt(seasonNumber),

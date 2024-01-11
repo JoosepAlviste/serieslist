@@ -1,13 +1,14 @@
+import {
+  tmdbNotFoundResponseFactory,
+  tmdbSeasonFactory,
+  mockTMDBDetailsRequest,
+  mockTMDBSeasonRequest,
+} from '@serieslist/tmdb'
 import { type LiterallyAnything } from '@serieslist/type-utils'
 import { format, subDays } from 'date-fns'
 
 import { seriesProgressFactory } from '#/features/seriesProgress'
-import {
-  tmdbEpisodeFactory,
-  tmdbNotFoundResponseFactory,
-  tmdbSeasonFactory,
-  tmdbSeriesDetailsFactory,
-} from '#/features/tmdb'
+import { tmdbEpisodeFactory, tmdbSeriesDetailsFactory } from '#/features/tmdb'
 import { userFactory } from '#/features/users'
 import { db } from '#/lib/db'
 import {
@@ -26,8 +27,6 @@ import {
   syncSeriesDetails,
 } from '../series.service'
 
-import { mockTMDbDetailsRequest, mockTMDbSeasonRequest } from './scopes'
-
 describe('features/series/series.service', () => {
   describe('syncSeasonsAndEpisodes', () => {
     it('imports new episodes into existing seasons', async () => {
@@ -41,10 +40,10 @@ describe('features/series/series.service', () => {
         number: 1,
       })
 
-      const newTMDbEpisode = tmdbEpisodeFactory.build({
+      const newTMDBEpisode = tmdbEpisodeFactory.build({
         episode_number: 2,
       })
-      mockTMDbSeasonRequest(
+      mockTMDBSeasonRequest(
         {
           tmdbId: series.tmdbId,
           seasonNumber: 1,
@@ -56,7 +55,7 @@ describe('features/series/series.service', () => {
               {},
               { transient: { savedEpisode: existingEpisode } },
             ),
-            newTMDbEpisode,
+            newTMDBEpisode,
           ],
         }),
       )
@@ -82,7 +81,7 @@ describe('features/series/series.service', () => {
         .execute()
       expect(episodes).toHaveLength(2)
       expect(episodes[0]?.id).toBe(existingEpisode.id)
-      expect(episodes[1]?.tmdbId).toBe(newTMDbEpisode.id)
+      expect(episodes[1]?.tmdbId).toBe(newTMDBEpisode.id)
     })
 
     it('updates existing episodes', async () => {
@@ -105,7 +104,7 @@ describe('features/series/series.service', () => {
           transient: { savedEpisode: s1e1 },
         },
       )
-      mockTMDbSeasonRequest(
+      mockTMDBSeasonRequest(
         {
           tmdbId: series.tmdbId,
           seasonNumber: 1,
@@ -143,7 +142,7 @@ describe('features/series/series.service', () => {
         number: 1,
       })
 
-      mockTMDbSeasonRequest(
+      mockTMDBSeasonRequest(
         {
           tmdbId: series.tmdbId,
           seasonNumber: 1,
@@ -207,10 +206,10 @@ describe('features/series/series.service', () => {
         nextEpisodeId: null,
       })
 
-      const newTMDbEpisode = tmdbEpisodeFactory.build({
+      const newTMDBEpisode = tmdbEpisodeFactory.build({
         episode_number: 2,
       })
-      mockTMDbSeasonRequest(
+      mockTMDBSeasonRequest(
         {
           tmdbId: series.tmdbId,
           seasonNumber: 1,
@@ -219,7 +218,7 @@ describe('features/series/series.service', () => {
           season_number: 1,
           episodes: [
             tmdbEpisodeFactory.build({}, { transient: { savedEpisode: s1e1 } }),
-            newTMDbEpisode,
+            newTMDBEpisode,
             tmdbEpisodeFactory.build({
               episode_number: 3,
             }),
@@ -236,7 +235,7 @@ describe('features/series/series.service', () => {
 
       const newEpisode = await db
         .selectFrom('episode')
-        .where('tmdbId', '=', newTMDbEpisode.id)
+        .where('tmdbId', '=', newTMDBEpisode.id)
         .selectAll()
         .executeTakeFirstOrThrow()
       const seriesProgresses = await db
@@ -254,7 +253,7 @@ describe('features/series/series.service', () => {
         seasons: [{ season }],
       } = await createSeriesWithEpisodesAndSeasons([0])
 
-      mockTMDbSeasonRequest(
+      mockTMDBSeasonRequest(
         { tmdbId: series.tmdbId, seasonNumber: season.number },
         tmdbNotFoundResponseFactory.build(),
       )
@@ -279,7 +278,7 @@ describe('features/series/series.service', () => {
         seasons: [{ season }],
       } = await createSeriesWithEpisodesAndSeasons([0])
 
-      mockTMDbSeasonRequest(
+      mockTMDBSeasonRequest(
         { tmdbId: series.tmdbId, seasonNumber: season.number },
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         { not: 'correct' } as LiterallyAnything,
@@ -312,7 +311,7 @@ describe('features/series/series.service', () => {
         ],
       } = await createSeriesWithEpisodesAndSeasons([2])
 
-      mockTMDbSeasonRequest(
+      mockTMDBSeasonRequest(
         { tmdbId: series.tmdbId, seasonNumber: season.number },
         tmdbSeasonFactory.build({
           season_number: season.number,
@@ -346,7 +345,7 @@ describe('features/series/series.service', () => {
     it('does not sync seasons if there are none', async () => {
       const series = await seriesFactory.create()
 
-      mockTMDbDetailsRequest(
+      mockTMDBDetailsRequest(
         series.tmdbId,
         tmdbSeriesDetailsFactory.build({
           id: series.tmdbId,
@@ -364,7 +363,7 @@ describe('features/series/series.service', () => {
     it('deletes a series if it has been deleted in TMDB', async () => {
       const series = await seriesFactory.create()
 
-      mockTMDbDetailsRequest(series.tmdbId, tmdbNotFoundResponseFactory.build())
+      mockTMDBDetailsRequest(series.tmdbId, tmdbNotFoundResponseFactory.build())
 
       const returnedSeries = await syncSeriesDetails({
         ctx: createContext(),
@@ -385,7 +384,7 @@ describe('features/series/series.service', () => {
       const series = await seriesFactory.create()
 
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      mockTMDbDetailsRequest(series.tmdbId, {
+      mockTMDBDetailsRequest(series.tmdbId, {
         not: 'correct',
       } as LiterallyAnything)
 
@@ -427,7 +426,7 @@ describe('features/series/series.service', () => {
         syncedAt: subDays(new Date(), 8),
       })
 
-      const scope = mockTMDbDetailsRequest(
+      const scope = mockTMDBDetailsRequest(
         series.tmdbId,
         tmdbSeriesDetailsFactory.build(
           {
@@ -456,7 +455,7 @@ describe('features/series/series.service', () => {
         syncedAt: null,
       })
 
-      const scope = mockTMDbDetailsRequest(
+      const scope = mockTMDBDetailsRequest(
         series.tmdbId,
         tmdbSeriesDetailsFactory.build(
           {},
@@ -474,7 +473,7 @@ describe('features/series/series.service', () => {
         syncedAt: subDays(new Date(), 6),
       })
 
-      const scope = mockTMDbDetailsRequest(
+      const scope = mockTMDBDetailsRequest(
         series.tmdbId,
         tmdbSeriesDetailsFactory.build(
           {},
@@ -493,7 +492,7 @@ describe('features/series/series.service', () => {
       })
 
       const seriesToSyncScopes = seriesToSync.map((series) =>
-        mockTMDbDetailsRequest(
+        mockTMDBDetailsRequest(
           series.tmdbId,
           tmdbSeriesDetailsFactory.build(
             {},

@@ -74,6 +74,9 @@ importers:
       '@serieslist/logger':
         specifier: workspace:*
         version: link:../../packages/logger
+      '@serieslist/tmdb':
+        specifier: workspace:*
+        version: link:../../packages/tmdb
       bcryptjs:
         specifier: ^2.4.3
         version: 2.4.3
@@ -186,6 +189,9 @@ importers:
       '@vitest/coverage-v8':
         specifier: ^1.1.1
         version: 1.1.1(vitest@1.1.1)
+      just-filter-object:
+        specifier: ^3.2.0
+        version: 3.2.0
       kysely-codegen:
         specifier: ^0.10.0
         version: 0.10.0(kysely@0.27.0)(pg@8.10.0)
@@ -553,6 +559,43 @@ importers:
       prettier:
         specifier: 2.8.4
         version: 2.8.4
+
+  packages/tmdb:
+    dependencies:
+      '@serieslist/logger':
+        specifier: workspace:^
+        version: link:../logger
+      node-fetch:
+        specifier: ^3.3.1
+        version: 3.3.1
+      zod:
+        specifier: ^3.22.3
+        version: 3.22.3
+    devDependencies:
+      '@serieslist/eslint-config-base':
+        specifier: workspace:*
+        version: link:../eslint-config-base
+      '@serieslist/prettier-config':
+        specifier: workspace:*
+        version: link:../prettier-config
+      '@serieslist/typescript-config-base':
+        specifier: workspace:*
+        version: link:../typescript-config-base
+      date-fns:
+        specifier: ^2.30.0
+        version: 2.30.0
+      fishery:
+        specifier: ^2.2.2
+        version: 2.2.2
+      nanoid:
+        specifier: ^4.0.2
+        version: 4.0.2
+      nock:
+        specifier: ^13.3.1
+        version: 13.3.1
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
 
   packages/type-utils:
     devDependencies:
@@ -9782,7 +9825,6 @@ packages:
     engines: {node: '>=0.11'}
     dependencies:
       '@babel/runtime': 7.22.6
-    dev: false
 
   /dateformat@4.6.3:
     resolution: {integrity: sha512-2P0p0pFGzHS5EMnhdxQi7aJN+iMheud0UhG4dlE1DLAlvL8JHjJJTX/CSm4JXwV0Ka5nGk3zC5mcb5bUQUxxMA==}
@@ -11211,7 +11253,6 @@ packages:
     resolution: {integrity: sha512-jeU0nDhPHJkupmjX+r9niKgVMTBDB8X+U/pktoGHAiWOSyNlMd0HhmqnjrpjUOCDPJYaSSu4Ze16h6dZOKSp2w==}
     dependencies:
       lodash.mergewith: 4.6.2
-    dev: false
 
   /flat-cache@3.0.4:
     resolution: {integrity: sha512-dm9s5Pw7Jc0GvMYbshN6zchCA9RgQlzzEZX3vylR9IqFfS8XciblUXOKfW6SiuJ0e13eDYZoZV5wdrev7P3Nwg==}
@@ -12793,6 +12834,10 @@ packages:
       object.values: 1.1.6
     dev: false
 
+  /just-filter-object@3.2.0:
+    resolution: {integrity: sha512-OeorYJxmp2zhy/0LxjS1UjbJ7XMY8M4gVa1RRKxnIVheCYmng2E2hE0lEbDGv4aRh/HI7FgNUXtOMnmNxpoXRQ==}
+    dev: true
+
   /just-group-by@2.2.0:
     resolution: {integrity: sha512-brZocDSmkvDYc+FOr07GiTar4cp7K6OB9huVOrj5LX+iXfCe3hTvn2KGM811LE/SBQkCzuYDDEcG8HA/dKDrnw==}
     dev: false
@@ -12948,7 +12993,6 @@ packages:
 
   /lodash.mergewith@4.6.2:
     resolution: {integrity: sha512-GK3g5RPZWTRSeLSpgP8Xhra+pnjBC56q9FZYe1d5RN3TJ35dbkGy3YqBSMbyCrlbi+CM9Z3Jk5yTL7RCsqboyQ==}
-    dev: false
 
   /lodash.sortby@4.7.0:
     resolution: {integrity: sha512-HDWXG8isMntAyRF5vZ7xKuEvOhT4AhlRt/3czTSjvGUxjYCBVRQY48ViDHyfYz9VIoBkW4TMGQNapx+l3RUwdA==}
@@ -13401,12 +13445,6 @@ packages:
 
   /mute-stream@0.0.8:
     resolution: {integrity: sha512-nnbWWOkoWyUsTjKrhgD0dcz22mdkSnpYqbEjIm2nhwhuxlSkpywJmBo8h0ZqJdkp73mb90SssHkN4rsRaBAfAA==}
-    dev: true
-
-  /nanoid@3.3.6:
-    resolution: {integrity: sha512-BGcqMMJuToF7i1rt+2PWSNVnWIkGCU78jBG3RxO/bZlnZPK2Cmi2QaffxGO/2RvWi9sL+FAiRiXMgsyxQ1DIDA==}
-    engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
-    hasBin: true
     dev: true
 
   /nanoid@3.3.7:
@@ -14136,7 +14174,7 @@ packages:
     resolution: {integrity: sha512-PS08Iboia9mts/2ygV3eLpY5ghnUcfLV/EXTOW1E2qYxJKGGBUtNjN76FYHnMs36RmARn41bC0AZmn+rR0OVpQ==}
     engines: {node: ^10 || ^12 || >=14}
     dependencies:
-      nanoid: 3.3.6
+      nanoid: 3.3.7
       picocolors: 1.0.0
       source-map-js: 1.0.2
     dev: true

@@ -1,15 +1,15 @@
 import nock from 'nock'
 
-import { config } from '#/config'
+import { config } from './config'
 import {
-  type TMDbSearchResponse,
-  type TMDbSeriesResponse,
-  type TMDbSeasonResponse,
-} from '#/features/tmdb'
+  type TMDBSearchResponse,
+  type TMDBSeriesResponse,
+  type TMDBSeasonResponse,
+} from './tmdb.types'
 
-export const mockTMDbSearchRequest = (
+export const mockTMDBSearchRequest = (
   keyword: string,
-  response: Pick<TMDbSearchResponse, 'results'>,
+  response: Pick<TMDBSearchResponse, 'results'>,
 ) => {
   return nock(config.tmdb.url)
     .get('/3/search/tv')
@@ -27,9 +27,9 @@ export const mockTMDbSearchRequest = (
     })
 }
 
-export const mockTMDbDetailsRequest = (
+export const mockTMDBDetailsRequest = (
   tmdbId: number,
-  response: TMDbSeriesResponse,
+  response: TMDBSeriesResponse,
 ) => {
   return nock(config.tmdb.url)
     .get(`/3/tv/${tmdbId}`)
@@ -39,7 +39,7 @@ export const mockTMDbDetailsRequest = (
     .reply(200, response)
 }
 
-export const mockTMDbSeasonRequest = (
+export const mockTMDBSeasonRequest = (
   {
     tmdbId,
     seasonNumber,
@@ -47,7 +47,7 @@ export const mockTMDbSeasonRequest = (
     tmdbId: number
     seasonNumber: number
   },
-  response: TMDbSeasonResponse,
+  response: TMDBSeasonResponse,
 ) =>
   nock(config.tmdb.url)
     .get(`/3/tv/${tmdbId}/season/${seasonNumber}`)

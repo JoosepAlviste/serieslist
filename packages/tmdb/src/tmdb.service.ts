@@ -1,19 +1,22 @@
-import { type Insertable } from 'kysely'
 import fetch from 'node-fetch'
 import { type z } from 'zod'
 
-import { config } from '#/config'
-import { type Season, type Series } from '#/generated/db'
-import { log } from '#/lib/logger'
-
+import { config } from './config'
+import { log } from './logger'
+import {
+  type TMDBSeries,
+  type TMDBSearchSeries,
+  type TMDBParsedSeries,
+  type TMDBParsedSeason,
+  type TMDBParsedEpisode,
+} from './tmdb.types'
 import {
   tmdbSeasonResponseSchema,
   tmdbSeriesResponseSchema,
   tmdbSeriesSearchResponseSchema,
-} from './tmdb.schemas'
-import { type TMDbSeries, type TMDbSearchSeries } from './types'
+} from './tmdbRequests.schema'
 
-const makeTMDbRequest = async <T>(
+const makeTMDBRequest = async <T>(
   url: string,
   queryParams: Record<string, string>,
   schema: z.ZodSchema<T>,
@@ -47,9 +50,9 @@ const makeTMDbRequest = async <T>(
   }
 }
 
-const parseSeriesFromTMDbResponse = (
-  tmdbSeries: TMDbSearchSeries | TMDbSeries,
-): Insertable<Series> => ({
+const parseSeriesFromTMDBResponse = (
+  tmdbSeries: TMDBSearchSeries | TMDBSeries,
+): TMDBParsedSeries => ({
   tmdbId: tmdbSeries.id,
   imdbId: 'external_ids' in tmdbSeries ? tmdbSeries.external_ids.imdb_id : null,
   title: tmdbSeries.name,
@@ -67,7 +70,7 @@ const parseSeriesFromTMDbResponse = (
         tmdbSeries.last_air_date
         ? tmdbSeries.last_air_date.getFullYear()
         : null
-      : undefined,
+      : null,
 })
 
 /**
@@ -77,8 +80,8 @@ export const searchSeries = async ({
   keyword,
 }: {
   keyword: string
-}): Promise<Insertable<Series>[]> => {
-  const { response } = await makeTMDbRequest(
+}): Promise<TMDBParsedSeries[]> => {
+  const { response } = await makeTMDBRequest(
     'search/tv',
     { query: keyword },
     tmdbSeriesSearchResponseSchema,
@@ -89,11 +92,11 @@ export const searchSeries = async ({
     return []
   }
 
-  return response.results.map(parseSeriesFromTMDbResponse)
+  return response.results.map(parseSeriesFromTMDBResponse)
 }
 
 export const fetchSeriesDetails = async ({ tmdbId }: { tmdbId: number }) => {
-  const { parsed, response } = await makeTMDbRequest(
+  const { parsed, response } = await makeTMDBRequest(
     `tv/${tmdbId}`,
     { append_to_response: 'external_ids' },
     tmdbSeriesResponseSchema,
@@ -105,10 +108,10 @@ export const fetchSeriesDetails = async ({ tmdbId }: { tmdbId: number }) => {
   return {
     found: true,
     parsed: true,
-    series: parseSeriesFromTMDbResponse(response),
+    series: parseSeriesFromTMDBResponse(response),
     totalSeasons: response.number_of_seasons,
     seasons: response.seasons.map(
-      (season): Omit<Insertable<Season>, 'seriesId'> => ({
+      (season): TMDBParsedSeason => ({
         tmdbId: season.id,
         number: season.season_number,
         title: season.name,
@@ -124,7 +127,7 @@ export const fetchEpisodesForSeason = async ({
   tmdbId: number
   seasonNumber: number
 }) => {
-  const { response, parsed } = await makeTMDbRequest(
+  const { response, parsed } = await makeTMDBRequest(
     `tv/${tmdbId}/season/${seasonNumber}`,
     {},
     tmdbSeasonResponseSchema,
@@ -144,11 +147,13 @@ export const fetchEpisodesForSeason = async ({
     found: true,
     seasonNumber: response.season_number,
     seasonTitle: response.name,
-    episodes: response.episodes.map((episode) => ({
-      tmdbId: episode.id,
-      number: episode.episode_number,
-      title: episode.name,
-      releasedAt: episode.air_date,
-    })),
+    episodes: response.episodes.map(
+      (episode): TMDBParsedEpisode => ({
+        tmdbId: episode.id,
+        number: episode.episode_number,
+        title: episode.name,
+        releasedAt: episode.air_date,
+      }),
+    ),
   }
 }

@@ -1,10 +1,10 @@
+import { tmdbService } from '@serieslist/tmdb'
 import { addDays, isFuture, subDays } from 'date-fns'
 import index from 'just-index'
 import unique from 'just-unique'
 import { type Insertable } from 'kysely'
 
 import { seriesProgressService } from '#/features/seriesProgress'
-import { tmdbService } from '#/features/tmdb'
 import { type Season } from '#/generated/db'
 import {
   type SeriesUpdateStatusInput,
@@ -255,7 +255,7 @@ export const syncSeriesDetails = async ({
     return null
   }
 
-  const savedSeries = await seriesRepository.updateOneByTMDbId({
+  const savedSeries = await seriesRepository.updateOneByTMDBId({
     ctx,
     tmdbId,
     series: {
