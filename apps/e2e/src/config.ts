@@ -4,4 +4,7 @@ export const config = {
   api: {
     url: process.env.VITE_API_URL!,
   },
+  tmdb: {
+    url: process.env.TMDB_URL!,
+  },
 }

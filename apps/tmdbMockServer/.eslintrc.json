@@ -1,0 +1,12 @@
+{
+  "extends": "@serieslist/eslint-config-base",
+  "root": true,
+  "overrides": [
+    {
+      "files": ["src/main.ts"],
+      "rules": {
+        "@typescript-eslint/no-non-null-assertion": "off"
+      }
+    }
+  ]
+}

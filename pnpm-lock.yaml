@@ -235,6 +235,43 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
 
+  apps/tmdbMockServer:
+    dependencies:
+      '@serieslist/logger':
+        specifier: workspace:*
+        version: link:../../packages/logger
+      '@serieslist/tmdb':
+        specifier: workspace:*
+        version: link:../../packages/tmdb
+      fastify:
+        specifier: ^4.18.0
+        version: 4.18.0
+      just-omit:
+        specifier: ^2.2.0
+        version: 2.2.0
+    devDependencies:
+      '@serieslist/esbuild':
+        specifier: workspace:*
+        version: link:../../packages/esbuild
+      '@serieslist/eslint-config-base':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config-base
+      '@serieslist/prettier-config':
+        specifier: workspace:*
+        version: link:../../packages/prettier-config
+      '@serieslist/typescript-config-base':
+        specifier: workspace:*
+        version: link:../../packages/typescript-config-base
+      rimraf:
+        specifier: ^4.4.0
+        version: 4.4.0
+      tsx:
+        specifier: ^4.7.0
+        version: 4.7.0
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
+
   apps/webapp:
     dependencies:
       '@apollo/client':

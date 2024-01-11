@@ -45,8 +45,9 @@ export default defineConfig({
       reuseExistingServer: !process.env.CI,
     },
     {
-      command: '(cd ../.. && pnpm exec nx start:tmdb @serieslist/api)',
-      url: `http://localhost:4002`,
+      command:
+        '(cd ../.. && pnpm exec nx start:e2e @serieslist/tmdb-mock-server)',
+      url: config.tmdb.url,
       timeout: 20 * 1000,
       reuseExistingServer: !process.env.CI,
     },

@@ -21,7 +21,7 @@ import {
 import fastify from 'fastify'
 import omit from 'just-omit'
 
-import { createArrayOfLength } from '#/lib/createArrayOfLength'
+import { createArrayOfLength } from './lib/createArrayOfLength'
 
 const app = fastify({
   logger: true,

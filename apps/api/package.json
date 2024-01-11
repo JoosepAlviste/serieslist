@@ -20,7 +20,6 @@
     "start:jobs": "NODE_ENV=development tsx watch --clear-screen=false src/mainJobs.ts",
     "start:jobs:prod": "NODE_ENV=production node dist/src/mainJobs.js",
     "start:prod": "NODE_ENV=production node dist/src/main.js",
-    "start:tmdb": "tsx watch src/test/mockTMDBServer.ts",
     "test": "dotenv -e ../../.env.test vitest run",
     "test:coverage": "dotenv -e ../../.env.test vitest run -- --coverage",
     "test:watch": "dotenv -e ../../.env.test vitest",
