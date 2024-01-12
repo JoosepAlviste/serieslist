@@ -57,7 +57,8 @@ jobs:
           pnpm install
           pnpm exec nx affected -t migrate:test
           pnpm exec nx affected -t migrate:e2e
-          pnpm exec nx affected -t lint,tsc,test:coverage,build --verbose
+          pnpm exec nx affected -t lint,tsc,test:coverage --verbose
+          pnpm exec nx run-many -t build
 
       - name: E2E tests
         run: |
