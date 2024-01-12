@@ -20,6 +20,7 @@
     "bugs",
     "engines",
     "type",
+    "sideEffects",
     "main",
     "types",
     "exports",
