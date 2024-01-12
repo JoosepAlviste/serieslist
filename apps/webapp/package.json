@@ -2,6 +2,9 @@
   "name": "@serieslist/webapp",
   "version": "1.0.0",
   "type": "module",
+  "sideEffects": [
+    "src/server/loadDotenv.ts"
+  ],
   "scripts": {
     "build": "rimraf dist && vite build && pnpm build:server",
     "build:docker": "(cd ../.. && docker buildx build --push --cache-to type=gha,mode=max,scope=webapp --cache-from type=gha,scope=webapp -t ghcr.io/joosepalviste/serieslist-webapp:latest -f apps/webapp/Dockerfile --target production --build-arg=\"VITE_APP_PORT=$VITE_APP_PORT\" --build-arg=\"VITE_API_URL=$VITE_API_URL\" --build-arg=\"VITE_API_INTERNAL_URL=$VITE_API_INTERNAL_URL\" .)",
