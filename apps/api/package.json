@@ -2,7 +2,10 @@
   "name": "@serieslist/api",
   "version": "1.0.0",
   "type": "module",
-  "sideEffects": false,
+  "sideEffects": [
+    "./src/**/*.schema.ts",
+    "./src/lib/initSentry.ts"
+  ],
   "scripts": {
     "build": "rimraf dist && NODE_ENV=production tsx bin/build.ts",
     "build:docker": "(cd ../.. && docker buildx build --push --cache-to type=gha,mode=max,scope=webapp --cache-from type=gha,scope=webapp -t ghcr.io/joosepalviste/serieslist-api:latest -f apps/api/Dockerfile --target production .)",
