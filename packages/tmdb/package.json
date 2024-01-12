@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "main": "./src/index.ts",
+  "sideEffects": false,
   "exports": {
     ".": {
       "import": "./src/index.ts",
