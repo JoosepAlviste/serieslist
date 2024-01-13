@@ -1,6 +1,8 @@
 import { createQueue, createWorker } from '#/lib/bullMq'
 import { db } from '#/lib/db'
 
+import { reSyncSeries } from './series.service'
+
 export const seriesSyncQueue = createQueue('seriesSync')
 
 const SERIES_SYNC_JOB = 'seriesSync'
@@ -18,8 +20,6 @@ await seriesSyncQueue.add(
 export const seriesSyncWorker = createWorker(
   SERIES_SYNC_JOB,
   async () => {
-    const { reSyncSeries } = await import('./series.service')
-
     await reSyncSeries({ ctx: { db } })
   },
   { autorun: false },

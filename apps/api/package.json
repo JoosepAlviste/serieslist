@@ -4,7 +4,8 @@
   "type": "module",
   "sideEffects": [
     "./src/**/*.schema.ts",
-    "./src/lib/initSentry.ts"
+    "./src/lib/initSentry.ts",
+    "./src/**/*.job.ts"
   ],
   "scripts": {
     "build": "rimraf dist && NODE_ENV=production tsx bin/build.ts",
