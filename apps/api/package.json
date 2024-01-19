@@ -10,6 +10,7 @@
   "scripts": {
     "build": "rimraf dist && NODE_ENV=production tsx bin/build.ts",
     "build:docker": "(cd ../.. && docker buildx build --push --cache-to type=gha,mode=max,scope=webapp --cache-from type=gha,scope=webapp -t ghcr.io/joosepalviste/serieslist-api:latest -f apps/api/Dockerfile --target production .)",
+    "build:e2e": "(cd ../.. && nx run @serieslist/api:build)",
     "clear-test-db": "dotenv -e ../../.env.test tsx bin/clearDatabase.ts",
     "codegen": "DOTENV_CONFIG_PATH='../../.env' graphql-codegen-esm -r dotenv/config",
     "codegen:db": "tsx bin/kyselyCodegen.ts && eslint --fix src/generated/db.ts",
@@ -21,7 +22,7 @@
     "migrate:test": "dotenv -e ../../.env.test tsx bin/migrate.ts",
     "migration": "./bin/createMigration.sh",
     "start": "NODE_ENV=development tsx watch --clear-screen=false src/main.ts",
-    "start:e2e": "dotenv -e ../../.env.e2e -v NODE_ENV=test pnpm build && pnpm start:prod",
+    "start:e2e": "NODE_ENV=test pnpm start:prod",
     "start:jobs": "NODE_ENV=development tsx watch --clear-screen=false src/mainJobs.ts",
     "start:jobs:prod": "NODE_ENV=production node dist/src/mainJobs.js",
     "start:prod": "NODE_ENV=production node dist/src/main.js",

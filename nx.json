@@ -49,8 +49,12 @@
     "build:server": {
       "cache": true
     },
-    "start:e2e": {
+    "build:e2e": {
       "defaultConfiguration": "e2e"
+    },
+    "start:e2e": {
+      "defaultConfiguration": "e2e",
+      "dependsOn": ["build:e2e"]
     },
     "start": {
       "cache": false
