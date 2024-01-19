@@ -1,7 +1,5 @@
+import { Text, Title } from '@serieslist/ui'
 import React from 'react'
-
-import { Text } from '../Text'
-import { Title } from '../Title'
 
 import FunArrow from './FunArrow.svg?react'
 import HomeCinema from './HomeCinema.svg?react'

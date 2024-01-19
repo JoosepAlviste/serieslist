@@ -5,8 +5,14 @@
   "scripts": {
     "build": "rimraf dist && NODE_ENV=production tsx bin/build.ts",
     "lint": "eslint src",
-    "tsc": "tsc --noEmit",
-    "start:e2e": "NODE_ENV=production node dist/main.js"
+    "start:e2e": "NODE_ENV=production node dist/main.js",
+    "tsc": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@serieslist/logger": "workspace:*",
+    "@serieslist/tmdb": "workspace:*",
+    "fastify": "^4.18.0",
+    "just-omit": "^2.2.0"
   },
   "devDependencies": {
     "@serieslist/esbuild": "workspace:*",
@@ -16,11 +22,5 @@
     "rimraf": "^4.4.0",
     "tsx": "^4.7.0",
     "typescript": "^5.3.3"
-  },
-  "dependencies": {
-    "@serieslist/logger": "workspace:*",
-    "@serieslist/tmdb": "workspace:*",
-    "fastify": "^4.18.0",
-    "just-omit": "^2.2.0"
   }
 }

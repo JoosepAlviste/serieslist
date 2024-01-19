@@ -1,0 +1,4 @@
+{
+  "extends": "@serieslist/eslint-config-react",
+  "root": true
+}

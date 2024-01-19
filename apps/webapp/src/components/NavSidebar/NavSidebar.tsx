@@ -1,13 +1,11 @@
 import * as NavigationMenu from '@radix-ui/react-navigation-menu'
+import { Icon, Logo, Link, Tooltip } from '@serieslist/ui'
 import classNames from 'classnames'
 import React from 'react'
 
-import { Link, Tooltip } from '#/components'
 import { GITHUB_URL } from '#/constants'
 import { useAuthenticatedUser } from '#/features/auth'
-
-import { Icon } from '../Icon'
-import { Logo } from '../Logo'
+import { usePageContext } from '#/hooks'
 
 import * as s from './NavSidebar.css'
 
@@ -16,6 +14,7 @@ type NavSidebarProps = {
 }
 
 export const NavSidebar = ({ className }: NavSidebarProps) => {
+  const { urlPathname } = usePageContext()
   const { currentUser } = useAuthenticatedUser()
 
   return (
@@ -43,6 +42,7 @@ export const NavSidebar = ({ className }: NavSidebarProps) => {
                 <Link
                   activeClass={s.navLinkIsActive}
                   activeUrlPrefix="/series/list"
+                  currentUrl={urlPathname}
                 >
                   <Icon name="series" size="l" label="Series" />
                 </Link>

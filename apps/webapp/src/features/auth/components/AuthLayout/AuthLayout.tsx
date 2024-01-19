@@ -1,6 +1,5 @@
+import { Text, Title } from '@serieslist/ui'
 import React, { type ReactElement } from 'react'
-
-import { Text, Title } from '#/components'
 
 import * as s from './AuthLayout.css'
 import HorrorMovie from './HorrorMovie.svg?react'

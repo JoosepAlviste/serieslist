@@ -1,11 +1,12 @@
 import * as NavigationMenu from '@radix-ui/react-navigation-menu'
+import { Icon, Link, Text } from '@serieslist/ui'
 import React, { useRef } from 'react'
 import { CSSTransition } from 'react-transition-group'
 
-import { Icon, Link, Text } from '#/components'
 import { GITHUB_URL } from '#/constants'
 import { useAuthenticatedUser } from '#/features/auth'
 import { Search } from '#/features/search'
+import { usePageContext } from '#/hooks'
 
 import { ThemeToggle } from '../../ThemeToggle'
 
@@ -56,7 +57,11 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
 
           <NavigationMenu.Item>
             <NavigationMenu.Link href="/about" asChild onSelect={onClose}>
-              <Link className={s.link}>About</Link>
+              <Link>
+                <Text size="l" variant="secondary" className={s.link}>
+                  About
+                </Text>
+              </Link>
             </NavigationMenu.Link>
           </NavigationMenu.Item>
 
@@ -69,8 +74,10 @@ export const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                   await logOut()
                 }}
               >
-                <button className={s.link} type="button">
-                  Log out
+                <button type="button">
+                  <Text size="l" variant="secondary" className={s.link}>
+                    Log out
+                  </Text>
                 </button>
               </NavigationMenu.Link>
             </NavigationMenu.Item>

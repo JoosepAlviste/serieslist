@@ -1,6 +1,5 @@
+import { type ToastVariant } from '@serieslist/ui'
 import { createContext } from 'react'
-
-import { type ToastVariant } from '#/components'
 
 export type Toast = {
   id: string

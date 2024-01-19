@@ -1,6 +1,5 @@
+import { Link } from '@serieslist/ui'
 import React from 'react'
-
-import { Link } from '#/components'
 
 import { AuthLayout } from '../components'
 import { LoginForm } from '../components/LoginForm'

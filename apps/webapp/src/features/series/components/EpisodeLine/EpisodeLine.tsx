@@ -1,8 +1,8 @@
 import { useMutation } from '@apollo/client'
+import { Button, Text } from '@serieslist/ui'
 import { isFuture } from 'date-fns'
 import React from 'react'
 
-import { Button, Text } from '#/components'
 import { useAuthenticatedUser } from '#/features/auth'
 import { type FragmentType, graphql, useFragment } from '#/generated/gql'
 import { useToast } from '#/hooks'

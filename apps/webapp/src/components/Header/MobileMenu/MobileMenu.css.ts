@@ -1,6 +1,6 @@
+import { iconColorVar } from '@serieslist/ui'
 import { globalStyle, style } from '@vanilla-extract/css'
 
-import { iconColorVar } from '#/styles/cssVariables'
 import { responsive, vars, zIndex } from '#/styles/theme.css'
 
 export const ANIMATION_DURATION_MS = 200

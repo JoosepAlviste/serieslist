@@ -1,5 +1,6 @@
 import { useLazyQuery } from '@apollo/client'
 import * as Popover from '@radix-ui/react-popover'
+import { Text, useSSR, Icon, LoadingSpinner, Title } from '@serieslist/ui'
 import classNames from 'classnames'
 import React, {
   type HTMLAttributes,
@@ -13,10 +14,9 @@ import React, {
 import Highlighter from 'react-highlight-words'
 import { navigate } from 'vike/client/router'
 
-import { Icon, LoadingSpinner, Text, Title } from '#/components'
 import { SeriesPoster } from '#/features/series'
 import { graphql } from '#/generated/gql'
-import { useDebouncedCallback, useSSR } from '#/hooks'
+import { useDebouncedCallback } from '#/hooks'
 
 import * as s from './Search.css'
 

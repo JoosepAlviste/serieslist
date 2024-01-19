@@ -1,8 +1,8 @@
 import * as Toggle from '@radix-ui/react-toggle'
+import { Tooltip } from '@serieslist/ui'
 import classNames from 'classnames'
 import React from 'react'
 
-import { Tooltip } from '#/components'
 import { useTheme } from '#/hooks'
 import { THEME } from '#/utils/theme'
 

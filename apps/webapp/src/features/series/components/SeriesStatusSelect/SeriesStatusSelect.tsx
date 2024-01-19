@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/client'
+import { Button, Select, AlertDialog } from '@serieslist/ui'
 import React, { useState } from 'react'
 
-import { Button, Select, AlertDialog } from '#/components'
 import { type FragmentType, graphql, useFragment } from '#/generated/gql'
 import { UserSeriesStatus } from '#/generated/gql/graphql'
 import { useToast } from '#/hooks'

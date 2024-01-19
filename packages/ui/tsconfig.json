@@ -1,0 +1,9 @@
+{
+  "extends": "@serieslist/typescript-config-base",
+  "compilerOptions": {
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "types": ["vitest/globals"],
+    "jsx": "react",
+    "baseUrl": "."
+  }
+}

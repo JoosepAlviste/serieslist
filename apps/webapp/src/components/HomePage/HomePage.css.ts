@@ -1,6 +1,6 @@
+import { SVG_COLOR_VAR } from '@serieslist/ui'
 import { style } from '@vanilla-extract/css'
 
-import { SVG_COLOR_VAR } from '#/styles/simpleCssVariables'
 import { responsive, vars, zIndex } from '#/styles/theme.css'
 
 export const container = style({

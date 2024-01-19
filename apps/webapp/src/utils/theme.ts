@@ -1,6 +1,6 @@
 import { type ValueOf } from '@serieslist/type-utils'
 
-import { darkThemeClass, lightThemeClass } from '#/styles/theme.css'
+import { darkThemeClasses, lightThemeClasses } from '#/styles/theme.css'
 
 import { setCookie } from './cookies'
 
@@ -17,10 +17,18 @@ export const activateTheme = (theme: Theme) => {
   setCookie(THEME_COOKIE, theme)
 
   if (theme === THEME.DARK) {
-    document.documentElement.classList.remove(lightThemeClass)
-    document.documentElement.classList.add(darkThemeClass)
+    lightThemeClasses.forEach((className) => {
+      document.documentElement.classList.remove(className)
+    })
+    darkThemeClasses.forEach((className) => {
+      document.documentElement.classList.add(className)
+    })
   } else {
-    document.documentElement.classList.remove(darkThemeClass)
-    document.documentElement.classList.add(lightThemeClass)
+    darkThemeClasses.forEach((className) => {
+      document.documentElement.classList.remove(className)
+    })
+    lightThemeClasses.forEach((className) => {
+      document.documentElement.classList.add(className)
+    })
   }
 }

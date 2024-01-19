@@ -1,6 +1,6 @@
+import { Text, Title } from '@serieslist/ui'
 import React from 'react'
 
-import { Text, Title } from '#/components'
 import { usePageContext } from '#/hooks'
 
 import Illustration404 from './404.svg?react'

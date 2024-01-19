@@ -1,6 +1,5 @@
+import { Title } from '@serieslist/ui'
 import React from 'react'
-
-import { Title } from '#/components'
 
 import * as s from './index.page.css'
 import TMDBLogo from './TMDBLogo.svg?react'

@@ -1,4 +1,5 @@
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
+import { Button, Icon, Link, Logo } from '@serieslist/ui'
 import classNames from 'classnames'
 import React, { useState } from 'react'
 
@@ -6,10 +7,6 @@ import { useAuthenticatedUser } from '#/features/auth'
 import { Search } from '#/features/search'
 import { zIndex } from '#/styles/theme.css'
 
-import { Button } from '../Button'
-import { Icon } from '../Icon'
-import { Link } from '../Link'
-import { Logo } from '../Logo'
 import { ThemeToggle } from '../ThemeToggle'
 
 import * as s from './Header.css'

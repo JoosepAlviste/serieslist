@@ -9,8 +9,6 @@ import { VitePWA } from 'vite-plugin-pwa'
 import svgr from 'vite-plugin-svgr'
 import { defineConfig } from 'vitest/config'
 
-import { SVG_COLOR_VAR } from './src/styles/simpleCssVariables'
-
 export default ({ mode }: { mode: string }) => {
   process.env = {
     ...process.env,
@@ -33,7 +31,7 @@ export default ({ mode }: { mode: string }) => {
         svgrOptions: {
           icon: '1em',
           replaceAttrValues: {
-            currentColor: `var(${SVG_COLOR_VAR})`,
+            currentColor: 'var(--icon-color)',
           },
         },
       }),

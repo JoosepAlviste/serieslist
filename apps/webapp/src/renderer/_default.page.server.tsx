@@ -3,7 +3,7 @@ import React from 'react'
 import { escapeInject, dangerouslySkipEscape } from 'vike/server'
 import type { PageContextServer } from 'vike/types'
 
-import { darkThemeClass, lightThemeClass } from '#/styles/theme.css'
+import { darkThemeClasses, lightThemeClasses } from '#/styles/theme.css'
 import { THEME } from '#/utils/theme'
 
 import { PageShell } from './PageShell'
@@ -42,7 +42,10 @@ export async function render(pageContext: PageContextServer) {
     documentProps?.description ??
     'Always know which episode to watch next. Keep track of your series and seen episodes.'
 
-  const themeClass = theme == THEME.DARK ? darkThemeClass : lightThemeClass
+  const themeClass =
+    theme == THEME.DARK
+      ? darkThemeClasses.join(' ')
+      : lightThemeClasses.join(' ')
 
   const pwaHead = isProduction
     ? `

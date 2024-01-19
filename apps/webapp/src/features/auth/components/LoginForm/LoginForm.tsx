@@ -1,9 +1,9 @@
 import { useMutation } from '@apollo/client'
+import { Button, Error, Field } from '@serieslist/ui'
 import React from 'react'
 import { navigate } from 'vike/client/router'
 import { z } from 'zod'
 
-import { Button, Error, Field } from '#/components'
 import { graphql } from '#/generated/gql'
 import { useForm } from '#/lib/forms'
 

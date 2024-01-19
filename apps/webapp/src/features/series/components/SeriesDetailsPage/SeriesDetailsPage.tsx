@@ -1,9 +1,9 @@
 import { useMutation, useQuery } from '@apollo/client'
 import * as Tabs from '@radix-ui/react-tabs'
+import { Button, Text, Title, Tooltip } from '@serieslist/ui'
 import { isAfter } from 'date-fns'
 import React from 'react'
 
-import { Button, Text, Title, Tooltip } from '#/components'
 import { useAuthenticatedUser } from '#/features/auth'
 import { graphql } from '#/generated/gql'
 import { useToast } from '#/hooks'
