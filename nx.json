@@ -13,11 +13,23 @@
   "targetDefaults": {
     "build": {
       "cache": true,
-      "inputs": ["production", "^production"]
+      "inputs": ["production", "^production"],
+      "configurations": {
+        "e2e": {}
+      }
     },
     "build:docker": {
       "cache": true,
       "defaultConfiguration": "docker"
+    },
+    "build:e2e": {
+      "defaultConfiguration": "e2e",
+      "configurations": {
+        "e2e": {}
+      }
+    },
+    "build:server": {
+      "cache": true
     },
     "tsc": {
       "cache": true
@@ -46,12 +58,6 @@
         "{projectRoot}/playwright-report"
       ]
     },
-    "build:server": {
-      "cache": true
-    },
-    "build:e2e": {
-      "defaultConfiguration": "e2e"
-    },
     "start:e2e": {
       "defaultConfiguration": "e2e",
       "dependsOn": ["build:e2e"]
@@ -62,9 +68,6 @@
     "start:prod": {
       "cache": false,
       "dependsOn": ["build"]
-    },
-    "start:tmdb": {
-      "defaultConfiguration": "e2e"
     }
   }
 }
