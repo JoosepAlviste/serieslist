@@ -1,7 +1,19 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "name": "@serieslist/api",
+  "namedInputs": {
+    "envVars": [{ "env": "NODE_ENV" }]
+  },
   "targets": {
+    "build": {
+      "inputs": ["envVars"]
+    },
+    "build:docker": {
+      "inputs": ["envVars"]
+    },
+    "build:e2e": {
+      "inputs": ["envVars"]
+    },
     "migrate:test": {
       "defaultConfiguration": "test"
     }

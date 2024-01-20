@@ -23,6 +23,7 @@
       "defaultConfiguration": "docker"
     },
     "build:e2e": {
+      "cache": true,
       "defaultConfiguration": "e2e",
       "configurations": {
         "e2e": {}
@@ -62,11 +63,7 @@
       "defaultConfiguration": "e2e",
       "dependsOn": ["build:e2e"]
     },
-    "start": {
-      "cache": false
-    },
     "start:prod": {
-      "cache": false,
       "dependsOn": ["build"]
     }
   }

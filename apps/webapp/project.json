@@ -1,0 +1,28 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "@serieslist/webapp",
+  "namedInputs": {
+    "envVars": [
+      { "env": "NODE_ENV" },
+      { "env": "DEV" },
+      { "env": "VITE_APP_PORT" },
+      { "env": "VITE_API_URL" },
+      { "env": "VITE_API_INTERNAL_URL" },
+      { "env": "VITE_APP_SENTR_DSN" }
+    ]
+  },
+  "targets": {
+    "build": {
+      "inputs": ["envVars"]
+    },
+    "build:docker": {
+      "inputs": ["envVars"]
+    },
+    "build:e2e": {
+      "inputs": ["envVars"]
+    },
+    "build:server": {
+      "inputs": ["envVars"]
+    }
+  }
+}
