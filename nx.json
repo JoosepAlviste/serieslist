@@ -19,7 +19,6 @@
       }
     },
     "build:docker": {
-      "cache": true,
       "defaultConfiguration": "docker"
     },
     "build:e2e": {
@@ -66,5 +65,6 @@
     "start:prod": {
       "dependsOn": ["build"]
     }
-  }
+  },
+  "nxCloudAccessToken": "NGUzMjk1ZGMtYTZmYS00MDM3LTgxYTItMGZiMTFmZmJmZmExfHJlYWQ="
 }
