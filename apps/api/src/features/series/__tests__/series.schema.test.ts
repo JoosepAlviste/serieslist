@@ -5,7 +5,7 @@ import {
   mockTMDBDetailsRequest,
   mockTMDBSearchRequest,
   mockTMDBSeasonRequest,
-} from '@serieslist/tmdb'
+} from '@serieslist/tmdb/test'
 import { type NotWorthIt } from '@serieslist/type-utils'
 import { parseISO, subDays } from 'date-fns'
 import { type Selectable } from 'kysely'

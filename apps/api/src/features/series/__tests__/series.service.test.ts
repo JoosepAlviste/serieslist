@@ -3,7 +3,7 @@ import {
   tmdbSeasonFactory,
   mockTMDBDetailsRequest,
   mockTMDBSeasonRequest,
-} from '@serieslist/tmdb'
+} from '@serieslist/tmdb/test'
 import { type LiterallyAnything } from '@serieslist/type-utils'
 import { format, subDays } from 'date-fns'
 

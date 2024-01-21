@@ -10,14 +10,16 @@
  */
 
 import {
-  tmdbEpisodeFactory,
-  tmdbSeasonFactory,
   type TMDBSeries,
-  tmdbSeriesDetailsFactory,
   type TMDBSeason,
   type TMDBEpisode,
   type TMDBSearchResponse,
 } from '@serieslist/tmdb'
+import {
+  tmdbEpisodeFactory,
+  tmdbSeasonFactory,
+  tmdbSeriesDetailsFactory,
+} from '@serieslist/tmdb/test'
 import fastify from 'fastify'
 import omit from 'just-omit'
 

@@ -1,9 +1,8 @@
+import { type TMDBEpisode, type TMDBSeries } from '@serieslist/tmdb'
 import {
   tmdbSeriesDetailsFactory as baseTmdbSeriesDetailsFactory,
   tmdbEpisodeFactory as baseTmdbEpisodeFactory,
-  type TMDBEpisode,
-  type TMDBSeries,
-} from '@serieslist/tmdb'
+} from '@serieslist/tmdb/test'
 import { type NotWorthIt } from '@serieslist/type-utils'
 import { Factory } from 'fishery'
 import filterObject from 'just-filter-object'
