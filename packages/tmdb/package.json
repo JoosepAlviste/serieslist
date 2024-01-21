@@ -21,6 +21,7 @@
   "dependencies": {
     "@serieslist/logger": "workspace:*",
     "node-fetch": "^3.3.1",
+    "pino": "^8.14.1",
     "zod": "^3.22.3"
   },
   "devDependencies": {

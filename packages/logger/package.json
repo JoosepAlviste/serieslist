@@ -15,6 +15,9 @@
   "peerDependencies": {
     "pino": "^8.14.1"
   },
+  "dependencies": {
+    "pino": "^8.14.1"
+  },
   "devDependencies": {
     "@serieslist/eslint-config-base": "workspace:*",
     "@serieslist/prettier-config": "workspace:*",

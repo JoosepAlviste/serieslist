@@ -16,7 +16,8 @@
       "inputs": ["production", "^production"],
       "configurations": {
         "e2e": {}
-      }
+      },
+      "dependsOn": ["build"]
     },
     "build:docker": {
       "defaultConfiguration": "docker"
@@ -42,7 +43,6 @@
       "defaultConfiguration": "test"
     },
     "test:watch": {
-      "cache": true,
       "defaultConfiguration": "test"
     },
     "test:coverage": {

@@ -20,12 +20,12 @@ import { makeApolloClient } from '../lib/apollo.js'
 
 import { log } from './logger'
 import { root } from './root.js'
-import { watchGraphQLSchema } from './watchGraphQLSchema'
 
 const isProduction = process.env.NODE_ENV === 'production'
 
 void startServer()
 if (process.env.NODE_ENV === 'development') {
+  const { watchGraphQLSchema } = await import('./watchGraphQLSchema')
   await watchGraphQLSchema()
 }
 
