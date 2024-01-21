@@ -6,7 +6,7 @@ import pino, { type Logger } from 'pino'
  */
 export const createLogger = ({ name }: { name: string }) => {
   return pino({
-    level: 'info',
+    level: process.env.NODE_ENV === 'test' ? 'silent' : 'info',
     name,
     transport:
       process.env.NODE_ENV !== 'production'

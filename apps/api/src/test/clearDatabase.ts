@@ -15,4 +15,8 @@ export const clearDatabase = async () => {
       db,
     )
   }
+
+  // Destroy the connection so that it wouldn't keep the tests running because
+  // of a floating promise
+  await db.destroy()
 }
