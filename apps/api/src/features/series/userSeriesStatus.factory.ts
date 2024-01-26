@@ -1,12 +1,12 @@
+import { type UserSeriesStatus } from '@serieslist/db'
+import { UserSeriesStatusStatus } from '@serieslist/db'
 import { Factory } from 'fishery'
 import { type Selectable } from 'kysely'
 
-import { type UserSeriesStatus } from '#/generated/db'
 import { db } from '#/lib/db'
 
 import { userFactory } from '../users'
 
-import { UserSeriesStatus as UserSeriesStatusStatus } from './constants'
 import { seriesFactory } from './series.factory'
 
 export const userSeriesStatusFactory = Factory.define<

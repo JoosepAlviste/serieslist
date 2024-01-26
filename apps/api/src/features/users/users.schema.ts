@@ -1,6 +1,6 @@
+import type { User } from '@serieslist/db'
 import { type Selectable } from 'kysely'
 
-import type { User } from '#/generated/db'
 import { builder } from '#/schemaBuilder'
 
 export type UserType = Selectable<User>

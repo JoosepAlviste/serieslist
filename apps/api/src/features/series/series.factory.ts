@@ -1,8 +1,8 @@
+import { type Series } from '@serieslist/db'
 import { Factory } from 'fishery'
 import { type Selectable } from 'kysely'
 import { nanoid } from 'nanoid'
 
-import { type Series } from '#/generated/db'
 import { db } from '#/lib/db'
 import { generateRandomInt } from '#/utils/generateRandomInt'
 

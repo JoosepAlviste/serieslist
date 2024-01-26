@@ -1,9 +1,7 @@
+import { type DB, type UserSeriesStatusStatus } from '@serieslist/db'
 import { type UpdateObject, type InsertObject } from 'kysely'
 
-import { type DB } from '#/generated/db'
 import { type DBContext, type Context } from '#/types/context'
-
-import { type UserSeriesStatus } from './constants'
 
 export const findOne = ({
   ctx,
@@ -77,7 +75,7 @@ export const findManyForUser = ({
 }: {
   ctx: Context
   userId: number
-  status?: UserSeriesStatus
+  status?: UserSeriesStatusStatus
 }) => {
   let query = ctx.db
     .selectFrom('series')

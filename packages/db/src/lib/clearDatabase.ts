@@ -1,8 +1,11 @@
 import { sql } from 'kysely'
 
-import { db } from '#/lib/db'
+import { createDbConnection } from './createDbConnection'
+import { log } from './logger'
 
 export const clearDatabase = async () => {
+  const db = createDbConnection({ logger: log })
+
   const tables = await sql<{
     tablename: string
   }>`SELECT tablename FROM pg_tables WHERE schemaname = 'public'`.execute(db)

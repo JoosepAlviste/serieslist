@@ -1,4 +1,4 @@
-export enum UserSeriesStatus {
+export enum UserSeriesStatusStatus {
   Completed = 'Completed',
   InProgress = 'InProgress',
   OnHold = 'OnHold',

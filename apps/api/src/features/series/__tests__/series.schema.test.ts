@@ -1,3 +1,5 @@
+import { type User } from '@serieslist/db'
+import { UserSeriesStatusStatus } from '@serieslist/db'
 import {
   tmdbSeasonFactory,
   tmdbEpisodeFactory,
@@ -12,7 +14,6 @@ import { type Selectable } from 'kysely'
 import { nanoid } from 'nanoid'
 
 import { userFactory } from '#/features/users'
-import { type User } from '#/generated/db'
 import { graphql } from '#/generated/gql'
 import { type SeriesUpdateStatusInput } from '#/generated/gql/graphql'
 import { db } from '#/lib/db'
@@ -23,7 +24,6 @@ import {
   expectErrors,
 } from '#/test/testUtils'
 
-import { UserSeriesStatus } from '../constants'
 import { episodeFactory } from '../episode.factory'
 import { seasonFactory } from '../season.factory'
 import { seriesFactory } from '../series.factory'
@@ -324,7 +324,7 @@ describe('features/series/series.schema', () => {
       status,
     }: {
       user: Selectable<User>
-      status?: UserSeriesStatus
+      status?: UserSeriesStatusStatus
     }) => {
       return executeOperation({
         operation: graphql(`
@@ -404,17 +404,17 @@ describe('features/series/series.schema', () => {
       await userSeriesStatusFactory.create({
         userId: user.id,
         seriesId: series1.id,
-        status: UserSeriesStatus.InProgress,
+        status: UserSeriesStatusStatus.InProgress,
       })
       await userSeriesStatusFactory.create({
         userId: user.id,
         seriesId: series2.id,
-        status: UserSeriesStatus.Completed,
+        status: UserSeriesStatusStatus.Completed,
       })
 
       const res = await executeUserSeriesListQuery({
         user,
-        status: UserSeriesStatus.InProgress,
+        status: UserSeriesStatusStatus.InProgress,
       })
       const resData = checkErrors(res.data?.userSeriesList)
 
@@ -541,7 +541,7 @@ describe('features/series/series.schema', () => {
         .values({
           seriesId: series.id,
           userId: user.id,
-          status: UserSeriesStatus.Completed,
+          status: UserSeriesStatusStatus.Completed,
         })
         .execute()
 
@@ -563,7 +563,7 @@ describe('features/series/series.schema', () => {
       })
       const resSeries = checkErrors(res.data?.series)
 
-      expect(resSeries.status).toBe(UserSeriesStatus.Completed)
+      expect(resSeries.status).toBe(UserSeriesStatusStatus.Completed)
     })
   })
 
@@ -635,7 +635,7 @@ describe('features/series/series.schema', () => {
 
       await executeSeriesUpdateStatus({
         seriesId: series.id,
-        status: UserSeriesStatus.Completed,
+        status: UserSeriesStatusStatus.Completed,
         user,
       })
 
@@ -646,7 +646,7 @@ describe('features/series/series.schema', () => {
         .selectAll()
         .executeTakeFirst()
       expect(seriesStatus).toBeTruthy()
-      expect(seriesStatus?.status).toBe(UserSeriesStatus.Completed)
+      expect(seriesStatus?.status).toBe(UserSeriesStatusStatus.Completed)
     })
 
     it('allows updating an existing status', async () => {
@@ -658,13 +658,13 @@ describe('features/series/series.schema', () => {
         .values({
           seriesId: series.id,
           userId: user.id,
-          status: UserSeriesStatus.Completed,
+          status: UserSeriesStatusStatus.Completed,
         })
         .execute()
 
       await executeSeriesUpdateStatus({
         seriesId: series.id,
-        status: UserSeriesStatus.InProgress,
+        status: UserSeriesStatusStatus.InProgress,
         user,
       })
 
@@ -675,7 +675,7 @@ describe('features/series/series.schema', () => {
         .selectAll()
         .executeTakeFirst()
       expect(seriesStatus).toBeTruthy()
-      expect(seriesStatus?.status).toBe(UserSeriesStatus.InProgress)
+      expect(seriesStatus?.status).toBe(UserSeriesStatusStatus.InProgress)
     })
   })
 })

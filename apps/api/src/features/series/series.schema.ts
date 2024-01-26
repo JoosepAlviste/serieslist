@@ -1,13 +1,13 @@
+import { type Episode } from '@serieslist/db'
+import { UserSeriesStatusStatus } from '@serieslist/db'
 import { type Selectable } from 'kysely'
 import { ZodError } from 'zod'
 
-import { type Episode } from '#/generated/db'
 import { NotFoundError, UnauthorizedError } from '#/lib/errors'
 import { builder } from '#/schemaBuilder'
 import { type Context } from '#/types/context'
 import { exposeDate } from '#/utils/exposeDate'
 
-import { UserSeriesStatus } from './constants'
 import * as episodesService from './episodes.service'
 import * as seasonService from './season.service'
 import * as seriesService from './series.service'
@@ -106,7 +106,7 @@ SeriesRef.implement({
 
 builder.objectField(SeriesRef, 'status', (t) =>
   t.loadable({
-    type: UserSeriesStatus,
+    type: UserSeriesStatusStatus,
     nullable: true,
     load: (ids: number[], ctx) =>
       seriesService.findStatusForSeries({ ctx, seriesIds: ids }),
@@ -125,7 +125,7 @@ const SeriesSearchInput = builder.inputType('SeriesSearchInput', {
 const UserSeriesListInput = builder.inputType('UserSeriesListInput', {
   fields: (t) => ({
     status: t.field({
-      type: UserSeriesStatus,
+      type: UserSeriesStatusStatus,
       required: false,
     }),
   }),
@@ -185,8 +185,8 @@ builder.queryFields((t) => ({
   }),
 }))
 
-builder.enumType(UserSeriesStatus, {
-  name: 'UserSeriesStatus',
+builder.enumType(UserSeriesStatusStatus, {
+  name: 'UserSeriesStatusStatus',
 })
 
 const SeriesUpdateStatusInputRef = builder.inputType(
@@ -197,7 +197,7 @@ const SeriesUpdateStatusInputRef = builder.inputType(
         required: true,
       }),
       status: t.field({
-        type: UserSeriesStatus,
+        type: UserSeriesStatusStatus,
       }),
     }),
   },

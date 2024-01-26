@@ -113,7 +113,7 @@ type Series {
   poster: String
   seasons: [Season!]!
   startYear: Int
-  status: UserSeriesStatus
+  status: UserSeriesStatusStatus
   title: String!
 }
 
@@ -123,7 +123,7 @@ input SeriesSearchInput {
 
 input SeriesUpdateStatusInput {
   seriesId: Int!
-  status: UserSeriesStatus
+  status: UserSeriesStatusStatus
 }
 
 input ToggleEpisodeSeenInput {
@@ -141,10 +141,10 @@ type User {
 }
 
 input UserSeriesListInput {
-  status: UserSeriesStatus
+  status: UserSeriesStatusStatus
 }
 
-enum UserSeriesStatus {
+enum UserSeriesStatusStatus {
   Completed
   InProgress
   OnHold

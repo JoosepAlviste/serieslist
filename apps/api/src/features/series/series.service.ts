@@ -1,3 +1,5 @@
+import { type Season } from '@serieslist/db'
+import { UserSeriesStatusStatus } from '@serieslist/db'
 import { tmdbService } from '@serieslist/tmdb'
 import { addDays, isFuture, subDays } from 'date-fns'
 import index from 'just-index'
@@ -5,7 +7,6 @@ import unique from 'just-unique'
 import { type Insertable } from 'kysely'
 
 import { seriesProgressService } from '#/features/seriesProgress'
-import { type Season } from '#/generated/db'
 import {
   type SeriesUpdateStatusInput,
   type SeriesSearchInput,
@@ -19,7 +20,6 @@ import {
 } from '#/types/context'
 import { isTruthy } from '#/utils/isTruthy'
 
-import { UserSeriesStatus } from './constants'
 import * as episodeRepository from './episode.repository'
 import * as episodesService from './episodes.service'
 import * as seasonRepository from './season.repository'
@@ -330,7 +330,7 @@ export const updateSeriesStatusForUser = async ({
     return series
   }
 
-  const status = UserSeriesStatus[input.status]
+  const status = UserSeriesStatusStatus[input.status]
 
   await userSeriesStatusRepository.createOrUpdate({
     ctx,
@@ -348,7 +348,7 @@ export const findStatusForSeries = async ({
 }: {
   ctx: Context
   seriesIds: number[]
-}): Promise<(UserSeriesStatus | null)[]> => {
+}): Promise<(UserSeriesStatusStatus | null)[]> => {
   if (!ctx.currentUser) {
     return seriesIds.map(() => null)
   }
@@ -365,7 +365,7 @@ export const findStatusForSeries = async ({
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const status = statusesBySeriesId[seriesId]?.status
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    return status ? UserSeriesStatus[status] : null
+    return status ? UserSeriesStatusStatus[status] : null
   })
 }
 
@@ -374,7 +374,7 @@ export const findUserSeries = ({
   status,
 }: {
   ctx: AuthenticatedContext
-  status?: UserSeriesStatus
+  status?: UserSeriesStatusStatus
 }) => {
   return seriesRepository.findManyForUser({
     ctx,

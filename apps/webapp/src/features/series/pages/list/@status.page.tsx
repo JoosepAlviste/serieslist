@@ -1,15 +1,15 @@
 import React from 'react'
 
-import { UserSeriesStatus } from '#/generated/gql/graphql'
+import { UserSeriesStatusStatus } from '#/generated/gql/graphql'
 import { usePageContext } from '#/hooks'
 
 import { UserSeriesListPage } from '../../components/UserSeriesListPage'
 
-const statuses: Record<string, UserSeriesStatus> = {
-  ['in-progress']: UserSeriesStatus.InProgress,
-  ['on-hold']: UserSeriesStatus.OnHold,
-  ['completed']: UserSeriesStatus.Completed,
-  ['plan-to-watch']: UserSeriesStatus.PlanToWatch,
+const statuses: Record<string, UserSeriesStatusStatus> = {
+  ['in-progress']: UserSeriesStatusStatus.InProgress,
+  ['on-hold']: UserSeriesStatusStatus.OnHold,
+  ['completed']: UserSeriesStatusStatus.Completed,
+  ['plan-to-watch']: UserSeriesStatusStatus.PlanToWatch,
 }
 
 export const Page = () => {

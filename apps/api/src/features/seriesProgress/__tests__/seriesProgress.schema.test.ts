@@ -1,13 +1,13 @@
+import { type User } from '@serieslist/db'
 import { addDays } from 'date-fns'
 import { type Selectable } from 'kysely'
 
 import {
   episodeFactory,
-  UserSeriesStatus,
+  UserSeriesStatusStatus,
   userSeriesStatusFactory,
 } from '#/features/series'
 import { userFactory } from '#/features/users'
-import { type User } from '#/generated/db'
 import { graphql } from '#/generated/gql'
 import {
   type MarkSeriesEpisodesAsSeenInput,
@@ -503,12 +503,12 @@ describe('features/seriesProgress/seriesProgress.schema', () => {
 
       await userSeriesStatusFactory.create({
         userId: user.id,
-        status: UserSeriesStatus.InProgress,
+        status: UserSeriesStatusStatus.InProgress,
         seriesId: series1.id,
       })
       await userSeriesStatusFactory.create({
         userId: user.id,
-        status: UserSeriesStatus.InProgress,
+        status: UserSeriesStatusStatus.InProgress,
         seriesId: series2.id,
       })
 

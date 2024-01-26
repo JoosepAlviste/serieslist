@@ -2,29 +2,29 @@ import * as Tabs from '@radix-ui/react-tabs'
 import React, { useEffect, useState } from 'react'
 import { navigate } from 'vike/client/router'
 
-import { UserSeriesStatus } from '#/generated/gql/graphql'
+import { UserSeriesStatusStatus } from '#/generated/gql/graphql'
 
 import { SeriesList } from '../SeriesList'
 
 import * as s from './UserSeriesListPage.css'
 
 type UserSeriesListPageProps = {
-  status?: UserSeriesStatus
+  status?: UserSeriesStatusStatus
 }
 
 const tabs = {
   all: 'All',
-  [UserSeriesStatus.InProgress]: 'In progress',
-  [UserSeriesStatus.PlanToWatch]: 'Plan to watch',
-  [UserSeriesStatus.OnHold]: 'On hold',
-  [UserSeriesStatus.Completed]: 'Completed',
+  [UserSeriesStatusStatus.InProgress]: 'In progress',
+  [UserSeriesStatusStatus.PlanToWatch]: 'Plan to watch',
+  [UserSeriesStatusStatus.OnHold]: 'On hold',
+  [UserSeriesStatusStatus.Completed]: 'Completed',
 }
 
 const statusSlugs = {
-  [UserSeriesStatus.InProgress]: 'in-progress',
-  [UserSeriesStatus.PlanToWatch]: 'plan-to-watch',
-  [UserSeriesStatus.OnHold]: 'on-hold',
-  [UserSeriesStatus.Completed]: 'completed',
+  [UserSeriesStatusStatus.InProgress]: 'in-progress',
+  [UserSeriesStatusStatus.PlanToWatch]: 'plan-to-watch',
+  [UserSeriesStatusStatus.OnHold]: 'on-hold',
+  [UserSeriesStatusStatus.Completed]: 'completed',
 }
 
 export const UserSeriesListPage = ({ status }: UserSeriesListPageProps) => {
@@ -52,7 +52,7 @@ export const UserSeriesListPage = ({ status }: UserSeriesListPageProps) => {
       value={selectedStatus ?? 'all'}
       onValueChange={(newTab) => {
         setSelectedStatus(
-          newTab === 'all' ? undefined : (newTab as UserSeriesStatus),
+          newTab === 'all' ? undefined : (newTab as UserSeriesStatusStatus),
         )
       }}
       className={s.container}

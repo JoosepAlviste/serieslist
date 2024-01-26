@@ -1,8 +1,8 @@
+import { type User } from '@serieslist/db'
 import { type Selectable } from 'kysely'
 import { nanoid } from 'nanoid'
 
 import { userFactory } from '#/features/users'
-import { type User } from '#/generated/db'
 import { type LoginInput, type RegisterInput } from '#/generated/gql/graphql'
 import { graphql } from '#/generated/gql/index'
 import { db } from '#/lib/db'

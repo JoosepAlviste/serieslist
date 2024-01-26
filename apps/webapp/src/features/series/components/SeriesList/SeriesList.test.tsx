@@ -1,7 +1,10 @@
 import { screen } from '@testing-library/react'
 import React from 'react'
 
-import { SeriesListDocument, UserSeriesStatus } from '#/generated/gql/graphql'
+import {
+  SeriesListDocument,
+  UserSeriesStatusStatus,
+} from '#/generated/gql/graphql'
 import { createMockResolver, render } from '#/lib/testUtils'
 
 import { seriesFactory } from '../../series.factory'
@@ -22,13 +25,13 @@ describe('features/series/components/SeriesList', () => {
       },
     })
 
-    await render(<SeriesList status={UserSeriesStatus.Completed} />, {
+    await render(<SeriesList status={UserSeriesStatusStatus.Completed} />, {
       requestMocks: [[doc, mockResolver]],
     })
 
     expect(mockResolver).toHaveBeenCalledWith({
       input: {
-        status: UserSeriesStatus.Completed,
+        status: UserSeriesStatusStatus.Completed,
       },
     })
 

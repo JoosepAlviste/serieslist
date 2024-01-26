@@ -1,7 +1,7 @@
+import { type Episode } from '@serieslist/db'
 import index from 'just-index'
 import { type Selectable } from 'kysely'
 
-import { type Episode } from '#/generated/db'
 import { type DBContext, type Context } from '#/types/context'
 import { groupEntitiesByKeyToNestedArray } from '#/utils/groupEntitiesByKeyToNestedArray'
 

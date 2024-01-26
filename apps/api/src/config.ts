@@ -23,18 +23,6 @@ export const config = {
 
   secretToken: process.env.SECRET_TOKEN!,
 
-  debug: {
-    logSqlQueries: process.env.API_LOG_SQL_QUERIES === 'true',
-  },
-
-  db: {
-    host: process.env.DB_HOST ?? 'localhost',
-    port: parseInt(process.env.DB_PORT!, 10),
-    db: process.env.DB_DB,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-  },
-
   redis: {
     host: process.env.REDIS_HOST!,
     port: parseInt(process.env.REDIS_PORT!),

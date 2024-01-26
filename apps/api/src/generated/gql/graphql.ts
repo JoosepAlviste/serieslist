@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
+import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -153,7 +153,7 @@ export type QueryUserSeriesListArgs = {
 
 export type QueryMeResult = UnauthorizedError | User;
 
-export type QuerySeriesResult = NotFoundError | Series;
+export type QuerySeriesResult = InvalidInputError | NotFoundError | Series;
 
 export type QueryUserSeriesListResult = QueryUserSeriesListSuccess | UnauthorizedError;
 
@@ -188,7 +188,7 @@ export type Series = {
   poster?: Maybe<Scalars['String']['output']>;
   seasons: Array<Season>;
   startYear?: Maybe<Scalars['Int']['output']>;
-  status?: Maybe<UserSeriesStatus>;
+  status?: Maybe<UserSeriesStatusStatus>;
   title: Scalars['String']['output'];
 };
 
@@ -198,7 +198,7 @@ export type SeriesSearchInput = {
 
 export type SeriesUpdateStatusInput = {
   seriesId: Scalars['Int']['input'];
-  status?: InputMaybe<UserSeriesStatus>;
+  status?: InputMaybe<UserSeriesStatusStatus>;
 };
 
 export type ToggleEpisodeSeenInput = {
@@ -218,10 +218,10 @@ export type User = {
 };
 
 export type UserSeriesListInput = {
-  status?: InputMaybe<UserSeriesStatus>;
+  status?: InputMaybe<UserSeriesStatusStatus>;
 };
 
-export enum UserSeriesStatus {
+export enum UserSeriesStatusStatus {
   Completed = 'Completed',
   InProgress = 'InProgress',
   OnHold = 'OnHold',
@@ -264,7 +264,7 @@ export type SeriesQueryVariables = Exact<{
 }>;
 
 
-export type SeriesQuery = { __typename?: 'Query', series: { __typename: 'NotFoundError', message: string } | { __typename: 'Series', id: string, title: string, seasons: Array<{ __typename?: 'Season', id: string, episodes: Array<{ __typename?: 'Episode', id: string }> }> } };
+export type SeriesQuery = { __typename?: 'Query', series: { __typename: 'InvalidInputError', message: string } | { __typename: 'NotFoundError', message: string } | { __typename: 'Series', id: string, title: string, seasons: Array<{ __typename?: 'Season', id: string, episodes: Array<{ __typename?: 'Episode', id: string }> }> } };
 
 export type SeriesSchemaUserSeriesListQueryVariables = Exact<{
   input: UserSeriesListInput;
@@ -278,28 +278,28 @@ export type SeriesTypeSeriesQueryVariables = Exact<{
 }>;
 
 
-export type SeriesTypeSeriesQuery = { __typename?: 'Query', series: { __typename: 'NotFoundError' } | { __typename: 'Series', seasons: Array<{ __typename?: 'Season', id: string, number: number }> } };
+export type SeriesTypeSeriesQuery = { __typename?: 'Query', series: { __typename: 'InvalidInputError' } | { __typename: 'NotFoundError' } | { __typename: 'Series', seasons: Array<{ __typename?: 'Season', id: string, number: number }> } };
 
 export type SeriesTypeSeriesEpisodesQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
 
 
-export type SeriesTypeSeriesEpisodesQuery = { __typename?: 'Query', series: { __typename: 'NotFoundError' } | { __typename: 'Series', seasons: Array<{ __typename?: 'Season', episodes: Array<{ __typename?: 'Episode', id: string, imdbId?: string | null, number: number, title: string, imdbRating?: number | null, releasedAt?: any | null }> }> } };
+export type SeriesTypeSeriesEpisodesQuery = { __typename?: 'Query', series: { __typename: 'InvalidInputError' } | { __typename: 'NotFoundError' } | { __typename: 'Series', seasons: Array<{ __typename?: 'Season', episodes: Array<{ __typename?: 'Episode', id: string, imdbId?: string | null, number: number, title: string, imdbRating?: number | null, releasedAt?: any | null }> }> } };
 
 export type SeriesTypeSeriesStatusQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
 
 
-export type SeriesTypeSeriesStatusQuery = { __typename?: 'Query', series: { __typename: 'NotFoundError' } | { __typename: 'Series', status?: UserSeriesStatus | null } };
+export type SeriesTypeSeriesStatusQuery = { __typename?: 'Query', series: { __typename: 'InvalidInputError' } | { __typename: 'NotFoundError' } | { __typename: 'Series', status?: UserSeriesStatusStatus | null } };
 
 export type EpisodeTypeSeasonQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
 
 
-export type EpisodeTypeSeasonQuery = { __typename?: 'Query', series: { __typename: 'NotFoundError' } | { __typename: 'Series', seasons: Array<{ __typename?: 'Season', id: string, episodes: Array<{ __typename?: 'Episode', id: string, season: { __typename?: 'Season', id: string } }> }> } };
+export type EpisodeTypeSeasonQuery = { __typename?: 'Query', series: { __typename: 'InvalidInputError' } | { __typename: 'NotFoundError' } | { __typename: 'Series', seasons: Array<{ __typename?: 'Season', id: string, episodes: Array<{ __typename?: 'Episode', id: string, season: { __typename?: 'Season', id: string } }> }> } };
 
 export type SeriesUpdateStatusMutationVariables = Exact<{
   input: SeriesUpdateStatusInput;
@@ -334,7 +334,7 @@ export type SeriesProgressEpisodeQueryVariables = Exact<{
 }>;
 
 
-export type SeriesProgressEpisodeQuery = { __typename?: 'Query', series: { __typename: 'NotFoundError' } | { __typename: 'Series', seasons: Array<{ __typename?: 'Season', episodes: Array<{ __typename?: 'Episode', id: string, isSeen: boolean }> }>, latestSeenEpisode?: { __typename?: 'Episode', id: string } | null, nextEpisode?: { __typename?: 'Episode', id: string } | null } };
+export type SeriesProgressEpisodeQuery = { __typename?: 'Query', series: { __typename: 'InvalidInputError' } | { __typename: 'NotFoundError' } | { __typename: 'Series', seasons: Array<{ __typename?: 'Season', episodes: Array<{ __typename?: 'Episode', id: string, isSeen: boolean }> }>, latestSeenEpisode?: { __typename?: 'Episode', id: string } | null, nextEpisode?: { __typename?: 'Episode', id: string } | null } };
 
 export type SeriesProgressEpisodeListQueryVariables = Exact<{
   input: UserSeriesListInput;

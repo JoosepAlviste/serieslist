@@ -1,6 +1,6 @@
+import { type DB } from '@serieslist/db'
 import { type InsertObject } from 'kysely'
 
-import { type DB } from '#/generated/db'
 import { type DBContext, type Context } from '#/types/context'
 
 export const findOne = ({

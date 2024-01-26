@@ -1,6 +1,6 @@
 import { type Kysely } from 'kysely'
 
-import { type DB } from '#/generated/db'
+import { type DB } from '@serieslist/db'
 
 export async function up(db: Kysely<DB>): Promise<void> {
   await db.schema

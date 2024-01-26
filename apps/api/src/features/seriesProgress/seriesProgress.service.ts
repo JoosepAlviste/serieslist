@@ -1,9 +1,9 @@
+import { type DB } from '@serieslist/db'
 import { type NonNullableFields } from '@serieslist/type-utils'
 import index from 'just-index'
 import { type UpdateObject } from 'kysely'
 
 import { episodesService, seasonService } from '#/features/series'
-import { type DB } from '#/generated/db'
 import { NotFoundError } from '#/lib/errors'
 import {
   type Context,

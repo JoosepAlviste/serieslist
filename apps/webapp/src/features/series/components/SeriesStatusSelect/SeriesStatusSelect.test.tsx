@@ -7,7 +7,7 @@ import {
   type Series,
   SeriesStatusSelect_SeriesFragmentFragmentDoc,
   SeriesUpdateStatusDocument,
-  UserSeriesStatus,
+  UserSeriesStatusStatus,
   MarkSeriesEpisodesAsSeenDocument,
 } from '#/generated/gql/graphql'
 import { createMockResolver, render } from '#/lib/testUtils'
@@ -59,7 +59,7 @@ describe('features/series/components/SeriesStatusSelect', () => {
   it('shows the current status of the series', async () => {
     const series = seriesFactory.build({
       id: '1',
-      status: UserSeriesStatus.InProgress,
+      status: UserSeriesStatusStatus.InProgress,
     })
 
     await renderStatusSelect(series)
@@ -70,12 +70,12 @@ describe('features/series/components/SeriesStatusSelect', () => {
   it('allows changing the status of the given series', async () => {
     const series = seriesFactory.build({
       id: '1',
-      status: UserSeriesStatus.InProgress,
+      status: UserSeriesStatusStatus.InProgress,
     })
 
     const { mockResolver } = await renderStatusSelect(series, {
       ...series,
-      status: UserSeriesStatus.PlanToWatch,
+      status: UserSeriesStatusStatus.PlanToWatch,
     })
 
     await userEvent.click(
@@ -92,7 +92,7 @@ describe('features/series/components/SeriesStatusSelect', () => {
     expect(mockResolver).toHaveBeenCalledWith({
       input: {
         seriesId: 1,
-        status: UserSeriesStatus.PlanToWatch,
+        status: UserSeriesStatusStatus.PlanToWatch,
       },
     })
   })
@@ -102,7 +102,7 @@ describe('features/series/components/SeriesStatusSelect', () => {
 
     await renderStatusSelect(series, {
       ...series,
-      status: UserSeriesStatus.PlanToWatch,
+      status: UserSeriesStatusStatus.PlanToWatch,
     })
 
     await userEvent.click(
@@ -122,14 +122,14 @@ describe('features/series/components/SeriesStatusSelect', () => {
   it('allows marking all series episodes as seen when status is changed to Completed', async () => {
     const series = seriesFactory.build({
       id: '1',
-      status: UserSeriesStatus.InProgress,
+      status: UserSeriesStatusStatus.InProgress,
     })
 
     const { markSeriesEpisodesAsSeenMockResolver } = await renderStatusSelect(
       series,
       {
         ...series,
-        status: UserSeriesStatus.Completed,
+        status: UserSeriesStatusStatus.Completed,
       },
     )
 

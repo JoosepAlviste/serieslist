@@ -5,7 +5,7 @@ import React from 'react'
 
 import { useFragment, type FragmentType } from '#/generated/gql'
 import { graphql } from '#/generated/gql/gql'
-import { type UserSeriesStatus } from '#/generated/gql/graphql'
+import { type UserSeriesStatusStatus } from '#/generated/gql/graphql'
 
 import { SeriesPoster } from '../SeriesPoster'
 
@@ -46,7 +46,7 @@ const SeriesRow = ({ serie: serieOriginal, className }: SeriesRowProps) => {
 }
 
 type SeriesListProps = {
-  status?: UserSeriesStatus
+  status?: UserSeriesStatusStatus
 }
 
 export const SeriesList = ({ status }: SeriesListProps) => {

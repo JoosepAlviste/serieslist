@@ -205,7 +205,7 @@ export type Series = {
   poster?: Maybe<Scalars['String']['output']>
   seasons: Array<Season>
   startYear?: Maybe<Scalars['Int']['output']>
-  status?: Maybe<UserSeriesStatus>
+  status?: Maybe<UserSeriesStatusStatus>
   title: Scalars['String']['output']
 }
 
@@ -215,7 +215,7 @@ export type SeriesSearchInput = {
 
 export type SeriesUpdateStatusInput = {
   seriesId: Scalars['Int']['input']
-  status?: InputMaybe<UserSeriesStatus>
+  status?: InputMaybe<UserSeriesStatusStatus>
 }
 
 export type ToggleEpisodeSeenInput = {
@@ -235,10 +235,10 @@ export type User = {
 }
 
 export type UserSeriesListInput = {
-  status?: InputMaybe<UserSeriesStatus>
+  status?: InputMaybe<UserSeriesStatusStatus>
 }
 
-export enum UserSeriesStatus {
+export enum UserSeriesStatusStatus {
   Completed = 'Completed',
   InProgress = 'InProgress',
   OnHold = 'OnHold',
@@ -507,7 +507,7 @@ export type SeriesPoster_SeriesFragmentFragment = {
 export type SeriesStatusSelect_SeriesFragmentFragment = {
   __typename: 'Series'
   id: string
-  status?: UserSeriesStatus | null
+  status?: UserSeriesStatusStatus | null
 } & { ' $fragmentName'?: 'SeriesStatusSelect_SeriesFragmentFragment' }
 
 export type SeriesUpdateStatusMutationVariables = Exact<{
@@ -518,7 +518,11 @@ export type SeriesUpdateStatusMutation = {
   __typename: 'Mutation'
   seriesUpdateStatus:
     | { __typename: 'NotFoundError' }
-    | { __typename: 'Series'; id: string; status?: UserSeriesStatus | null }
+    | {
+        __typename: 'Series'
+        id: string
+        status?: UserSeriesStatusStatus | null
+      }
     | { __typename: 'UnauthorizedError' }
 }
 

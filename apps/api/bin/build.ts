@@ -8,14 +8,16 @@ import pkg from '../package.json'
 
 await buildEsbuild({
   packageJson: pkg,
-  entryPoints: [
-    'src/main.ts',
-    'src/mainJobs.ts',
-    'bin/migrate.ts',
-    'src/migrations/**/*.ts',
-  ],
+  entryPoints: ['src/main.ts', 'src/mainJobs.ts', 'bin/migrate.ts'],
   tsconfig: 'tsconfig.build.json',
   external: ['pg-native'],
+})
+
+await buildEsbuild({
+  packageJson: pkg,
+  entryPoints: ['../../packages/db/src/migrations/**/*.ts'],
+  outdir: 'dist/src/migrations',
+  tsconfig: 'tsconfig.build.json',
 })
 
 // Esbuild replaces all colons in filenames with underscores, but we already

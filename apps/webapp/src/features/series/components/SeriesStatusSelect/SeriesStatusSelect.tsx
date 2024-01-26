@@ -3,15 +3,15 @@ import { Button, Select, AlertDialog } from '@serieslist/ui'
 import React, { useState } from 'react'
 
 import { type FragmentType, graphql, useFragment } from '#/generated/gql'
-import { UserSeriesStatus } from '#/generated/gql/graphql'
+import { UserSeriesStatusStatus } from '#/generated/gql/graphql'
 import { useToast } from '#/hooks'
 import { invalidateCacheFields } from '#/lib/apollo'
 
 const STATUS_LABELS = {
-  [UserSeriesStatus.InProgress]: 'In progress',
-  [UserSeriesStatus.Completed]: 'Completed',
-  [UserSeriesStatus.PlanToWatch]: 'Plan to watch',
-  [UserSeriesStatus.OnHold]: 'On hold',
+  [UserSeriesStatusStatus.InProgress]: 'In progress',
+  [UserSeriesStatusStatus.Completed]: 'Completed',
+  [UserSeriesStatusStatus.PlanToWatch]: 'Plan to watch',
+  [UserSeriesStatusStatus.OnHold]: 'On hold',
   default: 'No status',
 } as const
 
@@ -97,7 +97,7 @@ export const SeriesStatusSelect = ({
         title: 'Series status changed',
       })
 
-      if (status === UserSeriesStatus.Completed) {
+      if (status === UserSeriesStatusStatus.Completed) {
         setIsMarkAllEpisodesAsSeenAlertOpen(true)
       }
     }
