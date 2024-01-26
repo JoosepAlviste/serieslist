@@ -480,7 +480,7 @@ importers:
   packages/db:
     dependencies:
       '@serieslist/logger':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../logger
       kysely:
         specifier: ^0.27.0
@@ -499,7 +499,7 @@ importers:
         specifier: workspace:*
         version: link:../prettier-config
       '@serieslist/type-utils':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../type-utils
       '@serieslist/typescript-config-base':
         specifier: workspace:*
