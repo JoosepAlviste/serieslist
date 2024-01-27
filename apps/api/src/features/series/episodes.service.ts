@@ -1,8 +1,8 @@
 import { type Episode } from '@serieslist/db'
+import { type DBContext, type Context } from '@serieslist/graphql-server'
 import index from 'just-index'
 import { type Selectable } from 'kysely'
 
-import { type DBContext, type Context } from '#/types/context'
 import { groupEntitiesByKeyToNestedArray } from '#/utils/groupEntitiesByKeyToNestedArray'
 
 import * as episodeRepository from './episode.repository'

@@ -1,8 +1,7 @@
+import { UnauthorizedError, builder } from '@serieslist/graphql-server'
 import { ZodError } from 'zod'
 
 import { UserRef } from '#/features/users'
-import { UnauthorizedError } from '#/lib/errors'
-import { builder } from '#/schemaBuilder'
 
 import * as authService from './auth.service'
 

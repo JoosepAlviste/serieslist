@@ -5,6 +5,10 @@ import {
   type Season,
   type Series,
 } from '@serieslist/db'
+import {
+  type AuthenticatedContext,
+  type Context,
+} from '@serieslist/graphql-server'
 import { type NotWorthIt } from '@serieslist/type-utils'
 import { type ExecutionResult, print } from 'graphql'
 import { createYoga, type YogaInitialContext } from 'graphql-yoga'
@@ -16,7 +20,6 @@ import { userFactory } from '#/features/users'
 import { createArrayOfLength } from '#/lib/createArrayOfLength'
 import { db } from '#/lib/db'
 import { schema } from '#/schema'
-import { type AuthenticatedContext, type Context } from '#/types/context'
 
 export const createContext = <T extends Context['currentUser']>({
   ctx = {},

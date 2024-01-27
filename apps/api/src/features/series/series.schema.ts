@@ -1,11 +1,14 @@
 import { type Episode } from '@serieslist/db'
 import { UserSeriesStatusStatus } from '@serieslist/db'
+import {
+  NotFoundError,
+  UnauthorizedError,
+  builder,
+} from '@serieslist/graphql-server'
+import { type Context } from '@serieslist/graphql-server'
 import { type Selectable } from 'kysely'
 import { ZodError } from 'zod'
 
-import { NotFoundError, UnauthorizedError } from '#/lib/errors'
-import { builder } from '#/schemaBuilder'
-import { type Context } from '#/types/context'
 import { exposeDate } from '#/utils/exposeDate'
 
 import * as episodesService from './episodes.service'

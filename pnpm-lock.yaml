@@ -47,24 +47,6 @@ importers:
       '@fastify/rate-limit':
         specifier: ^8.0.1
         version: 8.0.1
-      '@pothos/core':
-        specifier: ^3.29.0
-        version: 3.29.0(graphql@16.8.1)
-      '@pothos/plugin-dataloader':
-        specifier: ^3.17.1
-        version: 3.17.1(@pothos/core@3.29.0)(dataloader@2.2.2)(graphql@16.8.1)
-      '@pothos/plugin-errors':
-        specifier: ^3.11.0
-        version: 3.11.0(@pothos/core@3.29.0)(graphql@16.8.1)
-      '@pothos/plugin-scope-auth':
-        specifier: ^3.19.1
-        version: 3.19.1(@pothos/core@3.29.0)(graphql@16.8.1)
-      '@pothos/plugin-tracing':
-        specifier: ^0.5.7
-        version: 0.5.7(@pothos/core@3.29.0)(graphql@16.8.1)
-      '@pothos/plugin-validation':
-        specifier: ^3.9.0
-        version: 3.9.0(@pothos/core@3.29.0)(graphql@16.8.1)(zod@3.22.3)
       '@sentry/node':
         specifier: ^7.56.0
         version: 7.56.0
@@ -74,6 +56,9 @@ importers:
       '@serieslist/db':
         specifier: workspace:*
         version: link:../../packages/db
+      '@serieslist/graphql-server':
+        specifier: workspace:*
+        version: link:../../packages/graphql-server
       '@serieslist/logger':
         specifier: workspace:*
         version: link:../../packages/logger
@@ -581,6 +566,55 @@ importers:
       '@serieslist/prettier-config':
         specifier: workspace:*
         version: link:../prettier-config
+
+  packages/graphql-server:
+    dependencies:
+      '@pothos/core':
+        specifier: ^3.29.0
+        version: 3.29.0(graphql@16.8.1)
+      '@pothos/plugin-dataloader':
+        specifier: ^3.17.1
+        version: 3.17.1(@pothos/core@3.29.0)(dataloader@2.2.2)(graphql@16.8.1)
+      '@pothos/plugin-errors':
+        specifier: ^3.11.0
+        version: 3.11.0(@pothos/core@3.29.0)(graphql@16.8.1)
+      '@pothos/plugin-scope-auth':
+        specifier: ^3.19.1
+        version: 3.19.1(@pothos/core@3.29.0)(graphql@16.8.1)
+      '@pothos/plugin-tracing':
+        specifier: ^0.5.7
+        version: 0.5.7(@pothos/core@3.29.0)(graphql@16.8.1)
+      '@pothos/plugin-validation':
+        specifier: ^3.9.0
+        version: 3.9.0(@pothos/core@3.29.0)(graphql@16.8.1)(zod@3.22.3)
+      '@serieslist/db':
+        specifier: workspace:^
+        version: link:../db
+      '@serieslist/logger':
+        specifier: workspace:^
+        version: link:../logger
+      fastify:
+        specifier: ^4.18.0
+        version: 4.18.0
+      graphql-yoga:
+        specifier: ^4.0.2
+        version: 4.0.2(graphql@16.8.1)
+      kysely:
+        specifier: ^0.27.0
+        version: 0.27.0
+    devDependencies:
+      '@serieslist/eslint-config-base':
+        specifier: workspace:*
+        version: link:../eslint-config-base
+      '@serieslist/prettier-config':
+        specifier: workspace:*
+        version: link:../prettier-config
+      '@serieslist/typescript-config-base':
+        specifier: workspace:*
+        version: link:../typescript-config-base
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
 
   packages/logger:
     dependencies:
@@ -11917,7 +11951,7 @@ packages:
       '@whatwg-node/server': 0.8.12
       dset: 3.1.2
       graphql: 16.8.1
-      lru-cache: 10.0.0
+      lru-cache: 10.1.0
       tslib: 2.6.0
     dev: false
 
@@ -13321,11 +13355,11 @@ packages:
   /lru-cache@10.0.0:
     resolution: {integrity: sha512-svTf/fzsKHffP42sujkO/Rjs37BCIsQVRCeNYIm9WN8rgT7ffoUnRtZCqU+6BqcSBdv8gwJeTz8knJpgACeQMw==}
     engines: {node: 14 || >=16.14}
+    dev: true
 
   /lru-cache@10.1.0:
     resolution: {integrity: sha512-/1clY/ui8CzjKFyjdvwPWJUYKiFVXG2I2cY0ssG7h4+hwk+XOIX7ZSG9Q7TW8TW3Kp3BUSqgFWBLgL4PJ+Blag==}
     engines: {node: 14 || >=16.14}
-    dev: true
 
   /lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}

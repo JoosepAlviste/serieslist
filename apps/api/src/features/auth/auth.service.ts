@@ -1,5 +1,6 @@
 import { randomBytes } from 'crypto'
 
+import { type Context } from '@serieslist/graphql-server'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { ZodError } from 'zod'
@@ -7,7 +8,6 @@ import { ZodError } from 'zod'
 import { config } from '#/config'
 import { usersService } from '#/features/users'
 import { type LoginInput, type RegisterInput } from '#/generated/gql/graphql'
-import { type Context } from '#/types/context'
 
 import { ACCESS_TOKEN_COOKIE, REFRESH_TOKEN_COOKIE } from './constants'
 import * as sessionRepository from './session.repository'

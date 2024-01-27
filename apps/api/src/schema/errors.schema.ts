@@ -1,8 +1,9 @@
+import {
+  NotFoundError,
+  UnauthorizedError,
+  builder,
+} from '@serieslist/graphql-server'
 import { ZodError, type ZodFormattedError } from 'zod'
-
-import { NotFoundError, UnauthorizedError } from '#/lib/errors'
-
-import { builder } from '../schemaBuilder'
 
 export const ErrorInterfaceRef = builder
   .interfaceRef<Error>('Error')

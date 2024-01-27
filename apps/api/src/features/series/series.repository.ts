@@ -1,7 +1,6 @@
 import { type DB, type UserSeriesStatusStatus } from '@serieslist/db'
+import { type DBContext, type Context } from '@serieslist/graphql-server'
 import { type UpdateObject, type InsertObject } from 'kysely'
-
-import { type DBContext, type Context } from '#/types/context'
 
 export const findOne = ({
   ctx,

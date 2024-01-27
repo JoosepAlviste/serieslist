@@ -1,4 +1,5 @@
-import { type DBContext, type Context } from '#/types/context'
+import { type DBContext, type Context } from '@serieslist/graphql-server'
+
 import { groupEntitiesByKeyToNestedArray } from '#/utils/groupEntitiesByKeyToNestedArray'
 
 import * as seasonRepository from './season.repository'

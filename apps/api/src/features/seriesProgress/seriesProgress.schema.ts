@@ -1,6 +1,10 @@
+import {
+  NotFoundError,
+  UnauthorizedError,
+  builder,
+} from '@serieslist/graphql-server'
+
 import { EpisodeRef, SeasonRef, SeriesRef } from '#/features/series'
-import { NotFoundError, UnauthorizedError } from '#/lib/errors'
-import { builder } from '#/schemaBuilder'
 
 import * as seriesProgressService from './seriesProgress.service'
 

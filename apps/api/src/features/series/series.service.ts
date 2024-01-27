@@ -1,5 +1,11 @@
 import { type Season } from '@serieslist/db'
 import { UserSeriesStatusStatus } from '@serieslist/db'
+import { NotFoundError } from '@serieslist/graphql-server'
+import {
+  type DBContext,
+  type AuthenticatedContext,
+  type Context,
+} from '@serieslist/graphql-server'
 import { tmdbService } from '@serieslist/tmdb'
 import { addDays, isFuture, subDays } from 'date-fns'
 import index from 'just-index'
@@ -11,13 +17,7 @@ import {
   type SeriesUpdateStatusInput,
   type SeriesSearchInput,
 } from '#/generated/gql/graphql'
-import { NotFoundError } from '#/lib/errors'
 import { log } from '#/lib/logger'
-import {
-  type DBContext,
-  type AuthenticatedContext,
-  type Context,
-} from '#/types/context'
 import { isTruthy } from '#/utils/isTruthy'
 
 import * as episodeRepository from './episode.repository'

@@ -1,7 +1,6 @@
 import { type DB } from '@serieslist/db'
+import { type Context } from '@serieslist/graphql-server'
 import { type InsertObject } from 'kysely'
-
-import { type Context } from '#/types/context'
 
 export const findMany = ({
   ctx,

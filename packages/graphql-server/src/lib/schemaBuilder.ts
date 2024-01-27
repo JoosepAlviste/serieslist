@@ -8,9 +8,10 @@ import TracingPlugin, {
 } from '@pothos/plugin-tracing'
 import ValidationPlugin from '@pothos/plugin-validation'
 
-import { UnauthorizedError } from './lib/errors'
-import { log } from './lib/logger'
-import { type AuthenticatedContext, type Context } from './types/context'
+import { type AuthenticatedContext, type Context } from '../types/context'
+
+import { UnauthorizedError } from './errors'
+import { log } from './logger'
 
 export const builder = new SchemaBuilder<{
   Context: Context

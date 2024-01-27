@@ -1,7 +1,6 @@
 import { type DB } from '@serieslist/db'
+import { type DBContext, type Context } from '@serieslist/graphql-server'
 import { type InsertObject } from 'kysely'
-
-import { type DBContext, type Context } from '#/types/context'
 
 /**
  * Return the episode TMDB IDs and season IDs ordered by the season and

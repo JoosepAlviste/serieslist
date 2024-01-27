@@ -1,7 +1,6 @@
 import type { User } from '@serieslist/db'
+import { builder } from '@serieslist/graphql-server'
 import { type Selectable } from 'kysely'
-
-import { builder } from '#/schemaBuilder'
 
 export type UserType = Selectable<User>
 

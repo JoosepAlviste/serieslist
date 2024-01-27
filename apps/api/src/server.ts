@@ -1,5 +1,6 @@
 import { useSentry } from '@envelop/sentry'
 import { EnvelopArmorPlugin } from '@escape.tech/graphql-armor'
+import { type Context } from '@serieslist/graphql-server'
 import { type FastifyRequest, type FastifyReply } from 'fastify'
 import { createYoga } from 'graphql-yoga'
 
@@ -9,7 +10,6 @@ import { db } from './lib/db'
 import { app } from './lib/fastify'
 import { log } from './lib/logger'
 import { schema } from './schema'
-import { type Context } from './types/context'
 
 import '#/lib/initSentry'
 

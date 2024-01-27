@@ -1,5 +1,4 @@
+import { builder } from '@serieslist/graphql-server'
 import { LocalDateResolver } from 'graphql-scalars'
-
-import { builder } from '#/schemaBuilder'
 
 builder.addScalarType('Date', LocalDateResolver, {})
