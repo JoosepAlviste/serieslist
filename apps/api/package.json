@@ -39,7 +39,7 @@
     "@fastify/cookie": "^8.3.0",
     "@fastify/cors": "^8.2.1",
     "@fastify/rate-limit": "^8.0.1",
-    "@sentry/node": "^7.56.0",
+    "@sentry/node": "^7.98.0",
     "@sentry/tracing": "^7.56.0",
     "@serieslist/db": "workspace:*",
     "@serieslist/graphql-server": "workspace:*",
