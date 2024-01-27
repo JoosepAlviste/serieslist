@@ -5,7 +5,7 @@ import React from 'react'
 
 import { useFragment, type FragmentType } from '#/generated/gql'
 import { graphql } from '#/generated/gql/gql'
-import { type UserSeriesStatusStatus } from '#/generated/gql/graphql'
+import type { UserSeriesStatusStatus } from '#/generated/gql/graphql'
 
 import { SeriesPoster } from '../SeriesPoster'
 

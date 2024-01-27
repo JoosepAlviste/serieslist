@@ -1,6 +1,6 @@
 import { createContext } from 'react'
 
-import { type CurrentUserQuery } from '#/generated/gql/graphql'
+import type { CurrentUserQuery } from '#/generated/gql/graphql'
 
 export type AuthenticatedUser = Exclude<
   NonNullable<CurrentUserQuery['me']>,

@@ -1,12 +1,12 @@
-import { type Episode } from '@serieslist/db'
+import type { Episode } from '@serieslist/db'
 import { UserSeriesStatusStatus } from '@serieslist/db'
 import {
   NotFoundError,
   UnauthorizedError,
   builder,
 } from '@serieslist/graphql-server'
-import { type Context } from '@serieslist/graphql-server'
-import { type Selectable } from 'kysely'
+import type { Context } from '@serieslist/graphql-server'
+import type { Selectable } from 'kysely'
 import { ZodError } from 'zod'
 
 import { exposeDate } from '#/utils/exposeDate'

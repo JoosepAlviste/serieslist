@@ -1,4 +1,4 @@
-import { type NotWorthIt } from '@serieslist/type-utils'
+import type { NotWorthIt } from '@serieslist/type-utils'
 import { sql, type Kysely } from 'kysely'
 
 import { UserSeriesStatusStatus } from '../constants'

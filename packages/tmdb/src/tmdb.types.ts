@@ -1,15 +1,15 @@
-import { type z } from 'zod'
+import type { z } from 'zod'
 
-import {
-  type tmdbSeriesSchema,
-  type tmdbSearchSeriesSchema,
-  type tmdbEpisodeSchema,
-  type tmdbSeasonSchema,
+import type {
+  tmdbSeriesSchema,
+  tmdbSearchSeriesSchema,
+  tmdbEpisodeSchema,
+  tmdbSeasonSchema,
 } from './tmdb.schema'
-import {
-  type tmdbSeriesSearchResponseSchema,
-  type tmdbSeriesResponseSchema,
-  type tmdbSeasonResponseSchema,
+import type {
+  tmdbSeriesSearchResponseSchema,
+  tmdbSeriesResponseSchema,
+  tmdbSeasonResponseSchema,
 } from './tmdbRequests.schema'
 
 export type TMDBSearchResponse = z.infer<typeof tmdbSeriesSearchResponseSchema>

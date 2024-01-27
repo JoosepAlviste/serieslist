@@ -1,6 +1,6 @@
 import { Factory } from 'fishery'
 
-import { type Season } from '#/generated/gql/graphql'
+import type { Season } from '#/generated/gql/graphql'
 
 import { seriesFactory } from './series.factory'
 

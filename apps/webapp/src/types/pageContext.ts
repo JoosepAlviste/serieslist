@@ -1,7 +1,7 @@
-import { type NormalizedCacheObject, type ApolloClient } from '@apollo/client'
+import type { NormalizedCacheObject, ApolloClient } from '@apollo/client'
 
-import { type AuthenticatedUser } from '#/features/auth'
-import { type Theme } from '#/utils/theme'
+import type { AuthenticatedUser } from '#/features/auth'
+import type { Theme } from '#/utils/theme'
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace

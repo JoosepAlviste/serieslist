@@ -1,10 +1,10 @@
 import nock from 'nock'
 
 import { config } from './config'
-import {
-  type TMDBSearchResponse,
-  type TMDBSeriesResponse,
-  type TMDBSeasonResponse,
+import type {
+  TMDBSearchResponse,
+  TMDBSeriesResponse,
+  TMDBSeasonResponse,
 } from './tmdb.types'
 
 export const mockTMDBSearchRequest = (

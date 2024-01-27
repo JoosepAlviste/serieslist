@@ -4,7 +4,7 @@ import {
   mockTMDBDetailsRequest,
   mockTMDBSeasonRequest,
 } from '@serieslist/tmdb/test'
-import { type LiterallyAnything } from '@serieslist/type-utils'
+import type { LiterallyAnything } from '@serieslist/type-utils'
 import { format, subDays } from 'date-fns'
 
 import { seriesProgressFactory } from '#/features/seriesProgress'

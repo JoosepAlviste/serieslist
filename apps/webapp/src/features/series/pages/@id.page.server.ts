@@ -1,5 +1,5 @@
 import { render } from 'vike/abort'
-import { type PageContext } from 'vike/types'
+import type { PageContext } from 'vike/types'
 
 import { SeriesDetailsPageDocument } from '#/generated/gql/graphql'
 

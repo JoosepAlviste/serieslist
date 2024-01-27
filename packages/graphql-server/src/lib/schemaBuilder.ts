@@ -8,7 +8,7 @@ import TracingPlugin, {
 } from '@pothos/plugin-tracing'
 import ValidationPlugin from '@pothos/plugin-validation'
 
-import { type AuthenticatedContext, type Context } from '../types/context'
+import type { AuthenticatedContext, Context } from '../types/context'
 
 import { UnauthorizedError } from './errors'
 import { log } from './logger'

@@ -1,13 +1,13 @@
-import { type Series, type Episode } from '@serieslist/db'
-import { type TMDBEpisode, type TMDBSeries } from '@serieslist/tmdb'
+import type { Series, Episode } from '@serieslist/db'
+import type { TMDBEpisode, TMDBSeries } from '@serieslist/tmdb'
 import {
   tmdbSeriesDetailsFactory as baseTmdbSeriesDetailsFactory,
   tmdbEpisodeFactory as baseTmdbEpisodeFactory,
 } from '@serieslist/tmdb/test'
-import { type NotWorthIt } from '@serieslist/type-utils'
+import type { NotWorthIt } from '@serieslist/type-utils'
 import { Factory } from 'fishery'
 import filterObject from 'just-filter-object'
-import { type Selectable } from 'kysely'
+import type { Selectable } from 'kysely'
 
 const removeUndefinedKeys = <T extends Record<string, unknown>>(obj: T) => {
   return filterObject(obj as NotWorthIt, (_key, value) => value !== undefined)

@@ -1,7 +1,7 @@
 import { useSentry } from '@envelop/sentry'
 import { EnvelopArmorPlugin } from '@escape.tech/graphql-armor'
-import { type Context } from '@serieslist/graphql-server'
-import { type FastifyRequest, type FastifyReply } from 'fastify'
+import type { Context } from '@serieslist/graphql-server'
+import type { FastifyRequest, FastifyReply } from 'fastify'
 import { createYoga } from 'graphql-yoga'
 
 import { config } from './config'

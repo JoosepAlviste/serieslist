@@ -1,4 +1,4 @@
-import { type NormalizedCacheObject, type ApolloClient } from '@apollo/client'
+import type { NormalizedCacheObject, ApolloClient } from '@apollo/client'
 import React from 'react'
 import { hydrateRoot, createRoot, type Root } from 'react-dom/client'
 import type { PageContextClient } from 'vike/types'

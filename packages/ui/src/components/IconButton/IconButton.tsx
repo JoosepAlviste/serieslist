@@ -2,7 +2,7 @@ import classNames from 'classnames'
 import React, { forwardRef, type ComponentPropsWithoutRef } from 'react'
 
 import { useSSR } from '../../hooks'
-import { type IconName } from '../Icon'
+import type { IconName } from '../Icon'
 import { Icon } from '../Icon'
 
 import * as s from './IconButton.css'

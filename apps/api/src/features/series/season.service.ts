@@ -1,4 +1,4 @@
-import { type DBContext, type Context } from '@serieslist/graphql-server'
+import type { DBContext, Context } from '@serieslist/graphql-server'
 
 import { groupEntitiesByKeyToNestedArray } from '#/utils/groupEntitiesByKeyToNestedArray'
 

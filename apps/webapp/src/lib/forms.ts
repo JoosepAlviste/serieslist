@@ -1,13 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { type NotWorthIt, type LiterallyAnything } from '@serieslist/type-utils'
+import type { NotWorthIt, LiterallyAnything } from '@serieslist/type-utils'
 import {
   type FieldValues,
   useForm as useFormBase,
   type UseFormProps,
 } from 'react-hook-form'
-import { type ZodSchema } from 'zod'
+import type { ZodSchema } from 'zod'
 
-import { type InvalidInputError } from '#/generated/gql/graphql'
+import type { InvalidInputError } from '#/generated/gql/graphql'
 
 /**
  * A wrapper around `react-hook-form` `useForm` that sets up some useful error

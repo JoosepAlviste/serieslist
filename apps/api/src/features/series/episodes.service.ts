@@ -1,7 +1,7 @@
-import { type Episode } from '@serieslist/db'
-import { type DBContext, type Context } from '@serieslist/graphql-server'
+import type { Episode } from '@serieslist/db'
+import type { DBContext, Context } from '@serieslist/graphql-server'
 import index from 'just-index'
-import { type Selectable } from 'kysely'
+import type { Selectable } from 'kysely'
 
 import { groupEntitiesByKeyToNestedArray } from '#/utils/groupEntitiesByKeyToNestedArray'
 

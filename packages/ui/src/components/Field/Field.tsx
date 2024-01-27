@@ -1,7 +1,7 @@
 import { Label } from '@radix-ui/react-label'
 import classNames from 'classnames'
 import React, { forwardRef, type InputHTMLAttributes } from 'react'
-import { type FieldError } from 'react-hook-form'
+import type { FieldError } from 'react-hook-form'
 
 import { useSSR } from '../../hooks'
 import { Error } from '../Error'

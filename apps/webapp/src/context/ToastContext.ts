@@ -1,4 +1,4 @@
-import { type ToastVariant } from '@serieslist/ui'
+import type { ToastVariant } from '@serieslist/ui'
 import { createContext } from 'react'
 
 export type Toast = {

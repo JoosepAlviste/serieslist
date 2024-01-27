@@ -1,4 +1,4 @@
-import { type NotWorthIt } from '@serieslist/type-utils'
+import type { NotWorthIt } from '@serieslist/type-utils'
 import { createContext } from 'react'
 import type { PageContext } from 'vike/types'
 

@@ -1,6 +1,6 @@
-import { type SeriesProgress } from '@serieslist/db'
+import type { SeriesProgress } from '@serieslist/db'
 import { Factory } from 'fishery'
-import { type Selectable } from 'kysely'
+import type { Selectable } from 'kysely'
 
 import { episodeFactory, seriesFactory } from '#/features/series'
 import { userFactory } from '#/features/users'

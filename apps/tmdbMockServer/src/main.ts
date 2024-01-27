@@ -9,11 +9,11 @@
  * Feel free to add more series to be returned here.
  */
 
-import {
-  type TMDBSeries,
-  type TMDBSeason,
-  type TMDBEpisode,
-  type TMDBSearchResponse,
+import type {
+  TMDBSeries,
+  TMDBSeason,
+  TMDBEpisode,
+  TMDBSearchResponse,
 } from '@serieslist/tmdb'
 import {
   tmdbEpisodeFactory,

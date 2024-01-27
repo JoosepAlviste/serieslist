@@ -1,21 +1,21 @@
-import { type Season } from '@serieslist/db'
+import type { Season } from '@serieslist/db'
 import { UserSeriesStatusStatus } from '@serieslist/db'
 import { NotFoundError } from '@serieslist/graphql-server'
-import {
-  type DBContext,
-  type AuthenticatedContext,
-  type Context,
+import type {
+  DBContext,
+  AuthenticatedContext,
+  Context,
 } from '@serieslist/graphql-server'
 import { tmdbService } from '@serieslist/tmdb'
 import { addDays, isFuture, subDays } from 'date-fns'
 import index from 'just-index'
 import unique from 'just-unique'
-import { type Insertable } from 'kysely'
+import type { Insertable } from 'kysely'
 
 import { seriesProgressService } from '#/features/seriesProgress'
-import {
-  type SeriesUpdateStatusInput,
-  type SeriesSearchInput,
+import type {
+  SeriesUpdateStatusInput,
+  SeriesSearchInput,
 } from '#/generated/gql/graphql'
 import { log } from '#/lib/logger'
 import { isTruthy } from '#/utils/isTruthy'

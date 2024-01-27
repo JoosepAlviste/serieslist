@@ -1,6 +1,6 @@
-import { type DB } from '@serieslist/db'
-import { type Context } from '@serieslist/graphql-server'
-import { type InsertObject } from 'kysely'
+import type { DB } from '@serieslist/db'
+import type { Context } from '@serieslist/graphql-server'
+import type { InsertObject } from 'kysely'
 
 export const findOne = ({
   ctx,

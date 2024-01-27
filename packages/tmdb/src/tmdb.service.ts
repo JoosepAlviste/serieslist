@@ -1,14 +1,14 @@
 import fetch from 'node-fetch'
-import { type z } from 'zod'
+import type { z } from 'zod'
 
 import { config } from './config'
 import { log } from './logger'
-import {
-  type TMDBSeries,
-  type TMDBSearchSeries,
-  type TMDBParsedSeries,
-  type TMDBParsedSeason,
-  type TMDBParsedEpisode,
+import type {
+  TMDBSeries,
+  TMDBSearchSeries,
+  TMDBParsedSeries,
+  TMDBParsedSeason,
+  TMDBParsedEpisode,
 } from './tmdb.types'
 import {
   tmdbSeasonResponseSchema,

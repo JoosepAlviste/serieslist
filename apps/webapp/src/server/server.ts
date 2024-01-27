@@ -10,11 +10,11 @@ import { fastifyMiddie } from '@fastify/middie'
 import { fastifyStatic } from '@fastify/static'
 import { fastify, type FastifyRequest } from 'fastify'
 import { renderPage } from 'vike/server'
-import { type PageContext } from 'vike/types'
+import type { PageContext } from 'vike/types'
 
 import { config } from '#/config'
 import { CurrentUserDocument } from '#/generated/gql/graphql'
-import { type Theme } from '#/utils/theme'
+import type { Theme } from '#/utils/theme'
 
 import { makeApolloClient } from '../lib/apollo.js'
 

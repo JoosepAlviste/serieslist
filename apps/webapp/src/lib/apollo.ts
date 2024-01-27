@@ -5,7 +5,7 @@ import {
   InMemoryCache,
   type NormalizedCacheObject,
 } from '@apollo/client/core/index.js'
-import { type FastifyRequest } from 'fastify'
+import type { FastifyRequest } from 'fastify'
 import fetch from 'isomorphic-unfetch'
 
 import { config } from '#/config'

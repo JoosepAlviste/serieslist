@@ -1,6 +1,6 @@
-import { type User } from '@serieslist/db'
+import type { User } from '@serieslist/db'
 import { addDays } from 'date-fns'
-import { type Selectable } from 'kysely'
+import type { Selectable } from 'kysely'
 
 import {
   episodeFactory,
@@ -9,10 +9,10 @@ import {
 } from '#/features/series'
 import { userFactory } from '#/features/users'
 import { graphql } from '#/generated/gql'
-import {
-  type MarkSeriesEpisodesAsSeenInput,
-  type MarkSeasonEpisodesAsSeenInput,
-  type ToggleEpisodeSeenInput,
+import type {
+  MarkSeriesEpisodesAsSeenInput,
+  MarkSeasonEpisodesAsSeenInput,
+  ToggleEpisodeSeenInput,
 } from '#/generated/gql/graphql'
 import { db } from '#/lib/db'
 import {

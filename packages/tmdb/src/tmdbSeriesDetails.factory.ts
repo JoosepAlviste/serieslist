@@ -1,14 +1,10 @@
 import { subDays } from 'date-fns'
 import { Factory } from 'fishery'
 import { nanoid } from 'nanoid'
-import { type z } from 'zod'
+import type { z } from 'zod'
 
-import {
-  type TMDBSeason,
-  type TMDBEpisode,
-  type TMDBSeries,
-} from './tmdb.types'
-import { type tmdbNotFoundSchema } from './tmdbRequests.schema'
+import type { TMDBSeason, TMDBEpisode, TMDBSeries } from './tmdb.types'
+import type { tmdbNotFoundSchema } from './tmdbRequests.schema'
 
 const generateRandomInt = (min: number, max: number) => {
   return Math.floor(Math.random() * (max - min + 1) + min)

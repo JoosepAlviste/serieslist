@@ -1,9 +1,9 @@
-import { type User } from '@serieslist/db'
-import { type Selectable } from 'kysely'
+import type { User } from '@serieslist/db'
+import type { Selectable } from 'kysely'
 import { nanoid } from 'nanoid'
 
 import { userFactory } from '#/features/users'
-import { type LoginInput, type RegisterInput } from '#/generated/gql/graphql'
+import type { LoginInput, RegisterInput } from '#/generated/gql/graphql'
 import { graphql } from '#/generated/gql/index'
 import { db } from '#/lib/db'
 import { checkErrors, executeOperation, expectErrors } from '#/test/testUtils'

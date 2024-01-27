@@ -1,13 +1,13 @@
-import { type DB } from '@serieslist/db'
+import type { DB } from '@serieslist/db'
 import { NotFoundError } from '@serieslist/graphql-server'
-import {
-  type Context,
-  type AuthenticatedContext,
-  type DBContext,
+import type {
+  Context,
+  AuthenticatedContext,
+  DBContext,
 } from '@serieslist/graphql-server'
-import { type NonNullableFields } from '@serieslist/type-utils'
+import type { NonNullableFields } from '@serieslist/type-utils'
 import index from 'just-index'
-import { type UpdateObject } from 'kysely'
+import type { UpdateObject } from 'kysely'
 
 import { episodesService, seasonService } from '#/features/series'
 import { isTruthy } from '#/utils/isTruthy'

@@ -1,4 +1,4 @@
-import { type User } from '@serieslist/db'
+import type { User } from '@serieslist/db'
 import { UserSeriesStatusStatus } from '@serieslist/db'
 import {
   tmdbSeasonFactory,
@@ -8,14 +8,14 @@ import {
   mockTMDBSearchRequest,
   mockTMDBSeasonRequest,
 } from '@serieslist/tmdb/test'
-import { type NotWorthIt } from '@serieslist/type-utils'
+import type { NotWorthIt } from '@serieslist/type-utils'
 import { parseISO, subDays } from 'date-fns'
-import { type Selectable } from 'kysely'
+import type { Selectable } from 'kysely'
 import { nanoid } from 'nanoid'
 
 import { userFactory } from '#/features/users'
 import { graphql } from '#/generated/gql'
-import { type SeriesUpdateStatusInput } from '#/generated/gql/graphql'
+import type { SeriesUpdateStatusInput } from '#/generated/gql/graphql'
 import { db } from '#/lib/db'
 import {
   checkErrors,
