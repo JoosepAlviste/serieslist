@@ -10,6 +10,8 @@
     "lint": "eslint eslint-config-base.js"
   },
   "dependencies": {
+    "@nx/devkit": "17.2.8",
+    "@nx/eslint-plugin": "^17.2.8",
     "@typescript-eslint/eslint-plugin": "^5.55.0",
     "@typescript-eslint/parser": "^5.55.0",
     "eslint": "^8.36.0",

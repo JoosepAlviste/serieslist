@@ -13,7 +13,7 @@ module.exports = {
     project: true,
     tsconfigRootDir: '.',
   },
-  plugins: ['@typescript-eslint'],
+  plugins: ['@typescript-eslint', '@nx'],
   settings: {
     'import/parsers': {
       '@typescript-eslint/parser': ['.ts'],
@@ -67,6 +67,7 @@ module.exports = {
         patterns: ['#/features/*/*', '!#/features/*/jobs'],
       },
     ],
+    '@nx/enforce-module-boundaries': ['error'],
   },
   overrides: [
     {
