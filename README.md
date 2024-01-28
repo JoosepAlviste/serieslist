@@ -115,6 +115,8 @@ In production, the API and the webapp are run inside Docker like so:
 docker-compose -f docker-compose.production.yml up
 ```
 
+[Neon](https://neon.tech) is used as a managed PostgreSQL service.
+
 The pipeline builds Docker images, pushes them to the GitHub registry, SSH-es 
 into the server, and pulls the images.
 
