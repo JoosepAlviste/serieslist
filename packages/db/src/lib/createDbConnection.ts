@@ -13,6 +13,7 @@ export const createDbConnection = ({ logger }: { logger: Logger }) => {
     dialect: new PostgresDialect({
       pool: new Pool({
         host: config.db.host,
+        ssl: config.db.host !== 'localhost',
         port: config.db.port,
         database: config.db.db,
         user: config.db.user,
