@@ -13,7 +13,6 @@ services:
       - .env
       - .env.docker
     depends_on:
-      - db
       - redis
     networks:
       - caddy
@@ -28,7 +27,6 @@ services:
       - .env
       - .env.docker
     depends_on:
-      - db
       - redis
     networks:
       - caddy
