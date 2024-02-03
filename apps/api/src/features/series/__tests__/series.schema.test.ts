@@ -1,5 +1,11 @@
 import type { User } from '@serieslist/db'
-import { UserSeriesStatusStatus } from '@serieslist/db'
+import {
+  UserSeriesStatusStatus,
+  episode,
+  season,
+  series,
+  userSeriesStatus,
+} from '@serieslist/db'
 import {
   tmdbSeasonFactory,
   tmdbEpisodeFactory,
@@ -9,8 +15,8 @@ import {
   mockTMDBSeasonRequest,
 } from '@serieslist/tmdb/test'
 import type { NotWorthIt } from '@serieslist/type-utils'
-import { parseISO, subDays } from 'date-fns'
-import type { Selectable } from 'kysely'
+import { subDays } from 'date-fns'
+import { and, eq } from 'drizzle-orm'
 import { nanoid } from 'nanoid'
 
 import { userFactory } from '#/features/users'
@@ -23,6 +29,7 @@ import {
   executeOperation,
   expectErrors,
 } from '#/test/testUtils'
+import { parseDate } from '#/utils/date'
 
 import { episodeFactory } from '../episode.factory'
 import { seasonFactory } from '../season.factory'
@@ -105,13 +112,11 @@ describe('features/series/series.schema', () => {
 
       await executeSearch('testing')
 
-      const savedSeries = await db
-        .selectFrom('series')
-        .select(['title', 'poster', 'startYear'])
-        .where('tmdbId', '=', tmdbSeries.id)
-        .executeTakeFirst()
+      const savedSeries = await db.query.series.findFirst({
+        where: eq(series.tmdbId, tmdbSeries.id),
+      })
 
-      expect(savedSeries).toEqual({
+      expect(savedSeries).toMatchObject({
         title: 'Testing Series',
         startYear: 2022,
         poster: 'foo.jpg',
@@ -136,11 +141,9 @@ describe('features/series/series.schema', () => {
 
       await executeSearch('testing')
 
-      const savedSeries = await db
-        .selectFrom('series')
-        .select(['id'])
-        .where('title', '=', title)
-        .execute()
+      const savedSeries = await db.query.series.findMany({
+        where: eq(series.title, title),
+      })
 
       expect(savedSeries).toHaveLength(1)
     })
@@ -188,30 +191,28 @@ describe('features/series/series.schema', () => {
     })
 
     it('updates series details from TMDB', async () => {
-      const series = await seriesFactory.create({
+      const existingSeries = await seriesFactory.create({
         plot: null,
         syncedAt: null,
       })
 
       const scope = mockTMDBDetailsRequest(
-        series.tmdbId,
+        existingSeries.tmdbId,
         tmdbSeriesDetailsFactory.build({
-          id: series.tmdbId,
+          id: existingSeries.tmdbId,
           overview: 'Updated plot',
         }),
       )
 
-      await executeSeriesQuery(series.id)
-      const resSeries = await db
-        .selectFrom('series')
-        .where('id', '=', series.id)
-        .selectAll()
-        .executeTakeFirstOrThrow()
+      await executeSeriesQuery(existingSeries.id)
+      const resSeries = await db.query.series.findFirst({
+        where: eq(series.id, existingSeries.id),
+      })
 
       scope.isDone()
 
-      expect(resSeries.plot).toBe('Updated plot')
-      expect(resSeries.syncedAt).not.toBeNull()
+      expect(resSeries!.plot).toBe('Updated plot')
+      expect(resSeries!.syncedAt).not.toBeNull()
     })
 
     it('does not sync details from TMDB if it has recently been synced', async () => {
@@ -272,21 +273,17 @@ describe('features/series/series.schema', () => {
       seriesSeasonScope.done()
 
       // The season was saved into the database
-      const seasons = await db
-        .selectFrom('season')
-        .selectAll()
-        .where('seriesId', '=', series.id)
-        .execute()
+      const seasons = await db.query.season.findMany({
+        where: eq(season.seriesId, series.id),
+      })
 
       expect(seasons).toHaveLength(1)
       expect(seasons[0]!.number).toBe(1)
 
       // The episodes were saved into the database
-      const episodes = await db
-        .selectFrom('episode')
-        .selectAll()
-        .where('seasonId', '=', seasons[0]!.id)
-        .execute()
+      const episodes = await db.query.episode.findMany({
+        where: eq(episode.seasonId, seasons[0]!.id),
+      })
 
       expect(episodes).toHaveLength(2)
       expect(episodes[0]).toEqual(
@@ -323,7 +320,7 @@ describe('features/series/series.schema', () => {
       user,
       status,
     }: {
-      user: Selectable<User>
+      user: User
       status?: UserSeriesStatusStatus
     }) => {
       return executeOperation({
@@ -473,14 +470,14 @@ describe('features/series/series.schema', () => {
         number: 1,
         title: 'Episode one',
         imdbRating: '1.2',
-        releasedAt: parseISO('2022-01-01'),
+        releasedAt: parseDate('2022-01-01'),
         seasonId: season1.id,
       })
       const episode2 = await episodeFactory.create({
         number: 2,
         title: 'Episode two',
         imdbRating: '2.3',
-        releasedAt: parseISO('2022-01-02'),
+        releasedAt: parseDate('2022-01-02'),
         seasonId: season1.id,
       })
 
@@ -536,14 +533,11 @@ describe('features/series/series.schema', () => {
       const user = await userFactory.create()
       const series = await seriesFactory.create()
 
-      await db
-        .insertInto('userSeriesStatus')
-        .values({
-          seriesId: series.id,
-          userId: user.id,
-          status: UserSeriesStatusStatus.Completed,
-        })
-        .execute()
+      await userSeriesStatusFactory.create({
+        seriesId: series.id,
+        userId: user.id,
+        status: UserSeriesStatusStatus.Completed,
+      })
 
       const res = await executeOperation({
         operation: graphql(`
@@ -609,7 +603,7 @@ describe('features/series/series.schema', () => {
       status,
       user,
     }: SeriesUpdateStatusInput & {
-      user: Selectable<User>
+      user: User
     }) => {
       return await executeOperation({
         operation: graphql(`
@@ -639,28 +633,26 @@ describe('features/series/series.schema', () => {
         user,
       })
 
-      const seriesStatus = await db
-        .selectFrom('userSeriesStatus')
-        .where('seriesId', '=', series.id)
-        .where('userId', '=', user.id)
-        .selectAll()
-        .executeTakeFirst()
+      const seriesStatus = await db.query.userSeriesStatus.findFirst({
+        where: and(
+          eq(userSeriesStatus.seriesId, series.id),
+          eq(userSeriesStatus.userId, user.id),
+        ),
+      })
+
       expect(seriesStatus).toBeTruthy()
-      expect(seriesStatus?.status).toBe(UserSeriesStatusStatus.Completed)
+      expect(seriesStatus!.status).toBe(UserSeriesStatusStatus.Completed)
     })
 
     it('allows updating an existing status', async () => {
       const series = await seriesFactory.create()
       const user = await userFactory.create()
 
-      await db
-        .insertInto('userSeriesStatus')
-        .values({
-          seriesId: series.id,
-          userId: user.id,
-          status: UserSeriesStatusStatus.Completed,
-        })
-        .execute()
+      await userSeriesStatusFactory.create({
+        seriesId: series.id,
+        userId: user.id,
+        status: UserSeriesStatusStatus.Completed,
+      })
 
       await executeSeriesUpdateStatus({
         seriesId: series.id,
@@ -668,12 +660,12 @@ describe('features/series/series.schema', () => {
         user,
       })
 
-      const seriesStatus = await db
-        .selectFrom('userSeriesStatus')
-        .where('seriesId', '=', series.id)
-        .where('userId', '=', user.id)
-        .selectAll()
-        .executeTakeFirst()
+      const seriesStatus = await db.query.userSeriesStatus.findFirst({
+        where: and(
+          eq(userSeriesStatus.seriesId, series.id),
+          eq(userSeriesStatus.userId, user.id),
+        ),
+      })
       expect(seriesStatus).toBeTruthy()
       expect(seriesStatus?.status).toBe(UserSeriesStatusStatus.InProgress)
     })

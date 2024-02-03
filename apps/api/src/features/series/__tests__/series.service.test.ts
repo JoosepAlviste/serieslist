@@ -1,3 +1,4 @@
+import { episode, season, series, seriesProgress } from '@serieslist/db'
 import {
   tmdbNotFoundResponseFactory,
   tmdbSeasonFactory,
@@ -5,7 +6,8 @@ import {
   mockTMDBSeasonRequest,
 } from '@serieslist/tmdb/test'
 import type { LiterallyAnything } from '@serieslist/type-utils'
-import { format, subDays } from 'date-fns'
+import { subDays } from 'date-fns'
+import { and, eq } from 'drizzle-orm'
 
 import { seriesProgressFactory } from '#/features/seriesProgress'
 import { tmdbEpisodeFactory, tmdbSeriesDetailsFactory } from '#/features/tmdb'
@@ -16,6 +18,7 @@ import {
   createSeenEpisodesForUser,
   createSeriesWithEpisodesAndSeasons,
 } from '#/test/testUtils'
+import { formatDate } from '#/utils/date'
 
 import { episodeFactory } from '../episode.factory'
 import { seasonFactory } from '../season.factory'
@@ -31,12 +34,12 @@ describe('features/series/series.service', () => {
   describe('syncSeasonsAndEpisodes', () => {
     it('imports new episodes into existing seasons', async () => {
       const series = await seriesFactory.create()
-      const season = await seasonFactory.create({
+      const existingSeason = await seasonFactory.create({
         seriesId: series.id,
         number: 1,
       })
       const existingEpisode = await episodeFactory.create({
-        seasonId: season.id,
+        seasonId: existingSeason.id,
         number: 1,
       })
 
@@ -64,21 +67,17 @@ describe('features/series/series.service', () => {
         ctx: createContext(),
         tmdbId: series.tmdbId,
         seriesId: series.id,
-        seasons: [season],
+        seasons: [existingSeason],
       })
 
-      const seasons = await db
-        .selectFrom('season')
-        .where('seriesId', '=', series.id)
-        .selectAll()
-        .execute()
+      const seasons = await db.query.season.findMany({
+        where: eq(season.seriesId, series.id),
+      })
       expect(seasons).toHaveLength(1)
 
-      const episodes = await db
-        .selectFrom('episode')
-        .where('seasonId', '=', seasons[0]!.id)
-        .selectAll()
-        .execute()
+      const episodes = await db.query.episode.findMany({
+        where: eq(episode.seasonId, seasons[0]!.id),
+      })
       expect(episodes).toHaveLength(2)
       expect(episodes[0]?.id).toBe(existingEpisode.id)
       expect(episodes[1]?.tmdbId).toBe(newTMDBEpisode.id)
@@ -122,23 +121,21 @@ describe('features/series/series.service', () => {
         seasons: [season],
       })
 
-      const episode = await db
-        .selectFrom('episode')
-        .where('imdbId', '=', s1e1.imdbId)
-        .selectAll()
-        .executeTakeFirstOrThrow()
-      expect(episode.title).toBe('An updated title')
-      expect(format(episode.releasedAt!, 'yyyy-MM-dd')).toBe('2023-01-10')
+      const updatedEpisode = await db.query.episode.findFirst({
+        where: eq(episode.imdbId, s1e1.imdbId!),
+      })
+      expect(updatedEpisode?.title).toBe('An updated title')
+      expect(formatDate(updatedEpisode!.releasedAt!)).toBe('2023-01-10')
     })
 
     it("does not fail when there's nothing to import", async () => {
       const series = await seriesFactory.create()
-      const season = await seasonFactory.create({
+      const existingSeason = await seasonFactory.create({
         seriesId: series.id,
         number: 1,
       })
       const existingEpisode = await episodeFactory.create({
-        seasonId: season.id,
+        seasonId: existingSeason.id,
         number: 1,
       })
 
@@ -162,21 +159,17 @@ describe('features/series/series.service', () => {
         ctx: createContext(),
         tmdbId: series.tmdbId,
         seriesId: series.id,
-        seasons: [season],
+        seasons: [existingSeason],
       })
 
-      const seasons = await db
-        .selectFrom('season')
-        .where('seriesId', '=', series.id)
-        .selectAll()
-        .execute()
+      const seasons = await db.query.season.findMany({
+        where: eq(season.seriesId, series.id),
+      })
       expect(seasons).toHaveLength(1)
 
-      const episodes = await db
-        .selectFrom('episode')
-        .where('seasonId', '=', seasons[0]!.id)
-        .selectAll()
-        .execute()
+      const episodes = await db.query.episode.findMany({
+        where: eq(episode.seasonId, seasons[0]!.id),
+      })
       expect(episodes).toHaveLength(1)
       expect(episodes[0]?.id).toBe(existingEpisode.id)
     })
@@ -233,28 +226,26 @@ describe('features/series/series.service', () => {
         seasons: [season],
       })
 
-      const newEpisode = await db
-        .selectFrom('episode')
-        .where('tmdbId', '=', newTMDBEpisode.id)
-        .selectAll()
-        .executeTakeFirstOrThrow()
-      const seriesProgresses = await db
-        .selectFrom('seriesProgress')
-        .where('seriesId', '=', series.id)
-        .where('nextEpisodeId', '=', newEpisode.id)
-        .selectAll()
-        .execute()
+      const newEpisode = await db.query.episode.findFirst({
+        where: eq(episode.tmdbId, newTMDBEpisode.id),
+      })
+      const seriesProgresses = await db.query.seriesProgress.findMany({
+        where: and(
+          eq(seriesProgress.seriesId, series.id),
+          eq(seriesProgress.nextEpisodeId, newEpisode!.id),
+        ),
+      })
       expect(seriesProgresses).toHaveLength(2)
     })
 
     it('deletes the season if it has been deleted in TMDB', async () => {
       const {
         series,
-        seasons: [{ season }],
+        seasons: [{ season: existingSeason }],
       } = await createSeriesWithEpisodesAndSeasons([0])
 
       mockTMDBSeasonRequest(
-        { tmdbId: series.tmdbId, seasonNumber: season.number },
+        { tmdbId: series.tmdbId, seasonNumber: existingSeason.number },
         tmdbNotFoundResponseFactory.build(),
       )
 
@@ -262,24 +253,23 @@ describe('features/series/series.service', () => {
         ctx: createContext(),
         seriesId: series.id,
         tmdbId: series.tmdbId,
-        seasons: [season],
+        seasons: [existingSeason],
       })
 
-      const savedSeason = await db
-        .selectFrom('season')
-        .where('id', '=', season.id)
-        .executeTakeFirst()
+      const savedSeason = await db.query.season.findFirst({
+        where: eq(season.id, existingSeason.id),
+      })
       expect(savedSeason).toBeFalsy()
     })
 
     it('does not delete the season if there is a parsing error', async () => {
       const {
         series,
-        seasons: [{ season }],
+        seasons: [{ season: existingSeason }],
       } = await createSeriesWithEpisodesAndSeasons([0])
 
       mockTMDBSeasonRequest(
-        { tmdbId: series.tmdbId, seasonNumber: season.number },
+        { tmdbId: series.tmdbId, seasonNumber: existingSeason.number },
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         { not: 'correct' } as LiterallyAnything,
       )
@@ -288,13 +278,12 @@ describe('features/series/series.service', () => {
         ctx: createContext(),
         seriesId: series.id,
         tmdbId: series.tmdbId,
-        seasons: [season],
+        seasons: [existingSeason],
       })
 
-      const savedSeason = await db
-        .selectFrom('season')
-        .where('id', '=', season.id)
-        .executeTakeFirst()
+      const savedSeason = await db.query.season.findFirst({
+        where: eq(season.id, existingSeason.id),
+      })
       expect(savedSeason).not.toBeFalsy()
     })
 
@@ -328,15 +317,15 @@ describe('features/series/series.service', () => {
         seasons: [season],
       })
 
-      const savedEpisode = await db
-        .selectFrom('episode')
-        .where('id', '=', s1e2.id)
-        .executeTakeFirst()
+      const savedEpisode = await db.query.episode.findFirst({
+        where: eq(episode.id, s1e2.id),
+      })
       expect(savedEpisode).toBeFalsy()
-      const savedEpisodeThatShouldStillExist = await db
-        .selectFrom('episode')
-        .where('id', '=', s1e1.id)
-        .executeTakeFirst()
+      const savedEpisodeThatShouldStillExist = await db.query.episode.findFirst(
+        {
+          where: eq(episode.id, s1e1.id),
+        },
+      )
       expect(savedEpisodeThatShouldStillExist).toBeTruthy()
     })
   })
@@ -361,45 +350,44 @@ describe('features/series/series.service', () => {
     })
 
     it('deletes a series if it has been deleted in TMDB', async () => {
-      const series = await seriesFactory.create()
+      const existingSeries = await seriesFactory.create()
 
-      mockTMDBDetailsRequest(series.tmdbId, tmdbNotFoundResponseFactory.build())
+      mockTMDBDetailsRequest(
+        existingSeries.tmdbId,
+        tmdbNotFoundResponseFactory.build(),
+      )
 
       const returnedSeries = await syncSeriesDetails({
         ctx: createContext(),
-        tmdbId: series.tmdbId,
+        tmdbId: existingSeries.tmdbId,
       })
 
       expect(returnedSeries).toBe(null)
 
-      const seriesInDb = await db
-        .selectFrom('series')
-        .where('id', '=', series.id)
-        .selectAll()
-        .executeTakeFirst()
+      const seriesInDb = await db.query.series.findFirst({
+        where: eq(series.id, existingSeries.id),
+      })
       expect(seriesInDb).toBe(undefined)
     })
 
     it('does not delete the series if parsing the TMDB response fails', async () => {
-      const series = await seriesFactory.create()
+      const existingSeries = await seriesFactory.create()
 
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      mockTMDBDetailsRequest(series.tmdbId, {
+      mockTMDBDetailsRequest(existingSeries.tmdbId, {
         not: 'correct',
       } as LiterallyAnything)
 
       const returnedSeries = await syncSeriesDetails({
         ctx: createContext(),
-        tmdbId: series.tmdbId,
+        tmdbId: existingSeries.tmdbId,
       })
 
       expect(returnedSeries).toBe(null)
 
-      const seriesInDb = await db
-        .selectFrom('series')
-        .where('id', '=', series.id)
-        .selectAll()
-        .executeTakeFirst()
+      const seriesInDb = await db.query.series.findFirst({
+        where: eq(series.id, existingSeries.id),
+      })
       expect(seriesInDb).not.toBeFalsy()
     })
   })
@@ -422,19 +410,19 @@ describe('features/series/series.service', () => {
 
   describe('reSyncSeries', () => {
     it('re-syncs series from TMDB', async () => {
-      const series = await seriesFactory.create({
+      const existingSeries = await seriesFactory.create({
         syncedAt: subDays(new Date(), 8),
       })
 
       const scope = mockTMDBDetailsRequest(
-        series.tmdbId,
+        existingSeries.tmdbId,
         tmdbSeriesDetailsFactory.build(
           {
             name: 'Updated Title',
             number_of_seasons: 0,
             seasons: [],
           },
-          { transient: { savedSeries: series } },
+          { transient: { savedSeries: existingSeries } },
         ),
       )
 
@@ -442,12 +430,10 @@ describe('features/series/series.service', () => {
 
       scope.done()
 
-      const savedSeries = await db
-        .selectFrom('series')
-        .where('id', '=', series.id)
-        .selectAll()
-        .executeTakeFirstOrThrow()
-      expect(savedSeries.title).toBe('Updated Title')
+      const savedSeries = await db.query.series.findFirst({
+        where: eq(series.id, existingSeries.id),
+      })
+      expect(savedSeries?.title).toBe('Updated Title')
     })
 
     it("does not re-sync series that haven't been synced before", async () => {

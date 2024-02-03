@@ -1,6 +1,5 @@
-import type { DB } from '@serieslist/db'
+import type { InsertUser } from '@serieslist/db'
 import type { Context } from '@serieslist/graphql-server'
-import type { InsertObject } from 'kysely'
 
 import * as usersRepository from './user.repository'
 
@@ -12,9 +11,6 @@ export const findOne = (args: {
   return usersRepository.findOne(args)
 }
 
-export const createOne = (args: {
-  ctx: Context
-  user: InsertObject<DB, 'user'>
-}) => {
+export const createOne = (args: { ctx: Context; user: InsertUser }) => {
   return usersRepository.createOne(args)
 }

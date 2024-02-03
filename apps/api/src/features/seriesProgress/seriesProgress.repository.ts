@@ -1,76 +1,87 @@
-import type { DB } from '@serieslist/db'
-import type { DBContext, Context } from '@serieslist/graphql-server'
-import type { UpdateObject, InsertObject } from 'kysely'
+import type { InsertSeriesProgress } from '@serieslist/db'
+import { seriesProgress } from '@serieslist/db'
+import type { DBContext } from '@serieslist/graphql-server'
+import { and, eq, inArray, isNull } from 'drizzle-orm'
 
-export const findMany = ({
+export const findMany = async ({
   ctx,
   seriesIds,
   userId,
 }: {
-  ctx: Context
+  ctx: DBContext
   seriesIds: number[]
   userId: number
 }) => {
-  return ctx.db
-    .selectFrom('seriesProgress')
-    .where('userId', '=', userId)
-    .where('seriesId', 'in', seriesIds)
-    .selectAll()
-    .execute()
-}
-
-export const createOrUpdateOne = ({
-  ctx,
-  seriesProgress,
-}: {
-  ctx: Context
-  seriesProgress: InsertObject<DB, 'seriesProgress'>
-}) => {
-  return ctx.db
-    .insertInto('seriesProgress')
-    .values(seriesProgress)
-    .onConflict((oc) =>
-      oc.columns(['seriesId', 'userId']).doUpdateSet({
-        latestSeenEpisodeId: seriesProgress.latestSeenEpisodeId,
-        nextEpisodeId: seriesProgress.nextEpisodeId,
-        updatedAt: new Date(Date.now()),
-      }),
+  return await ctx.db
+    .select()
+    .from(seriesProgress)
+    .where(
+      and(
+        eq(seriesProgress.userId, userId),
+        inArray(seriesProgress.seriesId, seriesIds),
+      ),
     )
-    .execute()
 }
 
-export const updateMany = ({
+export const createOrUpdateOne = async ({
+  ctx,
+  seriesProgress: seriesProgressArgs,
+}: {
+  ctx: DBContext
+  seriesProgress: InsertSeriesProgress
+}) => {
+  return await ctx.db
+    .insert(seriesProgress)
+    .values(seriesProgressArgs)
+    .onConflictDoUpdate({
+      target: [seriesProgress.seriesId, seriesProgress.userId],
+      set: {
+        latestSeenEpisodeId: seriesProgressArgs.latestSeenEpisodeId,
+        nextEpisodeId: seriesProgressArgs.nextEpisodeId,
+        updatedAt: new Date(Date.now()),
+      },
+    })
+}
+
+export const updateMany = async ({
   ctx,
   seriesId,
   nextEpisodeId,
-  seriesProgress,
+  seriesProgress: seriesProgressArgs,
 }: {
   ctx: DBContext
   seriesId: number
   nextEpisodeId: number | null
-  seriesProgress: UpdateObject<DB, 'seriesProgress'>
+  seriesProgress: Partial<InsertSeriesProgress>
 }) => {
-  return ctx.db
-    .updateTable('seriesProgress')
-    .where('seriesId', '=', seriesId)
-    .where('nextEpisodeId', 'is', nextEpisodeId)
-    .set(seriesProgress)
-    .returningAll()
-    .execute()
+  return await ctx.db
+    .update(seriesProgress)
+    .set(seriesProgressArgs)
+    .where(
+      and(
+        eq(seriesProgress.seriesId, seriesId),
+        nextEpisodeId === null
+          ? isNull(seriesProgress.nextEpisodeId)
+          : eq(seriesProgress.nextEpisodeId, nextEpisodeId),
+      ),
+    )
 }
 
-export const deleteOne = ({
+export const deleteOne = async ({
   ctx,
   seriesId,
   userId,
 }: {
-  ctx: Context
+  ctx: DBContext
   seriesId: number
   userId: number
 }) => {
-  return ctx.db
-    .deleteFrom('seriesProgress')
-    .where('seriesId', '=', seriesId)
-    .where('userId', '=', userId)
-    .execute()
+  return await ctx.db
+    .delete(seriesProgress)
+    .where(
+      and(
+        eq(seriesProgress.seriesId, seriesId),
+        eq(seriesProgress.userId, userId),
+      ),
+    )
 }

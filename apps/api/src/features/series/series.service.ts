@@ -1,4 +1,4 @@
-import type { Season } from '@serieslist/db'
+import type { InsertSeason } from '@serieslist/db'
 import { UserSeriesStatusStatus } from '@serieslist/db'
 import { NotFoundError } from '@serieslist/graphql-server'
 import type {
@@ -10,7 +10,6 @@ import { tmdbService } from '@serieslist/tmdb'
 import { addDays, isFuture, subDays } from 'date-fns'
 import index from 'just-index'
 import unique from 'just-unique'
-import type { Insertable } from 'kysely'
 
 import { seriesProgressService } from '#/features/seriesProgress'
 import type {
@@ -82,7 +81,7 @@ export const syncSeasonsAndEpisodes = async ({
   ctx: DBContext
   seriesId: number
   tmdbId: number
-  seasons: Omit<Insertable<Season>, 'seriesId'>[]
+  seasons: Omit<InsertSeason, 'seriesId'>[]
 }) => {
   const existingSeasonsAndEpisodes =
     await episodeRepository.findEpisodesAndSeasonsForSeries({ ctx, seriesId })

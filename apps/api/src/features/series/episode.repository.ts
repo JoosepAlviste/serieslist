@@ -1,122 +1,140 @@
-import type { DB } from '@serieslist/db'
-import type { DBContext, Context } from '@serieslist/graphql-server'
-import type { InsertObject } from 'kysely'
+import type { InsertEpisode } from '@serieslist/db'
+import { episode, season, seenEpisode } from '@serieslist/db'
+import type { DBContext } from '@serieslist/graphql-server'
+import {
+  and,
+  asc,
+  desc,
+  eq,
+  gt,
+  inArray,
+  isNull,
+  lte,
+  or,
+  sql,
+} from 'drizzle-orm'
+
+import { head } from '#/utils/array'
 
 /**
  * Return the episode TMDB IDs and season IDs ordered by the season and
  * episode numbers.
  */
-export const findEpisodesAndSeasonsForSeries = ({
+export const findEpisodesAndSeasonsForSeries = async ({
   ctx,
   seriesId,
 }: {
   ctx: DBContext
   seriesId: number
 }) => {
-  return ctx.db
-    .selectFrom('season')
-    .where('seriesId', '=', seriesId)
-    .leftJoin('episode', 'season.id', 'episode.seasonId')
-    .select([
-      'episode.id as episodeId',
-      'episode.tmdbId as episodeTmdbId',
-      'season.id as seasonId',
-      'season.tmdbId as seasonTmdbId',
-      'season.number as seasonNumber',
-    ])
-    .orderBy('season.number')
-    .orderBy('episode.number')
-    .execute()
+  return await ctx.db
+    .select({
+      episodeId: episode.id,
+      episodeTmdbId: episode.tmdbId,
+      seasonId: season.id,
+      seasonTmdbId: season.tmdbId,
+      seasonNumber: season.number,
+    })
+    .from(season)
+    .leftJoin(episode, eq(season.id, episode.seasonId))
+    .where(eq(season.seriesId, seriesId))
+    .orderBy(season.number, episode.number)
 }
 
-export const findOne = ({
+export const findOne = async ({
   ctx,
   episodeId,
 }: {
-  ctx: Context
+  ctx: DBContext
   episodeId: number
 }) => {
-  return ctx.db
-    .selectFrom('episode')
-    .where('id', '=', episodeId)
-    .selectAll()
-    .executeTakeFirst()
+  return await ctx.db.select().from(episode).where(eq(episode.id, episodeId))
 }
 
-export const findManyByNumberForManySeries = ({
+export const findManyByNumberForManySeries = async ({
   ctx,
   seriesIds,
   seasonNumber,
   episodeNumber,
 }: {
-  ctx: Context
+  ctx: DBContext
   seriesIds: number[]
   seasonNumber: number
   episodeNumber: number
 }) => {
-  return ctx.db
-    .selectFrom('episode')
-    .innerJoin('season', 'season.id', 'episode.seasonId')
-    .where('seriesId', 'in', seriesIds)
-    .where('season.number', '=', seasonNumber)
-    .where('episode.number', '=', episodeNumber)
-    .selectAll('episode')
-    .select('season.seriesId as seriesId')
-    .execute()
+  return await ctx.db
+    .select()
+    .from(episode)
+    .innerJoin(season, eq(episode.seasonId, season.id))
+    .where(
+      and(
+        inArray(season.seriesId, seriesIds),
+        eq(season.number, seasonNumber),
+        eq(episode.number, episodeNumber),
+      ),
+    )
 }
 
-export const findOneWithSeasonAndSeriesInfo = ({
+export const findOneWithSeasonAndSeriesInfo = async ({
   ctx,
   episodeId,
 }: {
-  ctx: Context
+  ctx: DBContext
   episodeId: number
 }) => {
-  return ctx.db
-    .selectFrom('episode')
-    .innerJoin('season', 'season.id', 'episode.seasonId')
-    .where('episode.id', '=', episodeId)
-    .selectAll('episode')
-    .select(['season.number as seasonNumber', 'season.seriesId as seriesId'])
-    .executeTakeFirst()
+  const item = await ctx.db
+    .select()
+    .from(episode)
+    .innerJoin(season, eq(season.id, episode.seasonId))
+    .where(eq(episode.id, episodeId))
+    .then(head)
+
+  return (
+    item && {
+      ...item.episode,
+      seasonNumber: item.season.number,
+      seriesId: item.season.seriesId,
+    }
+  )
 }
 
-export const findLastEpisodeOfSeason = ({
+export const findLastEpisodeOfSeason = async ({
   ctx,
   seriesId,
   seasonNumber,
 }: {
-  ctx: Context
+  ctx: DBContext
   seriesId: number
   seasonNumber: number
 }) => {
-  return ctx.db
-    .selectFrom('episode')
-    .innerJoin('season', 'episode.seasonId', 'season.id')
-    .where('season.number', '=', seasonNumber)
-    .where('season.seriesId', '=', seriesId)
-    .orderBy('episode.number', 'desc')
+  const res = await ctx.db
+    .select()
+    .from(episode)
+    .innerJoin(season, eq(episode.seasonId, season.id))
+    .where(and(eq(season.number, seasonNumber), eq(season.seriesId, seriesId)))
+    .orderBy(desc(episode.number))
     .limit(1)
-    .selectAll('episode')
-    .executeTakeFirst()
+
+  return res[0]?.episode
 }
 
-export const findLastEpisodeOfSeries = ({
+export const findLastEpisodeOfSeries = async ({
   ctx,
   seriesId,
 }: {
-  ctx: Context
+  ctx: DBContext
   seriesId: number
 }) => {
-  return ctx.db
-    .selectFrom('episode')
-    .innerJoin('season', 'episode.seasonId', 'season.id')
-    .where('season.seriesId', '=', seriesId)
-    .orderBy('season.number', 'desc')
-    .orderBy('episode.number', 'desc')
+  const res = await ctx.db
+    .select()
+    .from(episode)
+    .innerJoin(season, eq(episode.seasonId, season.id))
+    .where(eq(season.seriesId, seriesId))
+    .orderBy(desc(season.number), desc(episode.number))
     .limit(1)
-    .selectAll('episode')
-    .executeTakeFirst()
+    .then(head)
+
+  return res?.episode
 }
 
 export const findFirstNotSeenEpisodeInSeriesForUser = async ({
@@ -124,30 +142,30 @@ export const findFirstNotSeenEpisodeInSeriesForUser = async ({
   seriesId,
   userId,
 }: {
-  ctx: Context
+  ctx: DBContext
   seriesId: number
   userId: number
 }) => {
-  return ctx.db
-    .selectFrom('episode')
-    .innerJoin('season', 'season.id', 'episode.seasonId')
-    .where(({ not, exists, selectFrom }) =>
-      not(
-        exists(
-          selectFrom('seenEpisode')
-            .where('seenEpisode.userId', '=', userId)
-            .whereRef('seenEpisode.episodeId', '=', 'episode.id'),
-        ),
+  return await ctx.db
+    .select()
+    .from(episode)
+    .innerJoin(season, eq(season.id, episode.seasonId))
+    .leftJoin(
+      seenEpisode,
+      and(
+        eq(seenEpisode.episodeId, episode.id),
+        eq(seenEpisode.userId, userId),
       ),
     )
-    .where('season.seriesId', '=', seriesId)
-    .where('season.number', '>', 0)
-    .selectAll('episode')
-    .select(['season.number as seasonNumber'])
-    .orderBy('seasonNumber', 'asc')
-    .orderBy('episode.number', 'asc')
-    .limit(1)
-    .executeTakeFirst()
+    .where(
+      and(
+        isNull(seenEpisode.userId),
+        eq(season.seriesId, seriesId),
+        gt(season.number, 0),
+      ),
+    )
+    .orderBy(asc(season.number), asc(episode.number))
+    .then(head)
 }
 
 export const findNextEpisode = async ({
@@ -156,87 +174,84 @@ export const findNextEpisode = async ({
   seasonNumber,
   episodeNumber,
 }: {
-  ctx: Context
+  ctx: DBContext
   seriesId: number
   seasonNumber: number
   episodeNumber: number
 }) => {
-  return ctx.db
-    .selectFrom('episode')
-    .innerJoin('season', 'season.id', 'episode.seasonId')
-    .where('seriesId', '=', seriesId)
-    .where((eb) =>
-      eb.or([
-        eb.and([
-          eb('season.number', '=', seasonNumber),
-          eb('episode.number', '=', episodeNumber + 1),
-        ]),
-        eb.and([
-          eb('season.number', '=', seasonNumber + 1),
-          eb('episode.number', '=', 1),
-        ]),
-      ]),
+  const res = await ctx.db
+    .select()
+    .from(episode)
+    .innerJoin(season, eq(season.id, episode.seasonId))
+    .where(
+      and(
+        eq(season.seriesId, seriesId),
+        or(
+          and(
+            eq(season.number, seasonNumber),
+            eq(episode.number, episodeNumber + 1),
+          ),
+          and(eq(season.number, seasonNumber + 1), eq(episode.number, 1)),
+        ),
+      ),
     )
-    .selectAll('episode')
-    .executeTakeFirst()
+    .then(head)
+
+  return res?.episode
 }
 
-export const findMany = ({
+export const findMany = async ({
   ctx,
   seasonIds,
   episodeIds,
   releasedBefore,
 }: {
-  ctx: Context
+  ctx: DBContext
   seasonIds?: number[]
   episodeIds?: number[]
   releasedBefore?: Date
 }) => {
-  let query = ctx.db.selectFrom('episode').selectAll().orderBy('number')
-
-  if (seasonIds) {
-    query = query.where('seasonId', 'in', seasonIds)
-  }
-
-  if (episodeIds) {
-    query = query.where('id', 'in', episodeIds)
-  }
-
-  if (releasedBefore) {
-    query = query.where('releasedAt', '<=', releasedBefore)
-  }
-
-  return query.execute()
+  return await ctx.db
+    .select()
+    .from(episode)
+    .orderBy(episode.number)
+    .where(
+      and(
+        seasonIds ? inArray(episode.seasonId, seasonIds) : undefined,
+        episodeIds ? inArray(episode.id, episodeIds) : undefined,
+        releasedBefore ? lte(episode.releasedAt, releasedBefore) : undefined,
+      ),
+    )
 }
 
-export const createOrUpdateMany = ({
+export const createOrUpdateMany = async ({
   ctx,
   episodes,
 }: {
   ctx: DBContext
-  episodes: InsertObject<DB, 'episode'>[]
+  episodes: InsertEpisode[]
 }) => {
-  return ctx.db
-    .insertInto('episode')
+  return await ctx.db
+    .insert(episode)
     .values(episodes)
-    .returningAll()
-    .onConflict((oc) =>
-      oc.column('tmdbId').doUpdateSet({
-        title: (eb) => eb.ref('excluded.title'),
-        number: (eb) => eb.ref('excluded.number'),
-        imdbRating: (eb) => eb.ref('excluded.imdbRating'),
-        releasedAt: (eb) => eb.ref('excluded.releasedAt'),
-      }),
-    )
-    .execute()
+    .returning()
+    .onConflictDoUpdate({
+      target: episode.tmdbId,
+      set: {
+        title: sql`excluded.title`,
+        number: sql`excluded.number`,
+        imdbRating: sql`excluded.imdb_rating`,
+        releasedAt: sql`excluded.released_at`,
+      },
+    })
 }
 
-export const deleteMany = ({
+export const deleteMany = async ({
   ctx,
   episodeIds,
 }: {
   ctx: DBContext
   episodeIds: number[]
 }) => {
-  return ctx.db.deleteFrom('episode').where('id', 'in', episodeIds).execute()
+  return await ctx.db.delete(episode).where(inArray(episode.id, episodeIds))
 }

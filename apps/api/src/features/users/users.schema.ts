@@ -1,10 +1,7 @@
 import type { User } from '@serieslist/db'
 import { builder } from '@serieslist/graphql-server'
-import type { Selectable } from 'kysely'
 
-export type UserType = Selectable<User>
-
-export const UserRef = builder.objectRef<UserType>('User')
+export const UserRef = builder.objectRef<User>('User')
 
 builder.objectType(UserRef, {
   fields: (t) => ({

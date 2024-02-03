@@ -1,39 +1,37 @@
-import { CamelCasePlugin, Kysely, PostgresDialect } from 'kysely'
+import { DefaultLogger, type LogWriter } from 'drizzle-orm'
+import { drizzle } from 'drizzle-orm/node-postgres'
 import pg from 'pg'
 import type { Logger } from 'pino'
 
-import type { DB } from '../generated/db'
+import * as schema from '../schema'
 
 import { config } from './config'
 
-const { Pool } = pg
+const { Client } = pg
 
-export const createDbConnection = ({ logger }: { logger: Logger }) => {
-  const db = new Kysely<DB>({
-    dialect: new PostgresDialect({
-      pool: new Pool({
-        host: config.db.host,
-        ssl: config.db.host !== 'localhost',
-        port: config.db.port,
-        database: config.db.db,
-        user: config.db.user,
-        password: config.db.password,
-      }),
-    }),
-    plugins: [new CamelCasePlugin()],
-    log(event) {
-      if (config.debug.logSqlQueries && event.level === 'query') {
-        logger.info(
-          {
-            sql: event.query.sql,
-            parameters: event.query.parameters,
-            duration: event.queryDurationMillis,
-          },
-          'SQL query executed',
-        )
-      }
-    },
+export const createDbConnection = async ({ logger }: { logger: Logger }) => {
+  const client = new Client({
+    host: config.db.host,
+    ssl: config.db.host !== 'localhost',
+    port: config.db.port,
+    database: config.db.db,
+    user: config.db.user,
+    password: config.db.password,
   })
 
-  return db
+  await client.connect()
+
+  class SerieslistLogWriter implements LogWriter {
+    write(message: string) {
+      logger.info(message)
+    }
+  }
+
+  const dbLogger = new DefaultLogger({ writer: new SerieslistLogWriter() })
+  const db = drizzle(client, {
+    logger: dbLogger,
+    schema,
+  })
+
+  return { db, client }
 }

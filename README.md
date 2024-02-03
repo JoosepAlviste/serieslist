@@ -29,7 +29,7 @@ The back-end is a GraphQL API with full type safety:
 
 - [Node](https://nodejs.org/)
 - [Fastify](https://www.fastify.io/), [GraphQL Yoga](https://the-guild.dev/graphql/yoga-server), [Pothos GraphQL](https://pothos-graphql.dev/)
-- [Kysely](https://github.com/koskimas/kysely)
+- [Drizzle ORM](https://orm.drizzle.team/)
 - [PostgreSQL](https://www.postgresql.org/)
 
 And of course, all code is checked with:

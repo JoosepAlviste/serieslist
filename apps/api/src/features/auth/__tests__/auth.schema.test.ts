@@ -1,5 +1,5 @@
-import type { User } from '@serieslist/db'
-import type { Selectable } from 'kysely'
+import { user, type User } from '@serieslist/db'
+import { eq } from 'drizzle-orm'
 import { nanoid } from 'nanoid'
 
 import { userFactory } from '#/features/users'
@@ -54,14 +54,12 @@ describe('features/auth/auth.schema', () => {
       const resUser = checkErrors(result.data?.register)
       expect(resUser.id).toBeTruthy()
 
-      const user = await db
-        .selectFrom('user')
-        .select(['id', 'name', 'email'])
-        .where('id', '=', parseInt(resUser.id))
-        .executeTakeFirstOrThrow()
+      const newUser = await db.query.user.findFirst({
+        where: eq(user.id, parseInt(resUser.id)),
+      })
 
-      expect(user.name).toBe('Test Dude')
-      expect(user.email).toBe(`test${uid}@test.com`)
+      expect(newUser!.name).toBe('Test Dude')
+      expect(newUser!.email).toBe(`test${uid}@test.com`)
     })
 
     it("hashes the users's password", async () => {
@@ -72,13 +70,11 @@ describe('features/auth/auth.schema', () => {
       const resUser = checkErrors(result.data?.register)
       expect(resUser.id).toBeTruthy()
 
-      const user = await db
-        .selectFrom('user')
-        .select(['password'])
-        .where('id', '=', parseInt(resUser.id))
-        .executeTakeFirstOrThrow()
+      const newUser = await db.query.user.findFirst({
+        where: eq(user.id, parseInt(resUser.id)),
+      })
 
-      expect(user.password).not.toBe('test123')
+      expect(newUser!.password).not.toBe('test123')
     })
 
     it('requires a valid email', async () => {
@@ -197,7 +193,7 @@ describe('features/auth/auth.schema', () => {
   })
 
   describe('me query', () => {
-    const executeQuery = (user: Selectable<User> | null) =>
+    const executeQuery = (user: User | null) =>
       executeOperation({
         operation: graphql(`
           query me {

@@ -6,7 +6,6 @@ import {
   builder,
 } from '@serieslist/graphql-server'
 import type { Context } from '@serieslist/graphql-server'
-import type { Selectable } from 'kysely'
 import { ZodError } from 'zod'
 
 import { exposeDate } from '#/utils/exposeDate'
@@ -15,7 +14,7 @@ import * as episodesService from './episodes.service'
 import * as seasonService from './season.service'
 import * as seriesService from './series.service'
 
-export const EpisodeRef = builder.objectRef<Selectable<Episode>>('Episode')
+export const EpisodeRef = builder.objectRef<Episode>('Episode')
 EpisodeRef.implement({
   fields: (t) => ({
     id: t.id({

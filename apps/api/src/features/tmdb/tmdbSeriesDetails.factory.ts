@@ -7,14 +7,13 @@ import {
 import type { NotWorthIt } from '@serieslist/type-utils'
 import { Factory } from 'fishery'
 import filterObject from 'just-filter-object'
-import type { Selectable } from 'kysely'
 
 const removeUndefinedKeys = <T extends Record<string, unknown>>(obj: T) => {
   return filterObject(obj as NotWorthIt, (_key, value) => value !== undefined)
 }
 
 type TMDBSeriesDetailsTransientParams = {
-  savedSeries?: Selectable<Series>
+  savedSeries?: Series
 }
 
 export const tmdbSeriesDetailsFactory = Factory.define<
@@ -38,7 +37,7 @@ export const tmdbSeriesDetailsFactory = Factory.define<
 )
 
 type TMDBEpisodeTransientParams = {
-  savedEpisode?: Selectable<Episode>
+  savedEpisode?: Episode
 }
 
 export const tmdbEpisodeFactory = Factory.define<

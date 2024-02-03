@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
-import { addDays, format } from 'date-fns'
+import { addDays } from 'date-fns'
 import React from 'react'
 
 import { makeFragmentData } from '#/generated/gql'
@@ -12,6 +12,7 @@ import {
   ToggleEpisodeSeenDocument,
 } from '#/generated/gql/graphql'
 import { createMockResolver, render } from '#/lib/testUtils'
+import { stringifyDate } from '#/utils/dates'
 
 import { episodeFactory } from '../../episode.factory'
 import { seasonFactory } from '../../season.factory'
@@ -114,7 +115,7 @@ describe('features/series/components/EpisodeLine', () => {
 
   it('does not render the mark as seen button if the episode airs in the future', async () => {
     const episode = episodeFactory.build({
-      releasedAt: format(addDays(new Date(), 1), 'yyyy-MM-dd'),
+      releasedAt: stringifyDate(addDays(new Date(), 1)),
     })
 
     await renderEpisodeLine({ episode, season: episode.season })

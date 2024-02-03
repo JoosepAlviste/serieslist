@@ -1,79 +1,86 @@
-import type { DB } from '@serieslist/db'
-import type { Context } from '@serieslist/graphql-server'
-import type { InsertObject } from 'kysely'
+import type { InsertSeenEpisode } from '@serieslist/db'
+import { seenEpisode } from '@serieslist/db'
+import type { DBContext } from '@serieslist/graphql-server'
+import { and, eq, inArray } from 'drizzle-orm'
 
-export const findOne = ({
+import { head } from '#/utils/array'
+
+export const findOne = async ({
   ctx,
   userId,
   episodeId,
 }: {
-  ctx: Context
+  ctx: DBContext
   userId: number
   episodeId: number
 }) => {
-  return ctx.db
-    .selectFrom('seenEpisode')
-    .where('userId', '=', userId)
-    .where('episodeId', '=', episodeId)
-    .executeTakeFirst()
+  return await ctx.db
+    .select()
+    .from(seenEpisode)
+    .where(
+      and(eq(seenEpisode.userId, userId), eq(seenEpisode.episodeId, episodeId)),
+    )
+    .limit(1)
+    .then(head)
 }
 
-export const findMany = ({
+export const findMany = async ({
   ctx,
   userId,
   episodeIds,
 }: {
-  ctx: Context
+  ctx: DBContext
   userId: number
   episodeIds: number[]
 }) => {
-  return ctx.db
-    .selectFrom('seenEpisode')
-    .where('userId', '=', userId)
-    .where('episodeId', 'in', episodeIds)
-    .selectAll()
-    .execute()
+  return await ctx.db
+    .select()
+    .from(seenEpisode)
+    .where(
+      and(
+        eq(seenEpisode.userId, userId),
+        inArray(seenEpisode.episodeId, episodeIds),
+      ),
+    )
 }
 
-export const createOne = ({
+export const createOne = async ({
   ctx,
-  seenEpisode,
+  seenEpisode: seenEpisodeArgs,
 }: {
-  ctx: Context
-  seenEpisode: InsertObject<DB, 'seenEpisode'>
+  ctx: DBContext
+  seenEpisode: InsertSeenEpisode
 }) => {
-  return ctx.db
-    .insertInto('seenEpisode')
-    .values(seenEpisode)
-    .executeTakeFirstOrThrow()
+  return await ctx.db.insert(seenEpisode).values(seenEpisodeArgs)
 }
 
-export const createMany = ({
+export const createMany = async ({
   ctx,
   seenEpisodes,
 }: {
-  ctx: Context
-  seenEpisodes: InsertObject<DB, 'seenEpisode'>[]
+  ctx: DBContext
+  seenEpisodes: InsertSeenEpisode[]
 }) => {
-  return ctx.db
-    .insertInto('seenEpisode')
+  return await ctx.db
+    .insert(seenEpisode)
     .values(seenEpisodes)
-    .onConflict((oc) => oc.columns(['episodeId', 'userId']).doNothing())
-    .execute()
+    .onConflictDoNothing({
+      target: [seenEpisode.episodeId, seenEpisode.userId],
+    })
 }
 
-export const deleteOne = ({
+export const deleteOne = async ({
   ctx,
   userId,
   episodeId,
 }: {
-  ctx: Context
+  ctx: DBContext
   userId: number
   episodeId: number
 }) => {
-  return ctx.db
-    .deleteFrom('seenEpisode')
-    .where('userId', '=', userId)
-    .where('episodeId', '=', episodeId)
-    .execute()
+  return await ctx.db
+    .delete(seenEpisode)
+    .where(
+      and(eq(seenEpisode.userId, userId), eq(seenEpisode.episodeId, episodeId)),
+    )
 }

@@ -1,6 +1,6 @@
-import type { User } from '@serieslist/db'
+import { seenEpisode, seriesProgress, type User } from '@serieslist/db'
 import { addDays } from 'date-fns'
-import type { Selectable } from 'kysely'
+import { and, eq, inArray } from 'drizzle-orm'
 
 import {
   episodeFactory,
@@ -31,7 +31,7 @@ describe('features/seriesProgress/seriesProgress.schema', () => {
       episodeId,
       user,
     }: ToggleEpisodeSeenInput & {
-      user: Selectable<User>
+      user: User
     }) =>
       await executeOperation({
         operation: graphql(`
@@ -60,12 +60,13 @@ describe('features/seriesProgress/seriesProgress.schema', () => {
         user,
       })
 
-      const seenEpisode = await db
-        .selectFrom('seenEpisode')
-        .where('episodeId', '=', episode.id)
-        .where('userId', '=', user.id)
-        .executeTakeFirst()
-      expect(seenEpisode).toBeTruthy()
+      const newSeenEpisode = await db.query.seenEpisode.findFirst({
+        where: and(
+          eq(seenEpisode.episodeId, episode.id),
+          eq(seenEpisode.userId, user.id),
+        ),
+      })
+      expect(newSeenEpisode).toBeTruthy()
     })
 
     it('allows un-marking an episode as seen', async () => {
@@ -82,12 +83,13 @@ describe('features/seriesProgress/seriesProgress.schema', () => {
         user,
       })
 
-      const seenEpisode = await db
-        .selectFrom('seenEpisode')
-        .where('episodeId', '=', episode.id)
-        .where('userId', '=', user.id)
-        .executeTakeFirst()
-      expect(seenEpisode).toBeFalsy()
+      const newSeenEpisode = await db.query.seenEpisode.findFirst({
+        where: and(
+          eq(seenEpisode.episodeId, episode.id),
+          eq(seenEpisode.userId, user.id),
+        ),
+      })
+      expect(newSeenEpisode).toBeFalsy()
     })
   })
 
@@ -96,7 +98,7 @@ describe('features/seriesProgress/seriesProgress.schema', () => {
       seasonId,
       user,
     }: MarkSeasonEpisodesAsSeenInput & {
-      user: Selectable<User>
+      user: User
     }) =>
       await executeOperation({
         operation: graphql(`
@@ -146,12 +148,13 @@ describe('features/seriesProgress/seriesProgress.schema', () => {
       ])
 
       // And the episodes are updated in the db as well
-      const seenEpisode = await db
-        .selectFrom('seenEpisode')
-        .where('episodeId', 'in', [episode1.id, episode2.id])
-        .where('userId', '=', user.id)
-        .execute()
-      expect(seenEpisode).toHaveLength(2)
+      const newSeenEpisodes = await db.query.seenEpisode.findMany({
+        where: and(
+          inArray(seenEpisode.episodeId, [episode1.id, episode2.id]),
+          eq(seenEpisode.userId, user.id),
+        ),
+      })
+      expect(newSeenEpisodes).toHaveLength(2)
     })
 
     it('does not fail if one of the episodes is already marked as seen', async () => {
@@ -175,12 +178,13 @@ describe('features/seriesProgress/seriesProgress.schema', () => {
         user,
       })
 
-      const seenEpisode = await db
-        .selectFrom('seenEpisode')
-        .where('episodeId', 'in', [episode1.id, episode2.id])
-        .where('userId', '=', user.id)
-        .execute()
-      expect(seenEpisode).toHaveLength(2)
+      const newSeenEpisodes = await db.query.seenEpisode.findMany({
+        where: and(
+          inArray(seenEpisode.episodeId, [episode1.id, episode2.id]),
+          eq(seenEpisode.userId, user.id),
+        ),
+      })
+      expect(newSeenEpisodes).toHaveLength(2)
     })
   })
 
@@ -189,7 +193,7 @@ describe('features/seriesProgress/seriesProgress.schema', () => {
       seriesId,
       user,
     }: MarkSeriesEpisodesAsSeenInput & {
-      user: Selectable<User>
+      user: User
     }) =>
       await executeOperation({
         operation: graphql(`
@@ -227,11 +231,10 @@ describe('features/seriesProgress/seriesProgress.schema', () => {
         user,
       })
 
-      const seenEpisodes = await db
-        .selectFrom('seenEpisode')
-        .where('episodeId', 'in', [s1e1.id, s2e1.id])
-        .execute()
-      expect(seenEpisodes).toHaveLength(2)
+      const newSeenEpisodes = await db.query.seenEpisode.findMany({
+        where: inArray(seenEpisode.episodeId, [s1e1.id, s2e1.id]),
+      })
+      expect(newSeenEpisodes).toHaveLength(2)
     })
 
     it('advances series progress to the last episode', async () => {
@@ -251,19 +254,19 @@ describe('features/seriesProgress/seriesProgress.schema', () => {
         user,
       })
 
-      const progress = await db
-        .selectFrom('seriesProgress')
-        .selectAll()
-        .where('seriesId', '=', series.id)
-        .where('userId', '=', user.id)
-        .executeTakeFirstOrThrow()
-      expect(progress.latestSeenEpisodeId).toBe(s2e1.id)
-      expect(progress.nextEpisodeId).toBe(null)
+      const progress = await db.query.seriesProgress.findFirst({
+        where: and(
+          eq(seriesProgress.seriesId, series.id),
+          eq(seriesProgress.userId, user.id),
+        ),
+      })
+      expect(progress!.latestSeenEpisodeId).toBe(s2e1.id)
+      expect(progress!.nextEpisodeId).toBe(null)
     })
   })
 
   describe('Episode type', () => {
-    const querySeries = (seriesId: number, user: Selectable<User>) => {
+    const querySeries = (seriesId: number, user: User) => {
       return executeOperation({
         operation: graphql(`
           query seriesProgressEpisode($id: ID!) {
@@ -293,7 +296,7 @@ describe('features/seriesProgress/seriesProgress.schema', () => {
       })
     }
 
-    const querySeriesList = (user: Selectable<User>) => {
+    const querySeriesList = (user: User) => {
       return executeOperation({
         operation: graphql(`
           query seriesProgressEpisodeList($input: UserSeriesListInput!) {

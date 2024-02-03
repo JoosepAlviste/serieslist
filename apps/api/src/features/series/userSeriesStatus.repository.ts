@@ -1,57 +1,62 @@
-import type { DB } from '@serieslist/db'
-import type { Context } from '@serieslist/graphql-server'
-import type { InsertObject } from 'kysely'
+import type { InsertUserSeriesStatus } from '@serieslist/db'
+import { userSeriesStatus } from '@serieslist/db'
+import type { DBContext } from '@serieslist/graphql-server'
+import { and, eq, inArray } from 'drizzle-orm'
 
-export const findMany = ({
+export const findMany = async ({
   ctx,
   seriesIds,
   userId,
 }: {
-  ctx: Context
+  ctx: DBContext
   seriesIds: number[]
   userId: number
 }) => {
-  return ctx.db
-    .selectFrom('userSeriesStatus')
-    .where('seriesId', 'in', seriesIds)
-    .where('userId', '=', userId)
-    .selectAll()
-    .execute()
+  return await ctx.db
+    .select()
+    .from(userSeriesStatus)
+    .where(
+      and(
+        inArray(userSeriesStatus.seriesId, seriesIds),
+        eq(userSeriesStatus.userId, userId),
+      ),
+    )
 }
 
-export const createOrUpdate = ({
+export const createOrUpdate = async ({
   userId,
   seriesId,
   status,
   ctx,
-}: InsertObject<DB, 'userSeriesStatus'> & {
-  ctx: Context
+}: InsertUserSeriesStatus & {
+  ctx: DBContext
 }) => {
-  return ctx.db
-    .insertInto('userSeriesStatus')
-    .values({
-      userId,
-      seriesId,
-      status,
+  return await ctx.db
+    .insert(userSeriesStatus)
+    .values({ userId, seriesId, status })
+    .onConflictDoUpdate({
+      target: [userSeriesStatus.seriesId, userSeriesStatus.userId],
+      set: {
+        status,
+      },
     })
-    .onConflict((oc) =>
-      oc.columns(['seriesId', 'userId']).doUpdateSet({ status }),
-    )
-    .execute()
 }
 
-export const deleteOne = ({
+export const deleteOne = async ({
   ctx,
   seriesId,
   userId,
 }: {
-  ctx: Context
+  ctx: DBContext
   seriesId: number
   userId: number
 }) => {
-  return ctx.db
-    .deleteFrom('userSeriesStatus')
-    .where('userId', '=', userId)
-    .where('seriesId', '=', seriesId)
-    .execute()
+  return await ctx.db
+    .delete(userSeriesStatus)
+    .where(
+      and(
+        eq(userSeriesStatus.seriesId, seriesId),
+        eq(userSeriesStatus.userId, userId),
+      ),
+    )
 }

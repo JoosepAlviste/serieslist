@@ -37,13 +37,10 @@ To migrate the database:
 pnpm migrate
 ```
 
-This also runs `kysely-codegen` to generate TypeScript types for the database.
-
-To add a new migration:
+To add a new migration, first change the schema files in 
+[`packages/db/src/drizzle`](./packages/db/src/drizzle/). Then, generate the 
+migration SQL files:
 
 ```sh
-pnpm migration createUserTable
+pnpm migration
 ```
-
-Then, fill out the migration functions in 
-`src/migrations/...-createUserTable.ts`.

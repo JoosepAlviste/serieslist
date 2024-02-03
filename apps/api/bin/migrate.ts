@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url'
 import { migrateDatabase } from '@serieslist/db'
 
 const dirname = fileURLToPath(new URL('.', import.meta.url))
-const prodMigrationFolder = join(dirname, '..', 'src', 'migrations')
+const prodMigrationFolder = join(dirname, '..', 'drizzle')
 
 await migrateDatabase({
   migrationFolder:

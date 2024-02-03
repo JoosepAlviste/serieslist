@@ -1,23 +1,22 @@
-import type { SeenEpisode } from '@serieslist/db'
+import { seenEpisode, type SeenEpisode } from '@serieslist/db'
 import { Factory } from 'fishery'
-import type { Selectable } from 'kysely'
 
 import { episodeFactory } from '#/features/series'
 import { userFactory } from '#/features/users'
 import { db } from '#/lib/db'
 
-export const seenEpisodeFactory = Factory.define<Selectable<SeenEpisode>>(
+export const seenEpisodeFactory = Factory.define<SeenEpisode>(
   ({ onCreate, params }) => {
-    onCreate(async (seenEpisode) => {
+    onCreate(async (seenEpisodeArgs) => {
       return db
-        .insertInto('seenEpisode')
-        .returningAll()
+        .insert(seenEpisode)
         .values({
-          ...seenEpisode,
+          ...seenEpisodeArgs,
           userId: params.userId ?? (await userFactory.create()).id,
           episodeId: params.episodeId ?? (await episodeFactory.create()).id,
         })
-        .executeTakeFirstOrThrow()
+        .returning()
+        .then((r) => r[0])
     })
 
     return {

@@ -1,24 +1,23 @@
-import type { Season } from '@serieslist/db'
+import { season, type Season } from '@serieslist/db'
 import { Factory } from 'fishery'
-import type { Selectable } from 'kysely'
 
 import { db } from '#/lib/db'
 import { generateRandomInt } from '#/utils/generateRandomInt'
 
 import { seriesFactory } from './series.factory'
 
-export const seasonFactory = Factory.define<Selectable<Season>>(
+export const seasonFactory = Factory.define<Season>(
   ({ sequence, onCreate, params }) => {
-    onCreate(async (season) => {
+    onCreate(async (seasonArgs) => {
       return db
-        .insertInto('season')
-        .returningAll()
+        .insert(season)
         .values({
-          ...season,
+          ...seasonArgs,
           id: undefined,
           seriesId: params.seriesId ?? (await seriesFactory.create()).id,
         })
-        .executeTakeFirstOrThrow()
+        .returning()
+        .then((r) => r[0])
     })
 
     return {

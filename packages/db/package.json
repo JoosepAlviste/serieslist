@@ -13,12 +13,15 @@
     }
   },
   "scripts": {
+    "drizzle-kit": "drizzle-kit",
+    "drizzle-studio": "drizzle-kit studio",
     "lint": "eslint src",
+    "migration": "drizzle-kit generate:pg",
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
     "@serieslist/logger": "workspace:*",
-    "kysely": "^0.27.0",
+    "drizzle-orm": "^0.29.3",
     "pg": "^8.10.0",
     "pino": "^8.14.1"
   },
@@ -28,7 +31,7 @@
     "@serieslist/type-utils": "workspace:*",
     "@serieslist/typescript-config-base": "workspace:*",
     "date-fns": "^2.30.0",
-    "kysely-codegen": "^0.10.0",
+    "drizzle-kit": "^0.20.13",
     "tsx": "^4.7.0",
     "typescript": "^5.3.3"
   }

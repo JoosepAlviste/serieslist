@@ -1,31 +1,30 @@
-import type { DB } from '@serieslist/db'
-import type { Context } from '@serieslist/graphql-server'
-import type { InsertObject } from 'kysely'
+import type { InsertSession } from '@serieslist/db'
+import { session } from '@serieslist/db'
+import type { DBContext } from '@serieslist/graphql-server'
+import { eq } from 'drizzle-orm'
 
-export const findOne = ({
+import { head } from '#/utils/array'
+
+export const findOne = async ({
   ctx,
   sessionToken,
 }: {
-  ctx: Context
+  ctx: DBContext
   sessionToken: string
 }) => {
-  return ctx.db
-    .selectFrom('session')
-    .selectAll()
-    .where('token', '=', sessionToken)
-    .executeTakeFirst()
+  return await ctx.db
+    .select()
+    .from(session)
+    .where(eq(session.token, sessionToken))
+    .then(head)
 }
 
 export const createOne = async ({
   ctx,
-  session,
+  session: sessionParams,
 }: {
-  ctx: Context
-  session: InsertObject<DB, 'session'>
+  ctx: DBContext
+  session: InsertSession
 }) => {
-  return await ctx.db
-    .insertInto('session')
-    .values(session)
-    .returningAll()
-    .executeTakeFirst()
+  return ctx.db.insert(session).values(sessionParams).returning()
 }

@@ -1,22 +1,21 @@
-import type { DB } from '@serieslist/db'
+import { season } from '@serieslist/db'
+import type { InsertSeason } from '@serieslist/db'
 import type { DBContext, Context } from '@serieslist/graphql-server'
-import type { InsertObject } from 'kysely'
+import { and, eq, inArray } from 'drizzle-orm'
 
-export const findOne = ({
+export const findOne = async ({
   ctx,
   seasonId,
 }: {
-  ctx: Context
+  ctx: DBContext
   seasonId: number
 }) => {
-  return ctx.db
-    .selectFrom('season')
-    .selectAll()
-    .where('id', '=', seasonId)
-    .executeTakeFirst()
+  return (await ctx.db.select().from(season).where(eq(season.id, seasonId))).at(
+    0,
+  )
 }
 
-export const findMany = ({
+export const findMany = async ({
   ctx,
   seriesIds,
   seasonIds,
@@ -25,40 +24,38 @@ export const findMany = ({
   seriesIds?: number[]
   seasonIds?: number[]
 }) => {
-  let query = ctx.db.selectFrom('season').selectAll().orderBy('number')
-
-  if (seriesIds) {
-    query = query.where('seriesId', 'in', seriesIds)
-  }
-
-  if (seasonIds) {
-    query = query.where('id', 'in', seasonIds)
-  }
-
-  return query.execute()
+  return await ctx.db
+    .select()
+    .from(season)
+    .orderBy(season.number)
+    .where(
+      and(
+        seriesIds ? inArray(season.seriesId, seriesIds) : undefined,
+        seasonIds ? inArray(season.id, seasonIds) : undefined,
+      ),
+    )
 }
 
-export const createMany = ({
+export const createMany = async ({
   ctx,
   seasons,
 }: {
   ctx: DBContext
-  seasons: InsertObject<DB, 'season'>[]
+  seasons: InsertSeason[]
 }) => {
-  return ctx.db
-    .insertInto('season')
+  return await ctx.db
+    .insert(season)
     .values(seasons)
-    .returningAll()
-    .onConflict((oc) => oc.column('tmdbId').doNothing())
-    .execute()
+    .returning()
+    .onConflictDoNothing({ target: season.tmdbId })
 }
 
-export const deleteOne = ({
+export const deleteOne = async ({
   ctx,
   seasonId,
 }: {
   ctx: DBContext
   seasonId: number
 }) => {
-  return ctx.db.deleteFrom('season').where('id', '=', seasonId).execute()
+  return await ctx.db.delete(season).where(eq(season.id, seasonId))
 }

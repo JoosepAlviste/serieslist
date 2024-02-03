@@ -1,19 +1,17 @@
-import type { SeriesProgress } from '@serieslist/db'
+import { seriesProgress, type SeriesProgress } from '@serieslist/db'
 import { Factory } from 'fishery'
-import type { Selectable } from 'kysely'
 
 import { episodeFactory, seriesFactory } from '#/features/series'
 import { userFactory } from '#/features/users'
 import { db } from '#/lib/db'
 
-export const seriesProgressFactory = Factory.define<Selectable<SeriesProgress>>(
+export const seriesProgressFactory = Factory.define<SeriesProgress>(
   ({ params, onCreate }) => {
-    onCreate(async (seriesProgress) => {
+    onCreate(async (seriesProgressArgs) => {
       return db
-        .insertInto('seriesProgress')
-        .returningAll()
+        .insert(seriesProgress)
         .values({
-          ...seriesProgress,
+          ...seriesProgressArgs,
           latestSeenEpisodeId:
             params.latestSeenEpisodeId ?? (await episodeFactory.create()).id,
           nextEpisodeId:
@@ -23,7 +21,8 @@ export const seriesProgressFactory = Factory.define<Selectable<SeriesProgress>>(
           seriesId: params.seriesId ?? (await seriesFactory.create()).id,
           userId: params.userId ?? (await userFactory.create()).id,
         })
-        .executeTakeFirstOrThrow()
+        .returning()
+        .then((r) => r[0])
     })
 
     return {

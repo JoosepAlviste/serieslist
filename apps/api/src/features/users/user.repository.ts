@@ -1,39 +1,41 @@
-import type { DB } from '@serieslist/db'
-import type { Context } from '@serieslist/graphql-server'
-import type { InsertObject } from 'kysely'
+import type { InsertUser } from '@serieslist/db'
+import { user } from '@serieslist/db'
+import type { DBContext } from '@serieslist/graphql-server'
+import { and, eq } from 'drizzle-orm'
 
-export const findOne = ({
+import { head } from '#/utils/array'
+
+export const findOne = async ({
   ctx,
   userId,
   email,
 }: {
-  ctx: Context
+  ctx: DBContext
   userId?: number
   email?: string
 }) => {
-  let query = ctx.db.selectFrom('user').selectAll()
-
-  if (userId) {
-    query = query.where('id', '=', userId)
-  }
-
-  if (email) {
-    query = query.where('email', '=', email)
-  }
-
-  return query.executeTakeFirst()
+  return await ctx.db
+    .select()
+    .from(user)
+    .where(
+      and(
+        userId ? eq(user.id, userId) : undefined,
+        email ? eq(user.email, email) : undefined,
+      ),
+    )
+    .then(head)
 }
 
-export const createOne = ({
+export const createOne = async ({
   ctx,
-  user,
+  user: userParams,
 }: {
-  ctx: Context
-  user: InsertObject<DB, 'user'>
+  ctx: DBContext
+  user: InsertUser
 }) => {
   return ctx.db
-    .insertInto('user')
-    .values(user)
-    .returningAll()
-    .executeTakeFirstOrThrow()
+    .insert(user)
+    .values(userParams)
+    .returning()
+    .then((r) => r[0])
 }

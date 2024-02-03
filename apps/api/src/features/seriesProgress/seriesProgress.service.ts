@@ -1,4 +1,4 @@
-import type { DB } from '@serieslist/db'
+import type { InsertSeriesProgress } from '@serieslist/db'
 import { NotFoundError } from '@serieslist/graphql-server'
 import type {
   Context,
@@ -7,7 +7,6 @@ import type {
 } from '@serieslist/graphql-server'
 import type { NonNullableFields } from '@serieslist/type-utils'
 import index from 'just-index'
-import type { UpdateObject } from 'kysely'
 
 import { episodesService, seasonService } from '#/features/series'
 import { isTruthy } from '#/utils/isTruthy'
@@ -192,8 +191,8 @@ export const recalculateSeriesProgress = async ({
     ? await episodesService.findPreviousEpisode({
         ctx,
         seriesId,
-        seasonNumber: firstNotSeenEpisode.seasonNumber,
-        episode: firstNotSeenEpisode,
+        seasonNumber: firstNotSeenEpisode.season.number,
+        episode: firstNotSeenEpisode.episode,
       })
     : await episodesService.findLastEpisodeOfSeries({
         ctx,
@@ -214,7 +213,7 @@ export const recalculateSeriesProgress = async ({
       seriesId,
       userId: ctx.currentUser.id,
       latestSeenEpisodeId: lastSeenEpisode.id,
-      nextEpisodeId: firstNotSeenEpisode?.id ?? null,
+      nextEpisodeId: firstNotSeenEpisode?.episode.id ?? null,
     },
   })
 }
@@ -321,7 +320,7 @@ export const updateMany = ({
   ctx: DBContext
   seriesId: number
   nextEpisodeId: number | null
-  seriesProgress: UpdateObject<DB, 'seriesProgress'>
+  seriesProgress: Partial<InsertSeriesProgress>
 }) => {
   return seriesProgressRepository.updateMany({
     ctx,

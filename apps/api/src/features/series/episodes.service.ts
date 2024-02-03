@@ -1,7 +1,6 @@
 import type { Episode } from '@serieslist/db'
 import type { DBContext, Context } from '@serieslist/graphql-server'
 import index from 'just-index'
-import type { Selectable } from 'kysely'
 
 import { groupEntitiesByKeyToNestedArray } from '#/utils/groupEntitiesByKeyToNestedArray'
 
@@ -105,11 +104,11 @@ export const findPreviousEpisode = async ({
   seriesId,
 }: {
   ctx: Context
-  episode: Selectable<Episode>
+  episode: Episode
   seasonNumber: number
   seriesId: number
 }) => {
-  const [sameSeasonPreviousEpisode] =
+  const [episodeAndSeason] =
     await episodeRepository.findManyByNumberForManySeries({
       ctx,
       seriesIds: [seriesId],
@@ -117,8 +116,8 @@ export const findPreviousEpisode = async ({
       episodeNumber: episode.number - 1,
     })
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  if (sameSeasonPreviousEpisode) {
-    return sameSeasonPreviousEpisode
+  if (episodeAndSeason) {
+    return episodeAndSeason.episode
   }
 
   const previousSeasonLastEpisode =
@@ -174,7 +173,10 @@ export const findFirstEpisodesForSeries = async ({
     episodeNumber: 1,
   })
 
-  return index(episodes, 'seriesId')
+  return index(
+    episodes.map((e) => ({ ...e.episode, seriesId: e.season.seriesId })),
+    'seriesId',
+  )
 }
 
 export const deleteMany = async ({

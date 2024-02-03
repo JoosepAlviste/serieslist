@@ -1,3 +1,6 @@
+import { seriesProgress } from '@serieslist/db'
+import { and, eq } from 'drizzle-orm'
+
 import { seriesFactory } from '#/features/series'
 import { db } from '#/lib/db'
 import {
@@ -33,15 +36,15 @@ describe('features/seriesProgress/seriesProgress.service', () => {
         seriesId: series.id,
       })
 
-      const seriesProgress = await db
-        .selectFrom('seriesProgress')
-        .where('userId', '=', user.id)
-        .where('seriesId', '=', series.id)
-        .selectAll()
-        .executeTakeFirstOrThrow()
+      const newSeriesProgress = await db.query.seriesProgress.findFirst({
+        where: and(
+          eq(seriesProgress.userId, user.id),
+          eq(seriesProgress.seriesId, series.id),
+        ),
+      })
 
-      expect(seriesProgress.latestSeenEpisodeId).toBe(s1e1.id)
-      expect(seriesProgress.nextEpisodeId).toBe(s1e2.id)
+      expect(newSeriesProgress!.latestSeenEpisodeId).toBe(s1e1.id)
+      expect(newSeriesProgress!.nextEpisodeId).toBe(s1e2.id)
     })
 
     it('sets the progress to the first episode of the next season if last episode of season', async () => {
@@ -65,14 +68,14 @@ describe('features/seriesProgress/seriesProgress.service', () => {
         seriesId: series.id,
       })
 
-      const seriesProgress = await db
-        .selectFrom('seriesProgress')
-        .where('userId', '=', user.id)
-        .where('seriesId', '=', series.id)
-        .selectAll()
-        .executeTakeFirstOrThrow()
+      const newSeriesProgress = await db.query.seriesProgress.findFirst({
+        where: and(
+          eq(seriesProgress.userId, user.id),
+          eq(seriesProgress.seriesId, series.id),
+        ),
+      })
 
-      expect(seriesProgress.nextEpisodeId).toBe(s2e1.id)
+      expect(newSeriesProgress!.nextEpisodeId).toBe(s2e1.id)
     })
 
     it('sets the next episode as null if the last episode was seen', async () => {
@@ -93,14 +96,14 @@ describe('features/seriesProgress/seriesProgress.service', () => {
         seriesId: series.id,
       })
 
-      const seriesProgress = await db
-        .selectFrom('seriesProgress')
-        .where('userId', '=', user.id)
-        .where('seriesId', '=', series.id)
-        .selectAll()
-        .executeTakeFirstOrThrow()
+      const newSeriesProgress = await db.query.seriesProgress.findFirst({
+        where: and(
+          eq(seriesProgress.userId, user.id),
+          eq(seriesProgress.seriesId, series.id),
+        ),
+      })
 
-      expect(seriesProgress.nextEpisodeId).toBe(null)
+      expect(newSeriesProgress!.nextEpisodeId).toBe(null)
     })
 
     it('sets the progress to the next non-seen episode', async () => {
@@ -130,14 +133,14 @@ describe('features/seriesProgress/seriesProgress.service', () => {
         seriesId: series.id,
       })
 
-      const seriesProgress = await db
-        .selectFrom('seriesProgress')
-        .where('seriesId', '=', series.id)
-        .where('userId', '=', user.id)
-        .selectAll()
-        .executeTakeFirstOrThrow()
-      expect(seriesProgress.latestSeenEpisodeId).toBe(s1e3.id)
-      expect(seriesProgress.nextEpisodeId).toBe(s1e4.id)
+      const newSeriesProgress = await db.query.seriesProgress.findFirst({
+        where: and(
+          eq(seriesProgress.userId, user.id),
+          eq(seriesProgress.seriesId, series.id),
+        ),
+      })
+      expect(newSeriesProgress!.latestSeenEpisodeId).toBe(s1e3.id)
+      expect(newSeriesProgress!.nextEpisodeId).toBe(s1e4.id)
     })
   })
 

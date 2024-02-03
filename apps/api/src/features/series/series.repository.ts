@@ -1,8 +1,11 @@
-import type { DB, UserSeriesStatusStatus } from '@serieslist/db'
+import { episode, season, series, userSeriesStatus } from '@serieslist/db'
+import type { InsertSeries, UserSeriesStatusStatus } from '@serieslist/db'
 import type { DBContext, Context } from '@serieslist/graphql-server'
-import type { UpdateObject, InsertObject } from 'kysely'
+import { and, asc, desc, eq, getTableColumns, inArray, lt } from 'drizzle-orm'
 
-export const findOne = ({
+import { head } from '#/utils/array'
+
+export const findOne = async ({
   ctx,
   seriesId,
   imdbId,
@@ -13,27 +16,28 @@ export const findOne = ({
   imdbId?: string
   episodeId?: number
 }) => {
-  let query = ctx.db.selectFrom('series').selectAll('series')
-
-  if (seriesId) {
-    query = query.where('id', '=', seriesId)
-  }
-
-  if (imdbId) {
-    query = query.where('imdbId', '=', imdbId)
-  }
-
+  let query = ctx.db
+    .select(getTableColumns(series))
+    .from(series)
+    .where(
+      and(
+        seriesId ? eq(series.id, seriesId) : undefined,
+        imdbId ? eq(series.imdbId, imdbId) : undefined,
+      ),
+    )
+    .$dynamic()
   if (episodeId) {
+    // TODO: Does this work?
     query = query
-      .innerJoin('season', 'series.id', 'season.seriesId')
-      .innerJoin('episode', 'season.id', 'episode.seasonId')
-      .where('episode.id', '=', episodeId)
+      .innerJoin(season, eq(series.id, season.seriesId))
+      .innerJoin(episode, eq(season.id, episode.seasonId))
+      .where(eq(episode.id, episodeId))
   }
 
-  return query.executeTakeFirst()
+  return await query.then(head)
 }
 
-export const findMany = ({
+export const findMany = async ({
   ctx,
   tmdbIds,
   seriesIds,
@@ -46,28 +50,28 @@ export const findMany = ({
   syncedAtBefore?: Date
   orderBySyncedAt?: 'asc' | 'desc'
 }) => {
-  let query = ctx.db.selectFrom('series').selectAll()
+  let query = ctx.db
+    .select()
+    .from(series)
+    .where(
+      and(
+        tmdbIds ? inArray(series.tmdbId, tmdbIds) : undefined,
+        seriesIds ? inArray(series.id, seriesIds) : undefined,
+        syncedAtBefore ? lt(series.syncedAt, syncedAtBefore) : undefined,
+      ),
+    )
+    .$dynamic()
 
-  if (tmdbIds) {
-    query = query.where('tmdbId', 'in', tmdbIds)
+  if (orderBySyncedAt === 'asc') {
+    query = query.orderBy(asc(series.syncedAt))
+  } else if (orderBySyncedAt === 'desc') {
+    query = query.orderBy(desc(series.syncedAt))
   }
 
-  if (seriesIds) {
-    query = query.where('id', 'in', seriesIds)
-  }
-
-  if (syncedAtBefore) {
-    query = query.where('syncedAt', '<', syncedAtBefore)
-  }
-
-  if (orderBySyncedAt) {
-    query = query.orderBy('syncedAt', orderBySyncedAt)
-  }
-
-  return query.execute()
+  return await query
 }
 
-export const findManyForUser = ({
+export const findManyForUser = async ({
   ctx,
   userId,
   status,
@@ -76,53 +80,52 @@ export const findManyForUser = ({
   userId: number
   status?: UserSeriesStatusStatus
 }) => {
-  let query = ctx.db
-    .selectFrom('series')
-    .innerJoin('userSeriesStatus', 'series.id', 'userSeriesStatus.seriesId')
-    .where('userSeriesStatus.userId', '=', userId)
-    .selectAll('series')
-    .orderBy('series.title')
-
-  if (status) {
-    query = query.where('userSeriesStatus.status', '=', status)
-  }
-
-  return query.execute()
+  return await ctx.db
+    .select(getTableColumns(series))
+    .from(series)
+    .innerJoin(userSeriesStatus, eq(series.id, userSeriesStatus.seriesId))
+    .where(
+      and(
+        eq(userSeriesStatus.userId, userId),
+        status ? eq(userSeriesStatus.status, status) : undefined,
+      ),
+    )
+    .orderBy(series.title)
 }
 
-export const createMany = ({
+export const createMany = async ({
   ctx,
-  series,
+  series: seriesArgs,
 }: {
   ctx: Context
-  series: InsertObject<DB, 'series'>[]
+  series: InsertSeries[]
 }) => {
-  return ctx.db.insertInto('series').values(series).returningAll().execute()
+  return await ctx.db.insert(series).values(seriesArgs).returning()
 }
 
-export const updateOneByTMDBId = ({
+export const updateOneByTMDBId = async ({
   ctx,
   tmdbId,
-  series,
+  series: seriesArgs,
 }: {
   ctx: DBContext
   tmdbId: number
-  series: UpdateObject<DB, 'series'>
+  series: Partial<InsertSeries>
 }) => {
-  return ctx.db
-    .updateTable('series')
-    .where('tmdbId', '=', tmdbId)
-    .set(series)
-    .returningAll()
-    .executeTakeFirst()
+  return await ctx.db
+    .update(series)
+    .set(seriesArgs)
+    .where(eq(series.tmdbId, tmdbId))
+    .returning()
+    .then(head)
 }
 
-export const deleteOne = ({
+export const deleteOne = async ({
   ctx,
   tmdbId,
 }: {
   ctx: DBContext
   tmdbId: number
 }) => {
-  return ctx.db.deleteFrom('series').where('tmdbId', '=', tmdbId).execute()
+  return await ctx.db.delete(series).where(eq(series.tmdbId, tmdbId))
 }

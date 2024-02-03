@@ -4,7 +4,6 @@ import type { AuthenticatedContext, Context } from '@serieslist/graphql-server'
 import type { NotWorthIt } from '@serieslist/type-utils'
 import { type ExecutionResult, print } from 'graphql'
 import { createYoga, type YogaInitialContext } from 'graphql-yoga'
-import type { Selectable } from 'kysely'
 
 import { episodeFactory, seasonFactory, seriesFactory } from '#/features/series'
 import { seenEpisodeFactory } from '#/features/seriesProgress'
@@ -163,10 +162,10 @@ export const expectErrors = <
 export const createSeriesWithEpisodesAndSeasons = async (
   seasonEpisodesCount: number[],
 ): Promise<{
-  series: Selectable<Series>
+  series: Series
   seasons: {
-    season: Selectable<Season>
-    episodes: Selectable<Episode>[]
+    season: Season
+    episodes: Episode[]
   }[]
 }> => {
   const series = await seriesFactory.create()
@@ -201,7 +200,7 @@ export const createSeriesWithEpisodesAndSeasons = async (
  */
 export const createSeenEpisodesForUser = async (
   episodeIds: number[],
-  user?: Selectable<User>,
+  user?: User,
 ) => {
   const usedUser = user ?? (await userFactory.create())
 

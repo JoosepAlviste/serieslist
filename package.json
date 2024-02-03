@@ -19,7 +19,7 @@
     "lint:deps": "syncpack lint",
     "migrate": "nx run @serieslist/api:migrate",
     "migrate:test": "nx migrate:test @serieslist/api",
-    "migration": "nx run @serieslist/api:migration",
+    "migration": "nx run @serieslist/db:migration",
     "postinstall": "cp -n .env.example .env || exit 0",
     "quality": "nx run-many -t lint,tsc,test:coverage,build --verbose",
     "start": "nx run-many -t start,start:jobs",

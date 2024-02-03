@@ -1,0 +1,20 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1706461081410,
+      "tag": "0000_little_callisto",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1706905211468,
+      "tag": "0001_confused_lilith",
+      "breakpoints": true
+    }
+  ]
+}

@@ -1,25 +1,23 @@
-import { sql } from 'kysely'
+import { sql } from 'drizzle-orm'
 
 import { createDbConnection } from './createDbConnection'
 import { log } from './logger'
 
 export const clearDatabase = async () => {
-  const db = createDbConnection({ logger: log })
+  const { db, client } = await createDbConnection({ logger: log })
 
-  const tables = await sql<{
-    tablename: string
-  }>`SELECT tablename FROM pg_tables WHERE schemaname = 'public'`.execute(db)
-
-  const tablesToTruncate = tables.rows.filter(
-    (table) => !table.tablename.startsWith('kysely_'),
+  const tables = await db.execute<{ tablename: string }>(
+    sql`SELECT tablename FROM pg_tables WHERE schemaname = 'public'`,
   )
+
+  const tablesToTruncate = tables.rows
   for (const { tablename } of tablesToTruncate) {
-    await sql`TRUNCATE TABLE "public"."${sql.raw(tablename)}" CASCADE`.execute(
-      db,
+    await db.execute(
+      sql`TRUNCATE TABLE "public"."${sql.raw(tablename)}" CASCADE`,
     )
   }
 
   // Destroy the connection so that it wouldn't keep the tests running because
   // of a floating promise
-  await db.destroy()
+  await client.end()
 }

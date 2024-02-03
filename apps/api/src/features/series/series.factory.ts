@@ -1,22 +1,18 @@
-import type { Series } from '@serieslist/db'
+import { series, type Series } from '@serieslist/db'
 import { Factory } from 'fishery'
-import type { Selectable } from 'kysely'
 import { nanoid } from 'nanoid'
 
 import { db } from '#/lib/db'
 import { generateRandomInt } from '#/utils/generateRandomInt'
 
-export const seriesFactory = Factory.define<Selectable<Series>>(
+export const seriesFactory = Factory.define<Series>(
   ({ sequence, onCreate }) => {
-    onCreate((series) => {
-      return db
-        .insertInto('series')
-        .returningAll()
-        .values({
-          ...series,
-          id: undefined,
-        })
-        .executeTakeFirstOrThrow()
+    onCreate(async (seriesArg) => {
+      return await db
+        .insert(series)
+        .values({ ...seriesArg, id: undefined })
+        .returning()
+        .then((r) => r[0])
     })
 
     return {
