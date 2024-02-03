@@ -29,7 +29,7 @@ export const createDbConnection = async ({ logger }: { logger: Logger }) => {
 
   const dbLogger = new DefaultLogger({ writer: new SerieslistLogWriter() })
   const db = drizzle(client, {
-    logger: dbLogger,
+    logger: config.debug.logSqlQueries ? dbLogger : false,
     schema,
   })
 
