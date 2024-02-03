@@ -11,7 +11,8 @@ import { addDays, isFuture, subDays } from 'date-fns'
 import index from 'just-index'
 import unique from 'just-unique'
 
-import { seriesProgressService } from '#/features/seriesProgress'
+// TODO: This is a circular import
+import * as seriesProgressService from '#/features/seriesProgress/seriesProgress.service'
 import type {
   SeriesUpdateStatusInput,
   SeriesSearchInput,

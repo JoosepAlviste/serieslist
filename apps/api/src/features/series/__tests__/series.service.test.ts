@@ -1,5 +1,12 @@
 import { episode, season, series, seriesProgress } from '@serieslist/db'
 import {
+  episodeFactory,
+  seasonFactory,
+  seriesFactory,
+  seriesProgressFactory,
+  userFactory,
+} from '@serieslist/db-factories'
+import {
   tmdbNotFoundResponseFactory,
   tmdbSeasonFactory,
   mockTMDBDetailsRequest,
@@ -9,9 +16,7 @@ import type { LiterallyAnything } from '@serieslist/type-utils'
 import { subDays } from 'date-fns'
 import { and, eq } from 'drizzle-orm'
 
-import { seriesProgressFactory } from '#/features/seriesProgress'
 import { tmdbEpisodeFactory, tmdbSeriesDetailsFactory } from '#/features/tmdb'
-import { userFactory } from '#/features/users'
 import { db } from '#/lib/db'
 import {
   createContext,
@@ -20,9 +25,6 @@ import {
 } from '#/test/testUtils'
 import { formatDate } from '#/utils/date'
 
-import { episodeFactory } from '../episode.factory'
-import { seasonFactory } from '../season.factory'
-import { seriesFactory } from '../series.factory'
 import {
   findStatusForSeries,
   reSyncSeries,

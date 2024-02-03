@@ -1,7 +1,7 @@
 import { seriesProgress } from '@serieslist/db'
+import { seriesProgressFactory, seriesFactory } from '@serieslist/db-factories'
 import { and, eq } from 'drizzle-orm'
 
-import { seriesFactory } from '#/features/series'
 import { db } from '#/lib/db'
 import {
   createContext,
@@ -9,7 +9,6 @@ import {
   createSeriesWithEpisodesAndSeasons,
 } from '#/test/testUtils'
 
-import { seriesProgressFactory } from '../seriesProgress.factory'
 import {
   recalculateSeriesProgress,
   findLatestSeenEpisodesForSeries,

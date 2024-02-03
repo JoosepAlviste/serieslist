@@ -61,12 +61,6 @@ module.exports = {
         },
       },
     ],
-    'no-restricted-imports': [
-      'error',
-      {
-        patterns: ['#/features/*/*', '!#/features/*/jobs'],
-      },
-    ],
     '@nx/enforce-module-boundaries': ['error'],
   },
   overrides: [

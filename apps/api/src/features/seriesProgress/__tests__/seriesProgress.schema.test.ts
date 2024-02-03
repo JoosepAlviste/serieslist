@@ -1,13 +1,15 @@
 import { seenEpisode, seriesProgress, type User } from '@serieslist/db'
+import { UserSeriesStatusStatus } from '@serieslist/db'
+import {
+  seenEpisodeFactory,
+  seriesProgressFactory,
+  episodeFactory,
+  userSeriesStatusFactory,
+  userFactory,
+} from '@serieslist/db-factories'
 import { addDays } from 'date-fns'
 import { and, eq, inArray } from 'drizzle-orm'
 
-import {
-  episodeFactory,
-  UserSeriesStatusStatus,
-  userSeriesStatusFactory,
-} from '#/features/series'
-import { userFactory } from '#/features/users'
 import { graphql } from '#/generated/gql'
 import type {
   MarkSeriesEpisodesAsSeenInput,
@@ -21,9 +23,6 @@ import {
   createSeriesWithEpisodesAndSeasons,
   executeOperation,
 } from '#/test/testUtils'
-
-import { seenEpisodeFactory } from '../seenEpisode.factory'
-import { seriesProgressFactory } from '../seriesProgress.factory'
 
 describe('features/seriesProgress/seriesProgress.schema', () => {
   describe('toggleEpisodeSeen mutation', () => {

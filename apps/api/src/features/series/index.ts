@@ -1,8 +1,4 @@
 export * from './series.schema'
-export * from './series.factory'
-export * from './season.factory'
-export * from './episode.factory'
-export * from './userSeriesStatus.factory'
 export { UserSeriesStatusStatus } from '@serieslist/db'
 export * as episodesService from './episodes.service'
 export * as seasonService from './season.service'

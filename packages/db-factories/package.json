@@ -1,5 +1,5 @@
 {
-  "name": "@serieslist/<%= name %>",
+  "name": "@serieslist/db-factories",
   "version": "1.0.0",
   "type": "module",
   "sideEffects": false,
@@ -18,5 +18,11 @@
     "@serieslist/prettier-config": "workspace:*",
     "@serieslist/typescript-config-base": "workspace:*",
     "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@serieslist/db": "workspace:^",
+    "@serieslist/logger": "workspace:^",
+    "fishery": "^2.2.2",
+    "nanoid": "^4.0.2"
   }
 }

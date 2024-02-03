@@ -1,8 +1,8 @@
 import { user, type User } from '@serieslist/db'
+import { userFactory } from '@serieslist/db-factories'
 import { eq } from 'drizzle-orm'
 import { nanoid } from 'nanoid'
 
-import { userFactory } from '#/features/users'
 import type { LoginInput, RegisterInput } from '#/generated/gql/graphql'
 import { graphql } from '#/generated/gql/index'
 import { db } from '#/lib/db'

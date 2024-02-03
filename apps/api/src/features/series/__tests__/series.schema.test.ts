@@ -7,6 +7,13 @@ import {
   userSeriesStatus,
 } from '@serieslist/db'
 import {
+  episodeFactory,
+  seasonFactory,
+  seriesFactory,
+  userSeriesStatusFactory,
+  userFactory,
+} from '@serieslist/db-factories'
+import {
   tmdbSeasonFactory,
   tmdbEpisodeFactory,
   tmdbSeriesDetailsFactory,
@@ -19,7 +26,6 @@ import { subDays } from 'date-fns'
 import { and, eq } from 'drizzle-orm'
 import { nanoid } from 'nanoid'
 
-import { userFactory } from '#/features/users'
 import { graphql } from '#/generated/gql'
 import type { SeriesUpdateStatusInput } from '#/generated/gql/graphql'
 import { db } from '#/lib/db'
@@ -30,11 +36,6 @@ import {
   expectErrors,
 } from '#/test/testUtils'
 import { parseDate } from '#/utils/date'
-
-import { episodeFactory } from '../episode.factory'
-import { seasonFactory } from '../season.factory'
-import { seriesFactory } from '../series.factory'
-import { userSeriesStatusFactory } from '../userSeriesStatus.factory'
 
 describe('features/series/series.schema', () => {
   describe('seriesSearch query', () => {

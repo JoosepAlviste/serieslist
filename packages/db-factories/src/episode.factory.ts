@@ -2,10 +2,9 @@ import { episode, type Episode } from '@serieslist/db'
 import { Factory } from 'fishery'
 import { nanoid } from 'nanoid'
 
-import { db } from '#/lib/db'
-import { generateRandomInt } from '#/utils/generateRandomInt'
-
+import { db } from './lib/db'
 import { seasonFactory } from './season.factory'
+import { generateRandomInt } from './utils/generateRandomInt'
 
 export const episodeFactory = Factory.define<Episode>(
   ({ sequence, onCreate, params }) => {

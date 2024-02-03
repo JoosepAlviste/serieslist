@@ -2,8 +2,8 @@ import { series, type Series } from '@serieslist/db'
 import { Factory } from 'fishery'
 import { nanoid } from 'nanoid'
 
-import { db } from '#/lib/db'
-import { generateRandomInt } from '#/utils/generateRandomInt'
+import { db } from './lib/db'
+import { generateRandomInt } from './utils/generateRandomInt'
 
 export const seriesFactory = Factory.define<Series>(
   ({ sequence, onCreate }) => {

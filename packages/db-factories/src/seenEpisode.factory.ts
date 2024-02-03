@@ -1,9 +1,9 @@
 import { seenEpisode, type SeenEpisode } from '@serieslist/db'
 import { Factory } from 'fishery'
 
-import { episodeFactory } from '#/features/series'
-import { userFactory } from '#/features/users'
-import { db } from '#/lib/db'
+import { episodeFactory } from './episode.factory'
+import { db } from './lib/db'
+import { userFactory } from './user.factory'
 
 export const seenEpisodeFactory = Factory.define<SeenEpisode>(
   ({ onCreate, params }) => {

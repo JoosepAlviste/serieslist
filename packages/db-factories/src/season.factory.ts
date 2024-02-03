@@ -1,10 +1,9 @@
 import { season, type Season } from '@serieslist/db'
 import { Factory } from 'fishery'
 
-import { db } from '#/lib/db'
-import { generateRandomInt } from '#/utils/generateRandomInt'
-
+import { db } from './lib/db'
 import { seriesFactory } from './series.factory'
+import { generateRandomInt } from './utils/generateRandomInt'
 
 export const seasonFactory = Factory.define<Season>(
   ({ sequence, onCreate, params }) => {

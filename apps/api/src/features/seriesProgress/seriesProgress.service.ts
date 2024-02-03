@@ -8,7 +8,9 @@ import type {
 import type { NonNullableFields } from '@serieslist/type-utils'
 import index from 'just-index'
 
-import { episodesService, seasonService } from '#/features/series'
+// TODO: Importing these from #/features/series causes a circular import error
+import * as episodesService from '#/features/series/episodes.service'
+import * as seasonService from '#/features/series/season.service'
 import { isTruthy } from '#/utils/isTruthy'
 
 import * as seenEpisodeRepository from './seenEpisode.repository'

@@ -1,6 +1,14 @@
 {
   "extends": "@serieslist/eslint-config-base",
   "root": true,
+  "rules": {
+    "no-restricted-imports": [
+      "error",
+      {
+        "patterns": ["#/features/*/*", "!#/features/*/jobs"]
+      }
+    ]
+  },
   "overrides": [
     {
       "files": ["src/test/mockTMDBServer.ts"],

@@ -1,0 +1,4 @@
+{
+  "extends": "@serieslist/eslint-config-base",
+  "root": true
+}

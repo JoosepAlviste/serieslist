@@ -2,7 +2,7 @@ import { user, type User } from '@serieslist/db'
 import { Factory } from 'fishery'
 import { nanoid } from 'nanoid'
 
-import { db } from '#/lib/db'
+import { db } from './lib/db'
 
 export const userFactory = Factory.define<User>(({ sequence, onCreate }) => {
   onCreate(async (userArgs) => {

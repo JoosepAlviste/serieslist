@@ -2,11 +2,9 @@ import type { UserSeriesStatus } from '@serieslist/db'
 import { UserSeriesStatusStatus, userSeriesStatus } from '@serieslist/db'
 import { Factory } from 'fishery'
 
-import { db } from '#/lib/db'
-
-import { userFactory } from '../users'
-
+import { db } from './lib/db'
 import { seriesFactory } from './series.factory'
+import { userFactory } from './user.factory'
 
 export const userSeriesStatusFactory = Factory.define<UserSeriesStatus>(
   ({ params, onCreate }) => {
