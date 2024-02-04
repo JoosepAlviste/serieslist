@@ -1,5 +1,5 @@
 {
-  "name": "@serieslist/db-factories",
+  "name": "@serieslist/core-db-factories",
   "version": "1.0.0",
   "type": "module",
   "sideEffects": false,
@@ -11,6 +11,7 @@
   },
   "scripts": {
     "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
     "tsc": "tsc --noEmit"
   },
   "devDependencies": {
@@ -20,8 +21,8 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "@serieslist/db": "workspace:^",
-    "@serieslist/logger": "workspace:^",
+    "@serieslist/core-db": "workspace:*",
+    "@serieslist/logger": "workspace:*",
     "fishery": "^2.2.2",
     "nanoid": "^4.0.2"
   }

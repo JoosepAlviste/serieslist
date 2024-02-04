@@ -1,12 +1,12 @@
-import { seenEpisode, seriesProgress, type User } from '@serieslist/db'
-import { UserSeriesStatusStatus } from '@serieslist/db'
+import { seenEpisode, seriesProgress, type User } from '@serieslist/core-db'
+import { UserSeriesStatusStatus } from '@serieslist/core-db'
 import {
   seenEpisodeFactory,
   seriesProgressFactory,
   episodeFactory,
   userSeriesStatusFactory,
   userFactory,
-} from '@serieslist/db-factories'
+} from '@serieslist/core-db-factories'
 import { addDays } from 'date-fns'
 import { and, eq, inArray } from 'drizzle-orm'
 

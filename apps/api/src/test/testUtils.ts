@@ -1,12 +1,12 @@
 import type { TypedDocumentNode } from '@graphql-typed-document-node/core'
-import type { User, Episode, Season, Series } from '@serieslist/db'
+import type { User, Episode, Season, Series } from '@serieslist/core-db'
 import {
   episodeFactory,
   seasonFactory,
   seriesFactory,
   seenEpisodeFactory,
   userFactory,
-} from '@serieslist/db-factories'
+} from '@serieslist/core-db-factories'
 import type { AuthenticatedContext, Context } from '@serieslist/graphql-server'
 import type { NotWorthIt } from '@serieslist/type-utils'
 import { type ExecutionResult, print } from 'graphql'

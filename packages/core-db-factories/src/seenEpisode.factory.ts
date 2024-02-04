@@ -1,4 +1,4 @@
-import { seenEpisode, type SeenEpisode } from '@serieslist/db'
+import { seenEpisode, type SeenEpisode } from '@serieslist/core-db'
 import { Factory } from 'fishery'
 
 import { episodeFactory } from './episode.factory'

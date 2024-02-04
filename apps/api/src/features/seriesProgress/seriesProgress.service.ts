@@ -1,4 +1,4 @@
-import type { InsertSeriesProgress } from '@serieslist/db'
+import type { InsertSeriesProgress } from '@serieslist/core-db'
 import { NotFoundError } from '@serieslist/graphql-server'
 import type {
   Context,

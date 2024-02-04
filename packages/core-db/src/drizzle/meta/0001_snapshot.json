@@ -1,6 +1,6 @@
 {
-  "id": "00000000-0000-0000-0000-000000000000",
-  "prevId": "",
+  "id": "ac0bfff0-f8f3-4cec-8379-9a76d816bb50",
+  "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
   "tables": {
@@ -59,17 +59,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "episode_season_id_fkey": {
-          "name": "episode_season_id_fkey",
+        "episode_season_id_season_id_fk": {
+          "name": "episode_season_id_season_id_fk",
           "tableFrom": "episode",
           "tableTo": "season",
-          "schemaTo": "public",
-          "columnsFrom": [
-            "season_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["season_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -77,65 +72,16 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "episode_imdb_id_key": {
-          "columns": [
-            "imdb_id"
-          ],
+          "name": "episode_imdb_id_key",
           "nullsNotDistinct": false,
-          "name": "episode_imdb_id_key"
+          "columns": ["imdb_id"]
         },
         "episode_tmdb_id_key": {
-          "columns": [
-            "tmdb_id"
-          ],
+          "name": "episode_tmdb_id_key",
           "nullsNotDistinct": false,
-          "name": "episode_tmdb_id_key"
+          "columns": ["tmdb_id"]
         }
       }
-    },
-    "kysely_migration": {
-      "name": "kysely_migration",
-      "schema": "",
-      "columns": {
-        "name": {
-          "name": "name",
-          "type": "varchar(255)",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "timestamp": {
-          "name": "timestamp",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
-    "kysely_migration_lock": {
-      "name": "kysely_migration_lock",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "varchar(255)",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "is_locked": {
-          "name": "is_locked",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "default": 0
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
     },
     "season": {
       "name": "season",
@@ -174,17 +120,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "season_series_id_fkey": {
-          "name": "season_series_id_fkey",
+        "season_series_id_series_id_fk": {
+          "name": "season_series_id_series_id_fk",
           "tableFrom": "season",
           "tableTo": "series",
-          "schemaTo": "public",
-          "columnsFrom": [
-            "series_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["series_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -192,13 +133,64 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "season_tmdb_id_key": {
-          "columns": [
-            "tmdb_id"
-          ],
+          "name": "season_tmdb_id_key",
           "nullsNotDistinct": false,
-          "name": "season_tmdb_id_key"
+          "columns": ["tmdb_id"]
         }
       }
+    },
+    "seen_episode": {
+      "name": "seen_episode",
+      "schema": "",
+      "columns": {
+        "user_id": {
+          "name": "user_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "episode_id": {
+          "name": "episode_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "seen_episode_user_id_user_id_fk": {
+          "name": "seen_episode_user_id_user_id_fk",
+          "tableFrom": "seen_episode",
+          "tableTo": "user",
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "seen_episode_episode_id_episode_id_fk": {
+          "name": "seen_episode_episode_id_episode_id_fk",
+          "tableFrom": "seen_episode",
+          "tableTo": "episode",
+          "columnsFrom": ["episode_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "seen_episode_pk": {
+          "name": "seen_episode_pk",
+          "columns": ["user_id", "episode_id"]
+        }
+      },
+      "uniqueConstraints": {}
     },
     "series": {
       "name": "series",
@@ -290,20 +282,106 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "series_imdb_id_key": {
-          "columns": [
-            "imdb_id"
-          ],
+          "name": "series_imdb_id_key",
           "nullsNotDistinct": false,
-          "name": "series_imdb_id_key"
+          "columns": ["imdb_id"]
         },
         "series_tmdb_id_key": {
-          "columns": [
-            "tmdb_id"
-          ],
+          "name": "series_tmdb_id_key",
           "nullsNotDistinct": false,
-          "name": "series_tmdb_id_key"
+          "columns": ["tmdb_id"]
         }
       }
+    },
+    "series_progress": {
+      "name": "series_progress",
+      "schema": "",
+      "columns": {
+        "user_id": {
+          "name": "user_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "series_id": {
+          "name": "series_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "latest_seen_episode_id": {
+          "name": "latest_seen_episode_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "next_episode_id": {
+          "name": "next_episode_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "series_progress_user_id_user_id_fk": {
+          "name": "series_progress_user_id_user_id_fk",
+          "tableFrom": "series_progress",
+          "tableTo": "user",
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "series_progress_series_id_series_id_fk": {
+          "name": "series_progress_series_id_series_id_fk",
+          "tableFrom": "series_progress",
+          "tableTo": "series",
+          "columnsFrom": ["series_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "series_progress_latest_seen_episode_id_episode_id_fk": {
+          "name": "series_progress_latest_seen_episode_id_episode_id_fk",
+          "tableFrom": "series_progress",
+          "tableTo": "episode",
+          "columnsFrom": ["latest_seen_episode_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "series_progress_next_episode_id_episode_id_fk": {
+          "name": "series_progress_next_episode_id_episode_id_fk",
+          "tableFrom": "series_progress",
+          "tableTo": "episode",
+          "columnsFrom": ["next_episode_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "series_progress_pk": {
+          "name": "series_progress_pk",
+          "columns": ["user_id", "series_id"]
+        }
+      },
+      "uniqueConstraints": {}
     },
     "session": {
       "name": "session",
@@ -357,17 +435,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "session_user_id_fkey": {
-          "name": "session_user_id_fkey",
+        "session_user_id_user_id_fk": {
+          "name": "session_user_id_user_id_fk",
           "tableFrom": "session",
           "tableTo": "user",
-          "schemaTo": "public",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -430,79 +503,11 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "user_email_key": {
-          "columns": [
-            "email"
-          ],
+          "name": "user_email_key",
           "nullsNotDistinct": false,
-          "name": "user_email_key"
+          "columns": ["email"]
         }
       }
-    },
-    "seen_episode": {
-      "name": "seen_episode",
-      "schema": "",
-      "columns": {
-        "user_id": {
-          "name": "user_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "episode_id": {
-          "name": "episode_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "seen_episode_user_id_fkey": {
-          "name": "seen_episode_user_id_fkey",
-          "tableFrom": "seen_episode",
-          "tableTo": "user",
-          "schemaTo": "public",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "seen_episode_episode_id_fkey": {
-          "name": "seen_episode_episode_id_fkey",
-          "tableFrom": "seen_episode",
-          "tableTo": "episode",
-          "schemaTo": "public",
-          "columnsFrom": [
-            "episode_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {
-        "seen_episode_pk": {
-          "name": "seen_episode_pk",
-          "columns": [
-            "user_id",
-            "episode_id"
-          ]
-        }
-      },
-      "uniqueConstraints": {}
     },
     "user_series_status": {
       "name": "user_series_status",
@@ -543,31 +548,21 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "user_series_status_series_id_fkey": {
-          "name": "user_series_status_series_id_fkey",
+        "user_series_status_series_id_series_id_fk": {
+          "name": "user_series_status_series_id_series_id_fk",
           "tableFrom": "user_series_status",
           "tableTo": "series",
-          "schemaTo": "public",
-          "columnsFrom": [
-            "series_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["series_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "user_series_status_user_id_fkey": {
-          "name": "user_series_status_user_id_fkey",
+        "user_series_status_user_id_user_id_fk": {
+          "name": "user_series_status_user_id_user_id_fk",
           "tableFrom": "user_series_status",
           "tableTo": "user",
-          "schemaTo": "public",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -575,123 +570,7 @@
       "compositePrimaryKeys": {
         "user_series_status_pk": {
           "name": "user_series_status_pk",
-          "columns": [
-            "series_id",
-            "user_id"
-          ]
-        }
-      },
-      "uniqueConstraints": {}
-    },
-    "series_progress": {
-      "name": "series_progress",
-      "schema": "",
-      "columns": {
-        "user_id": {
-          "name": "user_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "series_id": {
-          "name": "series_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "latest_seen_episode_id": {
-          "name": "latest_seen_episode_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "next_episode_id": {
-          "name": "next_episode_id",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "now()"
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "series_progress_user_id_fkey": {
-          "name": "series_progress_user_id_fkey",
-          "tableFrom": "series_progress",
-          "tableTo": "user",
-          "schemaTo": "public",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "series_progress_series_id_fkey": {
-          "name": "series_progress_series_id_fkey",
-          "tableFrom": "series_progress",
-          "tableTo": "series",
-          "schemaTo": "public",
-          "columnsFrom": [
-            "series_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "series_progress_latest_seen_episode_id_fkey": {
-          "name": "series_progress_latest_seen_episode_id_fkey",
-          "tableFrom": "series_progress",
-          "tableTo": "episode",
-          "schemaTo": "public",
-          "columnsFrom": [
-            "latest_seen_episode_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "series_progress_next_episode_id_fkey": {
-          "name": "series_progress_next_episode_id_fkey",
-          "tableFrom": "series_progress",
-          "tableTo": "episode",
-          "schemaTo": "public",
-          "columnsFrom": [
-            "next_episode_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {
-        "series_progress_pk": {
-          "name": "series_progress_pk",
-          "columns": [
-            "user_id",
-            "series_id"
-          ]
+          "columns": ["series_id", "user_id"]
         }
       },
       "uniqueConstraints": {}
@@ -710,8 +589,8 @@
   },
   "schemas": {},
   "_meta": {
+    "columns": {},
     "schemas": {},
-    "tables": {},
-    "columns": {}
+    "tables": {}
   }
 }

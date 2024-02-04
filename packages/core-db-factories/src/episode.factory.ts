@@ -1,4 +1,4 @@
-import { episode, type Episode } from '@serieslist/db'
+import { episode, type Episode } from '@serieslist/core-db'
 import { Factory } from 'fishery'
 import { nanoid } from 'nanoid'
 

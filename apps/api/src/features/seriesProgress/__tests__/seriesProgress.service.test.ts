@@ -1,5 +1,8 @@
-import { seriesProgress } from '@serieslist/db'
-import { seriesProgressFactory, seriesFactory } from '@serieslist/db-factories'
+import { seriesProgress } from '@serieslist/core-db'
+import {
+  seriesProgressFactory,
+  seriesFactory,
+} from '@serieslist/core-db-factories'
 import { and, eq } from 'drizzle-orm'
 
 import { db } from '#/lib/db'

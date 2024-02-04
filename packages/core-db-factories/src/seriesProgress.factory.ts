@@ -1,4 +1,4 @@
-import { seriesProgress, type SeriesProgress } from '@serieslist/db'
+import { seriesProgress, type SeriesProgress } from '@serieslist/core-db'
 import { Factory } from 'fishery'
 
 import { episodeFactory } from './episode.factory'

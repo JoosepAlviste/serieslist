@@ -1,8 +1,8 @@
-import { readdir, rename, cp } from 'node:fs/promises'
+import { cp } from 'node:fs/promises'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import { buildEsbuild } from '@serieslist/esbuild'
+import { buildEsbuild } from '@serieslist/core-esbuild'
 
 import pkg from '../package.json'
 
@@ -15,13 +15,14 @@ await buildEsbuild({
   external: ['pg-native'],
 })
 
+// Copy migrations to `dist` so that they can be run in production
 const migrationsDir = join(
   dirname,
   '..',
   '..',
   '..',
   'packages',
-  'db',
+  'core-db',
   'src',
   'drizzle',
 )

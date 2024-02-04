@@ -1,18 +1,18 @@
-import type { User } from '@serieslist/db'
+import type { User } from '@serieslist/core-db'
 import {
   UserSeriesStatusStatus,
   episode,
   season,
   series,
   userSeriesStatus,
-} from '@serieslist/db'
+} from '@serieslist/core-db'
 import {
   episodeFactory,
   seasonFactory,
   seriesFactory,
   userSeriesStatusFactory,
   userFactory,
-} from '@serieslist/db-factories'
+} from '@serieslist/core-db-factories'
 import {
   tmdbSeasonFactory,
   tmdbEpisodeFactory,

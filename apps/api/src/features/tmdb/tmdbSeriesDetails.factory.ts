@@ -1,4 +1,4 @@
-import type { Series, Episode } from '@serieslist/db'
+import type { Series, Episode } from '@serieslist/core-db'
 import type { TMDBEpisode, TMDBSeries } from '@serieslist/tmdb'
 import {
   tmdbSeriesDetailsFactory as baseTmdbSeriesDetailsFactory,

@@ -1,4 +1,4 @@
-import type { User, createDbConnection } from '@serieslist/db'
+import type { User, createDbConnection } from '@serieslist/core-db'
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import type { YogaInitialContext } from 'graphql-yoga'
 

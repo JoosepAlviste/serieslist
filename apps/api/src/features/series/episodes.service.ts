@@ -1,4 +1,4 @@
-import type { Episode } from '@serieslist/db'
+import type { Episode } from '@serieslist/core-db'
 import type { DBContext, Context } from '@serieslist/graphql-server'
 import index from 'just-index'
 

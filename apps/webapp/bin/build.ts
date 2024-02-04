@@ -1,4 +1,4 @@
-import { buildEsbuild } from '@serieslist/esbuild'
+import { buildEsbuild } from '@serieslist/core-esbuild'
 
 import pkg from '../package.json'
 

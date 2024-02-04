@@ -64,7 +64,7 @@
     "@graphql-codegen/cli": "^4.0.1",
     "@graphql-codegen/client-preset": "^4.0.1",
     "@sentry/vite-plugin": "^2.10.2",
-    "@serieslist/esbuild": "workspace:*",
+    "@serieslist/core-esbuild": "workspace:*",
     "@serieslist/eslint-config-react": "workspace:*",
     "@serieslist/prettier-config": "workspace:*",
     "@serieslist/type-utils": "workspace:*",

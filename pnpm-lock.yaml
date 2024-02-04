@@ -53,9 +53,9 @@ importers:
       '@sentry/tracing':
         specifier: ^7.56.0
         version: 7.56.0
-      '@serieslist/db':
+      '@serieslist/core-db':
         specifier: workspace:*
-        version: link:../../packages/db
+        version: link:../../packages/core-db
       '@serieslist/graphql-server':
         specifier: workspace:*
         version: link:../../packages/graphql-server
@@ -147,12 +147,12 @@ importers:
       '@graphql-typed-document-node/core':
         specifier: ^3.2.0
         version: 3.2.0(graphql@16.8.1)
-      '@serieslist/db-factories':
-        specifier: workspace:^
-        version: link:../../packages/db-factories
-      '@serieslist/esbuild':
+      '@serieslist/core-db-factories':
         specifier: workspace:*
-        version: link:../../packages/esbuild
+        version: link:../../packages/core-db-factories
+      '@serieslist/core-esbuild':
+        specifier: workspace:*
+        version: link:../../packages/core-esbuild
       '@serieslist/eslint-config-base':
         specifier: workspace:*
         version: link:../../packages/eslint-config-base
@@ -238,9 +238,9 @@ importers:
         specifier: ^2.2.0
         version: 2.2.0
     devDependencies:
-      '@serieslist/esbuild':
+      '@serieslist/core-esbuild':
         specifier: workspace:*
-        version: link:../../packages/esbuild
+        version: link:../../packages/core-esbuild
       '@serieslist/eslint-config-base':
         specifier: workspace:*
         version: link:../../packages/eslint-config-base
@@ -383,9 +383,9 @@ importers:
       '@sentry/vite-plugin':
         specifier: ^2.10.2
         version: 2.10.2
-      '@serieslist/esbuild':
+      '@serieslist/core-esbuild':
         specifier: workspace:*
-        version: link:../../packages/esbuild
+        version: link:../../packages/core-esbuild
       '@serieslist/eslint-config-react':
         specifier: workspace:*
         version: link:../../packages/eslint-config-react
@@ -462,7 +462,7 @@ importers:
         specifier: ^1.1.1
         version: 1.1.1(@types/node@18.16.9)(jsdom@22.1.0)
 
-  packages/db:
+  packages/core-db:
     dependencies:
       '@serieslist/logger':
         specifier: workspace:*
@@ -502,13 +502,13 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
 
-  packages/db-factories:
+  packages/core-db-factories:
     dependencies:
-      '@serieslist/db':
-        specifier: workspace:^
-        version: link:../db
+      '@serieslist/core-db':
+        specifier: workspace:*
+        version: link:../core-db
       '@serieslist/logger':
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../logger
       fishery:
         specifier: ^2.2.2
@@ -530,7 +530,7 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
 
-  packages/esbuild:
+  packages/core-esbuild:
     devDependencies:
       '@serieslist/eslint-config-base':
         specifier: workspace:*
@@ -621,9 +621,9 @@ importers:
       '@pothos/plugin-validation':
         specifier: ^3.9.0
         version: 3.9.0(@pothos/core@3.29.0)(graphql@16.8.1)(zod@3.22.3)
-      '@serieslist/db':
+      '@serieslist/core-db':
         specifier: workspace:*
-        version: link:../db
+        version: link:../core-db
       '@serieslist/logger':
         specifier: workspace:*
         version: link:../logger

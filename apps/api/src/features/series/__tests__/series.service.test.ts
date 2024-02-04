@@ -1,11 +1,11 @@
-import { episode, season, series, seriesProgress } from '@serieslist/db'
+import { episode, season, series, seriesProgress } from '@serieslist/core-db'
 import {
   episodeFactory,
   seasonFactory,
   seriesFactory,
   seriesProgressFactory,
   userFactory,
-} from '@serieslist/db-factories'
+} from '@serieslist/core-db-factories'
 import {
   tmdbNotFoundResponseFactory,
   tmdbSeasonFactory,

@@ -1,5 +1,5 @@
 {
-  "name": "@serieslist/db",
+  "name": "@serieslist/core-db",
   "version": "1.0.0",
   "type": "module",
   "sideEffects": false,
@@ -16,6 +16,7 @@
     "drizzle-kit": "drizzle-kit",
     "drizzle-studio": "drizzle-kit studio",
     "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
     "migration": "drizzle-kit generate:pg",
     "tsc": "tsc --noEmit"
   },

@@ -1,5 +1,5 @@
-import { season } from '@serieslist/db'
-import type { InsertSeason } from '@serieslist/db'
+import { season } from '@serieslist/core-db'
+import type { InsertSeason } from '@serieslist/core-db'
 import type { DBContext, Context } from '@serieslist/graphql-server'
 import { and, eq, inArray } from 'drizzle-orm'
 

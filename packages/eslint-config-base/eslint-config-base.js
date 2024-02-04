@@ -27,6 +27,7 @@ module.exports = {
       },
     },
   },
+  ignorePatterns: ['dist'],
   rules: {
     '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
     '@typescript-eslint/consistent-type-imports': [
@@ -43,6 +44,7 @@ module.exports = {
     ],
     '@typescript-eslint/no-explicit-any': 'error',
     '@typescript-eslint/no-import-type-side-effects': 'error',
+    '@typescript-eslint/no-unused-vars': 'error',
     'import/order': [
       'error',
       {

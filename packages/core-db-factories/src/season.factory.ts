@@ -1,4 +1,4 @@
-import { season, type Season } from '@serieslist/db'
+import { season, type Season } from '@serieslist/core-db'
 import { Factory } from 'fishery'
 
 import { db } from './lib/db'

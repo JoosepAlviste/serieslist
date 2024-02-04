@@ -1,4 +1,4 @@
-import type { User } from '@serieslist/db'
+import type { User } from '@serieslist/core-db'
 import { builder } from '@serieslist/graphql-server'
 
 export const UserRef = builder.objectRef<User>('User')

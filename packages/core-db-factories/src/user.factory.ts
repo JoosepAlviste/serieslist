@@ -1,4 +1,4 @@
-import { user, type User } from '@serieslist/db'
+import { user, type User } from '@serieslist/core-db'
 import { Factory } from 'fishery'
 import { nanoid } from 'nanoid'
 

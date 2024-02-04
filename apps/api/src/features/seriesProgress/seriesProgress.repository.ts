@@ -1,5 +1,5 @@
-import type { InsertSeriesProgress } from '@serieslist/db'
-import { seriesProgress } from '@serieslist/db'
+import type { InsertSeriesProgress } from '@serieslist/core-db'
+import { seriesProgress } from '@serieslist/core-db'
 import type { DBContext } from '@serieslist/graphql-server'
 import { and, eq, inArray, isNull } from 'drizzle-orm'
 

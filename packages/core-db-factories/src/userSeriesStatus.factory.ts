@@ -1,5 +1,5 @@
-import type { UserSeriesStatus } from '@serieslist/db'
-import { UserSeriesStatusStatus, userSeriesStatus } from '@serieslist/db'
+import type { UserSeriesStatus } from '@serieslist/core-db'
+import { UserSeriesStatusStatus, userSeriesStatus } from '@serieslist/core-db'
 import { Factory } from 'fishery'
 
 import { db } from './lib/db'

@@ -1,5 +1,5 @@
-import { user, type User } from '@serieslist/db'
-import { userFactory } from '@serieslist/db-factories'
+import { user, type User } from '@serieslist/core-db'
+import { userFactory } from '@serieslist/core-db-factories'
 import { eq } from 'drizzle-orm'
 import { nanoid } from 'nanoid'
 

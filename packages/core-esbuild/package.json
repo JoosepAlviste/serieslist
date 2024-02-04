@@ -1,5 +1,5 @@
 {
-  "name": "@serieslist/esbuild",
+  "name": "@serieslist/core-esbuild",
   "version": "1.0.0",
   "type": "module",
   "exports": {

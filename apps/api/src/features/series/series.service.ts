@@ -1,5 +1,5 @@
-import type { InsertSeason } from '@serieslist/db'
-import { UserSeriesStatusStatus } from '@serieslist/db'
+import type { InsertSeason } from '@serieslist/core-db'
+import { UserSeriesStatusStatus } from '@serieslist/core-db'
 import { NotFoundError } from '@serieslist/graphql-server'
 import type {
   DBContext,

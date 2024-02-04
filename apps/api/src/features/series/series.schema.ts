@@ -1,5 +1,5 @@
-import type { Episode } from '@serieslist/db'
-import { UserSeriesStatusStatus } from '@serieslist/db'
+import type { Episode } from '@serieslist/core-db'
+import { UserSeriesStatusStatus } from '@serieslist/core-db'
 import {
   NotFoundError,
   UnauthorizedError,

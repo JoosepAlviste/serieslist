@@ -1,4 +1,4 @@
-import { createDbConnection } from '@serieslist/db'
+import { createDbConnection } from '@serieslist/core-db'
 
 import { log } from './logger'
 

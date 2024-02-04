@@ -6,7 +6,6 @@ import { CSSTransition } from 'react-transition-group'
 import { GITHUB_URL } from '#/constants'
 import { useAuthenticatedUser } from '#/features/auth'
 import { Search } from '#/features/search'
-import { usePageContext } from '#/hooks'
 
 import { ThemeToggle } from '../../ThemeToggle'
 

@@ -1,5 +1,5 @@
-import type { InsertUser } from '@serieslist/db'
-import { user } from '@serieslist/db'
+import type { InsertUser } from '@serieslist/core-db'
+import { user } from '@serieslist/core-db'
 import type { DBContext } from '@serieslist/graphql-server'
 import { and, eq } from 'drizzle-orm'
 

@@ -1,5 +1,5 @@
-import type { InsertUserSeriesStatus } from '@serieslist/db'
-import { userSeriesStatus } from '@serieslist/db'
+import type { InsertUserSeriesStatus } from '@serieslist/core-db'
+import { userSeriesStatus } from '@serieslist/core-db'
 import type { DBContext } from '@serieslist/graphql-server'
 import { and, eq, inArray } from 'drizzle-orm'
 
