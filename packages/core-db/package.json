@@ -15,8 +15,8 @@
   "scripts": {
     "drizzle-kit": "drizzle-kit",
     "drizzle-studio": "drizzle-kit studio",
-    "lint": "eslint src",
-    "lint:fix": "eslint src --fix",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "migration": "drizzle-kit generate:pg",
     "tsc": "tsc --noEmit"
   },

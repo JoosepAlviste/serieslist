@@ -7,6 +7,10 @@
     "@nx/devkit": "17.2.8",
     "tslib": "^2.3.0"
   },
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
   "devDependencies": {
     "@serieslist/eslint-config-base": "workspace:*",
     "@serieslist/prettier-config": "workspace:*",

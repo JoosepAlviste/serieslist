@@ -19,7 +19,8 @@
     }
   },
   "scripts": {
-    "lint": "eslint src",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "sync-icons": "tsx bin/syncIcons.ts",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",

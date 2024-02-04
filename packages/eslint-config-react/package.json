@@ -7,7 +7,8 @@
     }
   },
   "scripts": {
-    "lint": "eslint eslint-config-react.js"
+    "lint": "eslint eslint-config-react.js",
+    "lint:fix": "eslint eslint-config-react.js --fix"
   },
   "dependencies": {
     "@serieslist/eslint-config-base": "workspace:*",

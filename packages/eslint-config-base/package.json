@@ -7,7 +7,8 @@
     }
   },
   "scripts": {
-    "lint": "eslint eslint-config-base.js"
+    "lint": "eslint eslint-config-base.js",
+    "lint:fix": "eslint eslint-config-base.js --fix"
   },
   "dependencies": {
     "@nx/devkit": "17.2.8",

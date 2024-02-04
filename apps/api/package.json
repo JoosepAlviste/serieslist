@@ -15,7 +15,7 @@
     "codegen": "DOTENV_CONFIG_PATH='../../.env' graphql-codegen-esm -r dotenv/config",
     "codegen:watch": "pnpm codegen -- --watch",
     "lint": "eslint . && madge --circular --extensions ts ./src",
-    "lint:fix": "eslint --fix src",
+    "lint:fix": "eslint --fix .",
     "migrate": "tsx bin/migrate.ts",
     "migrate:prod": "NODE_ENV=production dotenv -e ../../.env node dist/bin/migrate.js",
     "migrate:test": "dotenv -e ../../.env.test tsx bin/migrate.ts",

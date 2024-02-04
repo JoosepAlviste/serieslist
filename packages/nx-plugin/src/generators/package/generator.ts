@@ -2,7 +2,7 @@ import { join } from 'path'
 
 import { formatFiles, generateFiles, type Tree } from '@nx/devkit'
 
-import { type PackageGeneratorSchema } from './schema'
+import type { PackageGeneratorSchema } from './schema'
 
 export async function packageGenerator(
   tree: Tree,

@@ -17,6 +17,7 @@
     "generate:package": "nx generate @serieslist/nx-plugin:package && pnpm i",
     "lint": "nx run-many -t lint",
     "lint:deps": "syncpack lint",
+    "lint:fix": "nx run-many -t lint:fix",
     "migrate": "nx run @serieslist/api:migrate",
     "migrate:test": "nx migrate:test @serieslist/api",
     "migration": "nx run @serieslist/db:migration",

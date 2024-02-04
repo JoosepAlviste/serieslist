@@ -5,7 +5,8 @@
   "scripts": {
     "build": "rimraf dist && NODE_ENV=production tsx bin/build.ts",
     "build:e2e": "(cd ../.. && nx run @serieslist/tmdb-mock-server:build)",
-    "lint": "eslint src",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "start:e2e": "NODE_ENV=production node dist/main.js",
     "tsc": "tsc --noEmit"
   },

@@ -1,4 +1,4 @@
-import { type BuildOptions, build } from "esbuild";
+import { type BuildOptions, build } from 'esbuild'
 
 type EsbuildOptions = BuildOptions & {
   /**
@@ -8,10 +8,10 @@ type EsbuildOptions = BuildOptions & {
    * ```
    */
   packageJson: {
-    dependencies: Record<string, string>;
-    devDependencies: Record<string, string>;
-  };
-};
+    dependencies: Record<string, string>
+    devDependencies: Record<string, string>
+  }
+}
 
 /**
  * Build options for compiling TypeScript for Node with esbuild.
@@ -20,22 +20,22 @@ const buildEsbuildConfig = ({
   packageJson,
   ...options
 }: EsbuildOptions): BuildOptions => {
-  const { external = [], ...optionsWithoutExternal } = options;
+  const { external = [], ...optionsWithoutExternal } = options
 
   const packages = Object.keys(packageJson.dependencies)
     .concat(Object.keys(packageJson.devDependencies))
-    .filter((name) => !name.startsWith("@serieslist"));
+    .filter((name) => !name.startsWith('@serieslist'))
 
   return {
-    outdir: "dist",
-    platform: "node",
-    target: "esnext",
-    format: "esm",
+    outdir: 'dist',
+    platform: 'node',
+    target: 'esnext',
+    format: 'esm',
     bundle: true,
-    tsconfig: "tsconfig.json",
+    tsconfig: 'tsconfig.json',
     external: [...packages, ...external],
     define: {
-      "process.env.NODE_ENV": `"${process.env.NODE_ENV ?? ""}"`,
+      'process.env.NODE_ENV': `"${process.env.NODE_ENV ?? ''}"`,
     },
     banner: {
       // require does not exist in ESM, but some packages that are using require
@@ -52,9 +52,9 @@ const __filename = fileURLToPathThing(import.meta.url);
 const __dirname = pathThing.dirname(__filename);`,
     },
     ...optionsWithoutExternal,
-  };
-};
+  }
+}
 
 export const buildEsbuild = async (options: EsbuildOptions) => {
-  return await build(buildEsbuildConfig(options));
-};
+  return await build(buildEsbuildConfig(options))
+}

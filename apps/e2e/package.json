@@ -4,6 +4,8 @@
   "type": "module",
   "scripts": {
     "install-deps:e2e": "playwright install chromium --with-deps",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "migrate:e2e": "(cd ../.. && pnpm run migrate:test)",
     "test:e2e": "pnpm exec playwright test",
     "test:e2e:headed": "pnpm test:e2e -- --headed"
