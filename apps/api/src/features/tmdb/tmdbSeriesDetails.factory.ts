@@ -1,10 +1,10 @@
 import type { Series, Episode } from '@serieslist/core-db'
-import type { TMDBEpisode, TMDBSeries } from '@serieslist/tmdb'
+import type { TMDBEpisode, TMDBSeries } from '@serieslist/feature-tmdb'
 import {
   tmdbSeriesDetailsFactory as baseTmdbSeriesDetailsFactory,
   tmdbEpisodeFactory as baseTmdbEpisodeFactory,
-} from '@serieslist/tmdb/test'
-import type { NotWorthIt } from '@serieslist/type-utils'
+} from '@serieslist/feature-tmdb/test'
+import type { NotWorthIt } from '@serieslist/util-types'
 import { Factory } from 'fishery'
 import filterObject from 'just-filter-object'
 

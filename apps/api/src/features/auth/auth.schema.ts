@@ -1,4 +1,4 @@
-import { UnauthorizedError, builder } from '@serieslist/graphql-server'
+import { UnauthorizedError, builder } from '@serieslist/core-graphql-server'
 import { ZodError } from 'zod'
 
 import { UserRef } from '#/features/users'

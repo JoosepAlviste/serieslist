@@ -1,6 +1,6 @@
 import type { InsertUser } from '@serieslist/core-db'
 import { user } from '@serieslist/core-db'
-import type { DBContext } from '@serieslist/graphql-server'
+import type { DBContext } from '@serieslist/core-graphql-server'
 import { and, eq } from 'drizzle-orm'
 
 import { head } from '#/utils/array'

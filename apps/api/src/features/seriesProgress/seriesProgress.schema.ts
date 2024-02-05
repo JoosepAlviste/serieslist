@@ -2,7 +2,7 @@ import {
   NotFoundError,
   UnauthorizedError,
   builder,
-} from '@serieslist/graphql-server'
+} from '@serieslist/core-graphql-server'
 
 import { EpisodeRef, SeasonRef, SeriesRef } from '#/features/series'
 

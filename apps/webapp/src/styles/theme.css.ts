@@ -2,7 +2,7 @@ import {
   vars as uiVars,
   lightThemeClass as uiLightThemeClass,
   darkThemeClass as uiDarkThemeClass,
-} from '@serieslist/ui'
+} from '@serieslist/core-ui'
 import { createTheme } from '@vanilla-extract/css'
 
 const colors = uiVars.color

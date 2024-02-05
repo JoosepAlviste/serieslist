@@ -1,6 +1,6 @@
 import type { InsertSeenEpisode } from '@serieslist/core-db'
 import { seenEpisode } from '@serieslist/core-db'
-import type { DBContext } from '@serieslist/graphql-server'
+import type { DBContext } from '@serieslist/core-graphql-server'
 import { and, eq, inArray } from 'drizzle-orm'
 
 import { head } from '#/utils/array'

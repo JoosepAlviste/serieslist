@@ -1,4 +1,4 @@
-import { Title } from '@serieslist/ui'
+import { Title } from '@serieslist/core-ui'
 import React from 'react'
 
 import * as s from './index.page.css'

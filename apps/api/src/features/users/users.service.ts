@@ -1,5 +1,5 @@
 import type { InsertUser } from '@serieslist/core-db'
-import type { Context } from '@serieslist/graphql-server'
+import type { Context } from '@serieslist/core-graphql-server'
 
 import * as usersRepository from './user.repository'
 

@@ -1,4 +1,4 @@
-import { SVG_COLOR_VAR } from '@serieslist/ui'
+import { SVG_COLOR_VAR } from '@serieslist/core-ui'
 import { style } from '@vanilla-extract/css'
 
 import { responsive, vars, zIndex } from '#/styles/theme.css'

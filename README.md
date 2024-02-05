@@ -95,6 +95,16 @@ are split into features. The `src` folders contain some general, "global" files,
 while the `src/features` folders contain feature-specific code.
 
 
+#### Packages
+
+These are the types of packages in the [`packages`](packages) folder:
+
+- `core-`: Packages that provide reusable logic to be used in all other packages
+- `feature-`: Packages containing business logic
+- `util-`: Utilities and pure functions that don't usually have any 
+  framework-specific code
+
+
 ### Generating a new package
 
 A new package can be generated with:

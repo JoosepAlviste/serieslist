@@ -1,5 +1,5 @@
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
-import { Button, Icon, Link, Logo } from '@serieslist/ui'
+import { Button, Icon, Link, Logo } from '@serieslist/core-ui'
 import classNames from 'classnames'
 import React, { useState } from 'react'
 

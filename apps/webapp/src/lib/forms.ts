@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import type { NotWorthIt, LiterallyAnything } from '@serieslist/type-utils'
+import type { NotWorthIt, LiterallyAnything } from '@serieslist/util-types'
 import {
   type FieldValues,
   useForm as useFormBase,

@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client'
-import { Button, Error, Field } from '@serieslist/ui'
+import { Button, Error, Field } from '@serieslist/core-ui'
 import React from 'react'
 import { navigate } from 'vike/client/router'
 import { z } from 'zod'

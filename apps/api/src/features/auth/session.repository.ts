@@ -1,6 +1,6 @@
 import type { InsertSession } from '@serieslist/core-db'
 import { session } from '@serieslist/core-db'
-import type { DBContext } from '@serieslist/graphql-server'
+import type { DBContext } from '@serieslist/core-graphql-server'
 import { eq } from 'drizzle-orm'
 
 import { head } from '#/utils/array'

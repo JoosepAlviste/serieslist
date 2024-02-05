@@ -1,5 +1,5 @@
 {
-  "name": "@serieslist/ui",
+  "name": "@serieslist/core-ui",
   "version": "1.0.0",
   "type": "module",
   "sideEffects": [

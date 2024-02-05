@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client'
-import { Button, Text } from '@serieslist/ui'
+import { Button, Text } from '@serieslist/core-ui'
 import { isFuture } from 'date-fns'
 import React from 'react'
 

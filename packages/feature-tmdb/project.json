@@ -1,0 +1,4 @@
+{
+  "name": "@serieslist/feature-tmdb",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json"
+}

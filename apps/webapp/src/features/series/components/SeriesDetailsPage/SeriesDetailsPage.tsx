@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@apollo/client'
 import * as Tabs from '@radix-ui/react-tabs'
-import { Button, Text, Title, Tooltip } from '@serieslist/ui'
+import { Button, Text, Title, Tooltip } from '@serieslist/core-ui'
 import { isAfter } from 'date-fns'
 import React from 'react'
 

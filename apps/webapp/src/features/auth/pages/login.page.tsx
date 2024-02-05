@@ -1,4 +1,4 @@
-import { Link } from '@serieslist/ui'
+import { Link } from '@serieslist/core-ui'
 import React from 'react'
 
 import { AuthLayout } from '../components'

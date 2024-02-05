@@ -1,11 +1,11 @@
 import type { InsertSeriesProgress } from '@serieslist/core-db'
-import { NotFoundError } from '@serieslist/graphql-server'
+import { NotFoundError } from '@serieslist/core-graphql-server'
 import type {
   Context,
   AuthenticatedContext,
   DBContext,
-} from '@serieslist/graphql-server'
-import type { NonNullableFields } from '@serieslist/type-utils'
+} from '@serieslist/core-graphql-server'
+import type { NonNullableFields } from '@serieslist/util-types'
 import index from 'just-index'
 
 // TODO: Importing these from #/features/series causes a circular import error

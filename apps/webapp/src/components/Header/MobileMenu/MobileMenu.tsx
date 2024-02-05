@@ -1,5 +1,5 @@
 import * as NavigationMenu from '@radix-ui/react-navigation-menu'
-import { Icon, Link, Text } from '@serieslist/ui'
+import { Icon, Link, Text } from '@serieslist/core-ui'
 import React, { useRef } from 'react'
 import { CSSTransition } from 'react-transition-group'
 

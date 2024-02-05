@@ -1,4 +1,4 @@
-import { iconColorVar } from '@serieslist/ui'
+import { iconColorVar } from '@serieslist/core-ui'
 import { globalStyle, style } from '@vanilla-extract/css'
 
 import { responsive, vars, zIndex } from '#/styles/theme.css'

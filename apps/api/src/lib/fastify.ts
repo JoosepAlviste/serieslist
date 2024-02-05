@@ -1,7 +1,7 @@
 import cookie, { type FastifyCookieOptions } from '@fastify/cookie'
 import cors from '@fastify/cors'
 import rateLimit from '@fastify/rate-limit'
-import { getLoggerByEnvironment } from '@serieslist/logger'
+import { getLoggerByEnvironment } from '@serieslist/core-logger'
 import fastify from 'fastify'
 
 import { config } from '#/config'

@@ -1,6 +1,6 @@
 import { randomBytes } from 'crypto'
 
-import type { Context } from '@serieslist/graphql-server'
+import type { Context } from '@serieslist/core-graphql-server'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { ZodError } from 'zod'

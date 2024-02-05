@@ -7,8 +7,11 @@ import {
   seenEpisodeFactory,
   userFactory,
 } from '@serieslist/core-db-factories'
-import type { AuthenticatedContext, Context } from '@serieslist/graphql-server'
-import type { NotWorthIt } from '@serieslist/type-utils'
+import type {
+  AuthenticatedContext,
+  Context,
+} from '@serieslist/core-graphql-server'
+import type { NotWorthIt } from '@serieslist/util-types'
 import { type ExecutionResult, print } from 'graphql'
 import { createYoga, type YogaInitialContext } from 'graphql-yoga'
 

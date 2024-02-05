@@ -1,12 +1,12 @@
 import type { InsertSeason } from '@serieslist/core-db'
 import { UserSeriesStatusStatus } from '@serieslist/core-db'
-import { NotFoundError } from '@serieslist/graphql-server'
+import { NotFoundError } from '@serieslist/core-graphql-server'
 import type {
   DBContext,
   AuthenticatedContext,
   Context,
-} from '@serieslist/graphql-server'
-import { tmdbService } from '@serieslist/tmdb'
+} from '@serieslist/core-graphql-server'
+import { tmdbService } from '@serieslist/feature-tmdb'
 import { addDays, isFuture, subDays } from 'date-fns'
 import index from 'just-index'
 import unique from 'just-unique'

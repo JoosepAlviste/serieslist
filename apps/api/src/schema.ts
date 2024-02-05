@@ -1,4 +1,4 @@
-import { builder } from '@serieslist/graphql-server'
+import { builder } from '@serieslist/core-graphql-server'
 
 import '#/features/auth/auth.schema'
 import '#/features/users/users.schema'

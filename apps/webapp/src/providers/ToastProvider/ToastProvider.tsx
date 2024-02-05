@@ -2,7 +2,7 @@ import {
   ToastProvider as BaseToastProvider,
   Viewport,
 } from '@radix-ui/react-toast'
-import { Toast as ToastComponent } from '@serieslist/ui'
+import { Toast as ToastComponent } from '@serieslist/core-ui'
 import React, { useRef, useState, type ReactElement } from 'react'
 
 import { type Toast, ToastContext } from '#/context'

@@ -1,4 +1,4 @@
-import type { LiterallyAnything } from '@serieslist/type-utils'
+import type { LiterallyAnything } from '@serieslist/util-types'
 import { useCallback, useRef } from 'react'
 
 /**

@@ -1,5 +1,5 @@
 import * as NavigationMenu from '@radix-ui/react-navigation-menu'
-import { Icon, Logo, Link, Tooltip } from '@serieslist/ui'
+import { Icon, Logo, Link, Tooltip } from '@serieslist/core-ui'
 import classNames from 'classnames'
 import React from 'react'
 

@@ -1,4 +1,4 @@
-import { Text, Title } from '@serieslist/ui'
+import { Text, Title } from '@serieslist/core-ui'
 import React, { type ReactElement } from 'react'
 
 import * as s from './AuthLayout.css'

@@ -20,8 +20,8 @@ import {
   mockTMDBDetailsRequest,
   mockTMDBSearchRequest,
   mockTMDBSeasonRequest,
-} from '@serieslist/tmdb/test'
-import type { NotWorthIt } from '@serieslist/type-utils'
+} from '@serieslist/feature-tmdb/test'
+import type { NotWorthIt } from '@serieslist/util-types'
 import { subDays } from 'date-fns'
 import { and, eq } from 'drizzle-orm'
 import { nanoid } from 'nanoid'

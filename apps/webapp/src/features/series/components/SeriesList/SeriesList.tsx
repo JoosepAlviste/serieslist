@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client'
-import { Link, LoadingSpinner, Text } from '@serieslist/ui'
+import { Link, LoadingSpinner, Text } from '@serieslist/core-ui'
 import classNames from 'classnames'
 import React from 'react'
 

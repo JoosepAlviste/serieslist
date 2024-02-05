@@ -11,8 +11,8 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
-    "@serieslist/logger": "workspace:*",
-    "@serieslist/tmdb": "workspace:*",
+    "@serieslist/core-logger": "workspace:*",
+    "@serieslist/feature-tmdb": "workspace:*",
     "fastify": "^4.18.0",
     "just-omit": "^2.2.0"
   },

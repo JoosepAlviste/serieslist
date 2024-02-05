@@ -1,3 +1,3 @@
-import { createLogger } from '@serieslist/logger'
+import { createLogger } from '@serieslist/core-logger'
 
 export const log = createLogger({ name: 'webapp' })

@@ -1,17 +1,12 @@
 {
-  "name": "@serieslist/tmdb",
+  "name": "@serieslist/core-graphql-server",
   "version": "1.0.0",
   "type": "module",
   "sideEffects": false,
-  "main": "./src/index.ts",
   "exports": {
     ".": {
       "types": "./src/index.ts",
       "import": "./src/index.ts"
-    },
-    "./test": {
-      "types": "./src/test.ts",
-      "import": "./src/test.ts"
     }
   },
   "scripts": {
@@ -20,19 +15,21 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
-    "@serieslist/logger": "workspace:*",
-    "node-fetch": "^3.3.1",
-    "pino": "^8.14.1",
-    "zod": "^3.22.3"
+    "@pothos/core": "^3.29.0",
+    "@pothos/plugin-dataloader": "^3.17.1",
+    "@pothos/plugin-errors": "^3.11.0",
+    "@pothos/plugin-scope-auth": "^3.19.1",
+    "@pothos/plugin-tracing": "^0.5.7",
+    "@pothos/plugin-validation": "^3.9.0",
+    "@serieslist/core-db": "workspace:*",
+    "@serieslist/core-logger": "workspace:*",
+    "fastify": "^4.18.0",
+    "graphql-yoga": "^4.0.2"
   },
   "devDependencies": {
     "@serieslist/eslint-config-base": "workspace:*",
     "@serieslist/prettier-config": "workspace:*",
     "@serieslist/typescript-config-base": "workspace:*",
-    "date-fns": "^2.30.0",
-    "fishery": "^2.2.2",
-    "nanoid": "^4.0.2",
-    "nock": "^13.3.1",
     "typescript": "^5.3.3"
   }
 }

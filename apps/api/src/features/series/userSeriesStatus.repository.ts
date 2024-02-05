@@ -1,6 +1,6 @@
 import type { InsertUserSeriesStatus } from '@serieslist/core-db'
 import { userSeriesStatus } from '@serieslist/core-db'
-import type { DBContext } from '@serieslist/graphql-server'
+import type { DBContext } from '@serieslist/core-graphql-server'
 import { and, eq, inArray } from 'drizzle-orm'
 
 export const findMany = async ({

@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@serieslist/core-db": "workspace:*",
-    "@serieslist/logger": "workspace:*",
+    "@serieslist/core-logger": "workspace:*",
     "fishery": "^2.2.2",
     "nanoid": "^4.0.2"
   }

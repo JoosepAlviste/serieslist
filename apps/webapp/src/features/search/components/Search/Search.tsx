@@ -1,6 +1,6 @@
 import { useLazyQuery } from '@apollo/client'
 import * as Popover from '@radix-ui/react-popover'
-import { Text, useSSR, Icon, LoadingSpinner, Title } from '@serieslist/ui'
+import { Text, useSSR, Icon, LoadingSpinner, Title } from '@serieslist/core-ui'
 import classNames from 'classnames'
 import React, {
   type HTMLAttributes,

@@ -1,5 +1,5 @@
 import * as Toggle from '@radix-ui/react-toggle'
-import { Tooltip } from '@serieslist/ui'
+import { Tooltip } from '@serieslist/core-ui'
 import classNames from 'classnames'
 import React from 'react'
 

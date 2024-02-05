@@ -1,4 +1,4 @@
-import type { ValueOf } from '@serieslist/type-utils'
+import type { ValueOf } from '@serieslist/util-types'
 
 import { darkThemeClasses, lightThemeClasses } from '#/styles/theme.css'
 

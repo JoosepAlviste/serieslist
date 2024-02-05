@@ -4,8 +4,8 @@ import {
   NotFoundError,
   UnauthorizedError,
   builder,
-} from '@serieslist/graphql-server'
-import type { Context } from '@serieslist/graphql-server'
+} from '@serieslist/core-graphql-server'
+import type { Context } from '@serieslist/core-graphql-server'
 import { ZodError } from 'zod'
 
 import { exposeDate } from '#/utils/exposeDate'

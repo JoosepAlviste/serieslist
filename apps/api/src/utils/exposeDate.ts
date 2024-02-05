@@ -1,4 +1,4 @@
-import type { NotWorthIt } from '@serieslist/type-utils'
+import type { NotWorthIt } from '@serieslist/util-types'
 
 import { formatDate } from './date'
 

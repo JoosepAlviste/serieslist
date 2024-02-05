@@ -11,8 +11,8 @@ import {
   tmdbSeasonFactory,
   mockTMDBDetailsRequest,
   mockTMDBSeasonRequest,
-} from '@serieslist/tmdb/test'
-import type { LiterallyAnything } from '@serieslist/type-utils'
+} from '@serieslist/feature-tmdb/test'
+import type { LiterallyAnything } from '@serieslist/util-types'
 import { subDays } from 'date-fns'
 import { and, eq } from 'drizzle-orm'
 

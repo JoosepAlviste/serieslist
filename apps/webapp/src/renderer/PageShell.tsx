@@ -1,6 +1,6 @@
 import { ApolloProvider } from '@apollo/client'
 import { TooltipProvider } from '@radix-ui/react-tooltip'
-import { SSRProvider } from '@serieslist/ui'
+import { SSRProvider } from '@serieslist/core-ui'
 import React from 'react'
 import type { PageContext } from 'vike/types'
 
@@ -10,8 +10,8 @@ import { PageContextProvider, ThemeProvider, ToastProvider } from '#/providers'
 
 import * as s from './PageShell.css'
 
-import '@serieslist/ui/reset.css'
-import '@serieslist/ui/global.css'
+import '@serieslist/core-ui/reset.css'
+import '@serieslist/core-ui/global.css'
 
 export function PageShell({
   children,

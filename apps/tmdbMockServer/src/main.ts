@@ -14,12 +14,12 @@ import type {
   TMDBSeason,
   TMDBEpisode,
   TMDBSearchResponse,
-} from '@serieslist/tmdb'
+} from '@serieslist/feature-tmdb'
 import {
   tmdbEpisodeFactory,
   tmdbSeasonFactory,
   tmdbSeriesDetailsFactory,
-} from '@serieslist/tmdb/test'
+} from '@serieslist/feature-tmdb/test'
 import fastify from 'fastify'
 import omit from 'just-omit'
 

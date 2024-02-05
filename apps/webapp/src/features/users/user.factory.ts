@@ -1,4 +1,4 @@
-import type { RequiredFields } from '@serieslist/type-utils'
+import type { RequiredFields } from '@serieslist/util-types'
 import { Factory } from 'fishery'
 
 import type { User } from '#/generated/gql/graphql'

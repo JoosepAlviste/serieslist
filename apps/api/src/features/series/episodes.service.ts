@@ -1,5 +1,5 @@
 import type { Episode } from '@serieslist/core-db'
-import type { DBContext, Context } from '@serieslist/graphql-server'
+import type { DBContext, Context } from '@serieslist/core-graphql-server'
 import index from 'just-index'
 
 import { groupEntitiesByKeyToNestedArray } from '#/utils/groupEntitiesByKeyToNestedArray'

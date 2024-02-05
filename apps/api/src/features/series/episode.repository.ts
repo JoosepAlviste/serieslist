@@ -1,6 +1,6 @@
 import type { InsertEpisode } from '@serieslist/core-db'
 import { episode, season, seenEpisode } from '@serieslist/core-db'
-import type { DBContext } from '@serieslist/graphql-server'
+import type { DBContext } from '@serieslist/core-graphql-server'
 import {
   and,
   asc,
