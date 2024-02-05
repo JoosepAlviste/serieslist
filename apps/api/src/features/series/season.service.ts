@@ -1,4 +1,4 @@
-import type { DBContext, Context } from '@serieslist/core-graphql-server'
+import type { DBContext } from '@serieslist/core-graphql-server'
 
 import { groupEntitiesByKeyToNestedArray } from '#/utils/groupEntitiesByKeyToNestedArray'
 
@@ -8,7 +8,7 @@ export const findOne = async ({
   ctx,
   seasonId,
 }: {
-  ctx: Context
+  ctx: DBContext
   seasonId: number
 }) => {
   return seasonRepository.findOne({ ctx, seasonId })
@@ -19,7 +19,7 @@ export const findMany = async ({
   seasonIds,
   seriesIds,
 }: {
-  ctx: Context
+  ctx: DBContext
   seriesIds?: number[]
   seasonIds?: number[]
 }) => {
@@ -37,7 +37,7 @@ export const findSeasonsBySeriesIds = async ({
   ctx,
   seriesIds,
 }: {
-  ctx: Context
+  ctx: DBContext
   seriesIds: number[]
 }) => {
   const allSeasons = await seasonRepository.findMany({ ctx, seriesIds })
@@ -47,14 +47,4 @@ export const findSeasonsBySeriesIds = async ({
     ids: seriesIds,
     fieldToGroupBy: 'seriesId',
   })
-}
-
-export const deleteOne = ({
-  ctx,
-  seasonId,
-}: {
-  ctx: DBContext
-  seasonId: number
-}) => {
-  return seasonRepository.deleteOne({ ctx, seasonId })
 }

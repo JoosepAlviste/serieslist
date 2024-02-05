@@ -1,14 +1,11 @@
-import type { InsertSeriesProgress } from '@serieslist/core-db'
 import { NotFoundError } from '@serieslist/core-graphql-server'
 import type {
   Context,
   AuthenticatedContext,
-  DBContext,
 } from '@serieslist/core-graphql-server'
 import type { NonNullableFields } from '@serieslist/util-types'
 import index from 'just-index'
 
-// TODO: Importing these from #/features/series causes a circular import error
 import * as episodesService from '#/features/series/episodes.service'
 import * as seasonService from '#/features/series/season.service'
 import { isTruthy } from '#/utils/isTruthy'
@@ -310,24 +307,5 @@ export const findNextEpisodesForSeries = async ({
       ? episodesByIds[progress.nextEpisodeId]
       : // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         firstEpisodes[seriesId] ?? null
-  })
-}
-
-export const updateMany = ({
-  ctx,
-  seriesId,
-  nextEpisodeId,
-  seriesProgress,
-}: {
-  ctx: DBContext
-  seriesId: number
-  nextEpisodeId: number | null
-  seriesProgress: Partial<InsertSeriesProgress>
-}) => {
-  return seriesProgressRepository.updateMany({
-    ctx,
-    seriesId,
-    nextEpisodeId,
-    seriesProgress,
   })
 }

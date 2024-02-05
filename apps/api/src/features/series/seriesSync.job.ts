@@ -1,7 +1,7 @@
+import { reSyncSeries } from '@serieslist/feature-series-sync'
+
 import { createQueue, createWorker } from '#/lib/bullMq'
 import { db } from '#/lib/db'
-
-import { reSyncSeries } from './series.service'
 
 export const seriesSyncQueue = createQueue('seriesSync')
 

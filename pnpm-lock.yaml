@@ -62,6 +62,9 @@ importers:
       '@serieslist/core-logger':
         specifier: workspace:*
         version: link:../../packages/core-logger
+      '@serieslist/feature-series-sync':
+        specifier: workspace:*
+        version: link:../../packages/feature-series-sync
       '@serieslist/feature-tmdb':
         specifier: workspace:*
         version: link:../../packages/feature-tmdb
@@ -116,9 +119,6 @@ importers:
       just-omit:
         specifier: ^2.2.0
         version: 2.2.0
-      just-unique:
-        specifier: ^4.2.0
-        version: 4.2.0
       nanoid:
         specifier: ^4.0.2
         version: 4.0.2
@@ -587,9 +587,15 @@ importers:
       '@serieslist/typescript-config-base':
         specifier: workspace:*
         version: link:../typescript-config-base
+      '@serieslist/util-types':
+        specifier: workspace:^
+        version: link:../util-types
       typescript:
         specifier: ^5.3.3
         version: 5.3.3
+      vitest:
+        specifier: ^1.1.1
+        version: 1.1.1(@types/node@18.16.9)(jsdom@22.1.0)
 
   packages/core-logger:
     dependencies:
@@ -747,6 +753,67 @@ importers:
       '@serieslist/prettier-config':
         specifier: workspace:*
         version: link:../prettier-config
+
+  packages/feature-series-sync:
+    dependencies:
+      '@serieslist/core-db':
+        specifier: workspace:^
+        version: link:../core-db
+      '@serieslist/core-graphql-server':
+        specifier: workspace:*
+        version: link:../core-graphql-server
+      '@serieslist/core-logger':
+        specifier: workspace:^
+        version: link:../core-logger
+      '@serieslist/feature-tmdb':
+        specifier: workspace:^
+        version: link:../feature-tmdb
+      drizzle-orm:
+        specifier: ^0.29.3
+        version: 0.29.3(@types/pg@8.6.6)(pg@8.10.0)
+      just-index:
+        specifier: ^4.2.0
+        version: 4.2.0
+      just-unique:
+        specifier: ^4.2.0
+        version: 4.2.0
+    devDependencies:
+      '@serieslist/core-db-factories':
+        specifier: workspace:^
+        version: link:../core-db-factories
+      '@serieslist/eslint-config-base':
+        specifier: workspace:*
+        version: link:../eslint-config-base
+      '@serieslist/prettier-config':
+        specifier: workspace:*
+        version: link:../prettier-config
+      '@serieslist/typescript-config-base':
+        specifier: workspace:*
+        version: link:../typescript-config-base
+      '@serieslist/util-types':
+        specifier: workspace:^
+        version: link:../util-types
+      '@vitest/coverage-v8':
+        specifier: ^1.1.1
+        version: 1.1.1(vitest@1.1.1)
+      date-fns:
+        specifier: ^2.30.0
+        version: 2.30.0
+      fishery:
+        specifier: ^2.2.2
+        version: 2.2.2
+      just-filter-object:
+        specifier: ^3.2.0
+        version: 3.2.0
+      nock:
+        specifier: ^13.3.1
+        version: 13.3.1
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
+      vitest:
+        specifier: ^1.1.1
+        version: 1.1.1(@types/node@18.16.9)(jsdom@22.1.0)
 
   packages/feature-tmdb:
     dependencies:
@@ -7836,7 +7903,7 @@ packages:
       std-env: 3.7.0
       test-exclude: 6.0.0
       v8-to-istanbul: 9.2.0
-      vitest: 1.1.1(@types/node@18.15.3)
+      vitest: 1.1.1(@types/node@18.16.9)(jsdom@22.1.0)
     transitivePeerDependencies:
       - supports-color
     dev: true

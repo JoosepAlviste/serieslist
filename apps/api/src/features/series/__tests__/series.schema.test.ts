@@ -12,6 +12,7 @@ import {
   seriesFactory,
   userSeriesStatusFactory,
   userFactory,
+  createSeriesWithEpisodesAndSeasons,
 } from '@serieslist/core-db-factories'
 import {
   tmdbSeasonFactory,
@@ -29,12 +30,7 @@ import { nanoid } from 'nanoid'
 import { graphql } from '#/generated/gql'
 import type { SeriesUpdateStatusInput } from '#/generated/gql/graphql'
 import { db } from '#/lib/db'
-import {
-  checkErrors,
-  createSeriesWithEpisodesAndSeasons,
-  executeOperation,
-  expectErrors,
-} from '#/test/testUtils'
+import { checkErrors, executeOperation, expectErrors } from '#/test/testUtils'
 import { parseDate } from '#/utils/date'
 
 describe('features/series/series.schema', () => {

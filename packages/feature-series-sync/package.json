@@ -1,0 +1,43 @@
+{
+  "name": "@serieslist/feature-series-sync",
+  "version": "1.0.0",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "import": "./src/index.ts",
+      "types": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "dotenv -e ../../.env.test vitest run",
+    "test:coverage": "dotenv -e ../../.env.test vitest run -- --coverage",
+    "test:watch": "dotenv -e ../../.env.test vitest",
+    "tsc": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@serieslist/core-db-factories": "workspace:^",
+    "@serieslist/eslint-config-base": "workspace:*",
+    "@serieslist/prettier-config": "workspace:*",
+    "@serieslist/typescript-config-base": "workspace:*",
+    "@serieslist/util-types": "workspace:^",
+    "@vitest/coverage-v8": "^1.1.1",
+    "date-fns": "^2.30.0",
+    "fishery": "^2.2.2",
+    "just-filter-object": "^3.2.0",
+    "nock": "^13.3.1",
+    "typescript": "^5.3.3",
+    "vitest": "^1.1.1"
+  },
+  "dependencies": {
+    "@serieslist/core-db": "workspace:^",
+    "@serieslist/core-graphql-server": "workspace:*",
+    "@serieslist/core-logger": "workspace:^",
+    "@serieslist/feature-tmdb": "workspace:^",
+    "drizzle-orm": "^0.29.3",
+    "just-index": "^4.2.0",
+    "just-unique": "^4.2.0"
+  }
+}

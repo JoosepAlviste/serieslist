@@ -7,6 +7,10 @@
     ".": {
       "types": "./src/index.ts",
       "import": "./src/index.ts"
+    },
+    "./test": {
+      "types": "./src/test.ts",
+      "import": "./src/test.ts"
     }
   },
   "scripts": {
@@ -30,6 +34,8 @@
     "@serieslist/eslint-config-base": "workspace:*",
     "@serieslist/prettier-config": "workspace:*",
     "@serieslist/typescript-config-base": "workspace:*",
-    "typescript": "^5.3.3"
+    "@serieslist/util-types": "workspace:^",
+    "typescript": "^5.3.3",
+    "vitest": "^1.1.1"
   }
 }
