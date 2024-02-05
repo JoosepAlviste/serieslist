@@ -72,7 +72,7 @@ export const getSeriesByIdAndFetchDetailsFromTMDB = async ({
 }) => {
   const series = await getSeriesById(ctx)(id)
 
-  if (shouldSyncSeries(series)) {
+  if (!shouldSyncSeries(series)) {
     return series
   }
 
