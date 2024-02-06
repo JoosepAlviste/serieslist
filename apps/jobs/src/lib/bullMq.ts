@@ -7,7 +7,7 @@ import {
   type QueueOptions,
 } from 'bullmq'
 
-import { config } from '#/config'
+import { config } from './config'
 
 const redisConnection: RedisOptions = {
   host: config.redis.host,

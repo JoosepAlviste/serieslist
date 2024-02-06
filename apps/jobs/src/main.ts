@@ -1,6 +1,5 @@
-import { seriesSyncWorker } from '#/features/series/jobs'
-
 import { log } from './lib/logger'
+import { seriesSyncWorker } from './seriesSync.job'
 
 /**
  * The job workers are started in a separate container in order to avoid

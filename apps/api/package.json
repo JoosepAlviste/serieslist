@@ -4,8 +4,7 @@
   "type": "module",
   "sideEffects": [
     "./src/**/*.schema.ts",
-    "./src/lib/initSentry.ts",
-    "./src/**/*.job.ts"
+    "./src/lib/initSentry.ts"
   ],
   "scripts": {
     "build": "rimraf dist && NODE_ENV=production tsx bin/build.ts",
@@ -21,8 +20,6 @@
     "migrate:test": "dotenv -e ../../.env.test tsx bin/migrate.ts",
     "start": "NODE_ENV=development tsx watch --clear-screen=false src/main.ts",
     "start:e2e": "NODE_ENV=test pnpm start:prod",
-    "start:jobs": "NODE_ENV=development tsx watch --clear-screen=false src/mainJobs.ts",
-    "start:jobs:prod": "NODE_ENV=production node dist/src/mainJobs.js",
     "start:prod": "NODE_ENV=production node dist/src/main.js",
     "test": "dotenv -e ../../.env.test vitest run",
     "test:coverage": "dotenv -e ../../.env.test vitest run -- --coverage",
@@ -30,8 +27,6 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
-    "@bull-board/api": "^5.6.0",
-    "@bull-board/fastify": "^5.6.0",
     "@envelop/sentry": "^6.0.0",
     "@escape.tech/graphql-armor": "^2.2.0",
     "@fastify/cookie": "^8.3.0",
@@ -45,7 +40,6 @@
     "@serieslist/feature-series-sync": "workspace:*",
     "@serieslist/feature-tmdb": "workspace:*",
     "bcryptjs": "^2.4.3",
-    "bullmq": "^4.1.0",
     "dataloader": "^2.2.2",
     "date-fns": "^2.30.0",
     "dotenv": "^16.0.3",

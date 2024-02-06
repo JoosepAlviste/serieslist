@@ -23,12 +23,6 @@ export const config = {
 
   secretToken: process.env.SECRET_TOKEN!,
 
-  redis: {
-    host: process.env.REDIS_HOST!,
-    port: parseInt(process.env.REDIS_PORT!),
-    password: process.env.REDIS_PASSWORD!,
-  },
-
   webapp: {
     host: process.env.APP_HOST!,
     url: process.env.APP_URL!,

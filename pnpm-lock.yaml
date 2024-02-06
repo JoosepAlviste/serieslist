@@ -26,12 +26,6 @@ importers:
 
   apps/api:
     dependencies:
-      '@bull-board/api':
-        specifier: ^5.6.0
-        version: 5.6.0(@bull-board/ui@5.6.0)
-      '@bull-board/fastify':
-        specifier: ^5.6.0
-        version: 5.6.0
       '@envelop/sentry':
         specifier: ^6.0.0
         version: 6.0.0(@envelop/core@4.0.0)(@sentry/node@7.56.0)(graphql@16.8.1)
@@ -71,9 +65,6 @@ importers:
       bcryptjs:
         specifier: ^2.4.3
         version: 2.4.3
-      bullmq:
-        specifier: ^4.1.0
-        version: 4.1.0
       dataloader:
         specifier: ^2.2.2
         version: 2.2.2
@@ -219,6 +210,43 @@ importers:
       nanoid:
         specifier: ^4.0.2
         version: 4.0.2
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
+
+  apps/jobs:
+    dependencies:
+      '@serieslist/core-db':
+        specifier: workspace:*
+        version: link:../../packages/core-db
+      '@serieslist/core-logger':
+        specifier: workspace:^
+        version: link:../../packages/core-logger
+      '@serieslist/feature-series-sync':
+        specifier: workspace:^
+        version: link:../../packages/feature-series-sync
+      bullmq:
+        specifier: ^4.1.0
+        version: 4.1.0
+    devDependencies:
+      '@serieslist/core-esbuild':
+        specifier: workspace:*
+        version: link:../../packages/core-esbuild
+      '@serieslist/eslint-config-base':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config-base
+      '@serieslist/prettier-config':
+        specifier: workspace:*
+        version: link:../../packages/prettier-config
+      '@serieslist/typescript-config-base':
+        specifier: workspace:*
+        version: link:../../packages/typescript-config-base
+      rimraf:
+        specifier: ^4.4.0
+        version: 4.4.0
+      tsx:
+        specifier: ^4.7.0
+        version: 4.7.0
       typescript:
         specifier: ^5.3.3
         version: 5.3.3
@@ -2705,31 +2733,6 @@ packages:
       '@brillout/import': 0.2.3
     dev: false
 
-  /@bull-board/api@5.6.0(@bull-board/ui@5.6.0):
-    resolution: {integrity: sha512-a2O15p5oEm+/E/0I2l2nE2NKK0dkgNNTaamu+0gGyfUxWoCS3fCGX6LLEyl3jgOz0IC3GKRnwtVgbZFzk42sGQ==}
-    peerDependencies:
-      '@bull-board/ui': 5.6.0
-    dependencies:
-      '@bull-board/ui': 5.6.0
-      redis-info: 3.1.0
-    dev: false
-
-  /@bull-board/fastify@5.6.0:
-    resolution: {integrity: sha512-JIGSrNxRko2cc4KTcU1Pp1iROKuAZGi2aLCx87nlgjmdtK51qbBfpDCsNEEc4ZspdddBKvaTUu67/3/n+3J67w==}
-    dependencies:
-      '@bull-board/api': 5.6.0(@bull-board/ui@5.6.0)
-      '@bull-board/ui': 5.6.0
-      '@fastify/static': 6.10.2
-      '@fastify/view': 7.4.1
-      ejs: 3.1.9
-    dev: false
-
-  /@bull-board/ui@5.6.0:
-    resolution: {integrity: sha512-mc9T+kijDX5ZJMJCzeKPk9uLfOtcuefdDLPqWi961EiiNKfkDex+Gh41DAfcyrNjYsAkBsphvgBgcvundHPGIw==}
-    dependencies:
-      '@bull-board/api': 5.6.0(@bull-board/ui@5.6.0)
-    dev: false
-
   /@cspotcode/source-map-support@0.8.1:
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
     engines: {node: '>=12'}
@@ -3800,13 +3803,6 @@ packages:
       glob: 8.1.0
       p-limit: 3.1.0
       readable-stream: 4.4.2
-    dev: false
-
-  /@fastify/view@7.4.1:
-    resolution: {integrity: sha512-ahmRmSbNVM8bIoz0BAFnY0jNigom+xbPQ9Q1ZjmNOtGVVT3nYXCxw2OMkTr9iXwrJ4Le3EtWDHlFkZ2fCQ2hJA==}
-    dependencies:
-      fastify-plugin: 4.5.0
-      hashlru: 2.3.0
     dev: false
 
   /@floating-ui/core@1.3.1:
@@ -7903,7 +7899,7 @@ packages:
       std-env: 3.7.0
       test-exclude: 6.0.0
       v8-to-istanbul: 9.2.0
-      vitest: 1.1.1(@types/node@18.16.9)(jsdom@22.1.0)
+      vitest: 1.1.1(@types/node@18.15.3)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -11360,10 +11356,6 @@ packages:
     dependencies:
       function-bind: 1.1.2
 
-  /hashlru@2.3.0:
-    resolution: {integrity: sha512-0cMsjjIC8I+D3M44pOQdsy0OHXGLVz6Z0beRuufhKa0KfaD2wGwAev6jILzXsd3/vpnNQJmWyZtIILqM1N+n5A==}
-    dev: false
-
   /hasown@2.0.0:
     resolution: {integrity: sha512-vUptKVTpIJhcczKBbgnS+RtcuYMB8+oNzPK2/Hp3hanz8JmpATdmmgLgSaadVREkDm+e2giHwY3ZRkyjSIDDFA==}
     engines: {node: '>= 0.4'}
@@ -12716,11 +12708,6 @@ packages:
     dependencies:
       tslib: 2.6.0
 
-  /lru-cache@10.0.0:
-    resolution: {integrity: sha512-svTf/fzsKHffP42sujkO/Rjs37BCIsQVRCeNYIm9WN8rgT7ffoUnRtZCqU+6BqcSBdv8gwJeTz8knJpgACeQMw==}
-    engines: {node: 14 || >=16.14}
-    dev: true
-
   /lru-cache@10.1.0:
     resolution: {integrity: sha512-/1clY/ui8CzjKFyjdvwPWJUYKiFVXG2I2cY0ssG7h4+hwk+XOIX7ZSG9Q7TW8TW3Kp3BUSqgFWBLgL4PJ+Blag==}
     engines: {node: 14 || >=16.14}
@@ -13657,7 +13644,7 @@ packages:
     resolution: {integrity: sha512-MkhCqzzBEpPvxxQ71Md0b1Kk51W01lrYvlMzSUaIzNsODdd7mqhiimSZlr+VegAz5Z6Vzt9Xg2ttE//XBhH3EQ==}
     engines: {node: '>=16 || 14 >=14.17'}
     dependencies:
-      lru-cache: 10.0.0
+      lru-cache: 10.1.0
       minipass: 7.0.1
     dev: true
 
@@ -14342,12 +14329,6 @@ packages:
   /redis-errors@1.2.0:
     resolution: {integrity: sha512-1qny3OExCf0UvUV/5wpYKf2YwPcOqXzkwKKSmKHiE6ZMQs5heeE/c8eXK+PNllPvmjgAbfnsbpkGZWy8cBpn9w==}
     engines: {node: '>=4'}
-    dev: false
-
-  /redis-info@3.1.0:
-    resolution: {integrity: sha512-ER4L9Sh/vm63DkIE0bkSjxluQlioBiBgf5w1UuldaW/3vPcecdljVDisZhmnCMvsxHNiARTTDDHGg9cGwTfrKg==}
-    dependencies:
-      lodash: 4.17.21
     dev: false
 
   /redis-parser@3.0.0:
