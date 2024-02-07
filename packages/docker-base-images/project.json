@@ -8,7 +8,7 @@
         "cwd": "packages/docker-base-images",
         "commands": [
           "docker buildx build --push --cache-to type=gha,mode=max,scope=base --cache-from type=gha,scope=base -t ghcr.io/joosepalviste/serieslist-base:latest -f Dockerfile.base .",
-          "docker buildx build --push --cache-to type=gha,mode=max,scope=dependencies --cache-from type=gha,scope=dependencies -t ghcr.io/joosepalviste/serieslist-base:latest -f Dockerfile.dependencies ."
+          "docker buildx build --push --cache-to type=gha,mode=max,scope=dependencies --cache-from type=gha,scope=dependencies -t ghcr.io/joosepalviste/serieslist-dependencies:latest -f Dockerfile.dependencies ."
         ],
         "parallel": true
       }
