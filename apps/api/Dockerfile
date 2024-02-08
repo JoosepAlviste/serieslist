@@ -1,16 +1,6 @@
-FROM node:20-alpine AS base
-
-RUN npm i -g pnpm@8
-
-
-FROM base AS dependencies
+FROM ghcr.io/joosepalviste/serieslist-dependencies:latest AS dependencies
 
 WORKDIR /app
-
-# Install dependencies for compiling node-gyp (since there is no pre-built 
-# binary for Alpine)
-# https://stackoverflow.com/a/59538284/7044732
-RUN apk add g++ make python3
 
 COPY . .
 
@@ -25,7 +15,7 @@ RUN rm -rf node_modules && rm -rf pruned && pnpm install
 RUN pnpm exec nx build @serieslist/api
 
 
-FROM base AS production
+FROM ghcr.io/joosepalviste/serieslist-base:latest AS production
 
 WORKDIR /app
 
