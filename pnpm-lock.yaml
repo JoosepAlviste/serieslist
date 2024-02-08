@@ -532,6 +532,9 @@ importers:
 
   packages/core-db-factories:
     dependencies:
+      '@faker-js/faker':
+        specifier: ^8.4.0
+        version: 8.4.0
       '@serieslist/core-db':
         specifier: workspace:*
         version: link:../core-db
@@ -858,6 +861,9 @@ importers:
         specifier: ^3.22.3
         version: 3.22.3
     devDependencies:
+      '@faker-js/faker':
+        specifier: ^8.4.0
+        version: 8.4.0
       '@serieslist/eslint-config-base':
         specifier: workspace:*
         version: link:../eslint-config-base
@@ -3711,6 +3717,10 @@ packages:
     resolution: {integrity: sha512-lxJ9R5ygVm8ZWgYdUweoq5ownDlJ4upvoWmO4eLxBYHdMo+vZ/Rx0EN6MbKWDJOSUGrqJy2Gt+Dyv/VKml0fjg==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: false
+
+  /@faker-js/faker@8.4.0:
+    resolution: {integrity: sha512-htW87352wzUCdX1jyUQocUcmAaFqcR/w082EC8iP/gtkF0K+aKcBp0hR5Arb7dzR8tQ1TrhE9DNa5EbJELm84w==}
+    engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0, npm: '>=6.14.13'}
 
   /@fastify/accept-negotiator@1.1.0:
     resolution: {integrity: sha512-OIHZrb2ImZ7XG85HXOONLcJWGosv7sIvM2ifAPQVhg9Lv7qdmMBNVaai4QTdyuaqbKM5eO6sLSQOYI7wEQeCJQ==}

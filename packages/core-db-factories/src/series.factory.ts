@@ -1,3 +1,4 @@
+import { faker } from '@faker-js/faker'
 import { series } from '@serieslist/core-db'
 import type { Episode, Season, Series } from '@serieslist/core-db'
 import { Factory } from 'fishery'
@@ -5,7 +6,6 @@ import { nanoid } from 'nanoid'
 
 import { createArrayOfLength } from './lib/createArrayOfLength'
 import { db } from './lib/db'
-import { generateRandomInt } from './utils/generateRandomInt'
 
 import { episodeFactory, seasonFactory } from '.'
 
@@ -21,7 +21,7 @@ export const seriesFactory = Factory.define<Series>(
 
     return {
       id: sequence,
-      tmdbId: generateRandomInt(1, 9999999),
+      tmdbId: faker.number.int(9999999),
       imdbId: `tt${nanoid(12)}`,
       title: 'Testing Series',
       startYear: 2020,

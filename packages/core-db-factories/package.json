@@ -21,6 +21,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
+    "@faker-js/faker": "^8.4.0",
     "@serieslist/core-db": "workspace:*",
     "@serieslist/core-logger": "workspace:*",
     "fishery": "^2.2.2",

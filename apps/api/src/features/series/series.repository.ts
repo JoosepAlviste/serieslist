@@ -27,7 +27,6 @@ export const findOne = async ({
     )
     .$dynamic()
   if (episodeId) {
-    // TODO: Does this work?
     query = query
       .innerJoin(season, eq(series.id, season.seriesId))
       .innerJoin(episode, eq(season.id, episode.seasonId))
