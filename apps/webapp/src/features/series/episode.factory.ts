@@ -1,8 +1,8 @@
+import { stringifyDate } from '@serieslist/util-dates'
 import { subDays } from 'date-fns'
 import { Factory } from 'fishery'
 
 import type { Episode } from '#/generated/gql/graphql'
-import { stringifyDate } from '#/utils/dates'
 
 import { seasonFactory } from './season.factory'
 

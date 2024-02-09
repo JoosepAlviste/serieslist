@@ -16,8 +16,8 @@
   },
   "dependencies": {
     "@serieslist/core-db": "workspace:*",
-    "@serieslist/core-logger": "workspace:^",
-    "@serieslist/feature-series-sync": "workspace:^",
+    "@serieslist/core-logger": "workspace:*",
+    "@serieslist/feature-series-sync": "workspace:*",
     "bullmq": "^4.1.0"
   },
   "devDependencies": {

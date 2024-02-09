@@ -14,6 +14,7 @@ import {
   tmdbNotFoundResponseFactory,
   tmdbSeasonFactory,
 } from '@serieslist/feature-tmdb/test'
+import { stringifyDate } from '@serieslist/util-dates'
 import type { LiterallyAnything } from '@serieslist/util-types'
 import { subDays } from 'date-fns'
 import { and, eq } from 'drizzle-orm'
@@ -28,7 +29,6 @@ import {
   tmdbSeriesDetailsFactory,
   tmdbEpisodeFactory,
 } from '../tmdbSeriesDetails.factory'
-import { formatDate } from '../utils/date'
 
 describe('syncSeriesDetails', () => {
   it('does not sync seasons if there are none', async () => {
@@ -187,7 +187,7 @@ describe('syncSeasonsAndEpisodes', () => {
       where: eq(episode.imdbId, s1e1.imdbId!),
     })
     expect(updatedEpisode?.title).toBe('An updated title')
-    expect(formatDate(updatedEpisode!.releasedAt!)).toBe('2023-01-10')
+    expect(stringifyDate(updatedEpisode!.releasedAt!)).toBe('2023-01-10')
   })
 
   it("does not fail when there's nothing to import", async () => {

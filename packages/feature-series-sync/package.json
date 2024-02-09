@@ -18,11 +18,11 @@
     "tsc": "tsc --noEmit"
   },
   "devDependencies": {
-    "@serieslist/core-db-factories": "workspace:^",
+    "@serieslist/core-db-factories": "workspace:*",
     "@serieslist/eslint-config-base": "workspace:*",
     "@serieslist/prettier-config": "workspace:*",
     "@serieslist/typescript-config-base": "workspace:*",
-    "@serieslist/util-types": "workspace:^",
+    "@serieslist/util-types": "workspace:*",
     "@vitest/coverage-v8": "^1.1.1",
     "date-fns": "^2.30.0",
     "fishery": "^2.2.2",
@@ -32,10 +32,11 @@
     "vitest": "^1.1.1"
   },
   "dependencies": {
-    "@serieslist/core-db": "workspace:^",
+    "@serieslist/core-db": "workspace:*",
     "@serieslist/core-graphql-server": "workspace:*",
-    "@serieslist/core-logger": "workspace:^",
-    "@serieslist/feature-tmdb": "workspace:^",
+    "@serieslist/core-logger": "workspace:*",
+    "@serieslist/feature-tmdb": "workspace:*",
+    "@serieslist/util-dates": "workspace:*",
     "drizzle-orm": "^0.29.3",
     "just-index": "^4.2.0",
     "just-unique": "^4.2.0"

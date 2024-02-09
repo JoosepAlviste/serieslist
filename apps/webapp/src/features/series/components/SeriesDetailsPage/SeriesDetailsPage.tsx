@@ -1,13 +1,13 @@
 import { useMutation, useQuery } from '@apollo/client'
 import * as Tabs from '@radix-ui/react-tabs'
 import { Button, Text, Title, Tooltip } from '@serieslist/core-ui'
+import { formatDate } from '@serieslist/util-dates'
 import { isAfter } from 'date-fns'
 import React from 'react'
 
 import { useAuthenticatedUser } from '#/features/auth'
 import { graphql } from '#/generated/gql'
 import { useToast } from '#/hooks'
-import { formatDate } from '#/utils/dates'
 
 import { EpisodeLine } from '../EpisodeLine'
 import { SeriesPoster } from '../SeriesPoster'
