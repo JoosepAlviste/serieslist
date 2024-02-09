@@ -54,14 +54,14 @@ export const findEpisodesBySeasonIds = async ({
   })
 }
 
-export const findEpisodesAndSeasonsForSeries = ({
+export const findEpisodesSeries = ({
   ctx,
   seriesId,
 }: {
   ctx: DBContext
   seriesId: number
 }) => {
-  return episodeRepository.findEpisodesAndSeasonsForSeries({ ctx, seriesId })
+  return episodeRepository.findEpisodesForSeries({ ctx, seriesId })
 }
 
 /**

@@ -1,15 +1,23 @@
 import { episode, season, seenEpisode } from '@serieslist/core-db'
 import type { DBContext } from '@serieslist/core-graphql-server'
 import { head } from '@serieslist/util-arrays'
-import { and, asc, desc, eq, gt, inArray, isNull, lte, or } from 'drizzle-orm'
+import {
+  and,
+  asc,
+  desc,
+  eq,
+  getTableColumns,
+  gt,
+  inArray,
+  isNull,
+  lte,
+  or,
+} from 'drizzle-orm'
 
 /**
- * Return the episode TMDB IDs and season IDs ordered by the season and
- * episode numbers.
- *
- * TODO: This is probably duplicated in the series syncing package?
+ * Return the episodes ordered by the season and episode numbers.
  */
-export const findEpisodesAndSeasonsForSeries = async ({
+export const findEpisodesForSeries = async ({
   ctx,
   seriesId,
 }: {
@@ -17,15 +25,9 @@ export const findEpisodesAndSeasonsForSeries = async ({
   seriesId: number
 }) => {
   return await ctx.db
-    .select({
-      episodeId: episode.id,
-      episodeTmdbId: episode.tmdbId,
-      seasonId: season.id,
-      seasonTmdbId: season.tmdbId,
-      seasonNumber: season.number,
-    })
-    .from(season)
-    .leftJoin(episode, eq(season.id, episode.seasonId))
+    .select(getTableColumns(episode))
+    .from(episode)
+    .leftJoin(season, eq(season.id, episode.seasonId))
     .where(eq(season.seriesId, seriesId))
     .orderBy(season.number, episode.number)
 }

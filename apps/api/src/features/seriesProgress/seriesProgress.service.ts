@@ -4,7 +4,6 @@ import type {
   AuthenticatedContext,
 } from '@serieslist/core-graphql-server'
 import { isTruthy } from '@serieslist/util-arrays'
-import type { NonNullableFields } from '@serieslist/util-types'
 import index from 'just-index'
 
 import * as episodesService from '#/features/series/episodes.service'
@@ -111,22 +110,17 @@ export const markSeriesEpisodesAsSeen = async ({
   ctx: AuthenticatedContext
   seriesId: number
 }) => {
-  const episodes = await episodesService.findEpisodesAndSeasonsForSeries({
+  const episodes = await episodesService.findEpisodesSeries({
     ctx,
     seriesId: seriesId,
   })
 
   await seenEpisodeRepository.createMany({
     ctx,
-    seenEpisodes: episodes
-      .filter(
-        (episode): episode is NonNullableFields<typeof episode, 'episodeId'> =>
-          !!episode.episodeId,
-      )
-      .map((episode) => ({
-        episodeId: episode.episodeId,
-        userId: ctx.currentUser.id,
-      })),
+    seenEpisodes: episodes.map((episode) => ({
+      episodeId: episode.id,
+      userId: ctx.currentUser.id,
+    })),
   })
 
   const lastEpisode = await episodesService.findLastEpisodeOfSeries({
