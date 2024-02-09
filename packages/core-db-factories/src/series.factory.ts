@@ -1,10 +1,10 @@
 import { faker } from '@faker-js/faker'
 import { series } from '@serieslist/core-db'
 import type { Episode, Season, Series } from '@serieslist/core-db'
+import { createArrayOfLength } from '@serieslist/util-arrays'
 import { Factory } from 'fishery'
 import { nanoid } from 'nanoid'
 
-import { createArrayOfLength } from './lib/createArrayOfLength'
 import { db } from './lib/db'
 
 import { episodeFactory, seasonFactory } from '.'

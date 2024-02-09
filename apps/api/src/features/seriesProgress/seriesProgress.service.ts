@@ -3,12 +3,12 @@ import type {
   Context,
   AuthenticatedContext,
 } from '@serieslist/core-graphql-server'
+import { isTruthy } from '@serieslist/util-arrays'
 import type { NonNullableFields } from '@serieslist/util-types'
 import index from 'just-index'
 
 import * as episodesService from '#/features/series/episodes.service'
 import * as seasonService from '#/features/series/season.service'
-import { isTruthy } from '#/utils/isTruthy'
 
 import * as seenEpisodeRepository from './seenEpisode.repository'
 import * as seriesProgressRepository from './seriesProgress.repository'

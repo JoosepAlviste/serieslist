@@ -1,6 +1,7 @@
 import type { InsertSeason, Series } from '@serieslist/core-db'
 import type { DBContext } from '@serieslist/core-graphql-server'
 import { tmdbService } from '@serieslist/feature-tmdb'
+import { isTruthy } from '@serieslist/util-arrays'
 import { addDays, isPast, subDays } from 'date-fns'
 import index from 'just-index'
 import unique from 'just-unique'
@@ -10,7 +11,6 @@ import { log } from './lib/logger'
 import * as seasonRepository from './season.repository'
 import * as seriesRepository from './series.repository'
 import * as seriesProgressRepository from './seriesProgress.repository'
-import { isTruthy } from './utils/isTruthy'
 
 const RE_SYNC_AFTER_DAYS = 7
 

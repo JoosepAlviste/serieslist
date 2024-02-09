@@ -1,8 +1,7 @@
 import { episode, season, seenEpisode } from '@serieslist/core-db'
 import type { DBContext } from '@serieslist/core-graphql-server'
+import { head } from '@serieslist/util-arrays'
 import { and, asc, desc, eq, gt, inArray, isNull, lte, or } from 'drizzle-orm'
-
-import { head } from '#/utils/array'
 
 /**
  * Return the episode TMDB IDs and season IDs ordered by the season and

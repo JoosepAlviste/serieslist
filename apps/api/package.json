@@ -39,6 +39,7 @@
     "@serieslist/core-logger": "workspace:*",
     "@serieslist/feature-series-sync": "workspace:*",
     "@serieslist/feature-tmdb": "workspace:*",
+    "@serieslist/util-arrays": "workspace:*",
     "@serieslist/util-dates": "workspace:*",
     "bcryptjs": "^2.4.3",
     "dataloader": "^2.2.2",

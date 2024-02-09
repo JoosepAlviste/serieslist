@@ -20,10 +20,9 @@ import {
   tmdbSeasonFactory,
   tmdbSeriesDetailsFactory,
 } from '@serieslist/feature-tmdb/test'
+import { createArrayOfLength } from '@serieslist/util-arrays'
 import fastify from 'fastify'
 import omit from 'just-omit'
-
-import { createArrayOfLength } from './lib/createArrayOfLength'
 
 const app = fastify({
   logger: true,

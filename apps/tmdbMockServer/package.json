@@ -13,6 +13,7 @@
   "dependencies": {
     "@serieslist/core-logger": "workspace:*",
     "@serieslist/feature-tmdb": "workspace:*",
+    "@serieslist/util-arrays": "workspace:*",
     "fastify": "^4.18.0",
     "just-omit": "^2.2.0"
   },

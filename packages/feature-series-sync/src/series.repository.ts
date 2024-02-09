@@ -1,9 +1,8 @@
 import type { InsertSeries } from '@serieslist/core-db'
 import { series } from '@serieslist/core-db'
 import type { DBContext } from '@serieslist/core-graphql-server'
+import { head } from '@serieslist/util-arrays'
 import { and, lt, asc, eq } from 'drizzle-orm'
-
-import { head } from './utils/array'
 
 export const findMany = async ({
   ctx,

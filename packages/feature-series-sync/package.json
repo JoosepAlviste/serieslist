@@ -36,6 +36,7 @@
     "@serieslist/core-graphql-server": "workspace:*",
     "@serieslist/core-logger": "workspace:*",
     "@serieslist/feature-tmdb": "workspace:*",
+    "@serieslist/util-arrays": "workspace:*",
     "@serieslist/util-dates": "workspace:*",
     "drizzle-orm": "^0.29.3",
     "just-index": "^4.2.0",

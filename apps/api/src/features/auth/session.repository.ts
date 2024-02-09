@@ -1,9 +1,8 @@
 import type { InsertSession } from '@serieslist/core-db'
 import { session } from '@serieslist/core-db'
 import type { DBContext } from '@serieslist/core-graphql-server'
+import { head } from '@serieslist/util-arrays'
 import { eq } from 'drizzle-orm'
-
-import { head } from '#/utils/array'
 
 export const findOne = async ({
   ctx,
