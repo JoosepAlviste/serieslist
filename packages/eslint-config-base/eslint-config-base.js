@@ -27,7 +27,7 @@ module.exports = {
       },
     },
   },
-  ignorePatterns: ['dist'],
+  ignorePatterns: ['dist', 'coverage'],
   rules: {
     '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
     '@typescript-eslint/consistent-type-imports': [
