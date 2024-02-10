@@ -606,8 +606,8 @@ importers:
         specifier: ^3.19.1
         version: 3.19.1(@pothos/core@3.29.0)(graphql@16.8.1)
       '@pothos/plugin-tracing':
-        specifier: ^0.5.7
-        version: 0.5.7(@pothos/core@3.29.0)(graphql@16.8.1)
+        specifier: ^0.5.8
+        version: 0.5.8(@pothos/core@3.29.0)(graphql@16.8.1)
       '@pothos/plugin-validation':
         specifier: ^3.9.0
         version: 3.9.0(@pothos/core@3.29.0)(graphql@16.8.1)(zod@3.22.3)
@@ -5737,8 +5737,8 @@ packages:
       graphql: 16.8.1
     dev: false
 
-  /@pothos/plugin-tracing@0.5.7(@pothos/core@3.29.0)(graphql@16.8.1):
-    resolution: {integrity: sha512-Sy8yvdFQIn+ffm7C/uYlc2r7xiqbWIFo56Eo7h+JwjBsT2RLvV6dfKUAE0vi4tvAN2Tri1poEneLLsYRPV9SdQ==}
+  /@pothos/plugin-tracing@0.5.8(@pothos/core@3.29.0)(graphql@16.8.1):
+    resolution: {integrity: sha512-18Gv8z9AS76ylGPDTSlRA7vx0ar1gwRUJwyjuI0wCeSkPegKV2TO1nRtlzk57SaRsnPWbFpSxxWyW/F4ECv4XQ==}
     peerDependencies:
       '@pothos/core': '*'
       graphql: '>=15.1.0'
@@ -16509,6 +16509,7 @@ packages:
 
   /workbox-google-analytics@7.0.0:
     resolution: {integrity: sha512-MEYM1JTn/qiC3DbpvP2BVhyIH+dV/5BjHk756u9VbwuAhu0QHyKscTnisQuz21lfRpOwiS9z4XdqeVAKol0bzg==}
+    deprecated: It is not compatible with newer versions of GA starting with v4, as long as you are using GAv3 it should be ok, but the package is not longer being maintained
     dependencies:
       workbox-background-sync: 7.0.0
       workbox-core: 7.0.0
