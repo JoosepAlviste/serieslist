@@ -1,0 +1,32 @@
+{
+  "name": "@serieslist/jobs",
+  "version": "1.0.0",
+  "type": "module",
+  "sideEffects": [
+    "src/**/*.job.ts"
+  ],
+  "scripts": {
+    "build": "rimraf dist && NODE_ENV=production tsx bin/build.ts",
+    "build:docker": "(cd ../.. && docker buildx build --push --cache-to type=gha,mode=max,scope=jobs --cache-from type=gha,scope=jobs -t ghcr.io/joosepalviste/serieslist-jobs:latest -f apps/api/Dockerfile --target production .)",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "start": "NODE_ENV=development tsx watch --clear-screen=false src/main.ts",
+    "start:prod": "NODE_ENV=production node dist/main.js",
+    "tsc": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@serieslist/core-db": "workspace:*",
+    "@serieslist/core-logger": "workspace:*",
+    "@serieslist/feature-series-sync": "workspace:*",
+    "bullmq": "^4.1.0"
+  },
+  "devDependencies": {
+    "@serieslist/core-esbuild": "workspace:*",
+    "@serieslist/eslint-config-base": "workspace:*",
+    "@serieslist/prettier-config": "workspace:*",
+    "@serieslist/typescript-config-base": "workspace:*",
+    "rimraf": "^4.4.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3"
+  }
+}

@@ -1,6 +1,5 @@
+import { stringifyDate } from '@serieslist/util-dates'
 import type { NotWorthIt } from '@serieslist/util-types'
-
-import { formatDate } from './date'
 
 /**
  * A utility like `exposeString` and others from Pothos, but for `Date` fields.
@@ -21,5 +20,5 @@ export const exposeDate =
       return null as NotWorthIt
     }
 
-    return formatDate(val)
+    return stringifyDate(val)
   }

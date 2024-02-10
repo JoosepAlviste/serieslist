@@ -1,9 +1,8 @@
 import { episode, season, series, userSeriesStatus } from '@serieslist/core-db'
 import type { InsertSeries, UserSeriesStatusStatus } from '@serieslist/core-db'
-import type { DBContext, Context } from '@serieslist/core-graphql-server'
-import { and, asc, desc, eq, getTableColumns, inArray, lt } from 'drizzle-orm'
-
-import { head } from '#/utils/array'
+import type { DBContext } from '@serieslist/core-graphql-server'
+import { head } from '@serieslist/util-arrays'
+import { and, eq, getTableColumns, inArray } from 'drizzle-orm'
 
 export const findOne = async ({
   ctx,
@@ -11,7 +10,7 @@ export const findOne = async ({
   imdbId,
   episodeId,
 }: {
-  ctx: Context
+  ctx: DBContext
   seriesId?: number
   imdbId?: string
   episodeId?: number
@@ -27,7 +26,6 @@ export const findOne = async ({
     )
     .$dynamic()
   if (episodeId) {
-    // TODO: Does this work?
     query = query
       .innerJoin(season, eq(series.id, season.seriesId))
       .innerJoin(episode, eq(season.id, episode.seasonId))
@@ -41,34 +39,20 @@ export const findMany = async ({
   ctx,
   tmdbIds,
   seriesIds,
-  syncedAtBefore,
-  orderBySyncedAt,
 }: {
   ctx: DBContext
   tmdbIds?: number[]
   seriesIds?: number[]
-  syncedAtBefore?: Date
-  orderBySyncedAt?: 'asc' | 'desc'
 }) => {
-  let query = ctx.db
+  return await ctx.db
     .select()
     .from(series)
     .where(
       and(
         tmdbIds ? inArray(series.tmdbId, tmdbIds) : undefined,
         seriesIds ? inArray(series.id, seriesIds) : undefined,
-        syncedAtBefore ? lt(series.syncedAt, syncedAtBefore) : undefined,
       ),
     )
-    .$dynamic()
-
-  if (orderBySyncedAt === 'asc') {
-    query = query.orderBy(asc(series.syncedAt))
-  } else if (orderBySyncedAt === 'desc') {
-    query = query.orderBy(desc(series.syncedAt))
-  }
-
-  return await query
 }
 
 export const findManyForUser = async ({
@@ -76,7 +60,7 @@ export const findManyForUser = async ({
   userId,
   status,
 }: {
-  ctx: Context
+  ctx: DBContext
   userId: number
   status?: UserSeriesStatusStatus
 }) => {
@@ -97,35 +81,8 @@ export const createMany = async ({
   ctx,
   series: seriesArgs,
 }: {
-  ctx: Context
+  ctx: DBContext
   series: InsertSeries[]
 }) => {
   return await ctx.db.insert(series).values(seriesArgs).returning()
-}
-
-export const updateOneByTMDBId = async ({
-  ctx,
-  tmdbId,
-  series: seriesArgs,
-}: {
-  ctx: DBContext
-  tmdbId: number
-  series: Partial<InsertSeries>
-}) => {
-  return await ctx.db
-    .update(series)
-    .set(seriesArgs)
-    .where(eq(series.tmdbId, tmdbId))
-    .returning()
-    .then(head)
-}
-
-export const deleteOne = async ({
-  ctx,
-  tmdbId,
-}: {
-  ctx: DBContext
-  tmdbId: number
-}) => {
-  return await ctx.db.delete(series).where(eq(series.tmdbId, tmdbId))
 }

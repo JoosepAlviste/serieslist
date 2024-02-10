@@ -2,15 +2,13 @@ import { seriesProgress } from '@serieslist/core-db'
 import {
   seriesProgressFactory,
   seriesFactory,
+  createSeriesWithEpisodesAndSeasons,
+  createSeenEpisodesForUser,
 } from '@serieslist/core-db-factories'
+import { createContext } from '@serieslist/core-graphql-server/test'
 import { and, eq } from 'drizzle-orm'
 
 import { db } from '#/lib/db'
-import {
-  createContext,
-  createSeenEpisodesForUser,
-  createSeriesWithEpisodesAndSeasons,
-} from '#/test/testUtils'
 
 import {
   recalculateSeriesProgress,

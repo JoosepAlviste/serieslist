@@ -1,0 +1,17 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "@serieslist/docker-base-images",
+  "targets": {
+    "build:docker": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "packages/docker-base-images",
+        "commands": [
+          "docker buildx build --push --cache-to type=gha,mode=max,scope=base --cache-from type=gha,scope=base -t ghcr.io/joosepalviste/serieslist-base:latest -f Dockerfile.base --platform=linux/arm64,linux/amd64 .",
+          "docker buildx build --push --cache-to type=gha,mode=max,scope=dependencies --cache-from type=gha,scope=dependencies -t ghcr.io/joosepalviste/serieslist-dependencies:latest -f Dockerfile.dependencies --platform=linux/arm64,linux/amd64 ."
+        ],
+        "parallel": true
+      }
+    }
+  }
+}

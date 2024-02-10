@@ -4,12 +4,11 @@
   "type": "module",
   "sideEffects": [
     "./src/**/*.schema.ts",
-    "./src/lib/initSentry.ts",
-    "./src/**/*.job.ts"
+    "./src/lib/initSentry.ts"
   ],
   "scripts": {
     "build": "rimraf dist && NODE_ENV=production tsx bin/build.ts",
-    "build:docker": "(cd ../.. && docker buildx build --push --cache-to type=gha,mode=max,scope=webapp --cache-from type=gha,scope=webapp -t ghcr.io/joosepalviste/serieslist-api:latest -f apps/api/Dockerfile --target production .)",
+    "build:docker": "(cd ../.. && docker buildx build --push --cache-to type=gha,mode=max,scope=api --cache-from type=gha,scope=api -t ghcr.io/joosepalviste/serieslist-api:latest -f apps/api/Dockerfile --target production .)",
     "build:e2e": "(cd ../.. && nx run @serieslist/api:build)",
     "clear-test-db": "dotenv -e ../../.env.test tsx bin/clearDatabase.ts",
     "codegen": "DOTENV_CONFIG_PATH='../../.env' graphql-codegen-esm -r dotenv/config",
@@ -21,8 +20,6 @@
     "migrate:test": "dotenv -e ../../.env.test tsx bin/migrate.ts",
     "start": "NODE_ENV=development tsx watch --clear-screen=false src/main.ts",
     "start:e2e": "NODE_ENV=test pnpm start:prod",
-    "start:jobs": "NODE_ENV=development tsx watch --clear-screen=false src/mainJobs.ts",
-    "start:jobs:prod": "NODE_ENV=production node dist/src/mainJobs.js",
     "start:prod": "NODE_ENV=production node dist/src/main.js",
     "test": "dotenv -e ../../.env.test vitest run",
     "test:coverage": "dotenv -e ../../.env.test vitest run -- --coverage",
@@ -30,8 +27,6 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
-    "@bull-board/api": "^5.6.0",
-    "@bull-board/fastify": "^5.6.0",
     "@envelop/sentry": "^6.0.0",
     "@escape.tech/graphql-armor": "^2.2.0",
     "@fastify/cookie": "^8.3.0",
@@ -42,9 +37,11 @@
     "@serieslist/core-db": "workspace:*",
     "@serieslist/core-graphql-server": "workspace:*",
     "@serieslist/core-logger": "workspace:*",
+    "@serieslist/feature-series-sync": "workspace:*",
     "@serieslist/feature-tmdb": "workspace:*",
+    "@serieslist/util-arrays": "workspace:*",
+    "@serieslist/util-dates": "workspace:*",
     "bcryptjs": "^2.4.3",
-    "bullmq": "^4.1.0",
     "dataloader": "^2.2.2",
     "date-fns": "^2.30.0",
     "dotenv": "^16.0.3",
@@ -60,7 +57,6 @@
     "just-group-by": "^2.2.0",
     "just-index": "^4.2.0",
     "just-omit": "^2.2.0",
-    "just-unique": "^4.2.0",
     "nanoid": "^4.0.2",
     "node-fetch": "^3.3.1",
     "pg": "^8.10.0",

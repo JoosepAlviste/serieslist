@@ -14,8 +14,9 @@ export default defineConfig({
       all: true,
       include: ['src/**/*.ts'],
       exclude: [
+        'src/test/testsSetup.ts',
+        'src/test/testsGlobalSetup.ts',
         'src/generated',
-        'src/migrations',
         'src/**/__tests__',
         'src/**/*.factory.ts',
       ],

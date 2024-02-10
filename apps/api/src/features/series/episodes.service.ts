@@ -1,5 +1,5 @@
 import type { Episode } from '@serieslist/core-db'
-import type { DBContext, Context } from '@serieslist/core-graphql-server'
+import type { DBContext } from '@serieslist/core-graphql-server'
 import index from 'just-index'
 
 import { groupEntitiesByKeyToNestedArray } from '#/utils/groupEntitiesByKeyToNestedArray'
@@ -10,7 +10,7 @@ export const findOne = ({
   ctx,
   episodeId,
 }: {
-  ctx: Context
+  ctx: DBContext
   episodeId: number
 }) => {
   return episodeRepository.findOne({ ctx, episodeId })
@@ -22,7 +22,7 @@ export const findMany = ({
   episodeIds,
   releasedBefore,
 }: {
-  ctx: Context
+  ctx: DBContext
   seasonIds?: number[]
   episodeIds?: number[]
   releasedBefore?: Date
@@ -39,7 +39,7 @@ export const findEpisodesBySeasonIds = async ({
   ctx,
   seasonIds,
 }: {
-  ctx: Context
+  ctx: DBContext
   seasonIds: number[]
 }) => {
   const allEpisodes = await episodeRepository.findMany({
@@ -54,14 +54,14 @@ export const findEpisodesBySeasonIds = async ({
   })
 }
 
-export const findEpisodesAndSeasonsForSeries = ({
+export const findEpisodesSeries = ({
   ctx,
   seriesId,
 }: {
-  ctx: Context
+  ctx: DBContext
   seriesId: number
 }) => {
-  return episodeRepository.findEpisodesAndSeasonsForSeries({ ctx, seriesId })
+  return episodeRepository.findEpisodesForSeries({ ctx, seriesId })
 }
 
 /**
@@ -72,7 +72,7 @@ export const findOneWithSeasonAndSeriesInfo = ({
   ctx,
   episodeId,
 }: {
-  ctx: Context
+  ctx: DBContext
   episodeId: number
 }) => {
   return episodeRepository.findOneWithSeasonAndSeriesInfo({ ctx, episodeId })
@@ -84,7 +84,7 @@ export const findNextEpisode = async ({
   seasonNumber,
   episodeNumber,
 }: {
-  ctx: Context
+  ctx: DBContext
   seriesId: number
   seasonNumber: number
   episodeNumber: number
@@ -103,7 +103,7 @@ export const findPreviousEpisode = async ({
   seasonNumber,
   seriesId,
 }: {
-  ctx: Context
+  ctx: DBContext
   episode: Episode
   seasonNumber: number
   seriesId: number
@@ -134,7 +134,7 @@ export const findLastEpisodeOfSeries = ({
   ctx,
   seriesId,
 }: {
-  ctx: Context
+  ctx: DBContext
   seriesId: number
 }) => {
   return episodeRepository.findLastEpisodeOfSeries({
@@ -148,7 +148,7 @@ export const findFirstNotSeenEpisodeInSeriesForUser = async ({
   seriesId,
   userId,
 }: {
-  ctx: Context
+  ctx: DBContext
   seriesId: number
   userId: number
 }) => {
@@ -163,7 +163,7 @@ export const findFirstEpisodesForSeries = async ({
   ctx,
   seriesIds,
 }: {
-  ctx: Context
+  ctx: DBContext
   seriesIds: number[]
 }) => {
   const episodes = await episodeRepository.findManyByNumberForManySeries({
@@ -177,18 +177,4 @@ export const findFirstEpisodesForSeries = async ({
     episodes.map((e) => ({ ...e.episode, seriesId: e.season.seriesId })),
     'seriesId',
   )
-}
-
-export const deleteMany = async ({
-  ctx,
-  episodeIds,
-}: {
-  ctx: DBContext
-  episodeIds: number[]
-}) => {
-  if (!episodeIds.length) {
-    return
-  }
-
-  return episodeRepository.deleteMany({ ctx, episodeIds })
 }

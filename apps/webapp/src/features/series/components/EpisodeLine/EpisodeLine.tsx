@@ -1,12 +1,12 @@
 import { useMutation } from '@apollo/client'
 import { Button, Text } from '@serieslist/core-ui'
+import { formatDate } from '@serieslist/util-dates'
 import { isFuture } from 'date-fns'
 import React from 'react'
 
 import { useAuthenticatedUser } from '#/features/auth'
 import { type FragmentType, graphql, useFragment } from '#/generated/gql'
 import { useToast } from '#/hooks'
-import { formatDate } from '#/utils/dates'
 
 import { formatEpisodeNumber } from '../../utils/formatEpisodeNumber'
 

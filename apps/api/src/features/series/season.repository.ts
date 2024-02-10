@@ -1,6 +1,5 @@
 import { season } from '@serieslist/core-db'
-import type { InsertSeason } from '@serieslist/core-db'
-import type { DBContext, Context } from '@serieslist/core-graphql-server'
+import type { DBContext } from '@serieslist/core-graphql-server'
 import { and, eq, inArray } from 'drizzle-orm'
 
 export const findOne = async ({
@@ -20,7 +19,7 @@ export const findMany = async ({
   seriesIds,
   seasonIds,
 }: {
-  ctx: Context
+  ctx: DBContext
   seriesIds?: number[]
   seasonIds?: number[]
 }) => {
@@ -34,20 +33,6 @@ export const findMany = async ({
         seasonIds ? inArray(season.id, seasonIds) : undefined,
       ),
     )
-}
-
-export const createMany = async ({
-  ctx,
-  seasons,
-}: {
-  ctx: DBContext
-  seasons: InsertSeason[]
-}) => {
-  return await ctx.db
-    .insert(season)
-    .values(seasons)
-    .returning()
-    .onConflictDoNothing({ target: season.tmdbId })
 }
 
 export const deleteOne = async ({

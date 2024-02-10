@@ -20,9 +20,9 @@ services:
       caddy: api.serieslist.joosep.xyz
       caddy.reverse_proxy: "{{upstreams ${API_PORT}}}"
 
-  api_jobs:
-    image: ghcr.io/joosepalviste/serieslist-api:latest
-    command: pnpm start:jobs:prod
+  jobs:
+    image: ghcr.io/joosepalviste/serieslist-jobs:latest
+    command: pnpm start:prod
     env_file:
       - .env
       - .env.docker

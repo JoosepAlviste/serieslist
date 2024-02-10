@@ -12,6 +12,7 @@ import {
   seriesFactory,
   userSeriesStatusFactory,
   userFactory,
+  createSeriesWithEpisodesAndSeasons,
 } from '@serieslist/core-db-factories'
 import {
   tmdbSeasonFactory,
@@ -21,6 +22,7 @@ import {
   mockTMDBSearchRequest,
   mockTMDBSeasonRequest,
 } from '@serieslist/feature-tmdb/test'
+import { parseDate } from '@serieslist/util-dates'
 import type { NotWorthIt } from '@serieslist/util-types'
 import { subDays } from 'date-fns'
 import { and, eq } from 'drizzle-orm'
@@ -29,13 +31,7 @@ import { nanoid } from 'nanoid'
 import { graphql } from '#/generated/gql'
 import type { SeriesUpdateStatusInput } from '#/generated/gql/graphql'
 import { db } from '#/lib/db'
-import {
-  checkErrors,
-  createSeriesWithEpisodesAndSeasons,
-  executeOperation,
-  expectErrors,
-} from '#/test/testUtils'
-import { parseDate } from '#/utils/date'
+import { checkErrors, executeOperation, expectErrors } from '#/test/testUtils'
 
 describe('features/series/series.schema', () => {
   describe('seriesSearch query', () => {

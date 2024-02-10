@@ -1,45 +1,11 @@
 import type { TypedDocumentNode } from '@graphql-typed-document-node/core'
-import type { User, Episode, Season, Series } from '@serieslist/core-db'
-import {
-  episodeFactory,
-  seasonFactory,
-  seriesFactory,
-  seenEpisodeFactory,
-  userFactory,
-} from '@serieslist/core-db-factories'
-import type {
-  AuthenticatedContext,
-  Context,
-} from '@serieslist/core-graphql-server'
-import type { NotWorthIt } from '@serieslist/util-types'
+import { userFactory } from '@serieslist/core-db-factories'
+import type { Context } from '@serieslist/core-graphql-server'
+import { createContext } from '@serieslist/core-graphql-server/test'
 import { type ExecutionResult, print } from 'graphql'
-import { createYoga, type YogaInitialContext } from 'graphql-yoga'
+import { createYoga } from 'graphql-yoga'
 
-import { createArrayOfLength } from '#/lib/createArrayOfLength'
-import { db } from '#/lib/db'
 import { schema } from '#/schema'
-
-export const createContext = <T extends Context['currentUser']>({
-  ctx = {},
-  currentUser,
-}: {
-  ctx?: Partial<YogaInitialContext>
-  currentUser?: T
-} = {}): T extends undefined ? Context : AuthenticatedContext =>
-  ({
-    params: {},
-    // We can't really create the Fastify request and reply objects on their
-    // own, so we only mock the fields that we need from them
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    req: null as NotWorthIt,
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    reply: {
-      setCookie: vi.fn(),
-    } as NotWorthIt,
-    ...ctx,
-    db,
-    currentUser,
-  } as T extends undefined ? Context : AuthenticatedContext)
 
 /**
  * A helper for making fully typed GraphQL requests in tests.
@@ -159,69 +125,4 @@ export const expectErrors = <
   }
 
   return result as Extract<T, { __typename: ErrorKey }>
-}
-
-/**
- * Create series, seasons, and episodes in the database for testing.
- * @param seasonEpisodesCount A list of seasons with the number of episodes
- * to create.
- */
-export const createSeriesWithEpisodesAndSeasons = async (
-  seasonEpisodesCount: number[],
-): Promise<{
-  series: Series
-  seasons: {
-    season: Season
-    episodes: Episode[]
-  }[]
-}> => {
-  const series = await seriesFactory.create()
-
-  const seasons = await Promise.all(
-    seasonEpisodesCount.map(async (episodesCount, seasonIndex) => {
-      const season = await seasonFactory.create({
-        seriesId: series.id,
-        number: seasonIndex + 1,
-      })
-      const episodes = await Promise.all(
-        createArrayOfLength(episodesCount).map((_, index) => {
-          return episodeFactory.create({
-            seasonId: season.id,
-            number: index + 1,
-          })
-        }),
-      )
-
-      return {
-        season,
-        episodes,
-      }
-    }),
-  )
-
-  return { series, seasons }
-}
-
-/**
- * A helper to create multiple seen episodes in the db for the user.
- */
-export const createSeenEpisodesForUser = async (
-  episodeIds: number[],
-  user?: User,
-) => {
-  const usedUser = user ?? (await userFactory.create())
-
-  const seenEpisodes = await Promise.all(
-    episodeIds.map((episodeId) =>
-      seenEpisodeFactory.create({
-        episodeId: episodeId,
-        userId: usedUser.id,
-      }),
-    ),
-  )
-
-  return {
-    user: usedUser,
-    seenEpisodes,
-  }
 }

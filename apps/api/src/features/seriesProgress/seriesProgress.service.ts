@@ -1,17 +1,13 @@
-import type { InsertSeriesProgress } from '@serieslist/core-db'
 import { NotFoundError } from '@serieslist/core-graphql-server'
 import type {
   Context,
   AuthenticatedContext,
-  DBContext,
 } from '@serieslist/core-graphql-server'
-import type { NonNullableFields } from '@serieslist/util-types'
+import { isTruthy } from '@serieslist/util-arrays'
 import index from 'just-index'
 
-// TODO: Importing these from #/features/series causes a circular import error
 import * as episodesService from '#/features/series/episodes.service'
 import * as seasonService from '#/features/series/season.service'
-import { isTruthy } from '#/utils/isTruthy'
 
 import * as seenEpisodeRepository from './seenEpisode.repository'
 import * as seriesProgressRepository from './seriesProgress.repository'
@@ -114,22 +110,17 @@ export const markSeriesEpisodesAsSeen = async ({
   ctx: AuthenticatedContext
   seriesId: number
 }) => {
-  const episodes = await episodesService.findEpisodesAndSeasonsForSeries({
+  const episodes = await episodesService.findEpisodesSeries({
     ctx,
     seriesId: seriesId,
   })
 
   await seenEpisodeRepository.createMany({
     ctx,
-    seenEpisodes: episodes
-      .filter(
-        (episode): episode is NonNullableFields<typeof episode, 'episodeId'> =>
-          !!episode.episodeId,
-      )
-      .map((episode) => ({
-        episodeId: episode.episodeId,
-        userId: ctx.currentUser.id,
-      })),
+    seenEpisodes: episodes.map((episode) => ({
+      episodeId: episode.id,
+      userId: ctx.currentUser.id,
+    })),
   })
 
   const lastEpisode = await episodesService.findLastEpisodeOfSeries({
@@ -310,24 +301,5 @@ export const findNextEpisodesForSeries = async ({
       ? episodesByIds[progress.nextEpisodeId]
       : // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         firstEpisodes[seriesId] ?? null
-  })
-}
-
-export const updateMany = ({
-  ctx,
-  seriesId,
-  nextEpisodeId,
-  seriesProgress,
-}: {
-  ctx: DBContext
-  seriesId: number
-  nextEpisodeId: number | null
-  seriesProgress: Partial<InsertSeriesProgress>
-}) => {
-  return seriesProgressRepository.updateMany({
-    ctx,
-    seriesId,
-    nextEpisodeId,
-    seriesProgress,
   })
 }

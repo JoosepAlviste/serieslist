@@ -1,26 +1,23 @@
-import type { InsertEpisode } from '@serieslist/core-db'
 import { episode, season, seenEpisode } from '@serieslist/core-db'
 import type { DBContext } from '@serieslist/core-graphql-server'
+import { head } from '@serieslist/util-arrays'
 import {
   and,
   asc,
   desc,
   eq,
+  getTableColumns,
   gt,
   inArray,
   isNull,
   lte,
   or,
-  sql,
 } from 'drizzle-orm'
 
-import { head } from '#/utils/array'
-
 /**
- * Return the episode TMDB IDs and season IDs ordered by the season and
- * episode numbers.
+ * Return the episodes ordered by the season and episode numbers.
  */
-export const findEpisodesAndSeasonsForSeries = async ({
+export const findEpisodesForSeries = async ({
   ctx,
   seriesId,
 }: {
@@ -28,15 +25,9 @@ export const findEpisodesAndSeasonsForSeries = async ({
   seriesId: number
 }) => {
   return await ctx.db
-    .select({
-      episodeId: episode.id,
-      episodeTmdbId: episode.tmdbId,
-      seasonId: season.id,
-      seasonTmdbId: season.tmdbId,
-      seasonNumber: season.number,
-    })
-    .from(season)
-    .leftJoin(episode, eq(season.id, episode.seasonId))
+    .select(getTableColumns(episode))
+    .from(episode)
+    .leftJoin(season, eq(season.id, episode.seasonId))
     .where(eq(season.seriesId, seriesId))
     .orderBy(season.number, episode.number)
 }
@@ -222,28 +213,6 @@ export const findMany = async ({
         releasedBefore ? lte(episode.releasedAt, releasedBefore) : undefined,
       ),
     )
-}
-
-export const createOrUpdateMany = async ({
-  ctx,
-  episodes,
-}: {
-  ctx: DBContext
-  episodes: InsertEpisode[]
-}) => {
-  return await ctx.db
-    .insert(episode)
-    .values(episodes)
-    .returning()
-    .onConflictDoUpdate({
-      target: episode.tmdbId,
-      set: {
-        title: sql`excluded.title`,
-        number: sql`excluded.number`,
-        imdbRating: sql`excluded.imdb_rating`,
-        releasedAt: sql`excluded.released_at`,
-      },
-    })
 }
 
 export const deleteMany = async ({

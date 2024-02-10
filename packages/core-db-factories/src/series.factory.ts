@@ -1,9 +1,13 @@
-import { series, type Series } from '@serieslist/core-db'
+import { faker } from '@faker-js/faker'
+import { series } from '@serieslist/core-db'
+import type { Episode, Season, Series } from '@serieslist/core-db'
+import { createArrayOfLength } from '@serieslist/util-arrays'
 import { Factory } from 'fishery'
 import { nanoid } from 'nanoid'
 
 import { db } from './lib/db'
-import { generateRandomInt } from './utils/generateRandomInt'
+
+import { episodeFactory, seasonFactory } from '.'
 
 export const seriesFactory = Factory.define<Series>(
   ({ sequence, onCreate }) => {
@@ -17,7 +21,7 @@ export const seriesFactory = Factory.define<Series>(
 
     return {
       id: sequence,
-      tmdbId: generateRandomInt(1, 9999999),
+      tmdbId: faker.number.int(9999999),
       imdbId: `tt${nanoid(12)}`,
       title: 'Testing Series',
       startYear: 2020,
@@ -32,3 +36,44 @@ export const seriesFactory = Factory.define<Series>(
     }
   },
 )
+
+/**
+ * Create series, seasons, and episodes in the database for testing.
+ * @param seasonEpisodesCount A list of seasons with the number of episodes
+ * to create.
+ */
+export const createSeriesWithEpisodesAndSeasons = async (
+  seasonEpisodesCount: number[],
+): Promise<{
+  series: Series
+  seasons: {
+    season: Season
+    episodes: Episode[]
+  }[]
+}> => {
+  const series = await seriesFactory.create()
+
+  const seasons = await Promise.all(
+    seasonEpisodesCount.map(async (episodesCount, seasonIndex) => {
+      const season = await seasonFactory.create({
+        seriesId: series.id,
+        number: seasonIndex + 1,
+      })
+      const episodes = await Promise.all(
+        createArrayOfLength(episodesCount).map((_, index) => {
+          return episodeFactory.create({
+            seasonId: season.id,
+            number: index + 1,
+          })
+        }),
+      )
+
+      return {
+        season,
+        episodes,
+      }
+    }),
+  )
+
+  return { series, seasons }
+}

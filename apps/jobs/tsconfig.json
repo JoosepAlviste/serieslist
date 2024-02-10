@@ -1,0 +1,7 @@
+{
+  "extends": "@serieslist/typescript-config-base",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "outDir": "dist"
+  }
+}

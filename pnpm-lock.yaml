@@ -26,12 +26,6 @@ importers:
 
   apps/api:
     dependencies:
-      '@bull-board/api':
-        specifier: ^5.6.0
-        version: 5.6.0(@bull-board/ui@5.6.0)
-      '@bull-board/fastify':
-        specifier: ^5.6.0
-        version: 5.6.0
       '@envelop/sentry':
         specifier: ^6.0.0
         version: 6.0.0(@envelop/core@4.0.0)(@sentry/node@7.56.0)(graphql@16.8.1)
@@ -62,15 +56,21 @@ importers:
       '@serieslist/core-logger':
         specifier: workspace:*
         version: link:../../packages/core-logger
+      '@serieslist/feature-series-sync':
+        specifier: workspace:*
+        version: link:../../packages/feature-series-sync
       '@serieslist/feature-tmdb':
         specifier: workspace:*
         version: link:../../packages/feature-tmdb
+      '@serieslist/util-arrays':
+        specifier: workspace:*
+        version: link:../../packages/util-arrays
+      '@serieslist/util-dates':
+        specifier: workspace:*
+        version: link:../../packages/util-dates
       bcryptjs:
         specifier: ^2.4.3
         version: 2.4.3
-      bullmq:
-        specifier: ^4.1.0
-        version: 4.1.0
       dataloader:
         specifier: ^2.2.2
         version: 2.2.2
@@ -116,9 +116,6 @@ importers:
       just-omit:
         specifier: ^2.2.0
         version: 2.2.0
-      just-unique:
-        specifier: ^4.2.0
-        version: 4.2.0
       nanoid:
         specifier: ^4.0.2
         version: 4.0.2
@@ -223,6 +220,43 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
 
+  apps/jobs:
+    dependencies:
+      '@serieslist/core-db':
+        specifier: workspace:*
+        version: link:../../packages/core-db
+      '@serieslist/core-logger':
+        specifier: workspace:*
+        version: link:../../packages/core-logger
+      '@serieslist/feature-series-sync':
+        specifier: workspace:*
+        version: link:../../packages/feature-series-sync
+      bullmq:
+        specifier: ^4.1.0
+        version: 4.1.0
+    devDependencies:
+      '@serieslist/core-esbuild':
+        specifier: workspace:*
+        version: link:../../packages/core-esbuild
+      '@serieslist/eslint-config-base':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config-base
+      '@serieslist/prettier-config':
+        specifier: workspace:*
+        version: link:../../packages/prettier-config
+      '@serieslist/typescript-config-base':
+        specifier: workspace:*
+        version: link:../../packages/typescript-config-base
+      rimraf:
+        specifier: ^4.4.0
+        version: 4.4.0
+      tsx:
+        specifier: ^4.7.0
+        version: 4.7.0
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
+
   apps/tmdbMockServer:
     dependencies:
       '@serieslist/core-logger':
@@ -231,6 +265,9 @@ importers:
       '@serieslist/feature-tmdb':
         specifier: workspace:*
         version: link:../../packages/feature-tmdb
+      '@serieslist/util-arrays':
+        specifier: workspace:*
+        version: link:../../packages/util-arrays
       fastify:
         specifier: ^4.18.0
         version: 4.18.0
@@ -313,12 +350,15 @@ importers:
       '@serieslist/core-ui':
         specifier: workspace:*
         version: link:../../packages/core-ui
+      '@serieslist/util-dates':
+        specifier: workspace:*
+        version: link:../../packages/util-dates
       '@vanilla-extract/css':
         specifier: ^1.14.0
         version: 1.14.0
       '@vitejs/plugin-react':
         specifier: ^4.2.1
-        version: 4.2.1(vite@5.0.10)
+        version: 4.2.1(vite@5.0.12)
       classnames:
         specifier: ^2.3.2
         version: 2.3.2
@@ -366,10 +406,10 @@ importers:
         version: 4.4.5(react-dom@18.2.0)(react@18.2.0)
       vike:
         specifier: ^0.4.142
-        version: 0.4.142(vite@5.0.10)
+        version: 0.4.142(vite@5.0.12)
       vite-plugin-svgr:
         specifier: ^4.2.0
-        version: 4.2.0(rollup@2.79.1)(vite@5.0.10)
+        version: 4.2.0(rollup@2.79.1)(vite@5.0.12)
       zod:
         specifier: ^3.22.3
         version: 3.22.3
@@ -424,7 +464,7 @@ importers:
         version: 4.4.6
       '@vanilla-extract/vite-plugin':
         specifier: ^3.9.3
-        version: 3.9.3(@types/node@18.16.9)(vite@5.0.10)
+        version: 3.9.3(@types/node@18.16.9)(vite@5.0.12)
       '@vitest/coverage-v8':
         specifier: ^1.1.1
         version: 1.1.1(vitest@1.1.1)
@@ -453,11 +493,11 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
       vite:
-        specifier: ^5.0.10
-        version: 5.0.10(@types/node@18.16.9)
+        specifier: ^5.0.12
+        version: 5.0.12(@types/node@18.16.9)
       vite-plugin-pwa:
         specifier: ^0.17.4
-        version: 0.17.4(vite@5.0.10)(workbox-build@7.0.0)(workbox-window@7.0.0)
+        version: 0.17.4(vite@5.0.12)(workbox-build@7.0.0)(workbox-window@7.0.0)
       vitest:
         specifier: ^1.1.1
         version: 1.1.1(@types/node@18.16.9)(jsdom@22.1.0)
@@ -504,12 +544,18 @@ importers:
 
   packages/core-db-factories:
     dependencies:
+      '@faker-js/faker':
+        specifier: ^8.4.0
+        version: 8.4.0
       '@serieslist/core-db':
         specifier: workspace:*
         version: link:../core-db
       '@serieslist/core-logger':
         specifier: workspace:*
         version: link:../core-logger
+      '@serieslist/util-arrays':
+        specifier: workspace:*
+        version: link:../util-arrays
       fishery:
         specifier: ^2.2.2
         version: 2.2.2
@@ -587,9 +633,15 @@ importers:
       '@serieslist/typescript-config-base':
         specifier: workspace:*
         version: link:../typescript-config-base
+      '@serieslist/util-types':
+        specifier: workspace:*
+        version: link:../util-types
       typescript:
         specifier: ^5.3.3
         version: 5.3.3
+      vitest:
+        specifier: ^1.1.1
+        version: 1.1.1(@types/node@18.16.9)(jsdom@22.1.0)
 
   packages/core-logger:
     dependencies:
@@ -669,7 +721,7 @@ importers:
         version: 18.0.8
       '@vanilla-extract/vite-plugin':
         specifier: ^3.9.3
-        version: 3.9.3(@types/node@18.16.9)(vite@5.0.10)
+        version: 3.9.3(@types/node@18.16.9)(vite@5.0.12)
       '@vitest/coverage-v8':
         specifier: ^1.1.1
         version: 1.1.1(vitest@1.1.1)
@@ -748,6 +800,73 @@ importers:
         specifier: workspace:*
         version: link:../prettier-config
 
+  packages/feature-series-sync:
+    dependencies:
+      '@serieslist/core-db':
+        specifier: workspace:*
+        version: link:../core-db
+      '@serieslist/core-graphql-server':
+        specifier: workspace:*
+        version: link:../core-graphql-server
+      '@serieslist/core-logger':
+        specifier: workspace:*
+        version: link:../core-logger
+      '@serieslist/feature-tmdb':
+        specifier: workspace:*
+        version: link:../feature-tmdb
+      '@serieslist/util-arrays':
+        specifier: workspace:*
+        version: link:../util-arrays
+      '@serieslist/util-dates':
+        specifier: workspace:*
+        version: link:../util-dates
+      drizzle-orm:
+        specifier: ^0.29.3
+        version: 0.29.3(@types/pg@8.6.6)(pg@8.10.0)
+      just-index:
+        specifier: ^4.2.0
+        version: 4.2.0
+      just-unique:
+        specifier: ^4.2.0
+        version: 4.2.0
+    devDependencies:
+      '@serieslist/core-db-factories':
+        specifier: workspace:*
+        version: link:../core-db-factories
+      '@serieslist/eslint-config-base':
+        specifier: workspace:*
+        version: link:../eslint-config-base
+      '@serieslist/prettier-config':
+        specifier: workspace:*
+        version: link:../prettier-config
+      '@serieslist/typescript-config-base':
+        specifier: workspace:*
+        version: link:../typescript-config-base
+      '@serieslist/util-types':
+        specifier: workspace:*
+        version: link:../util-types
+      '@vitest/coverage-v8':
+        specifier: ^1.1.1
+        version: 1.1.1(vitest@1.1.1)
+      date-fns:
+        specifier: ^2.30.0
+        version: 2.30.0
+      fishery:
+        specifier: ^2.2.2
+        version: 2.2.2
+      just-filter-object:
+        specifier: ^3.2.0
+        version: 3.2.0
+      nock:
+        specifier: ^13.3.1
+        version: 13.3.1
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
+      vitest:
+        specifier: ^1.1.1
+        version: 1.1.1(@types/node@18.16.9)(jsdom@22.1.0)
+
   packages/feature-tmdb:
     dependencies:
       '@serieslist/core-logger':
@@ -763,6 +882,9 @@ importers:
         specifier: ^3.22.3
         version: 3.22.3
     devDependencies:
+      '@faker-js/faker':
+        specifier: ^8.4.0
+        version: 8.4.0
       '@serieslist/eslint-config-base':
         specifier: workspace:*
         version: link:../eslint-config-base
@@ -821,6 +943,40 @@ importers:
       '@serieslist/prettier-config':
         specifier: workspace:*
         version: link:../prettier-config
+
+  packages/util-arrays:
+    devDependencies:
+      '@serieslist/eslint-config-base':
+        specifier: workspace:*
+        version: link:../eslint-config-base
+      '@serieslist/prettier-config':
+        specifier: workspace:*
+        version: link:../prettier-config
+      '@serieslist/typescript-config-base':
+        specifier: workspace:*
+        version: link:../typescript-config-base
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
+
+  packages/util-dates:
+    dependencies:
+      date-fns:
+        specifier: ^2.30.0
+        version: 2.30.0
+    devDependencies:
+      '@serieslist/eslint-config-base':
+        specifier: workspace:*
+        version: link:../eslint-config-base
+      '@serieslist/prettier-config':
+        specifier: workspace:*
+        version: link:../prettier-config
+      '@serieslist/typescript-config-base':
+        specifier: workspace:*
+        version: link:../typescript-config-base
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
 
   packages/util-types:
     devDependencies:
@@ -2448,31 +2604,6 @@ packages:
       '@brillout/import': 0.2.3
     dev: false
 
-  /@bull-board/api@5.6.0(@bull-board/ui@5.6.0):
-    resolution: {integrity: sha512-a2O15p5oEm+/E/0I2l2nE2NKK0dkgNNTaamu+0gGyfUxWoCS3fCGX6LLEyl3jgOz0IC3GKRnwtVgbZFzk42sGQ==}
-    peerDependencies:
-      '@bull-board/ui': 5.6.0
-    dependencies:
-      '@bull-board/ui': 5.6.0
-      redis-info: 3.1.0
-    dev: false
-
-  /@bull-board/fastify@5.6.0:
-    resolution: {integrity: sha512-JIGSrNxRko2cc4KTcU1Pp1iROKuAZGi2aLCx87nlgjmdtK51qbBfpDCsNEEc4ZspdddBKvaTUu67/3/n+3J67w==}
-    dependencies:
-      '@bull-board/api': 5.6.0(@bull-board/ui@5.6.0)
-      '@bull-board/ui': 5.6.0
-      '@fastify/static': 6.10.2
-      '@fastify/view': 7.4.1
-      ejs: 3.1.9
-    dev: false
-
-  /@bull-board/ui@5.6.0:
-    resolution: {integrity: sha512-mc9T+kijDX5ZJMJCzeKPk9uLfOtcuefdDLPqWi961EiiNKfkDex+Gh41DAfcyrNjYsAkBsphvgBgcvundHPGIw==}
-    dependencies:
-      '@bull-board/api': 5.6.0(@bull-board/ui@5.6.0)
-    dev: false
-
   /@cspotcode/source-map-support@0.8.1:
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
     engines: {node: '>=12'}
@@ -3452,6 +3583,10 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: false
 
+  /@faker-js/faker@8.4.0:
+    resolution: {integrity: sha512-htW87352wzUCdX1jyUQocUcmAaFqcR/w082EC8iP/gtkF0K+aKcBp0hR5Arb7dzR8tQ1TrhE9DNa5EbJELm84w==}
+    engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0, npm: '>=6.14.13'}
+
   /@fastify/accept-negotiator@1.1.0:
     resolution: {integrity: sha512-OIHZrb2ImZ7XG85HXOONLcJWGosv7sIvM2ifAPQVhg9Lv7qdmMBNVaai4QTdyuaqbKM5eO6sLSQOYI7wEQeCJQ==}
     engines: {node: '>=14'}
@@ -3543,13 +3678,6 @@ packages:
       glob: 8.1.0
       p-limit: 3.1.0
       readable-stream: 4.4.2
-    dev: false
-
-  /@fastify/view@7.4.1:
-    resolution: {integrity: sha512-ahmRmSbNVM8bIoz0BAFnY0jNigom+xbPQ9Q1ZjmNOtGVVT3nYXCxw2OMkTr9iXwrJ4Le3EtWDHlFkZ2fCQ2hJA==}
-    dependencies:
-      fastify-plugin: 4.5.0
-      hashlru: 2.3.0
     dev: false
 
   /@floating-ui/core@1.3.1:
@@ -7604,7 +7732,7 @@ packages:
   /@vanilla-extract/private@1.0.3:
     resolution: {integrity: sha512-17kVyLq3ePTKOkveHxXuIJZtGYs+cSoev7BlP+Lf4916qfDhk/HBjvlYDe8egrea7LNPHKwSZJK/bzZC+Q6AwQ==}
 
-  /@vanilla-extract/vite-plugin@3.9.3(@types/node@18.16.9)(vite@5.0.10):
+  /@vanilla-extract/vite-plugin@3.9.3(@types/node@18.16.9)(vite@5.0.12):
     resolution: {integrity: sha512-bGyHG98OYTRs5roLRv7LDeyRnD72+vBLonk8cC9VG/xd6hsiHPPj5GyBwoKElT7DyDRfapxWLwLlhgYynrW2Fw==}
     peerDependencies:
       vite: ^2.2.3 || ^3.0.0 || ^4.0.3 || ^5.0.0
@@ -7613,7 +7741,7 @@ packages:
       outdent: 0.8.0
       postcss: 8.4.32
       postcss-load-config: 4.0.2(postcss@8.4.32)
-      vite: 5.0.10(@types/node@18.16.9)
+      vite: 5.0.12(@types/node@18.16.9)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -7626,7 +7754,7 @@ packages:
       - ts-node
     dev: true
 
-  /@vitejs/plugin-react@4.2.1(vite@5.0.10):
+  /@vitejs/plugin-react@4.2.1(vite@5.0.12):
     resolution: {integrity: sha512-oojO9IDc4nCUUi8qIR11KoQm0XFFLIwsRBwHRR4d/88IWghn1y6ckz/bJ8GHDCsYEJee8mDzqtJxh15/cisJNQ==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
@@ -7637,7 +7765,7 @@ packages:
       '@babel/plugin-transform-react-jsx-source': 7.23.3(@babel/core@7.23.7)
       '@types/babel__core': 7.20.5
       react-refresh: 0.14.0
-      vite: 5.0.10(@types/node@18.16.9)
+      vite: 5.0.12(@types/node@18.16.9)
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -9260,7 +9388,7 @@ packages:
     dependencies:
       debug: 4.3.4
       is-url: 1.2.4
-      postcss: 8.4.31
+      postcss: 8.4.32
       postcss-values-parser: 2.0.1
     transitivePeerDependencies:
       - supports-color
@@ -9271,8 +9399,8 @@ packages:
     engines: {node: ^12.0.0 || ^14.0.0 || >=16.0.0}
     dependencies:
       is-url: 1.2.4
-      postcss: 8.4.31
-      postcss-values-parser: 6.0.2(postcss@8.4.31)
+      postcss: 8.4.32
+      postcss-values-parser: 6.0.2(postcss@8.4.32)
     dev: true
 
   /detective-sass@3.0.2:
@@ -11100,10 +11228,6 @@ packages:
     engines: {node: '>= 0.4.0'}
     dependencies:
       function-bind: 1.1.2
-
-  /hashlru@2.3.0:
-    resolution: {integrity: sha512-0cMsjjIC8I+D3M44pOQdsy0OHXGLVz6Z0beRuufhKa0KfaD2wGwAev6jILzXsd3/vpnNQJmWyZtIILqM1N+n5A==}
-    dev: false
 
   /hasown@2.0.0:
     resolution: {integrity: sha512-vUptKVTpIJhcczKBbgnS+RtcuYMB8+oNzPK2/Hp3hanz8JmpATdmmgLgSaadVREkDm+e2giHwY3ZRkyjSIDDFA==}
@@ -13581,7 +13705,7 @@ packages:
       uniq: 1.0.1
     dev: true
 
-  /postcss-values-parser@6.0.2(postcss@8.4.31):
+  /postcss-values-parser@6.0.2(postcss@8.4.32):
     resolution: {integrity: sha512-YLJpK0N1brcNJrs9WatuJFtHaV9q5aAOj+S4DI5S7jgHlRfm0PIbDCAFRYMQD5SHq7Fy6xsDhyutgS0QOAs0qw==}
     engines: {node: '>=10'}
     peerDependencies:
@@ -13589,17 +13713,8 @@ packages:
     dependencies:
       color-name: 1.1.4
       is-url-superb: 4.0.0
-      postcss: 8.4.31
+      postcss: 8.4.32
       quote-unquote: 1.0.0
-    dev: true
-
-  /postcss@8.4.31:
-    resolution: {integrity: sha512-PS08Iboia9mts/2ygV3eLpY5ghnUcfLV/EXTOW1E2qYxJKGGBUtNjN76FYHnMs36RmARn41bC0AZmn+rR0OVpQ==}
-    engines: {node: ^10 || ^12 || >=14}
-    dependencies:
-      nanoid: 3.3.7
-      picocolors: 1.0.0
-      source-map-js: 1.0.2
     dev: true
 
   /postcss@8.4.32:
@@ -14075,12 +14190,6 @@ packages:
   /redis-errors@1.2.0:
     resolution: {integrity: sha512-1qny3OExCf0UvUV/5wpYKf2YwPcOqXzkwKKSmKHiE6ZMQs5heeE/c8eXK+PNllPvmjgAbfnsbpkGZWy8cBpn9w==}
     engines: {node: '>=4'}
-    dev: false
-
-  /redis-info@3.1.0:
-    resolution: {integrity: sha512-ER4L9Sh/vm63DkIE0bkSjxluQlioBiBgf5w1UuldaW/3vPcecdljVDisZhmnCMvsxHNiARTTDDHGg9cGwTfrKg==}
-    dependencies:
-      lodash: 4.17.21
     dev: false
 
   /redis-parser@3.0.0:
@@ -15574,7 +15683,7 @@ packages:
     dev: false
     optional: true
 
-  /vike@0.4.142(vite@5.0.10):
+  /vike@0.4.142(vite@5.0.12):
     resolution: {integrity: sha512-eciryBs3k29SwSQM2esZzjt9Fyig/tNAgQ5xlduw9XVNUnd1hdWPr8CBi7yzvWgeavggPmywbt+Da1OLBoO8Kg==}
     engines: {node: '>=16.0.0'}
     hasBin: true
@@ -15597,7 +15706,7 @@ packages:
       fast-glob: 3.3.1
       sirv: 2.0.3
       source-map-support: 0.5.21
-      vite: 5.0.10(@types/node@18.16.9)
+      vite: 5.0.12(@types/node@18.16.9)
     dev: false
 
   /vite-node@0.28.5(@types/node@18.16.9):
@@ -15633,7 +15742,7 @@ packages:
       debug: 4.3.4
       pathe: 1.1.1
       picocolors: 1.0.0
-      vite: 5.0.10(@types/node@18.15.3)
+      vite: 5.0.12(@types/node@18.15.3)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -15654,7 +15763,7 @@ packages:
       debug: 4.3.4
       pathe: 1.1.1
       picocolors: 1.0.0
-      vite: 5.0.10(@types/node@18.16.9)
+      vite: 5.0.12(@types/node@18.16.9)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -15666,7 +15775,7 @@ packages:
       - terser
     dev: true
 
-  /vite-plugin-pwa@0.17.4(vite@5.0.10)(workbox-build@7.0.0)(workbox-window@7.0.0):
+  /vite-plugin-pwa@0.17.4(vite@5.0.12)(workbox-build@7.0.0)(workbox-window@7.0.0):
     resolution: {integrity: sha512-j9iiyinFOYyof4Zk3Q+DtmYyDVBDAi6PuMGNGq6uGI0pw7E+LNm9e+nQ2ep9obMP/kjdWwzilqUrlfVRj9OobA==}
     engines: {node: '>=16.0.0'}
     peerDependencies:
@@ -15677,14 +15786,14 @@ packages:
       debug: 4.3.4
       fast-glob: 3.3.2
       pretty-bytes: 6.1.1
-      vite: 5.0.10(@types/node@18.16.9)
+      vite: 5.0.12(@types/node@18.16.9)
       workbox-build: 7.0.0
       workbox-window: 7.0.0
     transitivePeerDependencies:
       - supports-color
     dev: true
 
-  /vite-plugin-svgr@4.2.0(rollup@2.79.1)(vite@5.0.10):
+  /vite-plugin-svgr@4.2.0(rollup@2.79.1)(vite@5.0.12):
     resolution: {integrity: sha512-SC7+FfVtNQk7So0XMjrrtLAbEC8qjFPifyD7+fs/E6aaNdVde6umlVVh0QuwDLdOMu7vp5RiGFsB70nj5yo0XA==}
     peerDependencies:
       vite: ^2.6.0 || 3 || 4 || 5
@@ -15692,7 +15801,7 @@ packages:
       '@rollup/pluginutils': 5.1.0(rollup@2.79.1)
       '@svgr/core': 8.1.0
       '@svgr/plugin-jsx': 8.1.0(@svgr/core@8.1.0)
-      vite: 5.0.10(@types/node@18.16.9)
+      vite: 5.0.12(@types/node@18.16.9)
     transitivePeerDependencies:
       - rollup
       - supports-color
@@ -15770,8 +15879,44 @@ packages:
       fsevents: 2.3.3
     dev: true
 
-  /vite@5.0.10(@types/node@18.16.9):
-    resolution: {integrity: sha512-2P8J7WWgmc355HUMlFrwofacvr98DAjoE52BfdbwQtyLH06XKwaL/FMnmKM2crF0iX4MpmMKoDlNCB1ok7zHCw==}
+  /vite@5.0.12(@types/node@18.15.3):
+    resolution: {integrity: sha512-4hsnEkG3q0N4Tzf1+t6NdN9dg/L3BM+q8SWgbSPnJvrgH2kgdyzfVJwbR1ic69/4uMJJ/3dqDZZE5/WwqW8U1w==}
+    engines: {node: ^18.0.0 || >=20.0.0}
+    hasBin: true
+    peerDependencies:
+      '@types/node': ^18.0.0 || >=20.0.0
+      less: '*'
+      lightningcss: ^1.21.0
+      sass: '*'
+      stylus: '*'
+      sugarss: '*'
+      terser: ^5.4.0
+    peerDependenciesMeta:
+      '@types/node':
+        optional: true
+      less:
+        optional: true
+      lightningcss:
+        optional: true
+      sass:
+        optional: true
+      stylus:
+        optional: true
+      sugarss:
+        optional: true
+      terser:
+        optional: true
+    dependencies:
+      '@types/node': 18.15.3
+      esbuild: 0.19.11
+      postcss: 8.4.32
+      rollup: 4.9.2
+    optionalDependencies:
+      fsevents: 2.3.3
+    dev: true
+
+  /vite@5.0.12(@types/node@18.16.9):
+    resolution: {integrity: sha512-4hsnEkG3q0N4Tzf1+t6NdN9dg/L3BM+q8SWgbSPnJvrgH2kgdyzfVJwbR1ic69/4uMJJ/3dqDZZE5/WwqW8U1w==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
     peerDependencies:
@@ -15907,7 +16052,7 @@ packages:
       strip-literal: 1.3.0
       tinybench: 2.5.1
       tinypool: 0.8.1
-      vite: 5.0.10(@types/node@18.16.9)
+      vite: 5.0.12(@types/node@18.16.9)
       vite-node: 1.1.1(@types/node@18.16.9)
       why-is-node-running: 2.2.2
     transitivePeerDependencies:

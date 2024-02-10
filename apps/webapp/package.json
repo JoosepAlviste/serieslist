@@ -39,6 +39,7 @@
     "@sentry/react": "^7.56.0",
     "@serieslist/core-logger": "workspace:*",
     "@serieslist/core-ui": "workspace:*",
+    "@serieslist/util-dates": "workspace:*",
     "@vanilla-extract/css": "^1.14.0",
     "@vitejs/plugin-react": "^4.2.1",
     "classnames": "^2.3.2",
@@ -67,8 +68,8 @@
     "@serieslist/core-esbuild": "workspace:*",
     "@serieslist/eslint-config-react": "workspace:*",
     "@serieslist/prettier-config": "workspace:*",
-    "@serieslist/util-types": "workspace:*",
     "@serieslist/typescript-config-base": "workspace:*",
+    "@serieslist/util-types": "workspace:*",
     "@testing-library/jest-dom": "^6.1.3",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.5.1",
@@ -87,7 +88,7 @@
     "rimraf": "^4.4.0",
     "tsx": "^4.7.0",
     "typescript": "^5.3.3",
-    "vite": "^5.0.10",
+    "vite": "^5.0.12",
     "vite-plugin-pwa": "^0.17.4",
     "vitest": "^1.1.1"
   }

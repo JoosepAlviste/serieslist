@@ -1,0 +1,3 @@
+FROM --platform=$BUILDPLATFORM node:20-alpine AS base
+
+RUN npm i -g pnpm@8

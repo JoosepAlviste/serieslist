@@ -6,6 +6,8 @@ import {
   episodeFactory,
   userSeriesStatusFactory,
   userFactory,
+  createSeriesWithEpisodesAndSeasons,
+  createSeenEpisodesForUser,
 } from '@serieslist/core-db-factories'
 import { addDays } from 'date-fns'
 import { and, eq, inArray } from 'drizzle-orm'
@@ -17,12 +19,7 @@ import type {
   ToggleEpisodeSeenInput,
 } from '#/generated/gql/graphql'
 import { db } from '#/lib/db'
-import {
-  checkErrors,
-  createSeenEpisodesForUser,
-  createSeriesWithEpisodesAndSeasons,
-  executeOperation,
-} from '#/test/testUtils'
+import { checkErrors, executeOperation } from '#/test/testUtils'
 
 describe('features/seriesProgress/seriesProgress.schema', () => {
   describe('toggleEpisodeSeen mutation', () => {

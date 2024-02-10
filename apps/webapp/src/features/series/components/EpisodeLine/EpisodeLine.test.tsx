@@ -1,3 +1,4 @@
+import { stringifyDate } from '@serieslist/util-dates'
 import { screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { addDays } from 'date-fns'
@@ -12,7 +13,6 @@ import {
   ToggleEpisodeSeenDocument,
 } from '#/generated/gql/graphql'
 import { createMockResolver, render } from '#/lib/testUtils'
-import { stringifyDate } from '#/utils/dates'
 
 import { episodeFactory } from '../../episode.factory'
 import { seasonFactory } from '../../season.factory'
