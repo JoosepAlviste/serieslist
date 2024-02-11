@@ -26,6 +26,6 @@
     "@serieslist/core-logger": "workspace:*",
     "@serieslist/util-arrays": "workspace:*",
     "fishery": "^2.2.2",
-    "nanoid": "^4.0.2"
+    "nanoid": "^5.0.5"
   }
 }

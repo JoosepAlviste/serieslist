@@ -21,8 +21,8 @@
   },
   "dependencies": {
     "@serieslist/core-logger": "workspace:*",
-    "node-fetch": "^3.3.1",
-    "pino": "^8.14.1",
+    "node-fetch": "^3.3.2",
+    "pino": "^8.18.0",
     "zod": "^3.22.3"
   },
   "devDependencies": {
@@ -32,7 +32,7 @@
     "@serieslist/typescript-config-base": "workspace:*",
     "date-fns": "^2.30.0",
     "fishery": "^2.2.2",
-    "nanoid": "^4.0.2",
+    "nanoid": "^5.0.5",
     "nock": "^13.5.1",
     "typescript": "^5.3.3"
   }
