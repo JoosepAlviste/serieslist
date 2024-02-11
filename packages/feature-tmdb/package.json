@@ -30,7 +30,7 @@
     "@serieslist/eslint-config-base": "workspace:*",
     "@serieslist/prettier-config": "workspace:*",
     "@serieslist/typescript-config-base": "workspace:*",
-    "date-fns": "^2.30.0",
+    "date-fns": "^3.3.1",
     "fishery": "^2.2.2",
     "nanoid": "^5.0.5",
     "nock": "^13.5.1",

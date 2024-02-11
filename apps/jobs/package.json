@@ -18,7 +18,7 @@
     "@serieslist/core-db": "workspace:*",
     "@serieslist/core-logger": "workspace:*",
     "@serieslist/feature-series-sync": "workspace:*",
-    "bullmq": "^4.1.0"
+    "bullmq": "^5.1.10"
   },
   "devDependencies": {
     "@serieslist/core-esbuild": "workspace:*",

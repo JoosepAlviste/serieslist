@@ -21,6 +21,6 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "date-fns": "^2.30.0"
+    "date-fns": "^3.3.1"
   }
 }
