@@ -51,12 +51,12 @@
     "@testing-library/react": "^14.0.0",
     "@types/react": "^18.0.8",
     "@vanilla-extract/vite-plugin": "^3.9.3",
-    "@vitest/coverage-v8": "^1.1.1",
+    "@vitest/coverage-v8": "^1.2.2",
     "jsdom": "^22.1.0",
     "react": "^18.2.0",
     "tsx": "^4.7.0",
     "typescript": "^5.3.3",
-    "vitest": "^1.1.1",
+    "vitest": "^1.2.2",
     "zod": "^3.22.3"
   }
 }

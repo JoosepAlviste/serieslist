@@ -23,13 +23,13 @@
     "@serieslist/prettier-config": "workspace:*",
     "@serieslist/typescript-config-base": "workspace:*",
     "@serieslist/util-types": "workspace:*",
-    "@vitest/coverage-v8": "^1.1.1",
+    "@vitest/coverage-v8": "^1.2.2",
     "date-fns": "^2.30.0",
     "fishery": "^2.2.2",
     "just-filter-object": "^3.2.0",
     "nock": "^13.3.1",
     "typescript": "^5.3.3",
-    "vitest": "^1.1.1"
+    "vitest": "^1.2.2"
   },
   "dependencies": {
     "@serieslist/core-db": "workspace:*",

@@ -76,15 +76,15 @@
     "@serieslist/util-types": "workspace:*",
     "@types/bcryptjs": "^2.4.2",
     "@types/jsonwebtoken": "^9.0.1",
-    "@types/node": "^18.15.3",
+    "@types/node": "^20.11.17",
     "@types/pg": "^8.6.6",
-    "@vitest/coverage-v8": "^1.1.1",
+    "@vitest/coverage-v8": "^1.2.2",
     "just-filter-object": "^3.2.0",
     "madge": "^6.0.0",
     "nock": "^13.3.1",
-    "rimraf": "^4.4.0",
+    "rimraf": "^5.0.5",
     "tsx": "^4.7.0",
     "typescript": "^5.3.3",
-    "vitest": "^1.1.1"
+    "vitest": "^1.2.2"
   }
 }
