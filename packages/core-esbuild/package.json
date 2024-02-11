@@ -16,6 +16,6 @@
     "@serieslist/eslint-config-base": "workspace:*",
     "@serieslist/prettier-config": "workspace:*",
     "@serieslist/typescript-config-base": "workspace:*",
-    "esbuild": "^0.19.11"
+    "esbuild": "^0.20.0"
   }
 }

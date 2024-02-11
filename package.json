@@ -34,9 +34,8 @@
   "devDependencies": {
     "@nx/devkit": "18.0.4",
     "@nx/plugin": "18.0.4",
-    "dotenv-cli": "^7.1.0",
+    "dotenv-cli": "^7.3.0",
     "nx": "18.0.4",
     "syncpack": "^12.3.0"
   }
 }
-

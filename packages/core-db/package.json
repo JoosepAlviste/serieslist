@@ -23,17 +23,17 @@
   "dependencies": {
     "@serieslist/core-logger": "workspace:*",
     "drizzle-orm": "^0.29.3",
-    "pg": "^8.10.0",
+    "pg": "^8.11.3",
     "pino": "^8.14.1"
   },
   "devDependencies": {
     "@serieslist/eslint-config-base": "workspace:*",
     "@serieslist/prettier-config": "workspace:*",
-    "@serieslist/util-types": "workspace:*",
     "@serieslist/typescript-config-base": "workspace:*",
+    "@serieslist/util-types": "workspace:*",
     "date-fns": "^2.30.0",
     "drizzle-kit": "^0.20.13",
-    "tsx": "^4.7.0",
+    "tsx": "^4.7.1",
     "typescript": "^5.3.3"
   }
 }

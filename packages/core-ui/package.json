@@ -34,7 +34,7 @@
     "@radix-ui/react-select": "^1.2.2",
     "@radix-ui/react-toast": "^1.1.4",
     "@radix-ui/react-tooltip": "^1.0.6",
-    "@vanilla-extract/css": "^1.14.0",
+    "@vanilla-extract/css": "^1.14.1",
     "classnames": "^2.3.2",
     "react-hook-form": "^7.43.9"
   },
@@ -54,7 +54,7 @@
     "@vitest/coverage-v8": "^1.2.2",
     "jsdom": "^24.0.0",
     "react": "^18.2.0",
-    "tsx": "^4.7.0",
+    "tsx": "^4.7.1",
     "typescript": "^5.3.3",
     "vitest": "^1.2.2",
     "zod": "^3.22.3"
