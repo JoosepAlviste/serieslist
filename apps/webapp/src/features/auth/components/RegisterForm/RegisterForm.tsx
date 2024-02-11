@@ -46,7 +46,7 @@ export const RegisterForm = () => {
         cache.modify({
           fields: {
             me: () =>
-              data?.register.__typename === 'User' ? data.register : undefined,
+              data?.register.__typename === 'User' ? data.register : null,
           },
         })
       },

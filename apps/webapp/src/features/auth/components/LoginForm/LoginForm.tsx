@@ -43,8 +43,7 @@ export const LoginForm = () => {
       update(cache, { data }) {
         cache.modify({
           fields: {
-            me: () =>
-              data?.login.__typename === 'User' ? data.login : undefined,
+            me: () => (data?.login.__typename === 'User' ? data.login : null),
           },
         })
       },
