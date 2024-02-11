@@ -87,7 +87,7 @@ type GraphqlErrors = (typeof graphqlErrors)[number]
  * expect(resultUser.id).toBeTruthy()
  * ```
  */
-export const checkErrors = <T extends { __typename: string | GraphqlErrors }>(
+export const checkErrors = <T extends { __typename: string }>(
   result: T | undefined,
 ) => {
   if (!result) {

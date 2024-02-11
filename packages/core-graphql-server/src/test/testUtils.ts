@@ -24,4 +24,4 @@ export const createContext = <T extends Context['currentUser']>({
     ...ctx,
     db,
     currentUser,
-  } as T extends undefined ? Context : AuthenticatedContext)
+  }) as T extends undefined ? Context : AuthenticatedContext

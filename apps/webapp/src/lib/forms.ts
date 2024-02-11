@@ -40,7 +40,7 @@ export const useForm = <
    *
    * @returns true if no validation errors, false if there were any
    */
-  const checkErrors = <T extends { __typename: string | 'InvalidInputError' }>(
+  const checkErrors = <T extends { __typename: string }>(
     response: T | undefined,
   ): response is Exclude<T, { __typename: 'InvalidInputError' }> => {
     if (response === undefined || response.__typename !== 'InvalidInputError') {

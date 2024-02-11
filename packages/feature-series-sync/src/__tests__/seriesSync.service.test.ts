@@ -138,7 +138,7 @@ describe('syncSeasonsAndEpisodes', () => {
     expect(seasons).toHaveLength(1)
 
     const episodes = await db.query.episode.findMany({
-      where: eq(episode.seasonId, seasons[0]!.id),
+      where: eq(episode.seasonId, seasons[0].id),
     })
     expect(episodes).toHaveLength(2)
     expect(episodes[0]?.id).toBe(existingEpisode.id)
@@ -230,7 +230,7 @@ describe('syncSeasonsAndEpisodes', () => {
     expect(seasons).toHaveLength(1)
 
     const episodes = await db.query.episode.findMany({
-      where: eq(episode.seasonId, seasons[0]!.id),
+      where: eq(episode.seasonId, seasons[0].id),
     })
     expect(episodes).toHaveLength(1)
     expect(episodes[0]?.id).toBe(existingEpisode.id)

@@ -275,11 +275,11 @@ describe('features/series/series.schema', () => {
       })
 
       expect(seasons).toHaveLength(1)
-      expect(seasons[0]!.number).toBe(1)
+      expect(seasons[0].number).toBe(1)
 
       // The episodes were saved into the database
       const episodes = await db.query.episode.findMany({
-        where: eq(episode.seasonId, seasons[0]!.id),
+        where: eq(episode.seasonId, seasons[0].id),
       })
 
       expect(episodes).toHaveLength(2)
@@ -369,8 +369,8 @@ describe('features/series/series.schema', () => {
       // errors plugin's `directResult` only removes the result object type
       // from non-list fields.
       expect(resData.data).toHaveLength(2)
-      expect(resData.data[0]!.id).toBe(String(series1.id))
-      expect(resData.data[1]!.id).toBe(String(series2.id))
+      expect(resData.data[0].id).toBe(String(series1.id))
+      expect(resData.data[1].id).toBe(String(series2.id))
     })
 
     it('does not return series for other users', async () => {
@@ -413,7 +413,7 @@ describe('features/series/series.schema', () => {
       const resData = checkErrors(res.data?.userSeriesList)
 
       expect(resData.data).toHaveLength(1)
-      expect(resData.data[0]!.id).toBe(String(series1.id))
+      expect(resData.data[0].id).toBe(String(series1.id))
     })
   })
 
@@ -505,7 +505,7 @@ describe('features/series/series.schema', () => {
       const resSeries = checkErrors(res.data?.series)
 
       expect(resSeries.seasons).toHaveLength(1)
-      const episodes = resSeries.seasons[0]!.episodes
+      const episodes = resSeries.seasons[0].episodes
 
       expect(episodes).toHaveLength(2)
       expect(episodes[0]).toEqual({
