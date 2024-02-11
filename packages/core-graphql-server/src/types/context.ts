@@ -3,7 +3,7 @@ import type { FastifyReply, FastifyRequest } from 'fastify'
 import type { YogaInitialContext } from 'graphql-yoga'
 
 export type Context = Omit<YogaInitialContext, 'request'> & {
-  db: Awaited<ReturnType<typeof createDbConnection>>['db']
+  db: ReturnType<typeof createDbConnection>['db']
   req: FastifyRequest
   reply: FastifyReply
   currentUser?: User

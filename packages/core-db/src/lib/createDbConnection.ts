@@ -7,10 +7,10 @@ import * as schema from '../schema'
 
 import { config } from './config'
 
-const { Client } = pg
+const { Pool } = pg
 
-export const createDbConnection = async ({ logger }: { logger: Logger }) => {
-  const client = new Client({
+export const createDbConnection = ({ logger }: { logger: Logger }) => {
+  const pool = new Pool({
     host: config.db.host,
     ssl: config.db.host !== 'localhost',
     port: config.db.port,
@@ -19,8 +19,6 @@ export const createDbConnection = async ({ logger }: { logger: Logger }) => {
     password: config.db.password,
   })
 
-  await client.connect()
-
   class SerieslistLogWriter implements LogWriter {
     write(message: string) {
       logger.info(message)
@@ -28,10 +26,11 @@ export const createDbConnection = async ({ logger }: { logger: Logger }) => {
   }
 
   const dbLogger = new DefaultLogger({ writer: new SerieslistLogWriter() })
-  const db = drizzle(client, {
+
+  const db = drizzle(pool, {
     logger: config.debug.logSqlQueries ? dbLogger : false,
     schema,
   })
 
-  return { db, client }
+  return { db, pool }
 }

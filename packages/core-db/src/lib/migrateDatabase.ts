@@ -13,11 +13,11 @@ export const migrateDatabase = async ({
 }: {
   migrationFolder?: string
 } = {}) => {
-  const { db, client } = await createDbConnection({ logger: log })
+  const { db, pool } = createDbConnection({ logger: log })
 
   await migrate(db, {
     migrationsFolder: migrationFolder ?? path.join(dirname, '..', 'drizzle'),
   })
 
-  await client.end()
+  await pool.end()
 }

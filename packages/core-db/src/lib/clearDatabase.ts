@@ -4,7 +4,7 @@ import { createDbConnection } from './createDbConnection'
 import { log } from './logger'
 
 export const clearDatabase = async () => {
-  const { db, client } = await createDbConnection({ logger: log })
+  const { db, pool } = createDbConnection({ logger: log })
 
   const tables = await db.execute<{ tablename: string }>(
     sql`SELECT tablename FROM pg_tables WHERE schemaname = 'public'`,
@@ -19,5 +19,5 @@ export const clearDatabase = async () => {
 
   // Destroy the connection so that it wouldn't keep the tests running because
   // of a floating promise
-  await client.end()
+  await pool.end()
 }
