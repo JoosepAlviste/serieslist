@@ -12,7 +12,7 @@ await seriesSyncQueue.add(
   {},
   {
     repeat: {
-      pattern: '* * * * *',
+      pattern: '0 4 * * *',
     },
   },
 )
