@@ -57,7 +57,7 @@
     "react-highlight-words": "^0.20.0",
     "react-hook-form": "^7.43.9",
     "react-transition-group": "^4.4.5",
-    "vike": "^0.4.142",
+    "vike": "^0.4.161",
     "vite-plugin-svgr": "^4.2.0",
     "zod": "^3.22.3"
   },

@@ -3,6 +3,11 @@ import type { NormalizedCacheObject, ApolloClient } from '@apollo/client'
 import type { AuthenticatedUser } from '#/features/auth'
 import type { Theme } from '#/utils/theme'
 
+type DocumentProps = {
+  title?: string
+  description?: string
+}
+
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Vike {
@@ -13,11 +18,10 @@ declare global {
       currentUser?: AuthenticatedUser
       theme?: Theme
 
+      documentProps?: DocumentProps
+
       exports: {
-        documentProps?: {
-          title?: string
-          description?: string
-        }
+        documentProps?: DocumentProps
       }
 
       Page: (pageProps: PageProps) => JSX.Element

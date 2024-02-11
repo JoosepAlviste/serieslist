@@ -1,9 +1,9 @@
 import { render } from 'vike/abort'
-import type { PageContext } from 'vike/types'
+import type { OnBeforeRenderAsync } from 'vike/types'
 
 import { SeriesDetailsPageDocument } from '#/generated/gql/graphql'
 
-export const onBeforeRender = async (pageContext: PageContext) => {
+export const onBeforeRender: OnBeforeRenderAsync = async (pageContext) => {
   const { apollo, routeParams } = pageContext
   const id = routeParams?.id
   if (!id) {

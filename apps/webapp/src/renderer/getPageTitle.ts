@@ -1,7 +1,6 @@
-export function getPageTitle(pageContext: {
-  exports: { documentProps?: { title: string } }
-  documentProps?: { title: string }
-}): string {
+import type { PageContext } from 'vike/types'
+
+export function getPageTitle(pageContext: PageContext): string {
   const title =
     // For static titles (defined in the `export { documentProps }` of the page's `.page.js`)
     pageContext.exports.documentProps?.title ??
