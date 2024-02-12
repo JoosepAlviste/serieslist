@@ -1,6 +1,6 @@
 import { createTheme } from '@vanilla-extract/css'
 
-const colors = {
+export const colors = {
   white: '#ffffff',
   black: '#000000',
   blackA5: 'rgba(0, 0, 0, 0.5)',

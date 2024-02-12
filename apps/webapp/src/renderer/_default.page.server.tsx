@@ -3,7 +3,7 @@ import React from 'react'
 import { escapeInject, dangerouslySkipEscape } from 'vike/server'
 import type { PageContextServer } from 'vike/types'
 
-import { darkThemeClasses, lightThemeClasses } from '#/styles/theme.css'
+import { darkThemeClasses, lightThemeClasses, colors } from '#/styles/theme.css'
 import { THEME } from '#/utils/theme'
 
 import { PageShell } from './PageShell'
@@ -46,6 +46,7 @@ export async function render(pageContext: PageContextServer) {
     theme == THEME.DARK
       ? darkThemeClasses.join(' ')
       : lightThemeClasses.join(' ')
+  const themeColor = theme == THEME.DARK ? colors.black : colors.white
 
   const pwaHead = isProduction
     ? `
@@ -62,7 +63,7 @@ export async function render(pageContext: PageContextServer) {
         <link rel="icon" href="/favicon.svg" type="image/svg+xml">
         <link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png" sizes="180x180">
         <link rel="mask-icon" href="/maskable-icon-512x512.png" color="#FFFFFF">
-        <meta name="theme-color" content="#6366f1">
+        <meta name="theme-color" content="${themeColor}">
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="description" content="${desc}" />
         <title>${title}</title>

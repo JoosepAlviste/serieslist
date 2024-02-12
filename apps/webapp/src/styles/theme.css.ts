@@ -2,6 +2,7 @@ import {
   vars as uiVars,
   lightThemeClass as uiLightThemeClass,
   darkThemeClass as uiDarkThemeClass,
+  colors as rawColors,
 } from '@serieslist/core-ui'
 import { createTheme } from '@vanilla-extract/css'
 
@@ -83,3 +84,5 @@ export const zIndex = {
     popover: zSearchPopover,
   },
 }
+
+export { rawColors as colors }

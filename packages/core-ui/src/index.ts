@@ -1,4 +1,4 @@
-export { vars, lightThemeClass, darkThemeClass } from './theme.css'
+export { vars, lightThemeClass, darkThemeClass, colors } from './theme.css'
 export * from './cssVariables'
 
 export * from './layers.css'
