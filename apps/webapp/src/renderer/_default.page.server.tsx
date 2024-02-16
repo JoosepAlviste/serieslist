@@ -61,8 +61,7 @@ export async function render(pageContext: PageContextServer) {
         <meta charset="UTF-8" />
         <link rel="icon" href="/favicon.ico" sizes="any">
         <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-        <link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png" sizes="180x180">
-        <link rel="mask-icon" href="/maskable-icon-512x512.png" color="#FFFFFF">
+        <link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png">
         <meta name="theme-color" content="${themeColor}">
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="description" content="${desc}" />
