@@ -5,7 +5,7 @@ import { registerNewUser } from '../utils'
 test('allows keeping track of series progress', async ({ page }) => {
   await registerNewUser(page)
 
-  await page.goto('/')
+  await page.goto('/series/list')
 
   await page.getByPlaceholder('Search...').fill('futura')
   const detailsUrl = await page
