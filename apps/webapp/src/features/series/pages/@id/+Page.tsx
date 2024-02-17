@@ -2,7 +2,7 @@ import React from 'react'
 
 import { usePageContext } from '#/hooks'
 
-import { SeriesDetailsPage } from '../components/SeriesDetailsPage'
+import { SeriesDetailsPage } from '../../components/SeriesDetailsPage'
 
 export const Page = () => {
   const ctx = usePageContext()

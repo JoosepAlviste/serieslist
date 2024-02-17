@@ -18,7 +18,7 @@ let root: Root | undefined
  */
 let apollo: ApolloClient<NormalizedCacheObject> | undefined
 
-export function render(pageContext: PageContextClient) {
+export function onRenderClient(pageContext: PageContextClient) {
   const { Page, pageProps } = pageContext
 
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -60,8 +60,3 @@ export function render(pageContext: PageContextClient) {
   }
   document.title = getPageTitle(pageContext)
 }
-
-// Enable client-side routing
-// https://vike.dev/clientRouting
-export const clientRouting = true
-export const hydrationCanBeAborted = true

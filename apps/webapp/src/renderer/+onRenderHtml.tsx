@@ -8,18 +8,9 @@ import { THEME } from '#/utils/theme'
 
 import { PageShell } from './PageShell'
 
-export const passToClient = [
-  'pageProps',
-  'routeParams',
-  'documentProps',
-  'apolloInitialState',
-  'currentUser',
-  'theme',
-]
-
 const isProduction = process.env.NODE_ENV === 'production'
 
-export async function render(pageContext: PageContextServer) {
+export async function onRenderHtml(pageContext: PageContextServer) {
   const { Page, pageProps, theme } = pageContext
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!Page) {

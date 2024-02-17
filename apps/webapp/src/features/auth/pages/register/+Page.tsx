@@ -1,8 +1,8 @@
 import { Link } from '@serieslist/core-ui'
 import React from 'react'
 
-import { AuthLayout } from '../components'
-import { RegisterForm } from '../components/RegisterForm'
+import { AuthLayout } from '../../components'
+import { RegisterForm } from '../../components/RegisterForm'
 
 export const Page = () => (
   <AuthLayout

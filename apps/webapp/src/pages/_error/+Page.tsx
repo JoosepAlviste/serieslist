@@ -4,7 +4,7 @@ import React from 'react'
 import { usePageContext } from '#/hooks'
 
 import Illustration404 from './404.svg?react'
-import * as s from './_error.page.css'
+import * as s from './ErrorPage.css'
 import ServerDown from './ServerDown.svg?react'
 
 export const Page = () => {

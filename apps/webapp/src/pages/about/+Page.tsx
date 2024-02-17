@@ -1,7 +1,7 @@
 import { Title } from '@serieslist/core-ui'
 import React from 'react'
 
-import * as s from './index.page.css'
+import * as s from './AboutPage.css'
 import TMDBLogo from './TMDBLogo.svg?react'
 
 export const Page = () => (

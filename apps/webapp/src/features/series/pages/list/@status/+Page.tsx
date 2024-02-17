@@ -3,7 +3,7 @@ import React from 'react'
 import { UserSeriesStatusStatus } from '#/generated/gql/graphql'
 import { usePageContext } from '#/hooks'
 
-import { UserSeriesListPage } from '../../components/UserSeriesListPage'
+import { UserSeriesListPage } from '../../../components/UserSeriesListPage'
 
 const statuses: Record<string, UserSeriesStatusStatus> = {
   ['in-progress']: UserSeriesStatusStatus.InProgress,
