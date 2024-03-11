@@ -50,7 +50,7 @@
     "@svgr/plugin-prettier": "^8.1.0",
     "@testing-library/react": "^14.2.1",
     "@types/react": "^18.2.55",
-    "@vanilla-extract/vite-plugin": "^3.9.3",
+    "@vanilla-extract/vite-plugin": "^4.0.6",
     "@vitest/coverage-v8": "^1.2.2",
     "jsdom": "^24.0.0",
     "react": "^18.2.0",

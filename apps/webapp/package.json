@@ -78,7 +78,7 @@
     "@types/react-dom": "^18.2.19",
     "@types/react-highlight-words": "^0.16.7",
     "@types/react-transition-group": "^4.4.10",
-    "@vanilla-extract/vite-plugin": "^3.9.3",
+    "@vanilla-extract/vite-plugin": "^4.0.6",
     "@vite-pwa/assets-generator": "^0.2.4",
     "@vitest/coverage-v8": "^1.2.2",
     "jsdom": "^24.0.0",
