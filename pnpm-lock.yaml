@@ -194,7 +194,7 @@ importers:
         version: 5.3.3
       vitest:
         specifier: ^1.2.2
-        version: 1.2.2(@types/node@20.11.17)(jsdom@24.0.0)
+        version: 1.2.2(@types/node@20.11.17)
 
   apps/e2e:
     devDependencies:
@@ -355,7 +355,7 @@ importers:
         version: 1.14.1
       '@vitejs/plugin-react':
         specifier: ^4.2.1
-        version: 4.2.1(vite@5.1.1)
+        version: 4.2.1(vite@5.1.7)
       classnames:
         specifier: ^2.5.1
         version: 2.5.1
@@ -400,10 +400,10 @@ importers:
         version: 4.4.5(react-dom@18.2.0)(react@18.2.0)
       vike:
         specifier: ^0.4.161
-        version: 0.4.161(vite@5.1.1)
+        version: 0.4.161(vite@5.1.7)
       vite-plugin-svgr:
         specifier: ^4.2.0
-        version: 4.2.0(rollup@2.79.1)(typescript@5.3.3)(vite@5.1.1)
+        version: 4.2.0(rollup@2.79.1)(typescript@5.3.3)(vite@5.1.7)
       zod:
         specifier: ^3.22.3
         version: 3.22.4
@@ -458,7 +458,7 @@ importers:
         version: 4.4.10
       '@vanilla-extract/vite-plugin':
         specifier: ^3.9.3
-        version: 3.9.5(@types/node@20.11.17)(vite@5.1.1)
+        version: 3.9.5(@types/node@20.11.17)(vite@5.1.7)
       '@vite-pwa/assets-generator':
         specifier: ^0.2.4
         version: 0.2.4
@@ -490,11 +490,11 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
       vite:
-        specifier: ^5.0.12
-        version: 5.1.1(@types/node@20.11.17)
+        specifier: ^5.1.7
+        version: 5.1.7(@types/node@20.11.17)
       vite-plugin-pwa:
         specifier: ^0.18.0
-        version: 0.18.0(vite@5.1.1)(workbox-build@7.0.0)(workbox-window@7.0.0)
+        version: 0.18.0(vite@5.1.7)(workbox-build@7.0.0)(workbox-window@7.0.0)
       vitest:
         specifier: ^1.2.2
         version: 1.2.2(@types/node@20.11.17)(jsdom@24.0.0)
@@ -638,7 +638,7 @@ importers:
         version: 5.3.3
       vitest:
         specifier: ^1.2.2
-        version: 1.2.2(@types/node@20.11.17)(jsdom@24.0.0)
+        version: 1.2.2(@types/node@20.11.17)
 
   packages/core-logger:
     dependencies:
@@ -718,7 +718,7 @@ importers:
         version: 18.2.55
       '@vanilla-extract/vite-plugin':
         specifier: ^3.9.3
-        version: 3.9.5(@types/node@20.11.17)(vite@5.1.1)
+        version: 3.9.5(@types/node@20.11.17)(vite@5.1.7)
       '@vitest/coverage-v8':
         specifier: ^1.2.2
         version: 1.2.2(vitest@1.2.2)
@@ -862,7 +862,7 @@ importers:
         version: 5.3.3
       vitest:
         specifier: ^1.2.2
-        version: 1.2.2(@types/node@20.11.17)(jsdom@24.0.0)
+        version: 1.2.2(@types/node@20.11.17)
 
   packages/feature-tmdb:
     dependencies:
@@ -6997,7 +6997,7 @@ packages:
       lodash: 4.17.21
       mlly: 1.5.0
       outdent: 0.8.0
-      vite: 5.1.1(@types/node@20.11.17)
+      vite: 5.1.7(@types/node@20.11.17)
       vite-node: 1.2.2(@types/node@20.11.17)
     transitivePeerDependencies:
       - '@types/node'
@@ -7013,7 +7013,7 @@ packages:
   /@vanilla-extract/private@1.0.3:
     resolution: {integrity: sha512-17kVyLq3ePTKOkveHxXuIJZtGYs+cSoev7BlP+Lf4916qfDhk/HBjvlYDe8egrea7LNPHKwSZJK/bzZC+Q6AwQ==}
 
-  /@vanilla-extract/vite-plugin@3.9.5(@types/node@20.11.17)(vite@5.1.1):
+  /@vanilla-extract/vite-plugin@3.9.5(@types/node@20.11.17)(vite@5.1.7):
     resolution: {integrity: sha512-CWI/CtrVW6i3HKccI6T7uGQkTJ8bd8Xl2UMBg3Pkr7dwWMmavXTeucV0I9KSbmXaYXSbEj+Q8c9y0xAZwtmTig==}
     peerDependencies:
       vite: ^2.2.3 || ^3.0.0 || ^4.0.3 || ^5.0.0
@@ -7022,7 +7022,7 @@ packages:
       outdent: 0.8.0
       postcss: 8.4.35
       postcss-load-config: 4.0.2(postcss@8.4.35)
-      vite: 5.1.1(@types/node@20.11.17)
+      vite: 5.1.7(@types/node@20.11.17)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -7048,7 +7048,7 @@ packages:
       unconfig: 0.3.11
     dev: true
 
-  /@vitejs/plugin-react@4.2.1(vite@5.1.1):
+  /@vitejs/plugin-react@4.2.1(vite@5.1.7):
     resolution: {integrity: sha512-oojO9IDc4nCUUi8qIR11KoQm0XFFLIwsRBwHRR4d/88IWghn1y6ckz/bJ8GHDCsYEJee8mDzqtJxh15/cisJNQ==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
@@ -7059,7 +7059,7 @@ packages:
       '@babel/plugin-transform-react-jsx-source': 7.23.3(@babel/core@7.23.9)
       '@types/babel__core': 7.20.5
       react-refresh: 0.14.0
-      vite: 5.1.1(@types/node@20.11.17)
+      vite: 5.1.7(@types/node@20.11.17)
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -7082,7 +7082,7 @@ packages:
       std-env: 3.7.0
       test-exclude: 6.0.0
       v8-to-istanbul: 9.2.0
-      vitest: 1.2.2(@types/node@20.11.17)(jsdom@24.0.0)
+      vitest: 1.2.2(@types/node@20.11.17)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -14992,7 +14992,7 @@ packages:
     resolution: {integrity: sha512-Z6Uz+TYwEqE7ZN50gwn+1LCVo9ZVrpxRPOhOLnncYkY1ZzOYtrX8Fwf/rFktZ8R5mJms6EZf5TqNOMeZmnPq9Q==}
     engines: {node: '>=12'}
 
-  /vike@0.4.161(vite@5.1.1):
+  /vike@0.4.161(vite@5.1.7):
     resolution: {integrity: sha512-APiNZS9AuK9JpoJNvxXFxQ6arj3frJzx1kp+gzmXztq8QHa1Sbl5EDUqEGEz3waqO/Q4H0ebRx/W+/UwDk38iQ==}
     engines: {node: '>=16.0.0'}
     hasBin: true
@@ -15015,7 +15015,7 @@ packages:
       fast-glob: 3.3.2
       sirv: 2.0.4
       source-map-support: 0.5.21
-      vite: 5.1.1(@types/node@20.11.17)
+      vite: 5.1.7(@types/node@20.11.17)
     dev: false
 
   /vite-node@1.2.2(@types/node@20.11.17):
@@ -15027,7 +15027,7 @@ packages:
       debug: 4.3.4
       pathe: 1.1.2
       picocolors: 1.0.0
-      vite: 5.1.1(@types/node@20.11.17)
+      vite: 5.1.7(@types/node@20.11.17)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -15039,7 +15039,7 @@ packages:
       - terser
     dev: true
 
-  /vite-plugin-pwa@0.18.0(vite@5.1.1)(workbox-build@7.0.0)(workbox-window@7.0.0):
+  /vite-plugin-pwa@0.18.0(vite@5.1.7)(workbox-build@7.0.0)(workbox-window@7.0.0):
     resolution: {integrity: sha512-4ReE3KHz3sSXT3o0kpcNHirOYPbbCcnOgJGZX64jFxOvaOmkHXEorm5h1b6XU6/i48f2xzurSGU7w2+4HnziMQ==}
     engines: {node: '>=16.0.0'}
     peerDependencies:
@@ -15050,14 +15050,14 @@ packages:
       debug: 4.3.4
       fast-glob: 3.3.2
       pretty-bytes: 6.1.1
-      vite: 5.1.1(@types/node@20.11.17)
+      vite: 5.1.7(@types/node@20.11.17)
       workbox-build: 7.0.0
       workbox-window: 7.0.0
     transitivePeerDependencies:
       - supports-color
     dev: true
 
-  /vite-plugin-svgr@4.2.0(rollup@2.79.1)(typescript@5.3.3)(vite@5.1.1):
+  /vite-plugin-svgr@4.2.0(rollup@2.79.1)(typescript@5.3.3)(vite@5.1.7):
     resolution: {integrity: sha512-SC7+FfVtNQk7So0XMjrrtLAbEC8qjFPifyD7+fs/E6aaNdVde6umlVVh0QuwDLdOMu7vp5RiGFsB70nj5yo0XA==}
     peerDependencies:
       vite: ^2.6.0 || 3 || 4 || 5
@@ -15065,7 +15065,7 @@ packages:
       '@rollup/pluginutils': 5.1.0(rollup@2.79.1)
       '@svgr/core': 8.1.0(typescript@5.3.3)
       '@svgr/plugin-jsx': 8.1.0(@svgr/core@8.1.0)
-      vite: 5.1.1(@types/node@20.11.17)
+      vite: 5.1.7(@types/node@20.11.17)
     transitivePeerDependencies:
       - rollup
       - supports-color
@@ -15106,6 +15106,99 @@ packages:
       rollup: 4.10.0
     optionalDependencies:
       fsevents: 2.3.3
+    dev: true
+
+  /vite@5.1.7(@types/node@20.11.17):
+    resolution: {integrity: sha512-sgnEEFTZYMui/sTlH1/XEnVNHMujOahPLGMxn1+5sIT45Xjng1Ec1K78jRP15dSmVgg5WBin9yO81j3o9OxofA==}
+    engines: {node: ^18.0.0 || >=20.0.0}
+    hasBin: true
+    peerDependencies:
+      '@types/node': ^18.0.0 || >=20.0.0
+      less: '*'
+      lightningcss: ^1.21.0
+      sass: '*'
+      stylus: '*'
+      sugarss: '*'
+      terser: ^5.4.0
+    peerDependenciesMeta:
+      '@types/node':
+        optional: true
+      less:
+        optional: true
+      lightningcss:
+        optional: true
+      sass:
+        optional: true
+      stylus:
+        optional: true
+      sugarss:
+        optional: true
+      terser:
+        optional: true
+    dependencies:
+      '@types/node': 20.11.17
+      esbuild: 0.19.12
+      postcss: 8.4.35
+      rollup: 4.10.0
+    optionalDependencies:
+      fsevents: 2.3.3
+
+  /vitest@1.2.2(@types/node@20.11.17):
+    resolution: {integrity: sha512-d5Ouvrnms3GD9USIK36KG8OZ5bEvKEkITFtnGv56HFaSlbItJuYr7hv2Lkn903+AvRAgSixiamozUVfORUekjw==}
+    engines: {node: ^18.0.0 || >=20.0.0}
+    hasBin: true
+    peerDependencies:
+      '@edge-runtime/vm': '*'
+      '@types/node': ^18.0.0 || >=20.0.0
+      '@vitest/browser': ^1.0.0
+      '@vitest/ui': ^1.0.0
+      happy-dom: '*'
+      jsdom: '*'
+    peerDependenciesMeta:
+      '@edge-runtime/vm':
+        optional: true
+      '@types/node':
+        optional: true
+      '@vitest/browser':
+        optional: true
+      '@vitest/ui':
+        optional: true
+      happy-dom:
+        optional: true
+      jsdom:
+        optional: true
+    dependencies:
+      '@types/node': 20.11.17
+      '@vitest/expect': 1.2.2
+      '@vitest/runner': 1.2.2
+      '@vitest/snapshot': 1.2.2
+      '@vitest/spy': 1.2.2
+      '@vitest/utils': 1.2.2
+      acorn-walk: 8.3.2
+      cac: 6.7.14
+      chai: 4.4.1
+      debug: 4.3.4
+      execa: 8.0.1
+      local-pkg: 0.5.0
+      magic-string: 0.30.7
+      pathe: 1.1.2
+      picocolors: 1.0.0
+      std-env: 3.7.0
+      strip-literal: 1.3.0
+      tinybench: 2.6.0
+      tinypool: 0.8.2
+      vite: 5.1.1(@types/node@20.11.17)
+      vite-node: 1.2.2(@types/node@20.11.17)
+      why-is-node-running: 2.2.2
+    transitivePeerDependencies:
+      - less
+      - lightningcss
+      - sass
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+    dev: true
 
   /vitest@1.2.2(@types/node@20.11.17)(jsdom@24.0.0):
     resolution: {integrity: sha512-d5Ouvrnms3GD9USIK36KG8OZ5bEvKEkITFtnGv56HFaSlbItJuYr7hv2Lkn903+AvRAgSixiamozUVfORUekjw==}
@@ -15152,7 +15245,7 @@ packages:
       strip-literal: 1.3.0
       tinybench: 2.6.0
       tinypool: 0.8.2
-      vite: 5.1.1(@types/node@20.11.17)
+      vite: 5.1.7(@types/node@20.11.17)
       vite-node: 1.2.2(@types/node@20.11.17)
       why-is-node-running: 2.2.2
     transitivePeerDependencies:
@@ -15404,6 +15497,7 @@ packages:
 
   /workbox-google-analytics@7.0.0:
     resolution: {integrity: sha512-MEYM1JTn/qiC3DbpvP2BVhyIH+dV/5BjHk756u9VbwuAhu0QHyKscTnisQuz21lfRpOwiS9z4XdqeVAKol0bzg==}
+    deprecated: It is not compatible with newer versions of GA starting with v4, as long as you are using GAv3 it should be ok, but the package is not longer being maintained
     dependencies:
       workbox-background-sync: 7.0.0
       workbox-core: 7.0.0
