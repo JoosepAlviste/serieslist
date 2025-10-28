@@ -8,6 +8,13 @@ export const createLogger = ({ name }: { name: string }) => {
   return pino({
     level: process.env.NODE_ENV === 'test' ? 'silent' : 'info',
     name,
+    formatters: {
+      level: (label) => {
+        return {
+          level: label,
+        }
+      },
+    },
     transport:
       process.env.NODE_ENV !== 'production'
         ? {
