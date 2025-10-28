@@ -22,7 +22,7 @@
   "dependencies": {
     "@serieslist/core-logger": "workspace:*",
     "node-fetch": "^3.3.2",
-    "pino": "^8.18.0",
+    "pino": "^9.14.0",
     "zod": "^3.22.3"
   },
   "devDependencies": {

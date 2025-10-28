@@ -24,7 +24,7 @@
     "@serieslist/core-logger": "workspace:*",
     "drizzle-orm": "^0.29.3",
     "pg": "^8.11.3",
-    "pino": "^8.18.0"
+    "pino": "^9.14.0"
   },
   "devDependencies": {
     "@serieslist/eslint-config-base": "workspace:*",

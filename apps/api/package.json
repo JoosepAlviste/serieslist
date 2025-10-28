@@ -59,7 +59,7 @@
     "nanoid": "^5.0.5",
     "node-fetch": "^3.3.2",
     "pg": "^8.11.3",
-    "pino": "^8.18.0",
+    "pino": "^9.14.0",
     "zod": "^3.22.3"
   },
   "devDependencies": {
