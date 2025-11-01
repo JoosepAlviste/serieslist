@@ -1,4 +1,38 @@
+import {
+  ATTR_HTTP_REQUEST_METHOD,
+  ATTR_URL_FULL,
+  ATTR_URL_SCHEME,
+  ATTR_USER_AGENT_ORIGINAL,
+  ATTR_HTTP_RESPONSE_STATUS_CODE,
+} from '@opentelemetry/semantic-conventions'
 import pino, { type Logger } from 'pino'
+
+type RequestShape = {
+  protocol: string
+  hostname: string
+  originalUrl: string
+  method: string
+  headers: { 'user-agent'?: string }
+}
+
+const customReqSerializer = (req: RequestShape) => {
+  const url = new URL(`${req.protocol}://${req.hostname}${req.originalUrl}`)
+
+  return {
+    [ATTR_HTTP_REQUEST_METHOD]: req.method,
+    [ATTR_URL_FULL]: url,
+    [ATTR_URL_SCHEME]: req.protocol,
+    [ATTR_USER_AGENT_ORIGINAL]: req.headers['user-agent'],
+  }
+}
+
+type ResponseShape = {
+  statusCode: number
+}
+
+const customResSerializer = (res: ResponseShape) => ({
+  [ATTR_HTTP_RESPONSE_STATUS_CODE]: res.statusCode,
+})
 
 /**
  * Create a new logger instance with the given name. The name is always
@@ -6,8 +40,12 @@ import pino, { type Logger } from 'pino'
  */
 export const createLogger = ({ name }: { name: string }) => {
   return pino({
-    level: process.env.NODE_ENV === 'test' ? 'silent' : 'info',
+    level: process.env.NODE_ENV === 'test' ? 'silent' : 'debug',
     name,
+    serializers: {
+      req: customReqSerializer,
+      res: customResSerializer,
+    },
     formatters: {
       level: (label) => {
         return {

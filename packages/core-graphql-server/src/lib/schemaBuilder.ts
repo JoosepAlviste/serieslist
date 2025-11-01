@@ -53,8 +53,12 @@ export const builder = new SchemaBuilder<{
     wrap: (resolver, _options, config) =>
       wrapResolver(resolver, (_error, duration) => {
         if (process.env.NODE_ENV !== 'test') {
-          log.info(
-            `Executed resolver ${config.parentType}.${config.name} in ${duration}ms`,
+          log.debug(
+            {
+              resolver: `${config.parentType}.${config.name}`,
+              duration,
+            },
+            'Executed resolver',
           )
         }
       }),

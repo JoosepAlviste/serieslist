@@ -1,5 +1,5 @@
 {
-  "name": "@serieslist/core-logger",
+  "name": "@serieslist/core-tracing",
   "version": "1.0.0",
   "type": "module",
   "exports": {
@@ -14,18 +14,19 @@
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
-    "@opentelemetry/semantic-conventions": "^1.37.0",
-    "pino": "^9.14.0"
-  },
-  "peerDependencies": {
-    "pino": "^9.14.0"
+    "@fastify/otel": "^0.11.0",
+    "@opentelemetry/auto-instrumentations-node": "^0.66.0",
+    "@opentelemetry/exporter-logs-otlp-proto": "^0.207.0",
+    "@opentelemetry/exporter-metrics-otlp-proto": "^0.207.0",
+    "@opentelemetry/exporter-trace-otlp-proto": "^0.207.0",
+    "@opentelemetry/resources": "^2.2.0",
+    "@opentelemetry/sdk-node": "^0.207.0",
+    "@opentelemetry/semantic-conventions": "^1.37.0"
   },
   "devDependencies": {
     "@serieslist/eslint-config-base": "workspace:*",
     "@serieslist/prettier-config": "workspace:*",
     "@serieslist/typescript-config-base": "workspace:*",
-    "pino": "^9.14.0",
-    "pino-pretty": "^10.3.1",
     "typescript": "^5.3.3"
   }
 }

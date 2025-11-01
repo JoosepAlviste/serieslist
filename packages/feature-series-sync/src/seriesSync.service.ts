@@ -228,7 +228,13 @@ export const syncSeriesDetails = async ({
     })
   }
 
-  log.info(`Synced series "${savedSeries.title}" (${savedSeries.id})`)
+  log.info(
+    {
+      title: savedSeries.title,
+      seriesId: savedSeries.id,
+    },
+    'Synced series',
+  )
 
   return savedSeries
 }

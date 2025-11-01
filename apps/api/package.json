@@ -4,7 +4,8 @@
   "type": "module",
   "sideEffects": [
     "./src/**/*.schema.ts",
-    "./src/lib/initSentry.ts"
+    "./src/lib/initSentry.ts",
+    "./src/tracing.ts"
   ],
   "scripts": {
     "build": "rimraf dist && NODE_ENV=production tsx bin/build.ts",
@@ -18,9 +19,9 @@
     "migrate": "tsx bin/migrate.ts",
     "migrate:prod": "NODE_ENV=production dotenv -e ../../.env node dist/bin/migrate.js",
     "migrate:test": "dotenv -e ../../.env.test tsx bin/migrate.ts",
-    "start": "NODE_ENV=development tsx watch --clear-screen=false src/main.ts",
+    "start": "NODE_ENV=development tsx watch --clear-screen=false --import=./src/tracing.ts  src/main.ts",
     "start:e2e": "NODE_ENV=test pnpm start:prod",
-    "start:prod": "NODE_ENV=production node dist/src/main.js",
+    "start:prod": "NODE_ENV=production node --import ./dist/src/tracing.js  dist/src/main.js",
     "test": "dotenv -e ../../.env.test vitest run",
     "test:coverage": "dotenv -e ../../.env.test vitest run -- --coverage",
     "test:watch": "dotenv -e ../../.env.test vitest",
@@ -37,6 +38,7 @@
     "@serieslist/core-db": "workspace:*",
     "@serieslist/core-graphql-server": "workspace:*",
     "@serieslist/core-logger": "workspace:*",
+    "@serieslist/core-tracing": "workspace:*",
     "@serieslist/feature-series-sync": "workspace:*",
     "@serieslist/feature-tmdb": "workspace:*",
     "@serieslist/util-arrays": "workspace:*",
@@ -52,6 +54,7 @@
     "graphql": "^16.8.1",
     "graphql-scalars": "^1.22.4",
     "graphql-yoga": "^5.1.1",
+    "import-in-the-middle": "^2.0.0",
     "jsonwebtoken": "^9.0.2",
     "just-group-by": "^2.2.0",
     "just-index": "^4.2.0",

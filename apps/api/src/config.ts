@@ -30,4 +30,8 @@ export const config = {
     enabled: process.env.NODE_ENV === 'production',
     dsn: process.env.API_SENTRY_DSN!,
   },
+
+  tracing: {
+    enabled: environment === 'production',
+  },
 }
