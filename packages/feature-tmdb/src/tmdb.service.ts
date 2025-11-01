@@ -88,6 +88,8 @@ export const searchSeries = async ({
   )
 
   if (!response) {
+    log.warn({ keyword }, 'search failed')
+
     // No result found or other error
     return []
   }
@@ -102,6 +104,8 @@ export const fetchSeriesDetails = async ({ tmdbId }: { tmdbId: number }) => {
     tmdbSeriesResponseSchema,
   )
   if (!response || 'success' in response) {
+    log.warn({ parsed, found: false, tmdbId }, 'TMDB series not found')
+
     return { parsed, found: false, series: null, totalSeasons: 0, seasons: [] }
   }
 
@@ -133,6 +137,11 @@ export const fetchEpisodesForSeason = async ({
     tmdbSeasonResponseSchema,
   )
   if (!response || 'success' in response) {
+    log.warn(
+      { parsed, found: false, tmdbId, seasonNumber },
+      'TMDB episodes for season not found',
+    )
+
     return {
       parsed,
       found: false,

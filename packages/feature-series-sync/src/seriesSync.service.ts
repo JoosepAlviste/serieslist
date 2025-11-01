@@ -87,9 +87,25 @@ export const syncSeasonsAndEpisodes = async ({
           seasonNumber: parseInt(seasonNumber),
         })
       if (!parsed) {
+        log.warn(
+          {
+            tmdbId,
+            seasonNumber,
+          },
+          '[series sync] could not parse season episodes from TMDB',
+        )
+
         return
       }
       if (!found) {
+        log.info(
+          {
+            tmdbId,
+            seasonNumber,
+          },
+          '[series sync] season episodes not found, deleting season',
+        )
+
         await seasonRepository.deleteOne({
           ctx,
           seasonId: seasonsByNumber[seasonNumber].seasonId,
@@ -147,6 +163,15 @@ export const syncSeasonsAndEpisodes = async ({
   )
 
   if (episodeIdsToDelete.length) {
+    log.info(
+      {
+        tmdbId,
+        seriesId,
+        episodeIdsToDelete,
+      },
+      '[series sync] deleting episodes',
+    )
+
     await episodeRepository.deleteMany({
       ctx,
       episodeIds: episodeIdsToDelete,
@@ -172,6 +197,11 @@ export const syncSeasonsAndEpisodes = async ({
         nextEpisodeId: firstNewEpisode.episodeId,
       },
     })
+
+    log.info(
+      { seriesId, nextEpisodeId: firstNewEpisode.episodeId, tmdbId },
+      '[series sync] updated series progress',
+    )
   }
 }
 
@@ -190,6 +220,8 @@ export const syncSeriesDetails = async ({
   ctx: DBContext
   tmdbId: number
 }) => {
+  log.info({ tmdbId }, '[series sync] syncing series')
+
   const {
     parsed,
     found,
@@ -203,6 +235,8 @@ export const syncSeriesDetails = async ({
 
   if (!found) {
     await seriesRepository.deleteOne({ ctx, tmdbId })
+    log.info({ tmdbId }, '[series sync] deleting series not found from TMDB')
+
     return null
   }
 
@@ -216,6 +250,8 @@ export const syncSeriesDetails = async ({
     },
   })
   if (!savedSeries) {
+    log.warn({ tmdbId }, '[series sync] series could not be updated')
+
     return null
   }
 
@@ -232,8 +268,9 @@ export const syncSeriesDetails = async ({
     {
       title: savedSeries.title,
       seriesId: savedSeries.id,
+      tmdbId,
     },
-    'Synced series',
+    '[series syncing] synced series successfully',
   )
 
   return savedSeries
