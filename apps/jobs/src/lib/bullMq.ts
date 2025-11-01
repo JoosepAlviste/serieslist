@@ -6,6 +6,7 @@ import {
   type WorkerOptions,
   type QueueOptions,
 } from 'bullmq'
+import { BullMQOtel } from 'bullmq-otel'
 
 import { config } from './config'
 
@@ -18,10 +19,20 @@ const redisConnection: RedisOptions = {
 export const createQueue = (
   name: string,
   opts: Omit<QueueOptions, 'connection'> = {},
-) => new Queue(name, { connection: redisConnection, ...opts })
+) =>
+  new Queue(name, {
+    connection: redisConnection,
+    telemetry: new BullMQOtel(name),
+    ...opts,
+  })
 
 export const createWorker = (
   name: string,
   processor: Processor,
   opts: Omit<WorkerOptions, 'connection'> = {},
-) => new Worker(name, processor, { connection: redisConnection, ...opts })
+) =>
+  new Worker(name, processor, {
+    connection: redisConnection,
+    telemetry: new BullMQOtel(name),
+    ...opts,
+  })

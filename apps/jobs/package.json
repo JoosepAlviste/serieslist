@@ -10,15 +10,19 @@
     "build:docker": "(cd ../.. && docker buildx build --push --cache-to type=gha,mode=max,scope=jobs --cache-from type=gha,scope=jobs -t ghcr.io/joosepalviste/serieslist-jobs:latest -f apps/api/Dockerfile --target production .)",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
-    "start": "NODE_ENV=development tsx watch --clear-screen=false src/main.ts",
-    "start:prod": "NODE_ENV=production node dist/main.js",
+    "start": "NODE_ENV=development tsx watch --clear-screen=false --import=./src/tracing.ts src/main.ts",
+    "start:prod": "NODE_ENV=production node --import ./dist/tracing.js dist/main.js",
     "tsc": "tsc --noEmit"
   },
   "dependencies": {
     "@serieslist/core-db": "workspace:*",
     "@serieslist/core-logger": "workspace:*",
+    "@serieslist/core-tracing": "workspace:^",
     "@serieslist/feature-series-sync": "workspace:*",
-    "bullmq": "^5.1.10"
+    "bullmq": "^5.63.0",
+    "bullmq-otel": "^1.0.1",
+    "dotenv": "^16.4.2",
+    "import-in-the-middle": "^2.0.0"
   },
   "devDependencies": {
     "@serieslist/core-esbuild": "workspace:*",
