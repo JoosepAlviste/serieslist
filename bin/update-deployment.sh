@@ -18,6 +18,9 @@ if [[ -z "${DEPLOYMENT_SSH_HOST}" ]]; then
 fi
 
 ssh "${DEPLOYMENT_SSH_USER}@${DEPLOYMENT_SSH_HOST}" <<ENDSSH
+# Fail if any command fails
+set -e
+
 cd ~/projects/serieslist
 git pull
 
