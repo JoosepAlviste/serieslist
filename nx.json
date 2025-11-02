@@ -27,7 +27,8 @@
       "defaultConfiguration": "e2e",
       "configurations": {
         "e2e": {}
-      }
+      },
+      "outputs": ["{projectRoot}/dist"]
     },
     "build:server": {
       "cache": true
