@@ -2,16 +2,18 @@ import SchemaBuilder from '@pothos/core'
 import DataloaderPlugin from '@pothos/plugin-dataloader'
 import ErrorsPlugin from '@pothos/plugin-errors'
 import ScopeAuthPlugin from '@pothos/plugin-scope-auth'
-import TracingPlugin, {
-  wrapResolver,
-  isRootField,
-} from '@pothos/plugin-tracing'
+import TracingPlugin, { isRootField } from '@pothos/plugin-tracing'
 import ValidationPlugin from '@pothos/plugin-validation'
+import { createOpenTelemetryWrapper } from '@pothos/tracing-opentelemetry'
 
 import type { AuthenticatedContext, Context } from '../types/context'
 
 import { UnauthorizedError } from './errors'
-import { log } from './logger'
+import { tracer } from './tracer'
+
+const createSpan = createOpenTelemetryWrapper(tracer, {
+  includeSource: true,
+})
 
 export const builder = new SchemaBuilder<{
   Context: Context
@@ -50,17 +52,6 @@ export const builder = new SchemaBuilder<{
   },
   tracing: {
     default: (config) => isRootField(config),
-    wrap: (resolver, _options, config) =>
-      wrapResolver(resolver, (_error, duration) => {
-        if (process.env.NODE_ENV !== 'test') {
-          log.debug(
-            {
-              resolver: `${config.parentType}.${config.name}`,
-              duration,
-            },
-            'Executed resolver',
-          )
-        }
-      }),
+    wrap: (resolver, options) => createSpan(resolver, options),
   },
 })
