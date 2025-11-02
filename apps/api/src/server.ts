@@ -56,22 +56,13 @@ export const yoga = createYoga<{
 })
 
 app.route({
-  url: '/graphql',
+  url: yoga.graphqlEndpoint,
   method: ['GET', 'POST', 'OPTIONS'],
-  handler: async (req, reply) => {
-    const response = await yoga.handleNodeRequest(req, {
+  handler: (req, reply) =>
+    yoga.handleNodeRequestAndResponse(req, reply, {
       req,
       reply,
-    })
-    response.headers.forEach((value, key) => {
-      void reply.header(key, value)
-    })
-
-    void reply.status(response.status)
-    void reply.send(response.body)
-
-    return reply
-  },
+    }),
 })
 
 export { app }

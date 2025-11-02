@@ -9,7 +9,7 @@ import { config } from '#/config'
 import { log } from './logger'
 
 export const app = fastify({
-  logger: getLoggerByEnvironment(log),
+  loggerInstance: getLoggerByEnvironment(log),
 })
 
 await app.register(cookie, {

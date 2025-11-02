@@ -42,7 +42,7 @@ const shouldRequestBeLogged = (req: FastifyRequest) => {
 
 async function startServer() {
   const app = fastify({
-    logger: log,
+    loggerInstance: log,
     // We do our own request logging to avoid logging static asset requests
     disableRequestLogging: true,
   })

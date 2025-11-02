@@ -71,14 +71,14 @@ export const createLogger = ({ name }: { name: string }) => {
  */
 export const getLoggerByEnvironment = (logger: Logger) => {
   if (!process.env.NODE_ENV) {
-    return true
+    return logger
   }
 
-  const envToLogger: Record<string, Logger | boolean | undefined> = {
+  const envToLogger: Record<string, Logger | undefined> = {
     development: logger,
     production: logger,
-    test: false,
+    test: undefined,
   }
 
-  return envToLogger[process.env.NODE_ENV] ?? true
+  return envToLogger[process.env.NODE_ENV]
 }
