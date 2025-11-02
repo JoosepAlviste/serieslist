@@ -49,7 +49,7 @@ export const createTracing = ({ name }: { name: string }): NodeSDK => {
       }),
     ],
     logRecordProcessors: [
-      new logs.SimpleLogRecordProcessor(
+      new logs.BatchLogRecordProcessor(
         new OTLPLogExporter(getExporterConfig('logs')),
       ),
     ],
