@@ -65,6 +65,8 @@ jobs:
       - name: E2E tests
         env:
           NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
+          OTEL_ENDPOINT: ${{ secrets.OTEL_ENDPOINT }}
+          OTEL_AUTH_TOKEN: ${{ secrets.OTEL_AUTH_TOKEN }}
         run: |
           pnpm exec nx affected -t test:e2e
       - uses: actions/upload-artifact@v5
