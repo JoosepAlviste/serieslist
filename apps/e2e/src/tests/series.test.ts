@@ -3,7 +3,7 @@ import { test, expect } from '../fixtures'
 test('allows searching for series and viewing their details', async ({
   page,
 }) => {
-  await page.goto('/series/list')
+  await page.goto('/series/list/in-progress')
 
   await page.getByPlaceholder('Search...').fill('futura')
 
@@ -33,7 +33,7 @@ test('allows searching for series and viewing their details', async ({
 })
 
 test('allows setting a status for a series', async ({ page }) => {
-  await page.goto('/series/list')
+  await page.goto('/series/list/in-progress')
 
   await page.getByPlaceholder('Search...').fill('futura')
   await page.getByText('Futurama').click()

@@ -5,7 +5,7 @@ import { registerNewUser } from '../utils'
 test('allows keeping track of series progress', async ({ page }) => {
   await registerNewUser(page)
 
-  await page.goto('/series/list')
+  await page.goto('/series/list/in-progress')
 
   await page.getByPlaceholder('Search...').fill('futura')
   const detailsUrl = await page
@@ -14,14 +14,18 @@ test('allows keeping track of series progress', async ({ page }) => {
   await page.getByText('Futurama').click()
   await page.waitForURL('/series/*')
 
-  await page.getByRole('combobox', { name: 'Change status' }).click()
-  await page.getByRole('option', { name: 'In progress' }).click()
-
   await page
     .getByRole('listitem')
     .filter({ has: page.getByText('S01E01') })
     .getByRole('button', { name: 'Mark as seen' })
     .click()
+
+  await expect(
+    page.getByText('Notification Episode marked as seen'),
+  ).toBeVisible()
+
+  await page.getByRole('combobox', { name: 'Change status' }).click()
+  await page.getByRole('option', { name: 'In progress' }).click()
 
   // The series is in the list with the correct progress
   await page.goto('/series/list/all')
