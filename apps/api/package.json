@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "build": "rimraf dist && NODE_ENV=production tsx bin/build.ts",
-    "build:docker": "(cd ../.. && docker buildx build --push --cache-to type=gha,mode=max,scope=api --cache-from type=gha,scope=api -t ghcr.io/joosepalviste/serieslist-api:latest -f apps/api/Dockerfile --target production .)",
+    "build:docker": "(cd ../.. && docker buildx build --push --cache-to type=gha,mode=max,scope=api --cache-from type=gha,scope=api -t ghcr.io/joosepalviste/serieslist-api:latest -f apps/api/Dockerfile --target production --platform linux/amd64 .)",
     "build:e2e": "(cd ../.. && nx run @serieslist/api:build)",
     "clear-test-db": "dotenv -e ../../.env.test tsx bin/clearDatabase.ts",
     "codegen": "DOTENV_CONFIG_PATH='../../.env' graphql-codegen-esm -r dotenv/config",
