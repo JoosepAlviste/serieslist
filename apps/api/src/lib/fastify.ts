@@ -28,3 +28,19 @@ if (config.environment !== 'test') {
     timeWindow: '1 minute',
   })
 }
+
+app.addHook('onRequest', (req, reply, done) => {
+  if (!req.opentelemetry) {
+    return done()
+  }
+
+  const { inject } = req.opentelemetry()
+
+  const carrier = {}
+  inject(carrier)
+
+  void reply.headers(carrier)
+  log.info({ carrier }, 'carrerier headers')
+
+  done()
+})
