@@ -1,15 +1,16 @@
-import type { Config } from 'drizzle-kit'
+import { defineConfig } from 'drizzle-kit'
 
 import { config } from './src/lib/config'
 
-export default {
+export default defineConfig({
   schema: './src/schema/index.ts',
+  dialect: 'postgresql',
   out: './src/drizzle',
-  driver: 'pg',
   dbCredentials: {
     host: config.db.host,
     user: config.db.user,
     password: config.db.password,
     database: config.db.db,
+    ssl: config.db.host !== 'localhost',
   },
-} satisfies Config
+})

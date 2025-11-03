@@ -38,7 +38,7 @@
     "@serieslist/feature-tmdb": "workspace:*",
     "@serieslist/util-arrays": "workspace:*",
     "@serieslist/util-dates": "workspace:*",
-    "drizzle-orm": "^0.29.3",
+    "drizzle-orm": "^0.44.7",
     "just-index": "^4.2.0",
     "just-unique": "^4.2.0"
   }

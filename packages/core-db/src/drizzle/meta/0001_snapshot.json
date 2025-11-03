@@ -1,10 +1,8 @@
 {
-  "id": "ac0bfff0-f8f3-4cec-8379-9a76d816bb50",
-  "prevId": "00000000-0000-0000-0000-000000000000",
-  "version": "5",
-  "dialect": "pg",
+  "version": "7",
+  "dialect": "postgresql",
   "tables": {
-    "episode": {
+    "public.episode": {
       "name": "episode",
       "schema": "",
       "columns": {
@@ -62,28 +60,39 @@
         "episode_season_id_season_id_fk": {
           "name": "episode_season_id_season_id_fk",
           "tableFrom": "episode",
+          "columnsFrom": [
+            "season_id"
+          ],
           "tableTo": "season",
-          "columnsFrom": ["season_id"],
-          "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "episode_imdb_id_key": {
           "name": "episode_imdb_id_key",
-          "nullsNotDistinct": false,
-          "columns": ["imdb_id"]
+          "columns": [
+            "imdb_id"
+          ],
+          "nullsNotDistinct": false
         },
         "episode_tmdb_id_key": {
           "name": "episode_tmdb_id_key",
-          "nullsNotDistinct": false,
-          "columns": ["tmdb_id"]
+          "columns": [
+            "tmdb_id"
+          ],
+          "nullsNotDistinct": false
         }
-      }
+      },
+      "policies": {},
+      "isRLSEnabled": false,
+      "checkConstraints": {}
     },
-    "season": {
+    "public.season": {
       "name": "season",
       "schema": "",
       "columns": {
@@ -123,23 +132,32 @@
         "season_series_id_series_id_fk": {
           "name": "season_series_id_series_id_fk",
           "tableFrom": "season",
+          "columnsFrom": [
+            "series_id"
+          ],
           "tableTo": "series",
-          "columnsFrom": ["series_id"],
-          "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "season_tmdb_id_key": {
           "name": "season_tmdb_id_key",
-          "nullsNotDistinct": false,
-          "columns": ["tmdb_id"]
+          "columns": [
+            "tmdb_id"
+          ],
+          "nullsNotDistinct": false
         }
-      }
+      },
+      "policies": {},
+      "isRLSEnabled": false,
+      "checkConstraints": {}
     },
-    "seen_episode": {
+    "public.seen_episode": {
       "name": "seen_episode",
       "schema": "",
       "columns": {
@@ -168,31 +186,45 @@
         "seen_episode_user_id_user_id_fk": {
           "name": "seen_episode_user_id_user_id_fk",
           "tableFrom": "seen_episode",
+          "columnsFrom": [
+            "user_id"
+          ],
           "tableTo": "user",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         },
         "seen_episode_episode_id_episode_id_fk": {
           "name": "seen_episode_episode_id_episode_id_fk",
           "tableFrom": "seen_episode",
+          "columnsFrom": [
+            "episode_id"
+          ],
           "tableTo": "episode",
-          "columnsFrom": ["episode_id"],
-          "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
         "seen_episode_pk": {
           "name": "seen_episode_pk",
-          "columns": ["user_id", "episode_id"]
+          "columns": [
+            "user_id",
+            "episode_id"
+          ]
         }
       },
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "policies": {},
+      "isRLSEnabled": false,
+      "checkConstraints": {}
     },
-    "series": {
+    "public.series": {
       "name": "series",
       "schema": "",
       "columns": {
@@ -283,17 +315,24 @@
       "uniqueConstraints": {
         "series_imdb_id_key": {
           "name": "series_imdb_id_key",
-          "nullsNotDistinct": false,
-          "columns": ["imdb_id"]
+          "columns": [
+            "imdb_id"
+          ],
+          "nullsNotDistinct": false
         },
         "series_tmdb_id_key": {
           "name": "series_tmdb_id_key",
-          "nullsNotDistinct": false,
-          "columns": ["tmdb_id"]
+          "columns": [
+            "tmdb_id"
+          ],
+          "nullsNotDistinct": false
         }
-      }
+      },
+      "policies": {},
+      "isRLSEnabled": false,
+      "checkConstraints": {}
     },
-    "series_progress": {
+    "public.series_progress": {
       "name": "series_progress",
       "schema": "",
       "columns": {
@@ -341,49 +380,71 @@
         "series_progress_user_id_user_id_fk": {
           "name": "series_progress_user_id_user_id_fk",
           "tableFrom": "series_progress",
+          "columnsFrom": [
+            "user_id"
+          ],
           "tableTo": "user",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         },
         "series_progress_series_id_series_id_fk": {
           "name": "series_progress_series_id_series_id_fk",
           "tableFrom": "series_progress",
+          "columnsFrom": [
+            "series_id"
+          ],
           "tableTo": "series",
-          "columnsFrom": ["series_id"],
-          "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         },
         "series_progress_latest_seen_episode_id_episode_id_fk": {
           "name": "series_progress_latest_seen_episode_id_episode_id_fk",
           "tableFrom": "series_progress",
+          "columnsFrom": [
+            "latest_seen_episode_id"
+          ],
           "tableTo": "episode",
-          "columnsFrom": ["latest_seen_episode_id"],
-          "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         },
         "series_progress_next_episode_id_episode_id_fk": {
           "name": "series_progress_next_episode_id_episode_id_fk",
           "tableFrom": "series_progress",
+          "columnsFrom": [
+            "next_episode_id"
+          ],
           "tableTo": "episode",
-          "columnsFrom": ["next_episode_id"],
-          "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
         "series_progress_pk": {
           "name": "series_progress_pk",
-          "columns": ["user_id", "series_id"]
+          "columns": [
+            "user_id",
+            "series_id"
+          ]
         }
       },
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "policies": {},
+      "isRLSEnabled": false,
+      "checkConstraints": {}
     },
-    "session": {
+    "public.session": {
       "name": "session",
       "schema": "",
       "columns": {
@@ -438,17 +499,24 @@
         "session_user_id_user_id_fk": {
           "name": "session_user_id_user_id_fk",
           "tableFrom": "session",
+          "columnsFrom": [
+            "user_id"
+          ],
           "tableTo": "user",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "policies": {},
+      "isRLSEnabled": false,
+      "checkConstraints": {}
     },
-    "user": {
+    "public.user": {
       "name": "user",
       "schema": "",
       "columns": {
@@ -504,12 +572,17 @@
       "uniqueConstraints": {
         "user_email_key": {
           "name": "user_email_key",
-          "nullsNotDistinct": false,
-          "columns": ["email"]
+          "columns": [
+            "email"
+          ],
+          "nullsNotDistinct": false
         }
-      }
+      },
+      "policies": {},
+      "isRLSEnabled": false,
+      "checkConstraints": {}
     },
-    "user_series_status": {
+    "public.user_series_status": {
       "name": "user_series_status",
       "schema": "",
       "columns": {
@@ -551,46 +624,67 @@
         "user_series_status_series_id_series_id_fk": {
           "name": "user_series_status_series_id_series_id_fk",
           "tableFrom": "user_series_status",
+          "columnsFrom": [
+            "series_id"
+          ],
           "tableTo": "series",
-          "columnsFrom": ["series_id"],
-          "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         },
         "user_series_status_user_id_user_id_fk": {
           "name": "user_series_status_user_id_user_id_fk",
           "tableFrom": "user_series_status",
+          "columnsFrom": [
+            "user_id"
+          ],
           "tableTo": "user",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "columnsTo": [
+            "id"
+          ],
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
         "user_series_status_pk": {
           "name": "user_series_status_pk",
-          "columns": ["series_id", "user_id"]
+          "columns": [
+            "series_id",
+            "user_id"
+          ]
         }
       },
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "policies": {},
+      "isRLSEnabled": false,
+      "checkConstraints": {}
     }
   },
   "enums": {
-    "user_series_status_status": {
+    "public.user_series_status_status": {
       "name": "user_series_status_status",
-      "values": {
-        "Completed": "Completed",
-        "OnHold": "OnHold",
-        "PlanToWatch": "PlanToWatch",
-        "InProgress": "InProgress"
-      }
+      "schema": "public",
+      "values": [
+        "Completed",
+        "OnHold",
+        "PlanToWatch",
+        "InProgress"
+      ]
     }
   },
   "schemas": {},
   "_meta": {
-    "columns": {},
     "schemas": {},
-    "tables": {}
-  }
+    "tables": {},
+    "columns": {}
+  },
+  "id": "ac0bfff0-f8f3-4cec-8379-9a76d816bb50",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "sequences": {},
+  "policies": {},
+  "views": {},
+  "roles": {}
 }
