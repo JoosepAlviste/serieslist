@@ -63,7 +63,7 @@
     "node-fetch": "^3.3.2",
     "pg": "^8.16.3",
     "pino": "^9.14.0",
-    "zod": "^3.22.3"
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^5.0.2",

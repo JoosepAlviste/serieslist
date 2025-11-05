@@ -45,7 +45,7 @@ const figmaFileResponseSchema = z.object({
 })
 
 const figmaImageResponseSchema = z.object({
-  images: z.record(z.string()),
+  images: z.record(z.string(), z.string()),
 })
 
 type IconComponentData = {

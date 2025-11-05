@@ -2,20 +2,15 @@ import { useMutation } from '@apollo/client'
 import { Button, Error, Field } from '@serieslist/core-ui'
 import React from 'react'
 import { navigate } from 'vike/client/router'
-import { z } from 'zod'
+import { z } from 'zod/v4'
 
 import { graphql } from '#/generated/gql'
 import { useForm } from '#/lib/forms'
 
 import * as s from './LoginForm.css'
 
-type FormData = {
-  email: string
-  password: string
-}
-
 const schema = z.object({
-  email: z.string().email(),
+  email: z.email(),
   password: z.string().min(7),
 })
 
@@ -54,7 +49,7 @@ export const LoginForm = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({ schema })
+  } = useForm({ schema })
 
   const onSubmit = handleSubmit(async ({ data, checkErrors, event }) => {
     event?.preventDefault()

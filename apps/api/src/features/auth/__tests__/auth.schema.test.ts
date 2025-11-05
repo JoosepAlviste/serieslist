@@ -85,7 +85,7 @@ describe('features/auth/auth.schema', () => {
       const error = expectErrors(result.data?.register)
       expect(error.fieldErrors).toContainEqual({
         path: ['input', 'email'],
-        message: 'Invalid email',
+        message: 'Invalid email address',
       })
     })
 

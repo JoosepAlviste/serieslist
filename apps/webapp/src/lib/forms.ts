@@ -1,11 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import type { NotWorthIt, LiterallyAnything } from '@serieslist/util-types'
-import {
-  type FieldValues,
-  useForm as useFormBase,
-  type UseFormProps,
-} from 'react-hook-form'
-import type { ZodSchema } from 'zod'
+import { useForm as useFormBase } from 'react-hook-form'
+import type { FieldValues, UseFormProps } from 'react-hook-form'
+import type { input, output, ZodType } from 'zod/v4'
 
 import type { InvalidInputError } from '#/generated/gql/graphql'
 
@@ -13,23 +10,20 @@ import type { InvalidInputError } from '#/generated/gql/graphql'
  * A wrapper around `react-hook-form` `useForm` that sets up some useful error
  * handling utilities.
  */
-export const useForm = <
-  TFieldValues extends FieldValues = FieldValues,
-  TContext = LiterallyAnything,
->({
+export const useForm = <TSchema extends ZodType<FieldValues, FieldValues>>({
   schema,
   ...props
-}: UseFormProps<TFieldValues, TContext> & {
-  schema?: ZodSchema<TFieldValues>
-} = {}) => {
-  const res = useFormBase<TFieldValues, TContext>({
+}: UseFormProps<input<TSchema>, LiterallyAnything, output<TSchema>> & {
+  schema: TSchema
+}) => {
+  const res = useFormBase<input<TSchema>, LiterallyAnything, output<TSchema>>({
     mode: 'onTouched',
-    resolver: schema ? zodResolver(schema) : undefined,
+    resolver: zodResolver(schema),
     ...props,
   })
 
   type SubmitHandlerArgument = {
-    data: TFieldValues
+    data: output<TSchema>
     event?: React.BaseSyntheticEvent
     checkErrors: typeof checkErrors
   }

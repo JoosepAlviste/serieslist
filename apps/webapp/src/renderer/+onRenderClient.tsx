@@ -10,6 +10,7 @@ import { getPageTitle } from './getPageTitle'
 import { PageShell } from './PageShell'
 
 import '#/lib/initSentry'
+import '#/lib/zod'
 
 let root: Root | undefined
 /**

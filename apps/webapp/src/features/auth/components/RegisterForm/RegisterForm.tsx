@@ -9,15 +9,9 @@ import { useForm } from '#/lib/forms'
 
 import * as s from './RegisterForm.css'
 
-type FormData = {
-  name: string
-  email: string
-  password: string
-}
-
 const schema = z.object({
   name: z.string().min(2),
-  email: z.string().email(),
+  email: z.email(),
   password: z.string().min(7),
 })
 
@@ -57,7 +51,7 @@ export const RegisterForm = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({ schema })
+  } = useForm({ schema })
 
   const onSubmit = handleSubmit(async ({ data, checkErrors, event }) => {
     event?.preventDefault()
