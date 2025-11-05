@@ -113,6 +113,10 @@ jobs:
           pnpm install
 
       - name: Build containers
+        env:
+          VITE_OTEL_AUTH_TOKEN: ${{ secrets.VITE_OTEL_AUTH_TOKEN }}
+          VITE_OTEL_DATASET: ${{ secrets.VITE_OTEL_DATASET }}
+          VITE_OTEL_ENDPOINT: ${{ secrets.VITE_OTEL_ENDPOINT }}
         run: |
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
           sed -i.bak -e "s/VITE_API_URL=.*/VITE_API_URL=https:\/\/api.serieslist.joosep.xyz/" .env
