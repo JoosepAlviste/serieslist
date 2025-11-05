@@ -37,7 +37,7 @@ const REQUEST_LOG_IGNORE_PATTERNS = [
   /__x00__virtual/,
 ]
 
-const shouldRequestBeLogged = (req: FastifyRequest) => {
+function shouldRequestBeLogged(req: FastifyRequest) {
   return !REQUEST_LOG_IGNORE_PATTERNS.some((pattern) => req.url.match(pattern))
 }
 
