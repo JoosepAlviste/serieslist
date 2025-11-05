@@ -11,7 +11,7 @@ import { PageShell } from './PageShell'
 
 import '#/lib/initSentry'
 import '#/lib/tracing'
-import '#/lib/zod'
+import '#/lib/zodCustomErrors'
 
 let root: Root | undefined
 /**
