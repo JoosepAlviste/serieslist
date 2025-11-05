@@ -30,10 +30,11 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 const REQUEST_LOG_IGNORE_PATTERNS = [
-  /\.(js|ts|tsx|css|css\?direct|pageContext\.json|mjs|svg\?import&react|svg\?import)$/,
+  /\.(js|ts|tsx|css|css\?direct|pageContext\.json|mjs|svg|svg\?import&react|svg\?import|ico)$/,
   /@react-refresh$/,
   /@vite\/client$/,
   /:client-routing$/,
+  /__x00__virtual/,
 ]
 
 const shouldRequestBeLogged = (req: FastifyRequest) => {
@@ -49,7 +50,6 @@ async function startServer() {
 
   app.addHook('onRequest', (req, _reply, done) => {
     if (shouldRequestBeLogged(req)) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       req.log.info({ reqId: req.id, req }, 'incoming request')
     }
     done()
@@ -57,7 +57,6 @@ async function startServer() {
 
   app.addHook('onResponse', (req, reply, done) => {
     if (shouldRequestBeLogged(req)) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       req.log.info({ reqId: req.id, res: reply }, 'request completed')
     }
     done()

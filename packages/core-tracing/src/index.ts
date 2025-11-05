@@ -9,6 +9,14 @@ import { ATTR_SERVICE_NAME } from '@opentelemetry/semantic-conventions'
 
 type Environment = 'development' | 'test' | 'production'
 
+const REQUEST_LOG_IGNORE_PATTERNS = [
+  /\.(js|ts|tsx|css|css\?direct|pageContext\.json|mjs|svg|svg\?import&react|svg\?import|ico)$/,
+  /@react-refresh$/,
+  /@vite\/client$/,
+  /:client-routing$/,
+  /__x00__virtual/,
+]
+
 export const createTracing = ({ name }: { name: string }): NodeSDK => {
   const environment = (process.env.NODE_ENV ?? 'production') as Environment
 
@@ -54,7 +62,15 @@ export const createTracing = ({ name }: { name: string }): NodeSDK => {
       ),
     ],
     instrumentations: [
-      getNodeAutoInstrumentations(),
+      getNodeAutoInstrumentations({
+        '@opentelemetry/instrumentation-http': {
+          ignoreIncomingRequestHook: (request) => {
+            return REQUEST_LOG_IGNORE_PATTERNS.some((pattern) =>
+              request.url?.match(pattern),
+            )
+          },
+        },
+      }),
       new FastifyOtelInstrumentation({ registerOnInitialization: true }),
     ],
   })

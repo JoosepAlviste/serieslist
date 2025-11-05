@@ -38,4 +38,8 @@ export const config = {
         ? process.env.VITE_APP_SENTRY_DSN!
         : import.meta.env.VITE_APP_SENTRY_DSN,
   },
+
+  tracing: {
+    enabled: !development,
+  },
 }
