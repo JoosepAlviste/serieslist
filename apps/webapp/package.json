@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.9.4",
+    "@dash0/sdk-web": "^0.16.3",
     "@fastify/compress": "^8.1.0",
     "@fastify/cookie": "^11.0.2",
     "@fastify/middie": "^9.0.3",

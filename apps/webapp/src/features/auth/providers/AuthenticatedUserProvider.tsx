@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from '@apollo/client'
-import React, { type FC, type ReactNode } from 'react'
+import { identify } from '@dash0/sdk-web'
+import React, { useEffect, type FC, type ReactNode } from 'react'
 
 import { graphql } from '#/generated/gql'
 import { usePageContext } from '#/hooks'
@@ -50,6 +51,16 @@ export const AuthenticatedUserProvider: FC<AuthenticatedUserProviderProps> = ({
 
     window.location.reload()
   }
+
+  useEffect(() => {
+    if (currentUser) {
+      identify(currentUser.id, {
+        name: currentUser.name,
+        fullName: currentUser.name,
+        email: currentUser.email,
+      })
+    }
+  }, [currentUser])
 
   return (
     <AuthenticatedUserContext.Provider

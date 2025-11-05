@@ -41,5 +41,17 @@ export const config = {
 
   tracing: {
     enabled: !development,
+    webAuthToken:
+      typeof process !== 'undefined'
+        ? process.env.VITE_OTEL_AUTH_TOKEN!
+        : import.meta.env.VITE_OTEL_AUTH_TOKEN!,
+    url:
+      (typeof process !== 'undefined'
+        ? process.env.VITE_OTEL_ENDPOINT
+        : import.meta.env.VITE_OTEL_ENDPOINT) ?? '',
+    dataset:
+      (typeof process !== 'undefined'
+        ? process.env.VITE_OTEL_DATASET
+        : import.meta.env.VITE_OTEL_DATASET) ?? '',
   },
 }
