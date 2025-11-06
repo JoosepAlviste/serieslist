@@ -7,7 +7,7 @@
   ],
   "scripts": {
     "build": "rimraf dist && vite build && pnpm build:server",
-    "build:docker": "(cd ../.. && docker buildx build --push --cache-to type=gha,mode=max,scope=webapp --cache-from type=gha,scope=webapp -t ghcr.io/joosepalviste/serieslist-webapp:latest -f apps/webapp/Dockerfile --target production --build-arg=\"VITE_APP_PORT=$VITE_APP_PORT\" --build-arg=\"VITE_API_URL=$VITE_API_URL\" --build-arg=\"VITE_API_INTERNAL_URL=$VITE_API_INTERNAL_URL\" --platform linux/amd64 .)",
+    "build:docker": "(cd ../.. && docker buildx build --push --cache-to type=gha,mode=max,scope=webapp --cache-from type=gha,scope=webapp -t ghcr.io/joosepalviste/serieslist-webapp:latest -f apps/webapp/Dockerfile --target production --build-arg=\"VITE_APP_PORT=$VITE_APP_PORT\" --build-arg=\"VITE_API_URL=$VITE_API_URL\" --build-arg=\"VITE_API_INTERNAL_URL=$VITE_API_INTERNAL_URL\" --build-arg=\"VITE_OTEL_ENDPOINT=$VITE_OTEL_ENDPOINT\" --build-arg=\"VITE_OTEL_DATASET=$VITE_OTEL_DATASET\" --build-arg=\"VITE_OTEL_AUTH_TOKEN=$VITE_OTEL_AUTH_TOKEN\" --platform linux/amd64 .)",
     "build:e2e": "(cd ../.. && nx run @serieslist/webapp:build)",
     "build:server": "NODE_ENV=production tsx bin/build.ts && resolve-tspaths --out dist/prodServer",
     "codegen": "graphql-codegen",
