@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN pnpm -F api --prod deploy pruned
+RUN pnpm -F jobs --prod deploy pruned
 
 
 FROM dependencies AS build
