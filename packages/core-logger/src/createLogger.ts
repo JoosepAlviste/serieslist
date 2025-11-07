@@ -16,6 +16,10 @@ type RequestShape = {
 }
 
 const customReqSerializer = (req: RequestShape) => {
+  if (!req.hostname || !req.originalUrl || !req.protocol) {
+    return req
+  }
+
   const url = new URL(`${req.protocol}://${req.hostname}${req.originalUrl}`)
 
   return {
