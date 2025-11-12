@@ -53,7 +53,10 @@ export const createTracing = ({ name }: { name: string }): NodeSDK => {
     traceExporter: new OTLPTraceExporter(getExporterConfig('traces')),
     metricReaders: [
       new metrics.PeriodicExportingMetricReader({
-        exporter: new OTLPMetricExporter(getExporterConfig('metrics')),
+        exporter: new OTLPMetricExporter({
+          ...getExporterConfig('metrics'),
+          temporalityPreference: metrics.AggregationTemporality.DELTA,
+        }),
       }),
     ],
     logRecordProcessors: [
