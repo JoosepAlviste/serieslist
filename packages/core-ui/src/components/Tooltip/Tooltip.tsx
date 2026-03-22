@@ -23,6 +23,9 @@ export const Tooltip = ({ text, side, children }: TooltipProps) => {
             side={side}
             sideOffset={4}
             style={{ zIndex: zIndex.layout.tooltip }}
+            onPointerDownOutside={(event) => {
+              event.preventDefault()
+            }}
           >
             {text}
             <BaseTooltip.Arrow className={s.arrow} />
