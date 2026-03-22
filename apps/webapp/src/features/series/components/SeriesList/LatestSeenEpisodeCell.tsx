@@ -81,20 +81,19 @@ export const LatestSeenEpisodeCell = ({
           )
         : '-'}
       {series.nextEpisode ? (
-        <Tooltip text="Mark next episode as seen" side="top">
-          <IconButton
-            name="plus"
-            variant="primary"
-            label="Mark next episode as seen"
-            onClick={async () => {
-              if (!series.nextEpisode) {
-                return
-              }
+        <IconButton
+          name="plus"
+          variant="primary"
+          label="Mark next episode as seen"
+          onClick={async () => {
+            console.log('clickedd')
+            if (!series.nextEpisode) {
+              return
+            }
 
-              await handleIncrementSeenEpisodeClick(series.nextEpisode.id)
-            }}
-          />
-        </Tooltip>
+            await handleIncrementSeenEpisodeClick(series.nextEpisode.id)
+          }}
+        />
       ) : null}
     </Text>
   )
