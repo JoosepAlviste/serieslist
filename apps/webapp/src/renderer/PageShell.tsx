@@ -1,6 +1,5 @@
 import { ApolloProvider } from '@apollo/client'
-import { TooltipProvider } from '@radix-ui/react-tooltip'
-import { SSRProvider } from '@serieslist/core-ui'
+import { TooltipProvider, SSRProvider } from '@serieslist/core-ui'
 import React from 'react'
 import type { PageContext } from 'vike/types'
 

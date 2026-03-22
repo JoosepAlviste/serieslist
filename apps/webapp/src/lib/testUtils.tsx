@@ -4,7 +4,7 @@ import type {
   TypedDocumentNode,
   VariablesOf,
 } from '@graphql-typed-document-node/core'
-import { Provider as TooltipProvider } from '@radix-ui/react-tooltip'
+import { TooltipProvider } from '@serieslist/core-ui'
 import type { NotWorthIt, LiterallyAnything } from '@serieslist/util-types'
 import {
   act,
