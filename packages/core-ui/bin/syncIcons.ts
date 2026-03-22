@@ -34,10 +34,10 @@ const baseFigmaNodeSchema = z.object({
   name: z.string(),
 })
 type FigmaNode = z.infer<typeof baseFigmaNodeSchema> & {
-  children: FigmaNode[]
+  children?: FigmaNode[]
 }
 const figmaNodeSchema: z.ZodType<FigmaNode> = baseFigmaNodeSchema.extend({
-  children: z.lazy(() => figmaNodeSchema.array()),
+  children: z.lazy(() => figmaNodeSchema.array()).optional(),
 })
 
 const figmaFileResponseSchema = z.object({
@@ -68,7 +68,7 @@ const getComponentsFromNode = (node: FigmaNode): FigmaNode[] => {
   }
 
   if ('children' in node) {
-    return node.children.map(getComponentsFromNode).flat()
+    return node.children?.map(getComponentsFromNode).flat() ?? []
   }
 
   return []
