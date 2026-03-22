@@ -96,9 +96,9 @@ export const render = async (
         }
       >
         <AuthenticatedUserProvider>
-          <ToastProvider>
-            <TooltipProvider>{ui}</TooltipProvider>
-          </ToastProvider>
+          <TooltipProvider>
+            <ToastProvider>{ui}</ToastProvider>
+          </TooltipProvider>
         </AuthenticatedUserProvider>
       </PageContextProvider>
     </ApolloProvider>,
