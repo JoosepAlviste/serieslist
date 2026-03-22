@@ -22,6 +22,7 @@ export const userFactory = Factory.define<User>(({ sequence, onCreate }) => {
     isAdmin: false,
     // This might be "test123"
     password: '$2a$10$oMk0jHG5BWPHJ/rXzOp0neSLxDn19Q.M/DX5dIRrVGH2.SZhYMf5S',
+    integrationsToken: null,
     createdAt: new Date(),
     updatedAt: new Date(),
   }

@@ -4,6 +4,7 @@ import '#/features/auth/auth.schema'
 import '#/features/users/users.schema'
 import '#/features/series/series.schema'
 import '#/features/seriesProgress/seriesProgress.schema'
+import '#/features/jellyfinIntegration/jellyfinIntegration.schema'
 import '#/schema/errors.schema'
 import '#/schema/scalars.schema'
 

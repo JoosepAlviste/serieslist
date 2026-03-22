@@ -17,7 +17,7 @@
     "drizzle-studio": "drizzle-kit studio",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "migration": "drizzle-kit generate:pg",
+    "migration": "drizzle-kit generate",
     "tsc": "tsc --noEmit"
   },
   "dependencies": {

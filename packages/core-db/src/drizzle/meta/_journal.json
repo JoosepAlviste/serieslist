@@ -15,6 +15,13 @@
       "when": 1706905211468,
       "tag": "0001_confused_lilith",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1773947703351,
+      "tag": "0002_left_gabe_jones",
+      "breakpoints": true
     }
   ]
 }

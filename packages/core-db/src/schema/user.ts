@@ -16,6 +16,7 @@ export const user = pgTable(
     email: varchar('email', { length: 255 }).notNull(),
     isAdmin: boolean('is_admin').default(false),
     password: varchar('password', { length: 255 }).notNull(),
+    integrationsToken: varchar('integrations_token', { length: 255 }),
     createdAt: timestamp('created_at', { withTimezone: true, mode: 'date' })
       .defaultNow()
       .notNull(),

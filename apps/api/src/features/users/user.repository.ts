@@ -38,3 +38,19 @@ export const createOne = async ({
     .returning()
     .then((r) => r[0])
 }
+
+export const updateIntegrationsToken = async ({
+  ctx,
+  userId,
+  integrationsToken,
+}: {
+  ctx: DBContext
+  userId: number
+  integrationsToken: string
+}) => {
+  return await ctx.db
+    .update(user)
+    .set({ integrationsToken })
+    .where(eq(user.id, userId))
+    .returning()
+}

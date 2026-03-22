@@ -14,3 +14,9 @@ export const findOne = (args: {
 export const createOne = (args: { ctx: Context; user: InsertUser }) => {
   return usersRepository.createOne(args)
 }
+
+export const updateIntegrationsToken = (
+  ...args: Parameters<typeof usersRepository.updateIntegrationsToken>
+) => {
+  return usersRepository.updateIntegrationsToken(...args)
+}

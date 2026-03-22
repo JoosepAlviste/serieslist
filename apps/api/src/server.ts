@@ -6,7 +6,7 @@ import { createYoga } from 'graphql-yoga'
 
 import { config } from './config'
 import { authService } from './features/auth'
-import { registeJellyfinIntegrationRoutes } from './features/jellyfinIntegration'
+import { registerJellyfinIntegrationRoutes } from './features/jellyfinIntegration'
 import { db } from './lib/db'
 import { app } from './lib/fastify'
 import { log } from './lib/logger'
@@ -66,6 +66,6 @@ app.route({
     }),
 })
 
-registeJellyfinIntegrationRoutes(app)
+registerJellyfinIntegrationRoutes(app)
 
 export { app }

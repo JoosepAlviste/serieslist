@@ -22,6 +22,10 @@ interface Error {
   message: String!
 }
 
+type IntegrationSettings {
+  integrationToken: String
+}
+
 type InvalidInputError implements Error {
   fieldErrors: [InvalidInputErrorField!]!
   message: String!
@@ -46,6 +50,7 @@ input MarkSeriesEpisodesAsSeenInput {
 }
 
 type Mutation {
+  generateToken: MutationGenerateTokenResult!
   logOut: Boolean!
   login(input: LoginInput!): MutationLoginResult!
   markSeasonEpisodesAsSeen(input: MarkSeasonEpisodesAsSeenInput!): MutationMarkSeasonEpisodesAsSeenResult!
@@ -54,6 +59,8 @@ type Mutation {
   seriesUpdateStatus(input: SeriesUpdateStatusInput!): MutationSeriesUpdateStatusResult!
   toggleEpisodeSeen(input: ToggleEpisodeSeenInput!): MutationToggleEpisodeSeenResult!
 }
+
+union MutationGenerateTokenResult = IntegrationSettings | UnauthorizedError
 
 union MutationLoginResult = InvalidInputError | User
 
@@ -73,11 +80,14 @@ type NotFoundError implements Error {
 
 type Query {
   hello(name: String): String!
+  integrationSettings: QueryIntegrationSettingsResult!
   me: QueryMeResult!
   series(id: ID!): QuerySeriesResult!
   seriesSearch(input: SeriesSearchInput!): [Series!]!
   userSeriesList(input: UserSeriesListInput!): QueryUserSeriesListResult!
 }
+
+union QueryIntegrationSettingsResult = IntegrationSettings | UnauthorizedError
 
 union QueryMeResult = UnauthorizedError | User
 

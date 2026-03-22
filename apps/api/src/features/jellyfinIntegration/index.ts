@@ -1,1 +1,1 @@
-export { registeJellyfinIntegrationRoutes } from './jellyfinIntegration.routes'
+export { registerJellyfinIntegrationRoutes } from './jellyfinIntegration.routes'
