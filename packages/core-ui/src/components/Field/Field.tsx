@@ -1,6 +1,7 @@
 import { Label } from '@radix-ui/react-label'
 import classNames from 'classnames'
-import React, { forwardRef, type InputHTMLAttributes } from 'react'
+import type { ReactNode, InputHTMLAttributes } from 'react'
+import React, { forwardRef } from 'react'
 import type { FieldError } from 'react-hook-form'
 
 import { useSSR } from '../../hooks'
@@ -12,10 +13,11 @@ import * as s from './Field.css'
 type FieldProps = InputHTMLAttributes<HTMLInputElement> & {
   label: string
   error?: FieldError
+  right?: ReactNode
 }
 
 export const Field = forwardRef<HTMLInputElement, FieldProps>(function Field(
-  { label, error, disabled = false, ...rest }: FieldProps,
+  { label, error, disabled = false, right, ...rest }: FieldProps,
   ref,
 ) {
   const { isSSR } = useSSR()
@@ -41,8 +43,11 @@ export const Field = forwardRef<HTMLInputElement, FieldProps>(function Field(
             // elements:
             // https://github.com/vercel/next.js/discussions/21999
             autoComplete={isSSR ? 'off' : undefined}
+            id={rest.name}
             {...rest}
           />
+
+          {right}
         </div>
       </Label>
       <Error className={s.error}>{error?.message}</Error>

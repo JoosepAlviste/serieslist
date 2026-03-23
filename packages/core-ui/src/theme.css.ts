@@ -5,6 +5,7 @@ export const colors = {
   black: '#000000',
   blackA5: 'rgba(0, 0, 0, 0.5)',
 
+  slate50: '#f8fafc',
   slate100: '#f1f5f9',
   slate200: '#e2e8f0',
   slate300: '#cbd5e1',
@@ -14,6 +15,7 @@ export const colors = {
   slate700: '#334155',
   slate800: '#1e293b',
   slate900: '#0f172a',
+  slate950: '#020617',
 
   indigo50: '#eef2ff',
   indigo100: '#e0e7ff',
@@ -71,6 +73,7 @@ export const [lightThemeClass, vars] = createTheme({
     ...colors,
 
     pageBackground: colors.white,
+    elevatedBackground: colors.slate50,
     text: colors.slate900,
     textSecondary: colors.slate700,
     textTertiary: colors.slate500,
@@ -117,6 +120,8 @@ export const [lightThemeClass, vars] = createTheme({
 
     pillBackground: colors.indigo100,
     pillText: colors.indigo500,
+
+    codeBackground: colors.slate100,
   },
 })
 
@@ -127,6 +132,7 @@ export const darkThemeClass = createTheme(vars, {
     ...colors,
 
     pageBackground: colors.black,
+    elevatedBackground: colors.slate950,
     text: colors.white,
     textSecondary: colors.slate200,
     textTertiary: colors.slate400,
@@ -173,6 +179,8 @@ export const darkThemeClass = createTheme(vars, {
 
     pillBackground: colors.indigo950,
     pillText: colors.indigo400,
+
+    codeBackground: colors.slate900,
   },
 })
 

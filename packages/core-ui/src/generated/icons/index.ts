@@ -2,6 +2,8 @@ import AboutIcon from './AboutIcon'
 import CheckIcon from './CheckIcon'
 import CopyIcon from './CopyIcon'
 import CrossIcon from './CrossIcon'
+import EyeIcon from './EyeIcon'
+import EyeSlashIcon from './EyeSlashIcon'
 import GithubIcon from './GithubIcon'
 import LogoIcon from './LogoIcon'
 import PlusIcon from './PlusIcon'
@@ -15,6 +17,8 @@ export const icons = {
   check: CheckIcon,
   copy: CopyIcon,
   cross: CrossIcon,
+  eye: EyeIcon,
+  eyeslash: EyeSlashIcon,
   github: GithubIcon,
   logo: LogoIcon,
   plus: PlusIcon,

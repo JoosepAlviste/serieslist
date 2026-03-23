@@ -4,9 +4,6 @@ import { iconColorVar } from '../../cssVariables'
 import { vars } from '../../theme.css'
 
 export const button = style({
-  padding: '0.5rem',
-  borderRadius: '50%',
-
   ':hover': {
     backgroundColor: vars.color.inputSecondaryBackground,
   },
@@ -34,5 +31,17 @@ export const variant = styleVariants({
         [iconColorVar]: vars.color.iconButtonPrimaryHoverColor,
       },
     },
+  },
+})
+
+export const size = styleVariants({
+  s: {
+    padding: '0.25rem',
+    borderRadius: vars.radii.s,
+  },
+
+  m: {
+    padding: '0.5rem',
+    borderRadius: '50%',
   },
 })

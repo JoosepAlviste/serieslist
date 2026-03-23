@@ -21,6 +21,10 @@ const documents = {
     types.CurrentUserDocument,
   '\n      mutation logOut {\n        logOut\n      }\n    ':
     types.LogOutDocument,
+  '\n      query integrationSettings {\n        integrationSettings {\n          __typename\n          ... on IntegrationSettings {\n            integrationToken\n          }\n          ... on UnauthorizedError {\n            __typename\n            message\n          }\n        }\n      }\n    ':
+    types.IntegrationSettingsDocument,
+  '\n      mutation generateToken {\n        generateToken {\n          __typename\n          ... on IntegrationSettings {\n            integrationToken\n          }\n          ... on UnauthorizedError {\n            __typename\n            message\n          }\n        }\n      }\n    ':
+    types.GenerateTokenDocument,
   '\n  query search($input: SeriesSearchInput!) {\n    seriesSearch(input: $input) {\n      id\n      imdbId\n      title\n      startYear\n      endYear\n      ...SeriesPoster_SeriesFragment\n    }\n  }\n':
     types.SearchDocument,
   '\n  fragment EpisodeLine_EpisodeFragment on Episode {\n    id\n    number\n    title\n    isSeen\n    releasedAt\n  }\n':
@@ -89,6 +93,18 @@ export function graphql(
 export function graphql(
   source: '\n      mutation logOut {\n        logOut\n      }\n    ',
 ): (typeof documents)['\n      mutation logOut {\n        logOut\n      }\n    ']
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n      query integrationSettings {\n        integrationSettings {\n          __typename\n          ... on IntegrationSettings {\n            integrationToken\n          }\n          ... on UnauthorizedError {\n            __typename\n            message\n          }\n        }\n      }\n    ',
+): (typeof documents)['\n      query integrationSettings {\n        integrationSettings {\n          __typename\n          ... on IntegrationSettings {\n            integrationToken\n          }\n          ... on UnauthorizedError {\n            __typename\n            message\n          }\n        }\n      }\n    ']
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(
+  source: '\n      mutation generateToken {\n        generateToken {\n          __typename\n          ... on IntegrationSettings {\n            integrationToken\n          }\n          ... on UnauthorizedError {\n            __typename\n            message\n          }\n        }\n      }\n    ',
+): (typeof documents)['\n      mutation generateToken {\n        generateToken {\n          __typename\n          ... on IntegrationSettings {\n            integrationToken\n          }\n          ... on UnauthorizedError {\n            __typename\n            message\n          }\n        }\n      }\n    ']
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

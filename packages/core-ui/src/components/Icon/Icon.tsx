@@ -13,7 +13,7 @@ type BaseIconProps = SVGAttributes<SVGElement> & {
   size?: keyof typeof s.iconSize
 }
 
-type IconProps = BaseIconProps &
+export type IconProps = BaseIconProps &
   (
     | {
         label: string

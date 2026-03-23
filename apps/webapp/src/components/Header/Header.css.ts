@@ -78,11 +78,13 @@ export const dropdownContent = style({
 })
 
 export const dropdownItem = style({
+  display: 'block',
   paddingTop: '0.5rem',
   paddingRight: '1rem',
   paddingBottom: '0.5rem',
   paddingLeft: '1rem',
   cursor: 'pointer',
+  textDecoration: 'none',
 
   ':hover': {
     backgroundColor: vars.color.popoverHoverBackground,

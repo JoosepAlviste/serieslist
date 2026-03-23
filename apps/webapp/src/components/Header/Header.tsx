@@ -54,6 +54,11 @@ export const Header = ({ className }: HeaderProps) => {
                 className={s.dropdownContent}
                 style={{ zIndex: zIndex.layout.dropdownMenu }}
               >
+                <DropdownMenu.Item asChild>
+                  <a href="/settings" className={s.dropdownItem}>
+                    Settings
+                  </a>
+                </DropdownMenu.Item>
                 <DropdownMenu.Item onSelect={logOut} className={s.dropdownItem}>
                   Log out
                 </DropdownMenu.Item>

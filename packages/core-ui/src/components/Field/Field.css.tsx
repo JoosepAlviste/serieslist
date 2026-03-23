@@ -11,6 +11,7 @@ export const labelText = style({
 })
 
 export const inputContainer = style({
+  display: 'flex',
   borderRadius: vars.radii.m,
   backgroundColor: vars.color.inputBackground,
   borderColor: vars.color.inputBorder,
