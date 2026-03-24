@@ -4,7 +4,7 @@ import React, { type HTMLAttributes } from 'react'
 import * as s from './Text.css'
 
 type TextProps = HTMLAttributes<HTMLDivElement> & {
-  as?: 'div' | 'span' | 'p'
+  as?: 'div' | 'span' | 'p' | 'strong'
   size?: keyof typeof s.textSize
   variant?: keyof typeof s.textVariant
   weight?: keyof typeof s.textWeight

@@ -311,20 +311,20 @@ export type LogOutMutationVariables = Exact<{ [key: string]: never }>
 
 export type LogOutMutation = { __typename: 'Mutation'; logOut: boolean }
 
-export type IntegrationSettingsQueryVariables = Exact<{ [key: string]: never }>
-
-export type IntegrationSettingsQuery = {
-  __typename: 'Query'
-  integrationSettings:
-    | { __typename: 'IntegrationSettings'; integrationToken?: string | null }
-    | { __typename: 'UnauthorizedError'; message: string }
-}
-
 export type GenerateTokenMutationVariables = Exact<{ [key: string]: never }>
 
 export type GenerateTokenMutation = {
   __typename: 'Mutation'
   generateToken:
+    | { __typename: 'IntegrationSettings'; integrationToken?: string | null }
+    | { __typename: 'UnauthorizedError'; message: string }
+}
+
+export type IntegrationSettingsQueryVariables = Exact<{ [key: string]: never }>
+
+export type IntegrationSettingsQuery = {
+  __typename: 'Query'
+  integrationSettings:
     | { __typename: 'IntegrationSettings'; integrationToken?: string | null }
     | { __typename: 'UnauthorizedError'; message: string }
 }
@@ -1071,70 +1071,6 @@ export const LogOutDocument = {
     },
   ],
 } as unknown as DocumentNode<LogOutMutation, LogOutMutationVariables>
-export const IntegrationSettingsDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'query',
-      name: { kind: 'Name', value: 'integrationSettings' },
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'integrationSettings' },
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
-                {
-                  kind: 'InlineFragment',
-                  typeCondition: {
-                    kind: 'NamedType',
-                    name: { kind: 'Name', value: 'IntegrationSettings' },
-                  },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'integrationToken' },
-                      },
-                    ],
-                  },
-                },
-                {
-                  kind: 'InlineFragment',
-                  typeCondition: {
-                    kind: 'NamedType',
-                    name: { kind: 'Name', value: 'UnauthorizedError' },
-                  },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: '__typename' },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'message' },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  IntegrationSettingsQuery,
-  IntegrationSettingsQueryVariables
->
 export const GenerateTokenDocument = {
   kind: 'Document',
   definitions: [
@@ -1198,6 +1134,70 @@ export const GenerateTokenDocument = {
 } as unknown as DocumentNode<
   GenerateTokenMutation,
   GenerateTokenMutationVariables
+>
+export const IntegrationSettingsDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'integrationSettings' },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'integrationSettings' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                {
+                  kind: 'InlineFragment',
+                  typeCondition: {
+                    kind: 'NamedType',
+                    name: { kind: 'Name', value: 'IntegrationSettings' },
+                  },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'integrationToken' },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: 'InlineFragment',
+                  typeCondition: {
+                    kind: 'NamedType',
+                    name: { kind: 'Name', value: 'UnauthorizedError' },
+                  },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: '__typename' },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'message' },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  IntegrationSettingsQuery,
+  IntegrationSettingsQueryVariables
 >
 export const SearchDocument = {
   kind: 'Document',
