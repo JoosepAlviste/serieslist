@@ -18,16 +18,8 @@ import * as s from './IntegrationTokenForm.css'
 
 const JELLYFIN_WEBHOOK_TEMPLATE = `{
   "notificationType": "{{NotificationType}}",
-  "itemType": "{{ItemType}}",
-  "item": "{{Name}}",
-  "series": "{{SeriesName}}",
-  "season": "{{SeasonNumber00}}",
-  "episode": "{{EpisodeNumber00}}",
-  "user": "{{UserName}}",
-  "episodeTmdbId": "{{Provider_tmdb}}",
   "episodeImdbId": "{{Provider_imdb}}",
-  "playedToCompletion": "{{PlayedToCompletion}}",
-  "played": "{{Played}}"
+  "playedToCompletion": "{{PlayedToCompletion}}"
 }`
 
 const Instructions = () => (
