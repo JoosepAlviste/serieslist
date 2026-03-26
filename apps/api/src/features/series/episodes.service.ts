@@ -9,13 +9,11 @@ import * as episodeRepository from './episode.repository'
 export const findOne = ({
   ctx,
   episodeId,
-  tmdbEpisodeId,
 }: {
   ctx: DBContext
-  episodeId?: number
-  tmdbEpisodeId?: number
+  episodeId: number
 }) => {
-  return episodeRepository.findOne({ ctx, episodeId, tmdbEpisodeId })
+  return episodeRepository.findOne({ ctx, episodeId })
 }
 
 export const findMany = ({
