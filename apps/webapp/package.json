@@ -19,7 +19,7 @@
     "start:prod": "cross-env NODE_ENV=production node --import ./dist/prodServer/tracing.js dist/prodServer/server.js",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "test:watch": "vitest",
+    "test:watch": "vitest watch",
     "tsc": "tsc --noEmit"
   },
   "dependencies": {

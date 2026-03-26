@@ -3,6 +3,10 @@ import cors from '@fastify/cors'
 import rateLimit from '@fastify/rate-limit'
 import { getLoggerByEnvironment } from '@serieslist/core-logger'
 import fastify from 'fastify'
+import {
+  serializerCompiler,
+  validatorCompiler,
+} from 'fastify-type-provider-zod'
 
 import { config } from '#/config'
 
@@ -28,6 +32,9 @@ if (config.environment !== 'test') {
     timeWindow: '1 minute',
   })
 }
+
+app.setValidatorCompiler(validatorCompiler)
+app.setSerializerCompiler(serializerCompiler)
 
 app.addHook('onRequest', (req, reply, done) => {
   if (!req.opentelemetry) {

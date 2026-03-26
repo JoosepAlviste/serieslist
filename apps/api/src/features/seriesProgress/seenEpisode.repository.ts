@@ -50,7 +50,12 @@ export const createOne = async ({
   ctx: DBContext
   seenEpisode: InsertSeenEpisode
 }) => {
-  return await ctx.db.insert(seenEpisode).values(seenEpisodeArgs)
+  return await ctx.db
+    .insert(seenEpisode)
+    .values(seenEpisodeArgs)
+    .onConflictDoNothing({
+      target: [seenEpisode.episodeId, seenEpisode.userId],
+    })
 }
 
 export const createMany = async ({

@@ -4,6 +4,7 @@ import {
   tmdbSeriesSchema,
   tmdbSeasonSchema,
   tmdbSearchSeriesSchema,
+  tmdbEpisodeSchema,
 } from './tmdb.schema'
 
 export const tmdbNotFoundSchema = z.object({
@@ -22,3 +23,7 @@ export const tmdbSeriesSearchResponseSchema = z.object({
 })
 
 export const tmdbSeasonResponseSchema = tmdbSeasonSchema.or(tmdbNotFoundSchema)
+
+export const tmdbFindResponseSchema = z.object({
+  tv_episode_results: z.array(tmdbEpisodeSchema),
+})

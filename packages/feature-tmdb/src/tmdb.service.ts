@@ -9,8 +9,10 @@ import type {
   TMDBParsedSeries,
   TMDBParsedSeason,
   TMDBParsedEpisode,
+  TMDBEpisode,
 } from './tmdb.types'
 import {
+  tmdbFindResponseSchema,
   tmdbSeasonResponseSchema,
   tmdbSeriesResponseSchema,
   tmdbSeriesSearchResponseSchema,
@@ -165,4 +167,23 @@ export const fetchEpisodesForSeason = async ({
       }),
     ),
   }
+}
+
+export const searchEpisodeByImdbId = async ({
+  episodeImdbId,
+}: {
+  episodeImdbId: string
+}): Promise<{ episode: TMDBEpisode | undefined; parsed: boolean }> => {
+  const { response, parsed } = await makeTMDBRequest(
+    `find/${episodeImdbId}`,
+    { external_source: 'imdb_id' },
+    tmdbFindResponseSchema,
+  )
+  if (!response) {
+    return { episode: undefined, parsed }
+  }
+
+  const episode = response.tv_episode_results?.[0]
+
+  return { episode, parsed }
 }

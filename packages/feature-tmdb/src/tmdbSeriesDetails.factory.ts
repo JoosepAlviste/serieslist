@@ -4,7 +4,12 @@ import { Factory } from 'fishery'
 import { nanoid } from 'nanoid'
 import type { z } from 'zod'
 
-import type { TMDBSeason, TMDBEpisode, TMDBSeries } from './tmdb.types'
+import type {
+  TMDBSeason,
+  TMDBEpisode,
+  TMDBSeries,
+  TMDBFindResponse,
+} from './tmdb.types'
 import type { tmdbNotFoundSchema } from './tmdbRequests.schema'
 
 export const tmdbSeriesDetailsFactory = Factory.define<TMDBSeries>(() => ({
@@ -52,4 +57,8 @@ export const tmdbNotFoundResponseFactory = Factory.define<
   status_code: 34,
   success: false,
   status_message: 'The resource you requested could not be found.',
+}))
+
+export const tmdbFindResponseFactory = Factory.define<TMDBFindResponse>(() => ({
+  tv_episode_results: [],
 }))

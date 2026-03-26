@@ -12,6 +12,27 @@ import * as seasonService from '#/features/series/season.service'
 import * as seenEpisodeRepository from './seenEpisode.repository'
 import * as seriesProgressRepository from './seriesProgress.repository'
 
+export const markEpisodeAsSeen = async ({
+  ctx,
+  episode,
+}: {
+  ctx: AuthenticatedContext
+  episode: { id: number; seriesId: number }
+}) => {
+  await seenEpisodeRepository.createOne({
+    ctx,
+    seenEpisode: {
+      episodeId: episode.id,
+      userId: ctx.currentUser.id,
+    },
+  })
+
+  await recalculateSeriesProgress({
+    ctx,
+    seriesId: episode.seriesId,
+  })
+}
+
 export const toggleEpisodeSeen = async ({
   ctx,
   episodeId,
@@ -34,18 +55,7 @@ export const toggleEpisodeSeen = async ({
   })
 
   if (!seenEpisode) {
-    await seenEpisodeRepository.createOne({
-      ctx,
-      seenEpisode: {
-        episodeId: episode.id,
-        userId: ctx.currentUser.id,
-      },
-    })
-
-    await recalculateSeriesProgress({
-      ctx,
-      seriesId: episode.seriesId,
-    })
+    await markEpisodeAsSeen({ ctx, episode })
   } else {
     await seenEpisodeRepository.deleteOne({
       ctx,

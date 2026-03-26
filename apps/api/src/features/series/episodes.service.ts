@@ -9,11 +9,13 @@ import * as episodeRepository from './episode.repository'
 export const findOne = ({
   ctx,
   episodeId,
+  tmdbEpisodeId,
 }: {
   ctx: DBContext
-  episodeId: number
+  episodeId?: number
+  tmdbEpisodeId?: number
 }) => {
-  return episodeRepository.findOne({ ctx, episodeId })
+  return episodeRepository.findOne({ ctx, episodeId, tmdbEpisodeId })
 }
 
 export const findMany = ({
@@ -71,11 +73,17 @@ export const findEpisodesSeries = ({
 export const findOneWithSeasonAndSeriesInfo = ({
   ctx,
   episodeId,
+  tmdbEpisodeId,
 }: {
   ctx: DBContext
-  episodeId: number
+  episodeId?: number
+  tmdbEpisodeId?: number
 }) => {
-  return episodeRepository.findOneWithSeasonAndSeriesInfo({ ctx, episodeId })
+  return episodeRepository.findOneWithSeasonAndSeriesInfo({
+    ctx,
+    episodeId,
+    tmdbEpisodeId,
+  })
 }
 
 export const findNextEpisode = async ({

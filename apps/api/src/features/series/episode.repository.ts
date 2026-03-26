@@ -69,15 +69,22 @@ export const findManyByNumberForManySeries = async ({
 export const findOneWithSeasonAndSeriesInfo = async ({
   ctx,
   episodeId,
+  tmdbEpisodeId,
 }: {
   ctx: DBContext
-  episodeId: number
+  episodeId?: number
+  tmdbEpisodeId?: number
 }) => {
   const item = await ctx.db
     .select()
     .from(episode)
     .innerJoin(season, eq(season.id, episode.seasonId))
-    .where(eq(episode.id, episodeId))
+    .where(
+      and(
+        episodeId ? eq(episode.id, episodeId) : undefined,
+        tmdbEpisodeId ? eq(episode.tmdbId, tmdbEpisodeId) : undefined,
+      ),
+    )
     .then(head)
 
   return (

@@ -5,6 +5,7 @@ import type {
   TMDBSearchResponse,
   TMDBSeriesResponse,
   TMDBSeasonResponse,
+  TMDBFindResponse,
 } from './tmdb.types'
 
 export const mockTMDBSearchRequest = (
@@ -52,3 +53,15 @@ export const mockTMDBSeasonRequest = (
   nock(config.tmdb.url)
     .get(`/3/tv/${tmdbId}/season/${seasonNumber}`)
     .reply(200, response)
+
+export const mockTMDBSearchEpisodeByIdRequest = ({
+  episodeImdbId,
+  response,
+}: {
+  episodeImdbId: string
+  response: TMDBFindResponse
+}) => {
+  return nock(config.tmdb.url)
+    .get(`/3/find/${episodeImdbId}?external_source=imdb_id`)
+    .reply(200, response)
+}

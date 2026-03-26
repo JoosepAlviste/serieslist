@@ -8,10 +8,12 @@ export const findOne = async ({
   ctx,
   userId,
   email,
+  integrationsToken,
 }: {
   ctx: DBContext
   userId?: number
   email?: string
+  integrationsToken?: string
 }) => {
   return await ctx.db
     .select()
@@ -20,6 +22,9 @@ export const findOne = async ({
       and(
         userId ? eq(user.id, userId) : undefined,
         email ? eq(user.email, email) : undefined,
+        integrationsToken
+          ? eq(user.integrationsToken, integrationsToken)
+          : undefined,
       ),
     )
     .then(head)

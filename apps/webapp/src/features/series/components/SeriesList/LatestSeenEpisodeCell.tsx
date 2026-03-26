@@ -86,7 +86,6 @@ export const LatestSeenEpisodeCell = ({
           variant="primary"
           label="Mark next episode as seen"
           onClick={async () => {
-            console.log('clickedd')
             if (!series.nextEpisode) {
               return
             }

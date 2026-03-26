@@ -1,12 +1,13 @@
 import type { InsertUser } from '@serieslist/core-db'
-import type { Context } from '@serieslist/core-graphql-server'
+import type { Context, DBContext } from '@serieslist/core-graphql-server'
 
 import * as usersRepository from './user.repository'
 
 export const findOne = (args: {
-  ctx: Context
+  ctx: DBContext
   userId?: number
   email?: string
+  integrationsToken?: string
 }) => {
   return usersRepository.findOne(args)
 }
