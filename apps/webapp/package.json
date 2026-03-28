@@ -65,8 +65,8 @@
     "zod": "^4.1.12"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "^5.0.2",
-    "@graphql-codegen/client-preset": "^4.2.2",
+    "@graphql-codegen/cli": "^6.2.1",
+    "@graphql-codegen/client-preset": "^5.2.4",
     "@sentry/vite-plugin": "^2.14.0",
     "@serieslist/core-esbuild": "workspace:*",
     "@serieslist/eslint-config-react": "workspace:*",

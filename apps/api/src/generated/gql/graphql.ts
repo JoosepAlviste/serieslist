@@ -1,7 +1,7 @@
 /* eslint-disable */
 import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
 export type Maybe<T> = T | null;
-export type InputMaybe<T> = Maybe<T>;
+export type InputMaybe<T> = T | null | undefined;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
@@ -249,29 +249,44 @@ export type RegisterMutationVariables = Exact<{
 }>;
 
 
-export type RegisterMutation = { __typename?: 'Mutation', register: { __typename: 'InvalidInputError', fieldErrors: Array<{ __typename?: 'InvalidInputErrorField', path: Array<string>, message: string }> } | { __typename: 'User', id: string, name: string, email: string } };
+export type RegisterMutation = { __typename?: 'Mutation', register:
+    | { __typename: 'InvalidInputError', fieldErrors: Array<{ __typename?: 'InvalidInputErrorField', path: Array<string>, message: string }> }
+    | { __typename: 'User', id: string, name: string, email: string }
+   };
 
 export type LoginMutationVariables = Exact<{
   input: LoginInput;
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login: { __typename: 'InvalidInputError', fieldErrors: Array<{ __typename?: 'InvalidInputErrorField', path: Array<string>, message: string }> } | { __typename: 'User', id: string, name: string, email: string } };
+export type LoginMutation = { __typename?: 'Mutation', login:
+    | { __typename: 'InvalidInputError', fieldErrors: Array<{ __typename?: 'InvalidInputErrorField', path: Array<string>, message: string }> }
+    | { __typename: 'User', id: string, name: string, email: string }
+   };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me: { __typename: 'UnauthorizedError', message: string } | { __typename: 'User', id: string, name: string, email: string } };
+export type MeQuery = { __typename?: 'Query', me:
+    | { __typename: 'UnauthorizedError', message: string }
+    | { __typename: 'User', id: string, name: string, email: string }
+   };
 
 export type IntegrationSettingsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type IntegrationSettingsQuery = { __typename?: 'Query', integrationSettings: { __typename: 'IntegrationSettings', integrationToken?: string | null } | { __typename: 'UnauthorizedError', message: string } };
+export type IntegrationSettingsQuery = { __typename?: 'Query', integrationSettings:
+    | { __typename: 'IntegrationSettings', integrationToken?: string | null }
+    | { __typename: 'UnauthorizedError', message: string }
+   };
 
 export type GenerateTokenMutationVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GenerateTokenMutation = { __typename?: 'Mutation', generateToken: { __typename: 'IntegrationSettings', integrationToken?: string | null } | { __typename: 'UnauthorizedError', message: string } };
+export type GenerateTokenMutation = { __typename?: 'Mutation', generateToken:
+    | { __typename: 'IntegrationSettings', integrationToken?: string | null }
+    | { __typename: 'UnauthorizedError', message: string }
+   };
 
 export type SeriesSearchQueryVariables = Exact<{
   input: SeriesSearchInput;
@@ -285,84 +300,130 @@ export type SeriesQueryVariables = Exact<{
 }>;
 
 
-export type SeriesQuery = { __typename?: 'Query', series: { __typename: 'InvalidInputError', message: string } | { __typename: 'NotFoundError', message: string } | { __typename: 'Series', id: string, title: string, seasons: Array<{ __typename?: 'Season', id: string, episodes: Array<{ __typename?: 'Episode', id: string }> }> } };
+export type SeriesQuery = { __typename?: 'Query', series:
+    | { __typename: 'InvalidInputError', message: string }
+    | { __typename: 'NotFoundError', message: string }
+    | { __typename: 'Series', id: string, title: string, seasons: Array<{ __typename?: 'Season', id: string, episodes: Array<{ __typename?: 'Episode', id: string }> }> }
+   };
 
 export type SeriesSchemaUserSeriesListQueryVariables = Exact<{
   input: UserSeriesListInput;
 }>;
 
 
-export type SeriesSchemaUserSeriesListQuery = { __typename?: 'Query', userSeriesList: { __typename: 'QueryUserSeriesListSuccess', data: Array<{ __typename?: 'Series', id: string }> } | { __typename: 'UnauthorizedError', message: string } };
+export type SeriesSchemaUserSeriesListQuery = { __typename?: 'Query', userSeriesList:
+    | { __typename: 'QueryUserSeriesListSuccess', data: Array<{ __typename?: 'Series', id: string }> }
+    | { __typename: 'UnauthorizedError', message: string }
+   };
 
 export type SeriesTypeSeriesQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
 
 
-export type SeriesTypeSeriesQuery = { __typename?: 'Query', series: { __typename: 'InvalidInputError' } | { __typename: 'NotFoundError' } | { __typename: 'Series', seasons: Array<{ __typename?: 'Season', id: string, number: number }> } };
+export type SeriesTypeSeriesQuery = { __typename?: 'Query', series:
+    | { __typename: 'InvalidInputError' }
+    | { __typename: 'NotFoundError' }
+    | { __typename: 'Series', seasons: Array<{ __typename?: 'Season', id: string, number: number }> }
+   };
 
 export type SeriesTypeSeriesEpisodesQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
 
 
-export type SeriesTypeSeriesEpisodesQuery = { __typename?: 'Query', series: { __typename: 'InvalidInputError' } | { __typename: 'NotFoundError' } | { __typename: 'Series', seasons: Array<{ __typename?: 'Season', episodes: Array<{ __typename?: 'Episode', id: string, imdbId?: string | null, number: number, title: string, imdbRating?: number | null, releasedAt?: any | null }> }> } };
+export type SeriesTypeSeriesEpisodesQuery = { __typename?: 'Query', series:
+    | { __typename: 'InvalidInputError' }
+    | { __typename: 'NotFoundError' }
+    | { __typename: 'Series', seasons: Array<{ __typename?: 'Season', episodes: Array<{ __typename?: 'Episode', id: string, imdbId?: string | null, number: number, title: string, imdbRating?: number | null, releasedAt?: any | null }> }> }
+   };
 
 export type SeriesTypeSeriesStatusQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
 
 
-export type SeriesTypeSeriesStatusQuery = { __typename?: 'Query', series: { __typename: 'InvalidInputError' } | { __typename: 'NotFoundError' } | { __typename: 'Series', status?: UserSeriesStatusStatus | null } };
+export type SeriesTypeSeriesStatusQuery = { __typename?: 'Query', series:
+    | { __typename: 'InvalidInputError' }
+    | { __typename: 'NotFoundError' }
+    | { __typename: 'Series', status?: UserSeriesStatusStatus | null }
+   };
 
 export type EpisodeTypeSeasonQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
 
 
-export type EpisodeTypeSeasonQuery = { __typename?: 'Query', series: { __typename: 'InvalidInputError' } | { __typename: 'NotFoundError' } | { __typename: 'Series', seasons: Array<{ __typename?: 'Season', id: string, episodes: Array<{ __typename?: 'Episode', id: string, season: { __typename?: 'Season', id: string } }> }> } };
+export type EpisodeTypeSeasonQuery = { __typename?: 'Query', series:
+    | { __typename: 'InvalidInputError' }
+    | { __typename: 'NotFoundError' }
+    | { __typename: 'Series', seasons: Array<{ __typename?: 'Season', id: string, episodes: Array<{ __typename?: 'Episode', id: string, season: { __typename?: 'Season', id: string } }> }> }
+   };
 
 export type SeriesUpdateStatusMutationVariables = Exact<{
   input: SeriesUpdateStatusInput;
 }>;
 
 
-export type SeriesUpdateStatusMutation = { __typename?: 'Mutation', seriesUpdateStatus: { __typename: 'NotFoundError' } | { __typename: 'Series' } | { __typename: 'UnauthorizedError' } };
+export type SeriesUpdateStatusMutation = { __typename?: 'Mutation', seriesUpdateStatus:
+    | { __typename: 'NotFoundError' }
+    | { __typename: 'Series' }
+    | { __typename: 'UnauthorizedError' }
+   };
 
 export type ToggleEpisodeSeenMutationVariables = Exact<{
   input: ToggleEpisodeSeenInput;
 }>;
 
 
-export type ToggleEpisodeSeenMutation = { __typename?: 'Mutation', toggleEpisodeSeen: { __typename: 'Episode', id: string } | { __typename: 'NotFoundError', message: string } | { __typename: 'UnauthorizedError', message: string } };
+export type ToggleEpisodeSeenMutation = { __typename?: 'Mutation', toggleEpisodeSeen:
+    | { __typename: 'Episode', id: string }
+    | { __typename: 'NotFoundError', message: string }
+    | { __typename: 'UnauthorizedError', message: string }
+   };
 
 export type MarkSeasonEpisodesAsSeenMutationVariables = Exact<{
   input: MarkSeasonEpisodesAsSeenInput;
 }>;
 
 
-export type MarkSeasonEpisodesAsSeenMutation = { __typename?: 'Mutation', markSeasonEpisodesAsSeen: { __typename: 'NotFoundError' } | { __typename: 'Season', episodes: Array<{ __typename?: 'Episode', id: string, isSeen: boolean }> } | { __typename: 'UnauthorizedError' } };
+export type MarkSeasonEpisodesAsSeenMutation = { __typename?: 'Mutation', markSeasonEpisodesAsSeen:
+    | { __typename: 'NotFoundError' }
+    | { __typename: 'Season', episodes: Array<{ __typename?: 'Episode', id: string, isSeen: boolean }> }
+    | { __typename: 'UnauthorizedError' }
+   };
 
 export type MarkSeriesEpisodesAsSeenMutationVariables = Exact<{
   input: MarkSeriesEpisodesAsSeenInput;
 }>;
 
 
-export type MarkSeriesEpisodesAsSeenMutation = { __typename?: 'Mutation', markSeriesEpisodesAsSeen: { __typename: 'NotFoundError' } | { __typename: 'Series', id: string } | { __typename: 'UnauthorizedError' } };
+export type MarkSeriesEpisodesAsSeenMutation = { __typename?: 'Mutation', markSeriesEpisodesAsSeen:
+    | { __typename: 'NotFoundError' }
+    | { __typename: 'Series', id: string }
+    | { __typename: 'UnauthorizedError' }
+   };
 
 export type SeriesProgressEpisodeQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
 
 
-export type SeriesProgressEpisodeQuery = { __typename?: 'Query', series: { __typename: 'InvalidInputError' } | { __typename: 'NotFoundError' } | { __typename: 'Series', seasons: Array<{ __typename?: 'Season', episodes: Array<{ __typename?: 'Episode', id: string, isSeen: boolean }> }>, latestSeenEpisode?: { __typename?: 'Episode', id: string } | null, nextEpisode?: { __typename?: 'Episode', id: string } | null } };
+export type SeriesProgressEpisodeQuery = { __typename?: 'Query', series:
+    | { __typename: 'InvalidInputError' }
+    | { __typename: 'NotFoundError' }
+    | { __typename: 'Series', seasons: Array<{ __typename?: 'Season', episodes: Array<{ __typename?: 'Episode', id: string, isSeen: boolean }> }>, latestSeenEpisode?: { __typename?: 'Episode', id: string } | null, nextEpisode?: { __typename?: 'Episode', id: string } | null }
+   };
 
 export type SeriesProgressEpisodeListQueryVariables = Exact<{
   input: UserSeriesListInput;
 }>;
 
 
-export type SeriesProgressEpisodeListQuery = { __typename?: 'Query', userSeriesList: { __typename: 'QueryUserSeriesListSuccess', data: Array<{ __typename?: 'Series', id: string, latestSeenEpisode?: { __typename?: 'Episode', id: string } | null, nextEpisode?: { __typename?: 'Episode', id: string } | null }> } | { __typename: 'UnauthorizedError' } };
+export type SeriesProgressEpisodeListQuery = { __typename?: 'Query', userSeriesList:
+    | { __typename: 'QueryUserSeriesListSuccess', data: Array<{ __typename?: 'Series', id: string, latestSeenEpisode?: { __typename?: 'Episode', id: string } | null, nextEpisode?: { __typename?: 'Episode', id: string } | null }> }
+    | { __typename: 'UnauthorizedError' }
+   };
 
 
 export const HelloQueryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"HelloQuery"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hello"}}]}}]} as unknown as DocumentNode<HelloQueryQuery, HelloQueryQueryVariables>;

@@ -68,8 +68,8 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
-    "@graphql-codegen/cli": "^5.0.2",
-    "@graphql-codegen/client-preset": "^4.2.2",
+    "@graphql-codegen/cli": "^6.2.1",
+    "@graphql-codegen/client-preset": "^5.2.4",
     "@graphql-tools/executor-http": "^1.0.0",
     "@graphql-typed-document-node/core": "^3.2.0",
     "@serieslist/core-db-factories": "workspace:*",
