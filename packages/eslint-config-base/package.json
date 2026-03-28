@@ -11,8 +11,8 @@
     "lint:fix": "eslint eslint-config-base.js --fix"
   },
   "dependencies": {
-    "@nx/devkit": "18.0.4",
-    "@nx/eslint-plugin": "^18.0.4",
+    "@nx/devkit": "22.6.3",
+    "@nx/eslint-plugin": "^22.6.3",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
     "eslint": "^8.56.0",

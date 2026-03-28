@@ -3,21 +3,28 @@
   "workspaceLayout": {
     "appsDir": "apps"
   },
-  "affected": {
-    "defaultBase": "master"
-  },
   "namedInputs": {
-    "default": ["{projectRoot}/**/*"],
-    "production": ["default", "!{projectRoot}/**/*.test.{ts,tsx}"]
+    "default": [
+      "{projectRoot}/**/*"
+    ],
+    "production": [
+      "default",
+      "!{projectRoot}/**/*.test.{ts,tsx}"
+    ]
   },
   "targetDefaults": {
     "build": {
       "cache": true,
-      "inputs": ["production", "^production"],
+      "inputs": [
+        "production",
+        "^production"
+      ],
       "configurations": {
         "e2e": {}
       },
-      "dependsOn": ["build"]
+      "dependsOn": [
+        "build"
+      ]
     },
     "build:docker": {
       "defaultConfiguration": "docker"
@@ -28,7 +35,9 @@
       "configurations": {
         "e2e": {}
       },
-      "outputs": ["{projectRoot}/dist"]
+      "outputs": [
+        "{projectRoot}/dist"
+      ]
     },
     "build:server": {
       "cache": true
@@ -52,7 +61,9 @@
     "test:coverage": {
       "cache": true,
       "defaultConfiguration": "test",
-      "outputs": ["{projectRoot}/coverage"]
+      "outputs": [
+        "{projectRoot}/coverage"
+      ]
     },
     "test:e2e": {
       "cache": true,
@@ -64,11 +75,18 @@
     },
     "start:e2e": {
       "defaultConfiguration": "e2e",
-      "dependsOn": ["build:e2e"]
+      "dependsOn": [
+        "build:e2e"
+      ]
     },
     "start:prod": {
-      "dependsOn": ["build"]
+      "dependsOn": [
+        "build"
+      ]
     }
   },
-  "nxCloudAccessToken": "NGUzMjk1ZGMtYTZmYS00MDM3LTgxYTItMGZiMTFmZmJmZmExfHJlYWQ="
+  "nxCloudAccessToken": "NGUzMjk1ZGMtYTZmYS00MDM3LTgxYTItMGZiMTFmZmJmZmExfHJlYWQ=",
+  "analytics": false,
+  "useInferencePlugins": false,
+  "defaultBase": "master"
 }

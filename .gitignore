@@ -1,5 +1,9 @@
 .nx/cache
+.nx/workspace-data
 .env
 node_modules
 dist
 coverage
+
+.claude/worktrees
+.claude/settings.local.json

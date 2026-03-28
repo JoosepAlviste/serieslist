@@ -23,7 +23,7 @@
     "migration": "nx run @serieslist/db:migration",
     "postinstall": "cp -n .env.example .env || exit 0",
     "quality": "nx run-many -t lint,tsc,test:coverage,build --verbose",
-    "start": "nx run-many -t start",
+    "start": "nx --no-tui run-many -t start",
     "start:e2e": "nx run-many -t start:e2e",
     "start:prod": "nx run-many -t start:prod --output-style stream",
     "test": "nx run-many -t test",
@@ -32,10 +32,10 @@
     "tsc": "nx run-many -t tsc"
   },
   "devDependencies": {
-    "@nx/devkit": "17.2.8",
-    "@nx/plugin": "17.2.8",
+    "@nx/devkit": "22.6.3",
+    "@nx/plugin": "22.6.3",
     "dotenv-cli": "^7.3.0",
-    "nx": "17.2.8",
+    "nx": "22.6.3",
     "syncpack": "^12.3.0"
   },
   "packageManager": "pnpm@8.9.2+sha1.5f2fa48d614263457cf5d7fb7be8b878da318d87"
