@@ -193,8 +193,8 @@ importers:
         specifier: ^6.1.0
         version: 6.1.0(typescript@5.3.3)
       nock:
-        specifier: ^13.5.1
-        version: 13.5.1
+        specifier: ^14.0.11
+        version: 14.0.11
       rimraf:
         specifier: ^5.0.5
         version: 5.0.5
@@ -946,8 +946,8 @@ importers:
         specifier: ^3.2.0
         version: 3.2.0
       nock:
-        specifier: ^13.5.1
-        version: 13.5.1
+        specifier: ^14.0.11
+        version: 14.0.11
       typescript:
         specifier: ^5.3.3
         version: 5.3.3
@@ -992,8 +992,8 @@ importers:
         specifier: ^5.0.5
         version: 5.0.5
       nock:
-        specifier: ^13.5.1
-        version: 13.5.1
+        specifier: ^14.0.11
+        version: 14.0.11
       typescript:
         specifier: ^5.3.3
         version: 5.3.3
@@ -6610,6 +6610,18 @@ packages:
     dev: false
     optional: true
 
+  /@mswjs/interceptors@0.41.3:
+    resolution: {integrity: sha512-cXu86tF4VQVfwz8W1SPbhoRyHJkti6mjH/XJIxp40jhO4j2k1m4KYrEykxqWPkFF3vrK4rgQppBh//AwyGSXPA==}
+    engines: {node: '>=18'}
+    dependencies:
+      '@open-draft/deferred-promise': 2.2.0
+      '@open-draft/logger': 0.3.0
+      '@open-draft/until': 2.1.0
+      is-node-process: 1.2.0
+      outvariant: 1.4.3
+      strict-event-emitter: 0.5.1
+    dev: true
+
   /@napi-rs/wasm-runtime@0.2.12:
     resolution: {integrity: sha512-ZVWUcfwY4E/yPitQJl481FjFo3K22D6qF0DuFH6Y/nbnE11GY5uguDxZMGXPQ8WQ0128MXQD7TnfHyK4oWoIJQ==}
     requiresBuild: true
@@ -6906,6 +6918,21 @@ packages:
       - '@swc-node/register'
       - '@swc/core'
       - debug
+
+  /@open-draft/deferred-promise@2.2.0:
+    resolution: {integrity: sha512-CecwLWx3rhxVQF6V4bAgPS5t+So2sTbPgAzafKkVizyi7tlwpcFpdFqq+wqF2OwNBmqFuu6tOyouTuxgpMfzmA==}
+    dev: true
+
+  /@open-draft/logger@0.3.0:
+    resolution: {integrity: sha512-X2g45fzhxH238HKO4xbSr7+wBS8Fvw6ixhTDuvLd5mqh6bJJCFAPwU9mPDxbcrRtfxv4u5IHCEH77BmxvXmmxQ==}
+    dependencies:
+      is-node-process: 1.2.0
+      outvariant: 1.4.3
+    dev: true
+
+  /@open-draft/until@2.1.0:
+    resolution: {integrity: sha512-U69T3ItWHvLwGg5eJ0n3I62nWuE6ilHlmz7zM0npLBRvPRd7e6NYmg54vvRtP5mZG7kZqZCFVdsTWo7BPtBujg==}
+    dev: true
 
   /@opentelemetry/api-logs@0.205.0:
     resolution: {integrity: sha512-wBlPk1nFB37Hsm+3Qy73yQSobVn28F4isnWIBvKpd5IUH/eat8bwcL02H9yzmHyyPmukeccSl2mbN5sDQZYnPg==}
@@ -15004,6 +15031,10 @@ packages:
     engines: {node: '>= 0.4'}
     dev: true
 
+  /is-node-process@1.2.0:
+    resolution: {integrity: sha512-Vg4o6/fqPxIjtxgUH5QLJhwZ7gW5diGCVlXpuUfELC62CuxM1iHcRe51f2W1FDy04Ai4KJkagKjx3XaqyfRKXw==}
+    dev: true
+
   /is-number-object@1.0.7:
     resolution: {integrity: sha512-k1U0IRzLMo7ZlYIfzRu23Oh6MiIFasgpb9X76eqfFZAqwH44UI4KTBvBYIZ1dSL9ZzChTB9ShHfLkR4pdW5krQ==}
     engines: {node: '>= 0.4'}
@@ -16567,15 +16598,13 @@ packages:
       lower-case: 2.0.2
       tslib: 2.8.1
 
-  /nock@13.5.1:
-    resolution: {integrity: sha512-+s7b73fzj5KnxbKH4Oaqz07tQ8degcMilU4rrmnKvI//b0JMBU4wEXFQ8zqr+3+L4eWSfU3H/UoIVGUV0tue1Q==}
-    engines: {node: '>= 10.13'}
+  /nock@14.0.11:
+    resolution: {integrity: sha512-u5xUnYE+UOOBA6SpELJheMCtj2Laqx15Vl70QxKo43Wz/6nMHXS7PrEioXLjXAwhmawdEMNImwKCcPhBJWbKVw==}
+    engines: {node: '>=18.20.0 <20 || >=20.12.1'}
     dependencies:
-      debug: 4.3.4
+      '@mswjs/interceptors': 0.41.3
       json-stringify-safe: 5.0.1
       propagate: 2.0.1
-    transitivePeerDependencies:
-      - supports-color
     dev: true
 
   /node-abi@3.54.0:
@@ -16945,6 +16974,10 @@ packages:
 
   /outdent@0.8.0:
     resolution: {integrity: sha512-KiOAIsdpUTcAXuykya5fnVVT+/5uS0Q1mrkRHcF89tpieSmY33O/tmc54CqwA+bfhbtEfZUNLHaPUiB9X3jt1A==}
+
+  /outvariant@1.4.3:
+    resolution: {integrity: sha512-+Sl2UErvtsoajRDKCE5/dBz4DIvHXQQnAxtQTF04OJxY0+DyZXSo5P5Bb7XYWOh81syohlYL24hbDwxedPUJCA==}
+    dev: true
 
   /own-keys@1.0.1:
     resolution: {integrity: sha512-qFOyK5PjiWZd+QQIh+1jhdb9LpxTF0qs7Pm8o5QHYZ0M3vKqSqzsZaEB6oWlxZ+q2sJBMI/Ktgd2N5ZwQoRHfg==}
@@ -18724,6 +18757,10 @@ packages:
       - react-native-b4a
     dev: true
     optional: true
+
+  /strict-event-emitter@0.5.1:
+    resolution: {integrity: sha512-vMgjE/GGEPEFnhFub6pa4FmJBRBVOLpIII2hvCZ8Kzb7K0hlHo7mQv6xYrBvCL2LtAIBwFUK8wvuJgTVSQ5MFQ==}
+    dev: true
 
   /string-env-interpolation@1.0.1:
     resolution: {integrity: sha512-78lwMoCcn0nNu8LszbP1UA7g55OeE4v7rCeWnM5B453rnNr4aq+5it3FEYtZrSEiMvHZOZ9Jlqb0OD0M2VInqg==}
