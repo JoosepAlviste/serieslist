@@ -25,7 +25,7 @@
     "@serieslist/util-types": "workspace:*",
     "@vitest/coverage-v8": "^1.2.2",
     "date-fns": "^4.1.0",
-    "fishery": "^2.2.2",
+    "fishery": "^2.4.0",
     "just-filter-object": "^3.2.0",
     "nock": "^14.0.11",
     "typescript": "^5.3.3",
