@@ -41,7 +41,7 @@
     "react-hook-form": "^7.50.1"
   },
   "peerDependencies": {
-    "react": "^18.2.0"
+    "react": "18.2.0"
   },
   "devDependencies": {
     "@serieslist/eslint-config-react": "workspace:*",
@@ -56,7 +56,7 @@
     "@vanilla-extract/vite-plugin": "^3.9.3",
     "@vitest/coverage-v8": "^1.2.2",
     "jsdom": "^24.0.0",
-    "react": "^18.2.0",
+    "react": "18.2.0",
     "tsx": "^4.7.1",
     "typescript": "^5.3.3",
     "vitest": "^1.2.2",

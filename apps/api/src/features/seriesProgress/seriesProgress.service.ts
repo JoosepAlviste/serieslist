@@ -310,6 +310,6 @@ export const findNextEpisodesForSeries = async ({
     return progress?.nextEpisodeId
       ? episodesByIds[progress.nextEpisodeId]
       : // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        (firstEpisodes[seriesId] ?? null)
+        firstEpisodes[seriesId] ?? null
   })
 }
